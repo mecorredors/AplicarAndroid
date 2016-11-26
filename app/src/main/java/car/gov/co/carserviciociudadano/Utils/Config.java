@@ -1,0 +1,24 @@
+package car.gov.co.carserviciociudadano.Utils;
+
+/**
+ * Created by Olger on 26/11/2016.
+ */
+
+public class Config {
+
+    public static String ServerParques = "http://192.168.0.13/parques/";    //local
+
+    public static String API_PARQUES_PARQUES =  ServerParques + "api/parque/parques/";
+    public static String API_PARQUES_ARCHIVOS =  ServerParques + "api/parque/archivos/";
+    public static String API_PARQUES_MANTENIMIENTOS =  ServerParques + "api/parque/mantenimientos/";
+    public static String API_PARQUES_SERVICIOS =  ServerParques + "api/parque/Servicios/";
+    public static String API_PARQUES_RESERVA_DETALLE =  ServerParques + "api/reserva/detalle/";
+    public static String API_PARQUES_RESERVA =  ServerParques + "api/reserva/reserva/";
+    public static String API_PARQUES_INGRESAR_ABONO =  ServerParques + "api/reserva/ingresarAbono/";
+    public static String API_PARQUES_PUBLICAR_IMAGENES =  ServerParques + "api/reserva/publicarimagenes/";
+    public static String API_PARQUES_USUARIO =  ServerParques + "api/usuario/";
+    public static String API_PARQUES_USUARIO_LOGIN =  ServerParques + "api/usuario/login/";
+    public static String API_PARQUES_MUNICIPIOS =  ServerParques + "api/catalogo/municipios/";
+    public static String API_PARQUES_BANCOS =  ServerParques + "api/catalogo/bancos/";
+    public static String API_PARQUES_PARAMETROS =  ServerParques + "api/catalogo/parametros/";
+}
