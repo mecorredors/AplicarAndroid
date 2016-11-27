@@ -6,6 +6,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 
 /**
@@ -54,7 +57,18 @@ public class Abono {
             }
         }
     }
+    public JSONObject toJSONObject(){
 
+        Gson gson = new Gson();
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(gson.toJson(this));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return jsonObject;
+    }
     public long getIdAbono() {
         return IdAbono;
     }

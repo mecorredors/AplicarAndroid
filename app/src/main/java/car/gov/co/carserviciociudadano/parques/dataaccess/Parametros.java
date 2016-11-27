@@ -9,26 +9,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Utils;
-import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
+import car.gov.co.carserviciociudadano.parques.interfaces.IParametro;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
-import java.util.HashMap;
-import java.util.Map;
+import car.gov.co.carserviciociudadano.parques.model.ParametroReserva;
+
 /**
- * Created by Olger on 26/11/2016.
+ * Created by Olger on 27/11/2016.
  */
 
-public class Parques {
+public class Parametros {
 
-    public static final String TAG ="Parques";
+    public static final String TAG ="Parametros";
 
-    public void list(final IParque iParque )
+    public void list(final IParametro iParametro )
     {
-        String url = Config.API_PARQUES_PARQUES;
+        String url = Config.API_PARQUES_PARAMETROS;
         url = url.replace(" ", "%20");
 
         JsonArrayRequest objRequest = new JsonArrayRequest( url,
@@ -37,18 +38,17 @@ public class Parques {
                     public void onResponse(JSONArray response)
                     {
                         try {
-                            iParque.onSuccess(JSONArrayToList(response));
+                            iParametro.onSuccess(JSONArrayToList(response));
                         }catch (JSONException ex){
-                            iParque.onError(new ErrorApi(ex));
+                            iParametro.onError(new ErrorApi(ex));
                         }
-
                     }
                 },	new Response.ErrorListener()
         {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-               iParque.onError(new ErrorApi(error));
+                iParametro.onError(new ErrorApi(error));
             }
         }
         ){
@@ -70,13 +70,12 @@ public class Parques {
         AppCar.VolleyQueue().add(objRequest);
     }
 
-    private List<Parque> JSONArrayToList(JSONArray response) throws JSONException{
-        List<Parque> lista = new ArrayList<>();
-            for(int i = 0; i < response.length(); i++){
-                JSONObject jresponse = response.getJSONObject(i);
-                lista.add(new Parque(jresponse.toString()));
-            }
+    private List<ParametroReserva> JSONArrayToList(JSONArray response) throws JSONException{
+        List<ParametroReserva> lista = new ArrayList<>();
+        for(int i = 0; i < response.length(); i++){
+            JSONObject jresponse = response.getJSONObject(i);
+            lista.add(new ParametroReserva(jresponse.toString()));
+        }
         return lista;
     }
-
 }

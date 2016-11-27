@@ -1,5 +1,7 @@
 package car.gov.co.carserviciociudadano.parques.dataaccess;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
@@ -9,26 +11,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Utils;
-import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
+import car.gov.co.carserviciociudadano.parques.interfaces.IMantenimiento;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
-import java.util.HashMap;
-import java.util.Map;
+import car.gov.co.carserviciociudadano.parques.model.Mantenimiento;
+
 /**
- * Created by Olger on 26/11/2016.
+ * Created by Olger on 27/11/2016.
  */
 
-public class Parques {
+public class Mantenimientos {
 
-    public static final String TAG ="Parques";
+    public static final String TAG ="Mantenimientos";
 
-    public void list(final IParque iParque )
+    public void list(final IMantenimiento iMantenimiento, int idServicioParque, int mes )
     {
-        String url = Config.API_PARQUES_PARQUES;
+        String url = Config.API_PARQUES_MANTENIMIENTOS + "?idServicioParque=" + idServicioParque + "&mes=" + mes;
         url = url.replace(" ", "%20");
 
         JsonArrayRequest objRequest = new JsonArrayRequest( url,
@@ -37,9 +40,9 @@ public class Parques {
                     public void onResponse(JSONArray response)
                     {
                         try {
-                            iParque.onSuccess(JSONArrayToList(response));
+                            iMantenimiento.onSuccess(JSONArrayToList(response));
                         }catch (JSONException ex){
-                            iParque.onError(new ErrorApi(ex));
+                            iMantenimiento.onError(new ErrorApi(ex));
                         }
 
                     }
@@ -48,13 +51,12 @@ public class Parques {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-               iParque.onError(new ErrorApi(error));
+                iMantenimiento.onError(new ErrorApi(error));
             }
         }
         ){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Basic " + Utils.getAuthorizationParques());
                 return headerMap;
@@ -70,13 +72,12 @@ public class Parques {
         AppCar.VolleyQueue().add(objRequest);
     }
 
-    private List<Parque> JSONArrayToList(JSONArray response) throws JSONException{
-        List<Parque> lista = new ArrayList<>();
-            for(int i = 0; i < response.length(); i++){
-                JSONObject jresponse = response.getJSONObject(i);
-                lista.add(new Parque(jresponse.toString()));
-            }
+    private List<Mantenimiento> JSONArrayToList(JSONArray response) throws JSONException{
+        List<Mantenimiento> lista = new ArrayList<>();
+        for(int i = 0; i < response.length(); i++){
+            JSONObject jresponse = response.getJSONObject(i);
+            lista.add(new Mantenimiento(jresponse.toString()));
+        }
         return lista;
     }
-
 }

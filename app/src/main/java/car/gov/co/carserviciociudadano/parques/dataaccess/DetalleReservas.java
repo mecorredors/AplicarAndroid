@@ -9,26 +9,28 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Utils;
-import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
+import car.gov.co.carserviciociudadano.parques.interfaces.IDetalleReserva;
+import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
-import java.util.HashMap;
-import java.util.Map;
+
+
 /**
- * Created by Olger on 26/11/2016.
+ * Created by Olger on 27/11/2016.
  */
 
-public class Parques {
+public class DetalleReservas {
 
-    public static final String TAG ="Parques";
+    public static final String TAG ="DetalleReserva";
 
-    public void list(final IParque iParque )
+    public void list(final IDetalleReserva iDetalleReserva, String login, long idReserva )
     {
-        String url = Config.API_PARQUES_PARQUES;
+        String url = Config.API_PARQUES_RESERVA_DETALLE + "?login=" + login +"&idReserva="+idReserva;
         url = url.replace(" ", "%20");
 
         JsonArrayRequest objRequest = new JsonArrayRequest( url,
@@ -37,24 +39,22 @@ public class Parques {
                     public void onResponse(JSONArray response)
                     {
                         try {
-                            iParque.onSuccess(JSONArrayToList(response));
+                            iDetalleReserva.onSuccess(JSONArrayToList(response));
                         }catch (JSONException ex){
-                            iParque.onError(new ErrorApi(ex));
+                            iDetalleReserva.onError(new ErrorApi(ex));
                         }
-
                     }
                 },	new Response.ErrorListener()
         {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-               iParque.onError(new ErrorApi(error));
+                iDetalleReserva.onError(new ErrorApi(error));
             }
         }
         ){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Basic " + Utils.getAuthorizationParques());
                 return headerMap;
@@ -70,13 +70,12 @@ public class Parques {
         AppCar.VolleyQueue().add(objRequest);
     }
 
-    private List<Parque> JSONArrayToList(JSONArray response) throws JSONException{
-        List<Parque> lista = new ArrayList<>();
-            for(int i = 0; i < response.length(); i++){
-                JSONObject jresponse = response.getJSONObject(i);
-                lista.add(new Parque(jresponse.toString()));
-            }
+    private List<DetalleReserva> JSONArrayToList(JSONArray response) throws JSONException{
+        List<DetalleReserva> lista = new ArrayList<>();
+        for(int i = 0; i < response.length(); i++){
+            JSONObject jresponse = response.getJSONObject(i);
+            lista.add(new DetalleReserva(jresponse.toString()));
+        }
         return lista;
     }
-
 }

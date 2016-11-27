@@ -2,14 +2,15 @@ package car.gov.co.carserviciociudadano.parques.interfaces;
 
 import java.util.List;
 
+import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
+
 
 /**
- * Created by Olger on 26/11/2016.
+ * Created by Olger on 27/11/2016.
  */
 
-public interface IParque {
-    void onSuccess(List<Parque> lstParques);
+public interface IDetalleReserva {
+    void onSuccess(List<DetalleReserva> lista);
     void onError(ErrorApi error);
 }

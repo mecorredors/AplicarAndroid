@@ -3,13 +3,14 @@ package car.gov.co.carserviciociudadano.parques.interfaces;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
+import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
+
 
 /**
- * Created by Olger on 26/11/2016.
+ * Created by Olger on 27/11/2016.
  */
 
-public interface IParque {
-    void onSuccess(List<Parque> lstParques);
+public interface IServicioParque {
+    void onSuccess(List<ServicioParque> lista);
     void onError(ErrorApi error);
 }
