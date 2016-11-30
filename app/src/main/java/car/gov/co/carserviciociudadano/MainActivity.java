@@ -1,13 +1,16 @@
 package car.gov.co.carserviciociudadano;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 import java.util.List;
 
+import car.gov.co.carserviciociudadano.parques.activities.MainParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,10 +31,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(int statusCode) {
+            public void onError(ErrorApi errorApi) {
 
             }
         });
+
+
+        Intent i = new Intent(this,MainParques.class);
+        startActivity(i);
 
     }
 }

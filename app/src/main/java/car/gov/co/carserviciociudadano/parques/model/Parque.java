@@ -27,6 +27,8 @@ public class Parque {
     private int ActivarRangoDesactivacion;
     private String DetalleCuenta;
     private String PoliticasParque;
+    private String ArchivoParque;
+    private String UrlArchivoParque;
 
     public  Parque(String json) {
         if (json!= null && !json.isEmpty()) {
@@ -51,6 +53,8 @@ public class Parque {
                 this.ActivarRangoDesactivacion = element.ActivarRangoDesactivacion;
                 this.DetalleCuenta = element.DetalleCuenta;
                 this.PoliticasParque = element.PoliticasParque;
+                this.ArchivoParque = element.ArchivoParque;
+                this.UrlArchivoParque = element.UrlArchivoParque;
 
             } catch (JsonSyntaxException ex) {
                 Log.e("Parque.json", ex.toString());
@@ -168,5 +172,21 @@ public class Parque {
 
     public void setPoliticasParque(String politicasParque) {
         PoliticasParque = politicasParque;
+    }
+
+    public String getArchivoParque() {
+        return ArchivoParque;
+    }
+
+    public void setArchivoParque(String archivoParque) {
+        ArchivoParque = archivoParque;
+    }
+
+    public String getUrlArchivoParque() {
+        return UrlArchivoParque;
+    }
+
+    public void setUrlArchivoParque(String urlArchivoParque) {
+        UrlArchivoParque = urlArchivoParque;
     }
 }
