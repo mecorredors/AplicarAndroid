@@ -30,6 +30,11 @@ public class Parque {
     private String ArchivoParque;
     private String UrlArchivoParque;
 
+    public static final String ID_PARQUE = "IDParque";
+    public static final String NOMBRE_PARQUE = "NombreParque";
+    public static final String OBSERVACIONES_PARQUE = "ObservacionesParque";
+    public static final String URL_ARCHIVO_PARQUE = "UrlArchivoParque";
+
     public  Parque(String json) {
         if (json!= null && !json.isEmpty()) {
             try {

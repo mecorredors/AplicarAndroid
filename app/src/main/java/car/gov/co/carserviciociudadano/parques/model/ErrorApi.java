@@ -66,7 +66,7 @@ public class ErrorApi {
             }
         }else{
             this.StatusCode=500;
-            this.Message="Servicio no disponible, intentelo nuevamente en unos minutos.";
+            this.Message="Servicio no disponible";
         }
 
         if (this.StatusCode == 404) this.Message = "No se encontro ningún registro";
