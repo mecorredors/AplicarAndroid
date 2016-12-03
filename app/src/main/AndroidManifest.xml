@@ -26,7 +26,8 @@
         <activity
             android:name=".parques.activities.DetalleParqueActivity"
             android:label="@string/title_activity_detalle_parque"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".parques.activities.ReservaActivity"></activity>
     </application>
 
 </manifest>

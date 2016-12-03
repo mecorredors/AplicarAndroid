@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.Streams;
 
 import java.util.Date;
 
@@ -34,6 +35,9 @@ public class ServicioParque {
     private Date DesactivarDesde;
     private Date DesactivarHasta;
     private long PrecioCar;
+
+    public static final String ID_SERVICIOS_PARQUE = "IDServiciosParque";
+    public static final String NOMBRE_SERVICIO = "NombreServicio";
 
     public  ServicioParque(String json) {
         if (json != null && !json.isEmpty()) {
@@ -207,6 +211,9 @@ public class ServicioParque {
 
     public long getPrecioCar() {
         return PrecioCar;
+    }
+    public String getPrecioCarConFormato(){
+        return "$"+PrecioCar + "";
     }
 
     public void setPrecioCar(long precioCar) {

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context="car.gov.co.carserviciociudadano.parques.activities.ReservaActivity">
+<LinearLayout
+
+    android:id="@+id/activity_reserva"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/background"
+    android:orientation="vertical"
+   >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/prereserva"
+            android:textSize="@dimen/text_size_12"
+            android:text="Noches en preserva"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/reservada"
+            android:textSize="@dimen/text_size_12"
+            android:textAlignment="center"
+            android:text="Reservadas"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mantenimiento"
+            android:textSize="@dimen/text_size_12"
+            android:text="En matenimiento"/>
+
+    </LinearLayout>
+
+    <TextView android:id="@+id/lblNombreParque"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/primaryText"
+        android:layout_marginTop="@dimen/margin_10dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha de llegada"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/secondaryText"
+        android:layout_marginTop="@dimen/margin_10dp"/>
+
+    <com.stacktips.view.CustomCalendarView
+        android:id="@+id/calendarioFechaLlegada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background">
+    </com.stacktips.view.CustomCalendarView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha de salida"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/secondaryText"
+        android:layout_marginTop="@dimen/margin_10dp"/>
+
+    <CalendarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/calendariofechaSalida" />
+
+</LinearLayout>
+</ScrollView>

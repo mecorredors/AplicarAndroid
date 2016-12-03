@@ -23,21 +23,11 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
                 <ImageView android:id="@+id/imagen"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_collapseMode="parallax"
                     android:scaleType="centerCrop"/>
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Esto es una prueba"/>-->
-
-            </FrameLayout>
 
 
             <android.support.v7.widget.Toolbar
@@ -46,8 +36,6 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -80,20 +68,45 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/lblObservaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryText"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginRight="@dimen/margin_10dp"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:textSize="@dimen/text_size_13"
+                />
 
+            <TextView android:id="@+id/lblArchivoObservaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginRight="@dimen/margin_10dp"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/text_size_13"
 
-        <TextView android:id="@+id/lblObservaciones"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            />
+                />
 
-        <TextView android:id="@+id/lblArchivoObservaciones"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:layout_marginTop="@dimen/margin_4dp"
-            />
+            <android.support.v7.widget.RecyclerView
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:nestedScrollingEnabled="false"
+                />
+            <ProgressBar
+                android:id="@+id/progressView"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
