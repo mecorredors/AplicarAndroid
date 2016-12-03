@@ -6,6 +6,7 @@ import android.util.Base64;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import car.gov.co.carserviciociudadano.AppCar;
@@ -77,5 +78,16 @@ public class Utils {
 
         }
         return pass;
+    }
+
+    public static boolean isEqualsDate(Date fecha1, Date fecha2){
+       if (fecha1 != null && fecha2 != null) {
+           Calendar calendar1 = Calendar.getInstance();
+           calendar1.setTime(fecha1);
+           Calendar calendar2 = Calendar.getInstance();
+           calendar2.setTime(fecha2);
+           return (calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) && calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH));
+       }
+        return false;
     }
 }
