@@ -171,6 +171,12 @@ public class DetalleParqueActivity extends BaseActivity {
             i.putExtra(Parque.NOMBRE_PARQUE,mNombreParque);
             i.putExtra(ServicioParque.ID_SERVICIOS_PARQUE,servicio.getIDServiciosParque());
             i.putExtra(ServicioParque.NOMBRE_SERVICIO,servicio.getNombreServicio());
+            i.putExtra(ServicioParque.PRECIO_SERVICIO,servicio.getPrecioServicio());
+            i.putExtra(ServicioParque.IMPUESTO_SERVICIO,servicio.getImpuestoServicio());
+            i.putExtra(ServicioParque.DESCUENTO_SERVICIO,servicio.getDescuentoServicio());
+            i.putExtra(ServicioParque.ACTIVO_SERVICIO,servicio.getActivoServicio());
+            i.putExtra(ServicioParque.PRECIO_CAR,servicio.getPrecioCar());
+
 
             startActivity(i);
         }

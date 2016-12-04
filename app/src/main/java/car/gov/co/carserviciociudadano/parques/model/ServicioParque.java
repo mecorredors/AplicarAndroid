@@ -38,7 +38,13 @@ public class ServicioParque {
 
     public static final String ID_SERVICIOS_PARQUE = "IDServiciosParque";
     public static final String NOMBRE_SERVICIO = "NombreServicio";
+    public static final String PRECIO_SERVICIO = "PrecioServicio";
+    public static final String IMPUESTO_SERVICIO = "ImpuestoServicio";
+    public static final String DESCUENTO_SERVICIO = "DescuentoServicio";
+    public static final String ACTIVO_SERVICIO = "ActivoServicio";
+    public static final String PRECIO_CAR = "PrecioCar";
 
+    public  ServicioParque(){}
     public  ServicioParque(String json) {
         if (json != null && !json.isEmpty()) {
             try {

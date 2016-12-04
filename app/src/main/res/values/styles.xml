@@ -29,4 +29,25 @@
         <item name="android:textColor">@color/textLight</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="ButtonAccent" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textLight</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+    <style name="ButtonWhite" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/white</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+    <style name="ButtonBorderless" parent="Widget.AppCompat.Button.Borderless">
+        <item name="colorButtonNormal">@color/white</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
 </resources>

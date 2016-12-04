@@ -24,5 +24,6 @@ public class Config {
     public static String API_PARQUES_BANCOS =  ServerParques + "api/catalogo/bancos/";
     public static String API_PARQUES_PARAMETROS =  ServerParques + "api/catalogo/parametros/";
     public static String API_PARQUES_CANCELAR_RESERVA =  ServerParques + "api/reserva/cancelarreserva/";
+    public static String API_PARQUES_VALIDAR_RESERVA =  ServerParques + "api/reserva/validarreserva/";
 
 }

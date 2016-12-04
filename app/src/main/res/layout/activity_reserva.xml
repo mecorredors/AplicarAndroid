@@ -55,36 +55,163 @@
         android:textColor="@color/primaryText"
         android:layout_marginTop="@dimen/margin_10dp"/>
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="4"
         android:layout_height="wrap_content"
         android:text="Fecha de llegada"
         android:textSize="@dimen/text_size_14"
         android:textColor="@color/secondaryText"
         android:layout_marginTop="@dimen/margin_10dp"/>
 
+    <EditText android:id="@+id/txtFechaLlegada"
+        android:layout_width="0dp"
+        android:layout_weight="6"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+      />
+</LinearLayout>
     <com.stacktips.view.CustomCalendarView
         android:id="@+id/calendarioFechaLlegada"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background">
+        android:background="@color/background"
+        android:visibility="gone">
     </com.stacktips.view.CustomCalendarView>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fecha de salida"
-        android:textSize="@dimen/text_size_14"
-        android:textColor="@color/secondaryText"
-        android:layout_marginTop="@dimen/margin_10dp"/>
-
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:text="Fecha de salida"
+            android:textSize="@dimen/text_size_14"
+            android:textColor="@color/secondaryText"
+            android:layout_marginTop="@dimen/margin_10dp"/>
+        <EditText android:id="@+id/txtFechaSalida"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_4dp"
+            android:focusable="false"/>
+        </LinearLayout>
     <com.stacktips.view.CustomCalendarView
         android:id="@+id/calendarioFechaSalida"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background">
+        android:background="@color/background"
+        android:visibility="gone">
     </com.stacktips.view.CustomCalendarView>
+
+    <Button android:id="@+id/btnPreReserva"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/ButtonAccent"
+        android:text="PRE-RESERVA"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:visibility="visible"/>
+
+    <LinearLayout android:id="@+id/lyCanasta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:visibility="visible">
+
+
+        <TextView android:id="@+id/lblServicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryText"
+        android:text="Servicio a reservar"
+        android:textSize="@dimen/text_size_14"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/lblNroNoches"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryText"
+                android:text="Nro de noches: 0"
+                android:textSize="@dimen/text_size_14"/>
+            <TextView android:id="@+id/lblPrecio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryText"
+                android:text="Precio: 0"
+                android:textSize="@dimen/text_size_14"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/lblFechaDesde"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryText"
+                android:text="Desde: "
+                android:textSize="@dimen/text_size_14"/>
+            <TextView android:id="@+id/lblFechaHasta"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryText"
+                android:text="Hasta: 0"
+                android:textSize="@dimen/text_size_14"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/lblImpuesto"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryText"
+                android:text="Impuesto: 0"
+                android:textSize="@dimen/text_size_14"/>
+            <TextView android:id="@+id/lblSubTotal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryText"
+                android:text="Subtotal: 0"
+                android:textSize="@dimen/text_size_14"/>
+
+        </LinearLayout>
+
+        <Button android:id="@+id/btnBorrar"
+            android:theme="@style/ButtonBorderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="BORRAR"/>
+        <Button android:id="@+id/bntReservar"
+            android:theme="@style/ButtonAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="REALIZAR PRE-RESERVAR"
+            android:layout_marginTop="@dimen/margin_10dp"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>
 </ScrollView>

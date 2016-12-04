@@ -23,9 +23,9 @@ import car.gov.co.carserviciociudadano.parques.model.ParametroReserva;
  * Created by Olger on 27/11/2016.
  */
 
-public class Parametros {
+public class ParametrosReserva {
 
-    public static final String TAG ="Parametros";
+    public static final String TAG ="ParametrosReserva";
 
     public void list(final IParametro iParametro )
     {

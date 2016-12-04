@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,4 +85,23 @@ public class ServicioReservas {
         }
         return lista;
     }
+
+    public List<Date> getAllFechasEnReserva(ServicioReserva servicioReserva){
+
+        List<Date> lstFechas = new ArrayList<>();
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(servicioReserva.getFechaInicialReserva());
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(servicioReserva.getFechaFinalReserva());
+
+         while (calendar1.before(calendar2) ){
+             lstFechas.add(calendar1.getTime());
+             calendar1.add(Calendar.DAY_OF_MONTH,1);
+         }
+        lstFechas.add(calendar2.getTime());
+
+        return lstFechas;
+    }
+
 }

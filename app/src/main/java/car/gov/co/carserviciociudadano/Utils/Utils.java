@@ -3,11 +3,15 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Base64;
+import android.util.Log;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import car.gov.co.carserviciociudadano.AppCar;
 
@@ -89,5 +93,58 @@ public class Utils {
            return (calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) && calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH));
        }
         return false;
+    }
+
+    public static Date convertToDate(String dateString){
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(formatoFecha());
+        Date convertedDate = new Date();
+        try {
+            convertedDate = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            Log.e("Utils.ConvertToDate",e.toString());
+        }
+        return convertedDate;
+    }
+
+    public static Calendar convertToCalendar(String dateString){
+        SimpleDateFormat dateFormat = new SimpleDateFormat(formatoFecha());
+        Date convertedDate = new Date();
+        try {
+            convertedDate = dateFormat.parse(dateString);
+
+            Calendar calendar =  new GregorianCalendar(); //Calendar.getInstance();
+            calendar.setTime(convertedDate);
+            return calendar;
+        } catch (ParseException e) {
+            Log.e("Utils.ConvertToDate",e.toString());
+        }
+       return  null;
+    }
+
+    public static String toStringFromDate(java.util.Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(formatoFecha(), Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
+    public static int difDaysDates(Calendar fechaInicio, Calendar fechaFin){
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(   fechaFin.getTime().getTime() - fechaInicio.getTime().getTime());
+       return  c.get(Calendar.DAY_OF_YEAR);
+    }
+
+
+    public static  String formatoMoney(double valor){
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(getLocale());
+
+        return  formatter.format(valor);
+    }
+    public static Locale getLocale(){
+       return new Locale("ES","co");
+    }
+
+    public static String formatoFecha(){
+        return "yyyy-MM-dd";
     }
 }

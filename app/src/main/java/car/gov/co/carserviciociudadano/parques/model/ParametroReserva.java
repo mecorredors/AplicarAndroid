@@ -14,6 +14,24 @@ public class ParametroReserva {
     private String Llave;
     private String Valor;
 
+    public static final String maximoNroDiasAReservar ="maximoNroDiasAReservar";
+    public static final String minimoNumDiasReserva ="minimoNumDiasReserva";
+    public static final String nroDiasMaximoParaHacerReservas = "nroDiasMaximoParaHacerReservas";
+    public static final String mensajeCanasta1 ="mensajeCanasta1";
+    public static final String  mensajeCanasta2="mensajeCanasta2";
+    public static final String  mensajeCanasta3="mensajeCanasta3";
+    public static final String  mascaraFechasOracle="mascaraFechasOracle";
+    public static final String  mascaraFechasOracleCorta="mascaraFechasOracleCorta";
+    public static final String mascaraFechas ="mascaraFechas";
+    public static final String mascaraFechaCorta="mascaraFechaCorta";
+    public static final String  mascaraFechasCalendarios="mascaraFechasCalendarios";
+    public static final String  reservasDiaMensaje="reservasDiaMensaje";
+    public static final String diasHabilesparaAprobacionReserva ="diasHabilesparaAprobacionReserva";
+    public static final String  reservasDiaSemanaDesde="reservasDiaSemanaDesde";
+    public static final String  reservasDiaSemanaHasta="reservasDiaSemanaHasta";
+    public static final String  mascaraFechasControlFechas="mascaraFechasControlFechas";
+
+
     public  ParametroReserva(String json) {
         if (json!= null && !json.isEmpty()) {
             try {

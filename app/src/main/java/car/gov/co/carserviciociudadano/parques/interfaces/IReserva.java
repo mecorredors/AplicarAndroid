@@ -13,5 +13,6 @@ import car.gov.co.carserviciociudadano.parques.model.ServicioReserva;
 
 public interface IReserva {
     void onSuccess(ServicioReserva servicioReserva);
+    void onSuccess(boolean res);
     void onError(ErrorApi error);
 }

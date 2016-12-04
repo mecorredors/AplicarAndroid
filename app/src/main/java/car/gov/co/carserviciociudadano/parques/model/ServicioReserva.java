@@ -31,6 +31,8 @@ public class ServicioReserva {
     private long PrecioReserva;
     private int ImpuestoReserva;
 
+    public ServicioReserva(){}
+
     public  ServicioReserva(String json) {
         if (json!= null && !json.isEmpty()) {
             try {
