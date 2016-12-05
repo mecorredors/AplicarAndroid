@@ -13,9 +13,7 @@
     <string name="dias">días</string>
     <string name="dias_antelacion">días de antelación</string>
     <string name="reserva_no_disponible">El servicio solicitado ya se encuentra reservado ó en mantenimiento. Por favor borre el rango seleccionado y elija nuevamente</string>
-
-
-
+    <string name="contrasena">Contraseña</string>
 
 
 </resources>

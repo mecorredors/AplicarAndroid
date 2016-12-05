@@ -118,7 +118,24 @@
         android:layout_marginTop="@dimen/margin_4dp"
         android:visibility="visible"/>
 
-    <LinearLayout android:id="@+id/lyCanasta"
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/lyCanasta"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardElevation="2dp"
+        card_view:cardCornerRadius="2dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardBackgroundColor="@color/background"
+        card_view:contentPadding="@dimen/margin_10dp"
+        android:layout_marginTop="@dimen/margin_10dp"
+        >
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -132,6 +149,28 @@
         android:textColor="@color/primaryText"
         android:text="Servicio a reservar"
         android:textSize="@dimen/text_size_14"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/lblFechaDesde"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryText"
+                android:text="Desde: "
+                android:textSize="@dimen/text_size_14"/>
+            <TextView android:id="@+id/lblFechaHasta"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryText"
+                android:text="Hasta: 0"
+                android:textSize="@dimen/text_size_14"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -154,27 +193,7 @@
                 android:textSize="@dimen/text_size_14"/>
 
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <TextView android:id="@+id/lblFechaDesde"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondaryText"
-                android:text="Desde: "
-                android:textSize="@dimen/text_size_14"/>
-            <TextView android:id="@+id/lblFechaHasta"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondaryText"
-                android:text="Hasta: 0"
-                android:textSize="@dimen/text_size_14"/>
-
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -191,14 +210,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondaryText"
+                android:textColor="@color/primaryText"
                 android:text="Subtotal: 0"
                 android:textSize="@dimen/text_size_14"/>
 
         </LinearLayout>
 
         <Button android:id="@+id/btnBorrar"
-            android:theme="@style/ButtonBorderless"
+           android:theme="@style/ButtonBorderlessColored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -211,7 +230,7 @@
             android:layout_marginTop="@dimen/margin_10dp"/>
 
     </LinearLayout>
-
+</android.support.v7.widget.CardView>
 
 </LinearLayout>
 </ScrollView>

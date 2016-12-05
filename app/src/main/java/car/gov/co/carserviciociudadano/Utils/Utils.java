@@ -20,6 +20,9 @@ import car.gov.co.carserviciociudadano.AppCar;
  */
 
 public class Utils {
+
+   //public  static final String FORMATO_FECHA = "yyyy-MM-dd";
+   public  static final String FORMATO_FECHA = "dd-MM-yyyy";
     public  static long convertLong(String value){
         if (value == null ) return  0;
 
@@ -97,7 +100,7 @@ public class Utils {
 
     public static Date convertToDate(String dateString){
         //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat dateFormat = new SimpleDateFormat(formatoFecha());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMATO_FECHA);
         Date convertedDate = new Date();
         try {
             convertedDate = dateFormat.parse(dateString);
@@ -108,7 +111,7 @@ public class Utils {
     }
 
     public static Calendar convertToCalendar(String dateString){
-        SimpleDateFormat dateFormat = new SimpleDateFormat(formatoFecha());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMATO_FECHA);
         Date convertedDate = new Date();
         try {
             convertedDate = dateFormat.parse(dateString);
@@ -122,8 +125,19 @@ public class Utils {
        return  null;
     }
 
+    public static Calendar convertToCalendar(Date date){
+         Calendar calendar =  Calendar.getInstance();
+         calendar.setTime(date);
+         return calendar;
+    }
+
     public static String toStringFromDate(java.util.Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(formatoFecha(), Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMATO_FECHA, Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
+    public static String toStringLargeFromDate(java.util.Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMATO_FECHA, Locale.getDefault());
         return dateFormat.format(date);
     }
 
@@ -141,10 +155,10 @@ public class Utils {
         return  formatter.format(valor);
     }
     public static Locale getLocale(){
-       return new Locale("ES","co");
+       return new Locale("es","CO");
     }
 
-    public static String formatoFecha(){
-        return "yyyy-MM-dd";
-    }
+//    public static String formatoFecha(){
+//        return "yyyy-MM-dd";
+//    }
 }

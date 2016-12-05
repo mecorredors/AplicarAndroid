@@ -8,6 +8,7 @@ import android.util.Log;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
+import car.gov.co.carserviciociudadano.parques.activities.UsuarioActivity;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
@@ -21,23 +22,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Parques par = new Parques();
-        par.list(new IParque() {
-            @Override
-            public void onSuccess(List<Parque> lstParques) {
-                for (Parque p: lstParques){
-                    Log.d("par ",p.getNombreParque() +" "+ p.getIDParque());
-                }
-            }
 
-            @Override
-            public void onError(ErrorApi errorApi) {
+//        Intent i = new Intent(this,MainParques.class);
+//        startActivity(i);
 
-            }
-        });
-
-
-        Intent i = new Intent(this,MainParques.class);
+        Intent i = new Intent(this,UsuarioActivity.class);
         startActivity(i);
 
     }

@@ -101,8 +101,8 @@ public class ReservaActivity extends BaseActivity {
         mCalendarioFechaLlegada.setCalendarListener(new CalendarListener() {
             @Override
             public void onDateSelected(Date date) {
-                SimpleDateFormat df = new SimpleDateFormat(Utils.formatoFecha());
-                mTxtFechaLlegada.setText(df.format(date));
+                mServicioReserva.setFechaInicialReserva(date);
+                mTxtFechaLlegada.setText(Utils.toStringFromDate(date));
                 mCalendarioFechaLlegada.setVisibility(View.GONE);
                 if( !mTxtFechaLlegada.getText().toString().isEmpty()  && !mTxtFechaSalida.getText().toString().isEmpty())
                     mBtnPrereserva.setVisibility(View.VISIBLE);
@@ -117,8 +117,8 @@ public class ReservaActivity extends BaseActivity {
         mCalendarioFechaSalida.setCalendarListener(new CalendarListener() {
             @Override
             public void onDateSelected(Date date) {
-                SimpleDateFormat df = new SimpleDateFormat(Utils.formatoFecha());
-                mTxtFechaSalida.setText(df.format(date));
+                mServicioReserva.setFechaFinalReserva(date);
+                mTxtFechaSalida.setText(Utils.toStringFromDate(date));
                 mCalendarioFechaSalida.setVisibility(View.GONE);
                 if( !mTxtFechaLlegada.getText().toString().isEmpty()  && !mTxtFechaSalida.getText().toString().isEmpty())
                     mBtnPrereserva.setVisibility(View.VISIBLE);
@@ -285,8 +285,8 @@ public class ReservaActivity extends BaseActivity {
 
         if(validar()){
 
-            mServicioReserva.setFechaInicialReserva(Utils.convertToDate(mTxtFechaLlegada.getText().toString()));
-            mServicioReserva.setFechaFinalReserva(Utils.convertToDate(mTxtFechaSalida.getText().toString()));
+            //mServicioReserva.setFechaInicialReserva(Utils.convertToDate(mTxtFechaLlegada.getText().toString()));
+           // mServicioReserva.setFechaFinalReserva(Utils.convertToDate(mTxtFechaSalida.getText().toString()));
             mServicioReserva.setIDServiciosParque(mServicioParque.getIDServiciosParque());
 
             Reservas reservas = new Reservas();
@@ -324,8 +324,8 @@ public class ReservaActivity extends BaseActivity {
             return false;
         }
 
-        Calendar fechaLlegada = Utils.convertToCalendar(mTxtFechaLlegada.getText().toString());
-        Calendar fechaSalida = Utils.convertToCalendar(mTxtFechaSalida.getText().toString());
+        Calendar fechaLlegada = Utils.convertToCalendar(mServicioReserva.getFechaInicialReserva());
+        Calendar fechaSalida = Utils.convertToCalendar(mServicioReserva.getFechaFinalReserva());
 
 
         if (!fechaLlegada.before(fechaSalida)){
@@ -333,14 +333,13 @@ public class ReservaActivity extends BaseActivity {
             return false;
         }
 
-        int numDiasReserva = Utils.difDaysDates(fechaLlegada,fechaSalida);
+        int numDiasReserva = Utils.difDaysDates(fechaLlegada,fechaSalida) ;
         if ( numDiasReserva > Utils.convertInt(mapParametros.get(ParametroReserva.maximoNroDiasAReservar)) ){
             mostrarMensajeDialog(getString(R.string.maximo_dias) +" "+ mapParametros.get(ParametroReserva.maximoNroDiasAReservar) +" " + getString(R.string.dias) );
             return false;
         }
-
         Calendar fechaActual = Calendar.getInstance();
-        int numDiasInicioReserva = Utils.difDaysDates(fechaActual,fechaSalida);
+        int numDiasInicioReserva = Utils.difDaysDates(fechaActual,fechaLlegada) - 1;
         if ( numDiasInicioReserva < Utils.convertInt(mapParametros.get(ParametroReserva.minimoNumDiasReserva)) ){
             mostrarMensajeDialog(getString(R.string.fecha_llegada) +" "+ mapParametros.get(ParametroReserva.minimoNumDiasReserva) +" " + getString(R.string.dias_antelacion) );
             return false;
@@ -359,20 +358,23 @@ public class ReservaActivity extends BaseActivity {
 
         mLyCanasta.setVisibility(View.VISIBLE);
 
-        int numDiasReserva = Utils.difDaysDates(Utils.convertToCalendar(mTxtFechaLlegada.getText().toString()) , Utils.convertToCalendar(mTxtFechaSalida.getText().toString()));
+        Calendar fechaLlegada = Utils.convertToCalendar(mServicioReserva.getFechaInicialReserva());
+        Calendar fechaSalida = Utils.convertToCalendar(mServicioReserva.getFechaFinalReserva());
+
+        int numDiasReserva = Utils.difDaysDates(fechaLlegada ,fechaSalida);
 
         //validar si es funcinario car
         long precio = mServicioParque.getPrecioServicio();
 
         mLblServicio.setText(mNombreServicio);
-        mLblPrecio.setText(Utils.formatoMoney(precio));
-        mLblImpuesto.setText(String.valueOf(mServicioParque.getImpuestoServicio() ));
-        mLblFechaDesde.setText(mTxtFechaLlegada.getText().toString());
-        mLblFechaHasta.setText(mTxtFechaSalida.getText().toString());
-        mLblNroNoches.setText(String.valueOf(numDiasReserva));
+        mLblPrecio.setText("Precio: " + Utils.formatoMoney(precio));
+        mLblImpuesto.setText("Impuesto: " + String.valueOf(mServicioParque.getImpuestoServicio() ));
+        mLblFechaDesde.setText("Desde: " + Utils.toStringLargeFromDate(mServicioReserva.getFechaInicialReserva()));
+        mLblFechaHasta.setText("Hasta: " + Utils.toStringLargeFromDate(mServicioReserva.getFechaFinalReserva()));
+        mLblNroNoches.setText("Nro noches: " + String.valueOf(numDiasReserva));
 
         long subTotal = precio * numDiasReserva;
-        mLblSubtotal.setText(Utils.formatoMoney(subTotal));
+        mLblSubtotal.setText("Sub total: " + Utils.formatoMoney(subTotal));
 
     }
 

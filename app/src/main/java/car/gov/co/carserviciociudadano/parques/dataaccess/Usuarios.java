@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.interfaces.IUsuario;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
@@ -24,7 +25,7 @@ public class Usuarios {
 
     public static final String TAG ="Usuarios";
 
-    public void login(final IUsuario iUsuario, String login, String clave )
+    public void login( String login, String clave,final IUsuario iUsuario )
     {
         String url = Config.API_PARQUES_USUARIO_LOGIN + "?login="+login+"&clave="+clave;
         url = url.replace(" ", "%20");
@@ -106,5 +107,37 @@ public class Usuarios {
         AppCar.VolleyQueue().add(objRequest);
     }
 
+
+    public void guardar(Usuario usuario){
+        PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.WRITE,TAG);
+        preferencesApp.putInt(Usuario.ID_USUARIO,usuario.getIdUsuario());
+        preferencesApp.putString(Usuario.EMAIL_USUARIO,usuario.getEmailUsuario());
+        preferencesApp.putString(Usuario.CLAVE_USUARIO,usuario.getClaveUsuario());
+        preferencesApp.putString(Usuario.NOMBRE_COMPLETO,usuario.getNombreCompleto());
+        preferencesApp.putString(Usuario.TELEFONO_USUARIO,usuario.getTelefonoUsuario());
+        preferencesApp.putString(Usuario.CELULAR_USUARIO,usuario.getCelularUsuario());
+        preferencesApp.putString(Usuario.DOCUMENTO,usuario.getDocumento());
+        preferencesApp.putString(Usuario.DIRECCION_USUARIO,usuario.getDireccionUsuario());
+        preferencesApp.putInt(Usuario.ID_MUNICIPIO,usuario.getIdUsuario());
+        preferencesApp.commit();
+    }
+
+    public Usuario leer(){
+        Usuario usuario = new Usuario();
+
+        PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.READ,TAG);
+        usuario.setIdUsuario(preferencesApp.getInt(Usuario.ID_USUARIO,0 ));
+        usuario.setEmailUsuario(preferencesApp.getString(Usuario.EMAIL_USUARIO));
+        usuario.setClaveUsuario(preferencesApp.getString(Usuario.CLAVE_USUARIO));
+        usuario.setNombreCompleto(preferencesApp.getString(Usuario.NOMBRE_COMPLETO));
+        usuario.setTelefonoUsuario(preferencesApp.getString(Usuario.TELEFONO_USUARIO));
+        usuario.setCelularUsuario(preferencesApp.getString(Usuario.CELULAR_USUARIO));
+        usuario.setDireccionUsuario(preferencesApp.getString(Usuario.DIRECCION_USUARIO));
+        usuario.setDocumento(preferencesApp.getString(Usuario.DOCUMENTO));
+        usuario.setIDMunicipio(preferencesApp.getInt(Usuario.ID_MUNICIPIO,0));
+
+        return usuario;
+
+    }
 
 }

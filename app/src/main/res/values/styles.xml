@@ -49,5 +49,11 @@
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">@dimen/text_size_16</item>
     </style>
+    <style name="ButtonBorderlessColored" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="colorButtonNormal">@color/white</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
 
 </resources>

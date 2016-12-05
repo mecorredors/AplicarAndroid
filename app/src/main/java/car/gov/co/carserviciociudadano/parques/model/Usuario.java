@@ -36,6 +36,19 @@ public class Usuario {
     private String Documento;
     private boolean FuncionarioCar;
 
+
+    public static final String ID_USUARIO = "IdUsuario";
+    public static final String EMAIL_USUARIO = "EmailUsuario";
+    public static final String CLAVE_USUARIO = "ClaveUsuario";
+    public static final String NOMBRE_COMPLETO = "NombreCompleto";
+    public static final String TELEFONO_USUARIO = "TelefonoUsuario";
+    public static final String  CELULAR_USUARIO = "CelularUsuario";
+    public static final String DOCUMENTO = "Documento";
+    public static final String DIRECCION_USUARIO = "DireccionUsuario";
+    public static final String ID_MUNICIPIO = "IDMunicipio";
+
+    public  Usuario(){}
+
     public  Usuario(String json) {
         if (json!= null && !json.isEmpty()) {
             try {
