@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="car.gov.co.carserviciociudadano.parques.activities.MainParques">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/item_mi_cuenta"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="@string/mi_cuenta"
+        android:icon="@drawable/ic_person_24dp"
+        app:showAsAction="always" />
 </menu>

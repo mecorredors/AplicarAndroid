@@ -46,6 +46,7 @@ public class Usuario {
     public static final String DOCUMENTO = "Documento";
     public static final String DIRECCION_USUARIO = "DireccionUsuario";
     public static final String ID_MUNICIPIO = "IDMunicipio";
+    public static final String FUNCIONARIO_CAR = "FuncionarioCar";
 
     public  Usuario(){}
 

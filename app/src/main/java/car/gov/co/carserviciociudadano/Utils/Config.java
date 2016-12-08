@@ -18,7 +18,8 @@ public class Config {
     public static String API_PARQUES_ABONOS =  ServerParques + "api/reserva/abonos/";
     public static String API_PARQUES_INGRESAR_ABONO =  ServerParques + "api/reserva/ingresarAbono/";
     public static String API_PARQUES_PUBLICAR_IMAGENES =  ServerParques + "api/reserva/publicarimagenes/";
-    public static String API_PARQUES_USUARIO =  ServerParques + "api/usuario/";
+    public static String API_PARQUES_USUARIO_INSERTAR =  ServerParques + "api/usuario/insertar";
+    public static String API_PARQUES_USUARIO_ACTUALIZAR =  ServerParques + "api/usuario/actualizar";
     public static String API_PARQUES_USUARIO_LOGIN =  ServerParques + "api/usuario/login/";
     public static String API_PARQUES_MUNICIPIOS =  ServerParques + "api/catalogo/municipios/";
     public static String API_PARQUES_BANCOS =  ServerParques + "api/catalogo/bancos/";

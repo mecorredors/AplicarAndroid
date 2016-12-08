@@ -1,7 +1,11 @@
 package car.gov.co.carserviciociudadano.parques.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +24,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
@@ -27,6 +33,7 @@ import car.gov.co.carserviciociudadano.parques.dataaccess.Mantenimientos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ParametrosReserva;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Reservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ServicioReservas;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.interfaces.IMantenimiento;
 import car.gov.co.carserviciociudadano.parques.interfaces.IParametro;
 import car.gov.co.carserviciociudadano.parques.interfaces.IReserva;
@@ -37,44 +44,50 @@ import car.gov.co.carserviciociudadano.parques.model.ParametroReserva;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
 import car.gov.co.carserviciociudadano.parques.model.ServicioReserva;
+import car.gov.co.carserviciociudadano.parques.model.Usuario;
 
 public class ReservaActivity extends BaseActivity {
 
+    @BindView(R.id.txtFechaLlegada) EditText mTxtFechaLlegada;
+    @BindView(R.id.txtFechaSalida) EditText mTxtFechaSalida;
+    @BindView(R.id.btnPreReserva) Button mBtnPrereserva;
+    @BindView(R.id.lblServicio) TextView mLblServicio;
+    @BindView(R.id.lblNroNoches) TextView mLblNroNoches;
+    @BindView(R.id.lblPrecio) TextView mLblPrecio;
+    @BindView(R.id.lblSubTotal) TextView mLblSubtotal;
+    @BindView(R.id.lblImpuesto) TextView mLblImpuesto;
+    @BindView(R.id.lblFechaDesde) TextView mLblFechaDesde;
+    @BindView(R.id.lblFechaHasta) TextView mLblFechaHasta;
+    @BindView(R.id.lyCanasta) View mLyCanasta;
+    @BindView(R.id.btnBorrar) Button mBtnBorrar;
+    @BindView(R.id.lblNombreParque) TextView mLblNombreParque;
+    @BindView(R.id.calendarioFechaLlegada) CustomCalendarView mCalendarioFechaLlegada;
+    @BindView(R.id.calendarioFechaSalida) CustomCalendarView mCalendarioFechaSalida;
+    @BindView(R.id.lyDatosUsuario) View mLyDatosUsuario;
+    @BindView(R.id.btnDatosUsuario) Button mBtnDatosUsuario;
+    @BindView(R.id.bntReservar) Button mBtnReserva;
 
-    private String mNombreServicio;
-
-
-    TextView mLblNombreParque;
-    CustomCalendarView mCalendarioFechaLlegada;
-    CustomCalendarView mCalendarioFechaSalida;
+    String mNombreServicio;
     List<Mantenimiento> mLstMatenimientos = new ArrayList<>();
     List<ServicioReserva> mLstEnReservas = new ArrayList<>();
-   // List<ParametroReserva> mLstParametros = new ArrayList<>();
     Map<String, String> mapParametros = new HashMap<>();
-
-    private boolean finishLoadMatenimiento = false;
-    private boolean finishLoadEnReserva = false;
-    EditText mTxtFechaLlegada;
-    EditText mTxtFechaSalida;
-    Button mBtnPrereserva;
-    TextView mLblServicio;
-    TextView mLblNroNoches;
-    TextView mLblPrecio;
-    TextView mLblSubtotal;
-    TextView mLblImpuesto;
-    TextView mLblFechaDesde;
-    TextView mLblFechaHasta;
-    View mLyCanasta;
-    Button mBtnBorrar;
-
     ServicioReserva mServicioReserva = new ServicioReserva();
     ServicioParque mServicioParque = new ServicioParque();
+    Usuario mUsuario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserva);
+        ButterKnife.bind(this);
 
-        findViewsById();
+        mTxtFechaLlegada.setOnClickListener(onClickListener);
+        mTxtFechaSalida.setOnClickListener(onClickListener);
+        mBtnPrereserva.setOnClickListener(onClickListener);
+        mBtnBorrar.setOnClickListener(onClickListener);
+        mBtnDatosUsuario.setOnClickListener(onClickListener);
+
+        mUsuario = new Usuarios().leer();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
@@ -132,6 +145,7 @@ public class ReservaActivity extends BaseActivity {
 
     }
 
+
     private void loadCalendar(){
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
 
@@ -144,28 +158,6 @@ public class ReservaActivity extends BaseActivity {
         mCalendarioFechaSalida.refreshCalendar(currentCalendar);
     }
 
-    private  void findViewsById(){
-        mLblNombreParque = (TextView) findViewById(R.id.lblNombreParque);
-        mCalendarioFechaLlegada = (CustomCalendarView) findViewById(R.id.calendarioFechaLlegada);
-        mCalendarioFechaSalida = (CustomCalendarView) findViewById(R.id.calendarioFechaSalida);
-        mTxtFechaLlegada = (EditText) findViewById(R.id.txtFechaLlegada);
-        mTxtFechaSalida = (EditText) findViewById(R.id.txtFechaSalida);
-        mBtnPrereserva = (Button) findViewById(R.id.btnPreReserva);
-        mLblServicio = (TextView) findViewById(R.id.lblServicio);
-        mLblNroNoches = (TextView) findViewById(R.id.lblNroNoches);
-        mLblPrecio = (TextView) findViewById(R.id.lblPrecio);
-        mLblSubtotal = (TextView) findViewById(R.id.lblSubTotal);
-        mLblImpuesto = (TextView) findViewById(R.id.lblImpuesto);
-        mLblFechaDesde = (TextView) findViewById(R.id.lblFechaDesde);
-        mLblFechaHasta = (TextView) findViewById(R.id.lblFechaHasta);
-        mLyCanasta =  findViewById(R.id.lyCanasta);
-        mBtnBorrar = (Button) findViewById(R.id.btnBorrar);
-
-        mTxtFechaLlegada.setOnClickListener(onClickListener);
-        mTxtFechaSalida.setOnClickListener(onClickListener);
-        mBtnPrereserva.setOnClickListener(onClickListener);
-        mBtnBorrar.setOnClickListener(onClickListener);
-    }
 
     private class ColorDecorator implements DayDecorator {
         @Override
@@ -257,6 +249,7 @@ public class ReservaActivity extends BaseActivity {
         });
     }
 
+    public static final int REQUEST_CODE_USUARIO = 10;
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -277,6 +270,11 @@ public class ReservaActivity extends BaseActivity {
                     mLyCanasta.setVisibility(View.GONE);
                     mBtnPrereserva.setVisibility(View.VISIBLE);
                     break;
+                case R.id.btnDatosUsuario:
+                    Intent i = new Intent( ReservaActivity.this, UsuarioActivity.class);
+                    i.putExtra(UsuarioActivity.ORIGIN, UsuarioActivity.ORIGEN_RESERVA);
+                    startActivityForResult(i,REQUEST_CODE_USUARIO);
+                    break;
             }
         }
     };
@@ -285,34 +283,10 @@ public class ReservaActivity extends BaseActivity {
 
         if(validar()){
 
-            //mServicioReserva.setFechaInicialReserva(Utils.convertToDate(mTxtFechaLlegada.getText().toString()));
-           // mServicioReserva.setFechaFinalReserva(Utils.convertToDate(mTxtFechaSalida.getText().toString()));
             mServicioReserva.setIDServiciosParque(mServicioParque.getIDServiciosParque());
 
             Reservas reservas = new Reservas();
-            reservas.validarDisponibilidad(mServicioReserva,new IReserva() {
-                @Override
-                public void onSuccess(ServicioReserva servicioReserva) {
-
-                }
-
-                @Override
-                public void onSuccess(boolean res) {
-                    if (res){
-
-                        llenarCanasta();
-                        mBtnPrereserva.setVisibility(View.GONE);
-                    }else{
-                        mostrarMensajeDialog(getString(R.string.reserva_no_disponible));
-                    }
-                }
-
-                @Override
-                public void onError(ErrorApi error) {
-                    mostrarMensajeDialog("No se pudo conectar con el servidor");
-
-                }
-            });
+            reservas.validarDisponibilidad(mServicioReserva,iReserva);
         }
     }
 
@@ -364,7 +338,12 @@ public class ReservaActivity extends BaseActivity {
         int numDiasReserva = Utils.difDaysDates(fechaLlegada ,fechaSalida);
 
         //validar si es funcinario car
-        long precio = mServicioParque.getPrecioServicio();
+        long precio = 0;
+        if (mUsuario.isFuncionarioCar())
+            precio = mServicioParque.getPrecioCar();
+        else
+            precio = mServicioParque.getPrecioServicio();
+
 
         mLblServicio.setText(mNombreServicio);
         mLblPrecio.setText("Precio: " + Utils.formatoMoney(precio));
@@ -376,6 +355,62 @@ public class ReservaActivity extends BaseActivity {
         long subTotal = precio * numDiasReserva;
         mLblSubtotal.setText("Sub total: " + Utils.formatoMoney(subTotal));
 
+
+        if (mUsuario.getIdUsuario() > 0){
+            mLyDatosUsuario.setVisibility(View.GONE);
+            mBtnReserva.setVisibility(View.VISIBLE);
+        }else{
+            mLyDatosUsuario.setVisibility(View.VISIBLE);
+            mBtnReserva.setVisibility(View.GONE);
+        }
+
+        mServicioReserva.setCantidadReserva(numDiasReserva);
+        mServicioReserva.setPrecioReserva(precio);
+        mServicioReserva.setTotalValorReserva(subTotal);
+        mServicioReserva.setImpuestoReserva(mServicioParque.getImpuestoServicio());
+
     }
 
+
+    private void reservar(){
+        Reservas reservas = new Reservas();
+        mServicioReserva.setIDUsuario(mUsuario.getIdUsuario());
+        mServicioReserva.setIDParque(mServicioParque.getIDParque());
+        mServicioReserva.setEstadoReserva(0);
+
+        reservas.insert(mServicioReserva, iReserva);
+    }
+
+    IReserva iReserva = new IReserva() {
+        @Override
+        public void onSuccess(ServicioReserva servicioReserva) {
+
+        }
+
+        @Override
+        public void onSuccess(boolean res) {
+            if (res){
+                llenarCanasta();
+                mBtnPrereserva.setVisibility(View.GONE);
+
+            }else{
+                mostrarMensajeDialog(getString(R.string.reserva_no_disponible));
+            }
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+            mostrarMensajeDialog(error.getMessage());
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_USUARIO && resultCode == Activity.RESULT_OK){
+            mUsuario = new Usuarios().leer();
+            llenarCanasta();
+        }
+    }
 }

@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import car.gov.co.carserviciociudadano.AppCar;
@@ -75,5 +76,9 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+    protected void ocultarTeclado(View view){
+        InputMethodManager imm = (InputMethodManager) getSystemService(AppCar.getContext().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

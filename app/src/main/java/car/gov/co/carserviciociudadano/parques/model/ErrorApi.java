@@ -40,7 +40,7 @@ public class ErrorApi {
     // constructor objeto response apatir de un error de volley
     public ErrorApi(VolleyError vError){
         if(vError != null )
-            Log.e("Error login", vError.toString() );
+            Log.e("Error ", vError.toString() );
         if(vError!=null && vError.networkResponse != null){
             this.StatusCode=vError.networkResponse.statusCode;
 

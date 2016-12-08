@@ -23,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//        Intent i = new Intent(this,MainParques.class);
-//        startActivity(i);
-
-        Intent i = new Intent(this,UsuarioActivity.class);
+        Intent i = new Intent(this,MainParques.class);
         startActivity(i);
+
+//        Intent i = new Intent(this,UsuarioActivity.class);
+//        startActivity(i);
 
     }
 }

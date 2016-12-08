@@ -14,6 +14,17 @@
     <string name="dias_antelacion">días de antelación</string>
     <string name="reserva_no_disponible">El servicio solicitado ya se encuentra reservado ó en mantenimiento. Por favor borre el rango seleccionado y elija nuevamente</string>
     <string name="contrasena">Contraseña</string>
+    <string name="confirmar_contrasena">Confirmar contraseña</string>
+    <string name="telefono">Teléfono</string>
+    <string name="direccion">Dirección</string>
+    <string name="email_incorrecto">Ingrese un email valido</string>
+    <string name="error_telefono">El teléfono o celular no es correcto</string>
+    <string name="error_campo_obligatorio">El campo es obligatorio</string>
+    <string name="error_contrasena">Ingrese una contraseña mínimo 4 caracteres</string>
+    <string name="error_contrasena2">La contraseña no coincide con la anterior </string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="pre_reserva_crear_cuenta">Para completar la pre reserva debe iniciar sesión ó crear una cuenta de usuario</string>
+    <string name="mi_cuenta">Mi cuenta</string>
 
 
 </resources>

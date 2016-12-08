@@ -22,7 +22,7 @@ public class ServicioReserva {
     private long IDReserva;
     private int CantidadReserva;
     private int EstadoReserva;
-
+    private int IDParque;
     //datos canasta
     private int IDUsuario;
     private Date FechaInicialReserva;
@@ -53,6 +53,7 @@ public class ServicioReserva {
                 this.TotalValorReserva = element.TotalValorReserva;
                 this.PrecioReserva = element.PrecioReserva;
                 this.ImpuestoReserva = element.ImpuestoReserva;
+                this.IDParque = element.IDParque;
 
             } catch (JsonSyntaxException ex) {
                 Log.e("ServicioReserva.json", ex.toString());
@@ -159,5 +160,13 @@ public class ServicioReserva {
 
     public void setImpuestoReserva(int impuestoReserva) {
         ImpuestoReserva = impuestoReserva;
+    }
+
+    public int getIDParque() {
+        return IDParque;
+    }
+
+    public void setIDParque(int IDParque) {
+        this.IDParque = IDParque;
     }
 }

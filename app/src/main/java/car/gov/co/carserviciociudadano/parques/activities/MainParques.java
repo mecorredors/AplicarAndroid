@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.parques.activities;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -90,7 +91,10 @@ public class MainParques extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.item_mi_cuenta) {
+
+            Intent i = new Intent(this, UsuarioActivity.class);
+            startActivity(i);
             return true;
         }
 

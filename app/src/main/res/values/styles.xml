@@ -56,4 +56,19 @@
         <item name="android:textSize">@dimen/text_size_16</item>
     </style>
 
+
+    <style name="lyUsuario">
+        <item name="android:layout_marginTop">@dimen/margin_10dp</item>
+        <item name="android:layout_marginLeft">@dimen/margin_16dp</item>
+        <item name="android:layout_marginRight">@dimen/margin_16dp</item>
+    </style>
+
+    <style name="editTextUsuario">
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/secondaryText</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:imeOptions">actionNext</item>
+
+    </style>
+
 </resources>

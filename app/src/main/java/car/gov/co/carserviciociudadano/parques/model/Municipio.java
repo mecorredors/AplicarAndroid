@@ -16,6 +16,10 @@ public class Municipio {
     private int ActivoMunicipio;
     private String CodigoDane;
 
+    public Municipio(int idMunicipio,String nombre){
+        IDMunicipio = idMunicipio;
+        DetalleMunicipio = nombre;
+    }
     public  Municipio(String json) {
         if (json!= null && !json.isEmpty()) {
             try {
@@ -34,6 +38,16 @@ public class Municipio {
                 Log.e("Municipio.json", ex.toString());
             }
         }
+    }
+
+    @Override
+    public String  toString(){
+        return this.DetalleMunicipio;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return (o instanceof Municipio && getIDMunicipio() == ((Municipio) o).getIDMunicipio() );
     }
     public int getIDMunicipio() {
         return IDMunicipio;

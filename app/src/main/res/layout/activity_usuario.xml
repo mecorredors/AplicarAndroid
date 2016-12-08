@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/background"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+<LinearLayout
     android:id="@+id/activity_usuario"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +21,9 @@
     <LinearLayout android:id="@+id/lyLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible"
+        >
 
 
              <TextView
@@ -104,6 +113,165 @@
             android:layout_marginRight="@dimen/margin_16dp"/>
     </LinearLayout>
 
+    <LinearLayout android:id="@+id/lyUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CREAR UNA CUENTA DE USUARIO"
+            android:background="@color/gray2"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="@dimen/margin_10dp"
+            android:textSize="@dimen/text_size_13"
+            />
+
+
+
+        <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario">
+        <EditText
+            android:id="@+id/txtEmailUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textNoSuggestions"
+            style="@style/editTextUsuario"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtClaveUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/contrasena"
+                android:inputType="textPassword"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtClaveUsuario2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirmar_contrasena"
+                android:inputType="textPassword"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre completo"
+                android:inputType="textNoSuggestions"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtDocumento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nro. documento (C.C)"
+                android:inputType="textNoSuggestions"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/telefono"
+                android:inputType="textNoSuggestions"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtCelular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Celular"
+                android:inputType="textNoSuggestions"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario"
+            android:layout_marginBottom="@dimen/margin_10dp">
+            <EditText
+                android:id="@+id/txtDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/direccion"
+                android:inputType="textNoSuggestions"
+                style="@style/editTextUsuario"
+                android:imeOptions="actionDone"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario"
+            android:layout_marginBottom="10dp">
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spiMunicipio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               >
+
+            </android.support.v7.widget.AppCompatSpinner>
+        </FrameLayout>
+
+        <Button android:id="@+id/btnGuardar"
+            android:theme="@style/ButtonAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GUARDAR"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp"/>
+
+        </LinearLayout>
+
+
     <ProgressBar
         android:id="@+id/progressView"
         style="?android:attr/progressBarStyleLarge"
@@ -112,5 +280,6 @@
         android:layout_gravity="center_horizontal"
         android:visibility="gone" />
 
-
+</LinearLayout>
+</ScrollView>
 </LinearLayout>

@@ -25,7 +25,7 @@ public class Usuarios {
 
     public static final String TAG ="Usuarios";
 
-    public void login( String login, String clave,final IUsuario iUsuario )
+    public void login(String login, final String clave, final IUsuario iUsuario )
     {
         String url = Config.API_PARQUES_USUARIO_LOGIN + "?login="+login+"&clave="+clave;
         url = url.replace(" ", "%20");
@@ -35,7 +35,9 @@ public class Usuarios {
                     @Override
                     public void onResponse(JSONObject response)
                     {
-                        iUsuario.onSuccess(new Usuario(response.toString()));
+                        Usuario usuarioRes = new Usuario(response.toString());
+                        usuarioRes.setClaveUsuario(clave);
+                        iUsuario.onSuccess(usuarioRes);
                     }
                 },	new Response.ErrorListener()
         {
@@ -72,14 +74,16 @@ public class Usuarios {
     }
     private void request(final IUsuario iUsuario, final Usuario usuario,int requestMethod )
     {
-        String url = Config.API_PARQUES_USUARIO;
+        String url = requestMethod == Request.Method.POST ? Config.API_PARQUES_USUARIO_INSERTAR : Config.API_PARQUES_USUARIO_ACTUALIZAR;
 
         JsonObjectRequest objRequest = new JsonObjectRequest (
                 requestMethod, url,   usuario.toJSONObject() ,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        iUsuario.onSuccess(new Usuario(response.toString()));
+                        Usuario usuarioRes = new Usuario(response.toString());
+                        usuarioRes.setClaveUsuario(usuario.getClaveUsuario());
+                        iUsuario.onSuccess(usuarioRes);
                     }
                 },
                 new Response.ErrorListener() {
@@ -118,7 +122,8 @@ public class Usuarios {
         preferencesApp.putString(Usuario.CELULAR_USUARIO,usuario.getCelularUsuario());
         preferencesApp.putString(Usuario.DOCUMENTO,usuario.getDocumento());
         preferencesApp.putString(Usuario.DIRECCION_USUARIO,usuario.getDireccionUsuario());
-        preferencesApp.putInt(Usuario.ID_MUNICIPIO,usuario.getIdUsuario());
+        preferencesApp.putInt(Usuario.ID_MUNICIPIO,usuario.getIDMunicipio());
+        preferencesApp.putBoolean(Usuario.FUNCIONARIO_CAR,usuario.isFuncionarioCar());
         preferencesApp.commit();
     }
 
@@ -128,6 +133,7 @@ public class Usuarios {
         PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.READ,TAG);
         usuario.setIdUsuario(preferencesApp.getInt(Usuario.ID_USUARIO,0 ));
         usuario.setEmailUsuario(preferencesApp.getString(Usuario.EMAIL_USUARIO));
+        usuario.setLogin(preferencesApp.getString(Usuario.EMAIL_USUARIO));
         usuario.setClaveUsuario(preferencesApp.getString(Usuario.CLAVE_USUARIO));
         usuario.setNombreCompleto(preferencesApp.getString(Usuario.NOMBRE_COMPLETO));
         usuario.setTelefonoUsuario(preferencesApp.getString(Usuario.TELEFONO_USUARIO));
@@ -135,6 +141,7 @@ public class Usuarios {
         usuario.setDireccionUsuario(preferencesApp.getString(Usuario.DIRECCION_USUARIO));
         usuario.setDocumento(preferencesApp.getString(Usuario.DOCUMENTO));
         usuario.setIDMunicipio(preferencesApp.getInt(Usuario.ID_MUNICIPIO,0));
+        usuario.setFuncionarioCar(preferencesApp.getBoolean(Usuario.FUNCIONARIO_CAR,false));
 
         return usuario;
 
