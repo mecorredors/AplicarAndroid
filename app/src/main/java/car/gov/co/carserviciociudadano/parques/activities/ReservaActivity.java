@@ -65,7 +65,10 @@ public class ReservaActivity extends BaseActivity {
     @BindView(R.id.calendarioFechaSalida) CustomCalendarView mCalendarioFechaSalida;
     @BindView(R.id.lyDatosUsuario) View mLyDatosUsuario;
     @BindView(R.id.btnDatosUsuario) Button mBtnDatosUsuario;
-    @BindView(R.id.bntReservar) Button mBtnReserva;
+    @BindView(R.id.btnReservar) Button mBtnReserva;
+    @BindView(R.id.btnCerrar) Button mBtnCerrar;
+    @BindView(R.id.lyRespuestaOk) View mLyRespuestaOk;
+    @BindView(R.id.lblRespuestaOk) TextView mLblRespuestaOk;
 
     String mNombreServicio;
     List<Mantenimiento> mLstMatenimientos = new ArrayList<>();
@@ -384,7 +387,9 @@ public class ReservaActivity extends BaseActivity {
     IReserva iReserva = new IReserva() {
         @Override
         public void onSuccess(ServicioReserva servicioReserva) {
-
+            mLyCanasta.setVisibility(View.GONE);
+            mLyRespuestaOk.setVisibility(View.VISIBLE);
+            mLblRespuestaOk.setText("Reserva realizada correctamente con el numero "+servicioReserva.getIDReserva());
         }
 
         @Override

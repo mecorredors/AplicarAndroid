@@ -133,6 +133,7 @@
         card_view:cardBackgroundColor="@color/background"
         card_view:contentPadding="@dimen/margin_10dp"
         android:layout_marginTop="@dimen/margin_10dp"
+        android:visibility="gone"
         >
 
     <LinearLayout
@@ -222,7 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:text="BORRAR"/>
-        <Button android:id="@+id/bntReservar"
+        <Button android:id="@+id/btnReservar"
             android:theme="@style/ButtonAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -250,6 +251,31 @@
 
     </LinearLayout>
 </android.support.v7.widget.CardView>
+
+    <LinearLayout android:id="@+id/lyRespuestaOk"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_16dp">
+
+        <TextView android:id="@+id/lblRespuestaOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_13"
+            android:textColor="@color/secondaryText"
+            android:text="Reserva realizada"
+            android:gravity="center"
+            />
+
+        <Button android:id="@+id/btnCerrar"
+            android:theme="@style/ButtonBorderlessColored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="CERRAR"
+            android:layout_marginTop="@dimen/margin_16dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>
 </ScrollView>
