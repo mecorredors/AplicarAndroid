@@ -1,6 +1,7 @@
 package car.gov.co.carserviciociudadano.parques.adapter;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class ParquesAdapter extends RecyclerView.Adapter<ParquesAdapter.PlaceSel
 
         public void bindParque(Parque p) {
             lblTitulo.setText(p.getNombreParque());
-            lblDescripcion.setText(p.getObservacionesParque());
+            lblDescripcion.setText( p.getObservacionesParque());
             ImageLoader.getInstance().displayImage(p.getUrlArchivoParque(), imagen, options, aniList);
         }
 

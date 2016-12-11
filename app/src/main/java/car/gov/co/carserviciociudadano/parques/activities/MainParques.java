@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -23,7 +24,7 @@ import android.widget.TextView;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.fragments.ParquesFragment;
 
-public class MainParques extends AppCompatActivity {
+public class MainParques extends BaseActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -47,6 +48,9 @@ public class MainParques extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -60,8 +64,13 @@ public class MainParques extends AppCompatActivity {
 
         TextView tab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tab.setText("Parques");
-        tab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_person_24dp, 0, 0);
+        tab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_parque_24, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tab);
+
+        TextView tabReservas = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabReservas.setText("Mis reservas");
+        tabReservas.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_hotel_black_24dp, 0, 0);
+        tabLayout.getTabAt(1).setCustomView(tabReservas);
 
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -85,12 +94,13 @@ public class MainParques extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        int id = item.getItemId();
+//
+//        if(id== android.R.id.home){
+//            super.onBackPressed();
+//        }
+
         if (id == R.id.item_mi_cuenta) {
 
             Intent i = new Intent(this, UsuarioActivity.class);
@@ -165,7 +175,7 @@ public class MainParques extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
@@ -174,9 +184,9 @@ public class MainParques extends AppCompatActivity {
                 case 0:
                     return "Parques";
                 case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
+                    return "Mis reservas";
+//                case 2:
+//                    return "SECTION 3";
             }
             return null;
         }

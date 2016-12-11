@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">CARServicioCiudadano</string>
-    <string name="title_activity_main_parques">MainParques</string>
+    <string name="app_name">Servicio al ciudadano</string>
+    <string name="title_main_activity">App Servicio al ciudadano</string>
+    <string name="title_activity_main_parques">Reserva de parques</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
-    <string name="title_activity_detalle_parque">DetalleParqueActivity</string>
+    <string name="title_activity_detalle_parque">Detalle parque</string>
 
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
@@ -25,6 +26,9 @@
     <string name="cerrar_sesion">Cerrar sesión</string>
     <string name="pre_reserva_crear_cuenta">Para completar la pre reserva debe iniciar sesión ó crear una cuenta de usuario</string>
     <string name="mi_cuenta">Mi cuenta</string>
-
+    <string name="reserva_creada">La reserva ha sido creada. Reserva Nro. </string>
+    <string name="reserva_creada2">Por favor reporte el pago en la sección de usuarios en el módulo MIS RESERVAS. Una vez realizada la reserva, cuenta con 24 horas para realizar la consignación (No transferencia) en formato de recaudo por el valor total </string>
+    <string name="tramites">Trámites</string>
+    <string name="expedientes">Expedientes</string>
 
 </resources>

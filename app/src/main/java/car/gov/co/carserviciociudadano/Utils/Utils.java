@@ -126,9 +126,12 @@ public class Utils {
     }
 
     public static Calendar convertToCalendar(Date date){
+        if (date == null) return Calendar.getInstance();
+
          Calendar calendar =  Calendar.getInstance();
          calendar.setTime(date);
          return calendar;
+
     }
 
     public static String toStringFromDate(java.util.Date date) {

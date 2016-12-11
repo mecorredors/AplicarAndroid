@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +21,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Validation;
+import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Municipios;
+import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.interfaces.IMunicipio;
 import car.gov.co.carserviciociudadano.parques.interfaces.IUsuario;
@@ -64,6 +68,8 @@ public class UsuarioActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario);
         ButterKnife.bind(this);
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle!= null){
@@ -73,10 +79,15 @@ public class UsuarioActivity extends BaseActivity {
 
         loadMunicipios();
         init();
-
-
     }
 
+    @Override
+    public void onPause() {
+        AppCar.VolleyQueue().cancelAll(Usuarios.TAG);
+        AppCar.VolleyQueue().cancelAll(Municipios.TAG);
+        super.onPause();
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_usuario, menu);
@@ -86,8 +97,6 @@ public class UsuarioActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case android.R.id.home:
-                return true;
             case R.id.item_cerrar_sesion:
                 new Usuarios().guardar(new Usuario());
                 init();

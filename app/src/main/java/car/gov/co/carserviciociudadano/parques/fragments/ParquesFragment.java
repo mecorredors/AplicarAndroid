@@ -4,7 +4,6 @@ package car.gov.co.carserviciociudadano.parques.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +17,7 @@ import android.widget.ProgressBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
 import car.gov.co.carserviciociudadano.parques.adapter.ParquesAdapter;
@@ -85,6 +85,12 @@ public class ParquesFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        AppCar.VolleyQueue().cancelAll(Parques.TAG);
+        super.onPause();
+
+    }
     private void loadParques(){
         Parques parques = new Parques();
         showProgress(mProgressView,true);
@@ -100,7 +106,7 @@ public class ParquesFragment extends BaseFragment {
             @Override
             public void onError(ErrorApi error) {
                 showProgress(mProgressView,false);
-                Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_LONG)
+                Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
                         //.setActionTextColor(Color.CYAN)
                         .setActionTextColor(ContextCompat.getColor(getContext(), R.color.green) )
                         .setAction("REINTENTAR", new View.OnClickListener() {
@@ -127,6 +133,8 @@ public class ParquesFragment extends BaseFragment {
             i.putExtra(Parque.NOMBRE_PARQUE,parque.getNombreParque());
             i.putExtra(Parque.OBSERVACIONES_PARQUE,parque.getObservacionesParque());
             i.putExtra(Parque.URL_ARCHIVO_PARQUE,parque.getUrlArchivoParque());
+            i.putExtra(Parque.DETALLE_CUENTA,parque.getDetalleCuenta());
+            i.putExtra(Parque.POLITICAS_PARQUE,parque.getPoliticasParque());
             startActivity(i);
 
         }

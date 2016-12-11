@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,15 +15,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.adapter.ServiciosParqueAdapter;
 import car.gov.co.carserviciociudadano.parques.businessrules.BRServiciosParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IArchivoParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IServicioParque;
@@ -44,8 +44,8 @@ public class DetalleParqueActivity extends BaseActivity {
             .showImageOnFail(R.drawable.sin_foto)
             .build();
 
-    private int mIdParque;
-    private String mNombreParque;
+//    private int mIdParque;
+//    private String mNombreParque;
 
     ImageView mImagen;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -57,21 +57,27 @@ public class DetalleParqueActivity extends BaseActivity {
     ServiciosParqueAdapter mAdaptador;
     List<ServicioParque> mLstServiciosParque;
     ProgressBar mProgressView;
+    private Parque mParque;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_parque);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
 
         findViewsById();
 
         Bundle bundle = getIntent().getExtras();
+        mParque = new Parque();
         if(bundle != null){
-            mIdParque = bundle.getInt(Parque.ID_PARQUE);
+            mParque.setIDParque(bundle.getInt(Parque.ID_PARQUE));
             ImageLoader.getInstance().displayImage(bundle.getString(Parque.URL_ARCHIVO_PARQUE), mImagen, options);
-            mNombreParque = bundle.getString(Parque.NOMBRE_PARQUE);
-            mCollapsingToolbarLayout.setTitle(mNombreParque);
+            mParque.setNombreParque(bundle.getString(Parque.NOMBRE_PARQUE));
+            mParque.setDetalleCuenta(bundle.getString(Parque.DETALLE_CUENTA));
+            mParque.setPoliticasParque(bundle.getString(Parque.POLITICAS_PARQUE));
+            mCollapsingToolbarLayout.setTitle(mParque.getNombreParque());
             mLblObservaciones.setText(bundle.getString(Parque.OBSERVACIONES_PARQUE));
 
         }
@@ -102,6 +108,13 @@ public class DetalleParqueActivity extends BaseActivity {
 //        });
     }
 
+    @Override
+    public void onPause() {
+        AppCar.VolleyQueue().cancelAll(ArchivosParque.TAG);
+        AppCar.VolleyQueue().cancelAll(ServiciosParque.TAG);
+        super.onPause();
+
+    }
     private void findViewsById(){
         mImagen = (ImageView) findViewById(R.id.imagen);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
@@ -128,7 +141,7 @@ public class DetalleParqueActivity extends BaseActivity {
             public void onError(ErrorApi error) {
 
             }
-        },mIdParque);
+        },mParque.getIDParque());
     }
 
     private void loadServiciosParque(){
@@ -157,7 +170,7 @@ public class DetalleParqueActivity extends BaseActivity {
                         })
                         .show();
             }
-        },mIdParque);
+        },mParque.getIDParque());
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -167,8 +180,10 @@ public class DetalleParqueActivity extends BaseActivity {
             ServicioParque servicio = mLstServiciosParque.get(position);
 
             Intent i = new Intent(getApplicationContext(), ReservaActivity.class);
-            i.putExtra(Parque.ID_PARQUE,mIdParque);
-            i.putExtra(Parque.NOMBRE_PARQUE,mNombreParque);
+            i.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
+            i.putExtra(Parque.NOMBRE_PARQUE,mParque.getNombreParque());
+            i.putExtra(Parque.DETALLE_CUENTA,mParque.getDetalleCuenta());
+            i.putExtra(Parque.POLITICAS_PARQUE,mParque.getPoliticasParque());
             i.putExtra(ServicioParque.ID_SERVICIOS_PARQUE,servicio.getIDServiciosParque());
             i.putExtra(ServicioParque.NOMBRE_SERVICIO,servicio.getNombreServicio());
             i.putExtra(ServicioParque.PRECIO_SERVICIO,servicio.getPrecioServicio());
