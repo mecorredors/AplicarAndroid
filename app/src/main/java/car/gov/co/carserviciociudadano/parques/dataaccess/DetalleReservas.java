@@ -28,7 +28,7 @@ public class DetalleReservas {
 
     public static final String TAG ="DetalleReserva";
 
-    public void list(final IDetalleReserva iDetalleReserva, String login, long idReserva )
+    public void list( String login, long idReserva,final IDetalleReserva iDetalleReserva )
     {
         String url = Config.API_PARQUES_RESERVA_DETALLE + "?login=" + login +"&idReserva="+idReserva;
         url = url.replace(" ", "%20");

@@ -474,7 +474,7 @@ public class ReservaActivity extends BaseActivity {
         @Override
         public void onError(ErrorApi error) {
            if (mProgressDialog != null) mProgressDialog.hide();
-            mostrarMensajeDialog(error.getMessage());
+            mostrarMensajeDialog(error.getMessage() + " error "+error.getCode() + " error +");
         }
     };
 

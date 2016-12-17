@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.parques.fragments.MisReservasFragment;
 import car.gov.co.carserviciociudadano.parques.fragments.ParquesFragment;
 
 public class MainParques extends BaseActivity {
@@ -163,6 +164,8 @@ public class MainParques extends BaseActivity {
             switch (position) {
                 case 0:
                    return ParquesFragment.newInstance();
+                case 1:
+                    return MisReservasFragment.newInstance();
 
                 default:
                     return PlaceholderFragment.newInstance(position + 1);
