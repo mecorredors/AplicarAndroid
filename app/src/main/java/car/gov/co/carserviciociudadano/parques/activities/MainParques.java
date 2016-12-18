@@ -21,6 +21,9 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.fragments.MisReservasFragment;
 import car.gov.co.carserviciociudadano.parques.fragments.ParquesFragment;
@@ -152,46 +155,35 @@ public class MainParques extends BaseActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
+        List<Fragment> mFragments;
+        String [] mTitulo = {"Parques","Mis reservas"};
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            mFragments = new ArrayList<Fragment>();
+            mFragments.add(ParquesFragment.newInstance());
+            mFragments.add(MisReservasFragment.newInstance());
         }
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position) {
-                case 0:
-                   return ParquesFragment.newInstance();
-                case 1:
-                    return MisReservasFragment.newInstance();
-
-                default:
-                    return PlaceholderFragment.newInstance(position + 1);
-
-
-            }
-
+           return mFragments.get(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Parques";
-                case 1:
-                    return "Mis reservas";
-//                case 2:
-//                    return "SECTION 3";
-            }
-            return null;
+           return  mTitulo[position];
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mSectionsPagerAdapter.getItem(1).onActivityResult(requestCode,resultCode,data);
     }
 }

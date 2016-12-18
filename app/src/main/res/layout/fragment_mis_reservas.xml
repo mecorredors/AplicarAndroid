@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="top"
     android:background="@color/background"
     tools:context="car.gov.co.carserviciociudadano.parques.fragments.MisReservasFragment">
 
-<TextView
+<TextView android:id="@+id/lblHeader"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textColor="@color/secondaryText"
@@ -17,9 +17,15 @@
     android:layout_marginTop="@dimen/margin_16dp"
     android:layout_marginRight="@dimen/margin_16dp"
     android:layout_marginLeft="@dimen/margin_16dp"
-    android:text=" listado de las reservas realizadas (Debe presentar el tiquete de la reserva al llegar al parque)"
+    android:text="@string/header_mis_reservas"
     />
 
+    <Button android:id="@+id/btnConsultar"
+        android:theme="@style/ButtonBorderlessColored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Consutar"
+        android:layout_gravity="center_horizontal"/>
 
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"

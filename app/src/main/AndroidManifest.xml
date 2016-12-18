@@ -12,9 +12,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_main_activity">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_main_activity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,8 +31,10 @@
             android:label="@string/title_activity_detalle_parque"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".parques.activities.ReservaActivity" />
-        <activity android:name=".parques.activities.UsuarioActivity"
-            android:windowSoftInputMode="stateHidden" ></activity>
+        <activity
+            android:name=".parques.activities.UsuarioActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".parques.activities.DetalleReservaActivity"></activity>
     </application>
 
 </manifest>

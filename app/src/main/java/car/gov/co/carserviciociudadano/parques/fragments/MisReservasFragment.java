@@ -11,14 +11,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
+import car.gov.co.carserviciociudadano.parques.activities.DetalleReservaActivity;
+import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
+import car.gov.co.carserviciociudadano.parques.activities.UsuarioActivity;
 import car.gov.co.carserviciociudadano.parques.adapter.MisReservasAdapter;
 import car.gov.co.carserviciociudadano.parques.adapter.ParquesAdapter;
 import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
@@ -33,6 +42,9 @@ import car.gov.co.carserviciociudadano.parques.model.Usuario;
 
 
 public class MisReservasFragment extends BaseFragment {
+
+    @BindView(R.id.lblHeader)   TextView mLblHeader;
+    @BindView(R.id.btnConsultar)   Button mBtnConsultar;
 
     private RecyclerView mRecyclerView;
     MisReservasAdapter mAdaptador;
@@ -58,6 +70,8 @@ public class MisReservasFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_mis_reservas, container, false);
+        ButterKnife.bind(this, view);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -75,8 +89,12 @@ public class MisReservasFragment extends BaseFragment {
         mUsuario = usuarios.leer();
         if (mUsuario.getIdUsuario() > 0)
            loadDetalleReservas();
-        else
-            mostrarMensaje("Aún no tienes reservas");
+        else{
+            mLblHeader.setText("Aun no tiene reservas, Ingrese con su usuario para consultar y realizar reservas ");
+            mBtnConsultar.setVisibility(View.VISIBLE);
+            mBtnConsultar.setText("INGRESAR");
+        }
+
 
         return view;
     }
@@ -99,20 +117,21 @@ public class MisReservasFragment extends BaseFragment {
                 mLstDetalleReservas.clear();
                 mLstDetalleReservas.addAll(lista);
                 mAdaptador.notifyDataSetChanged();
+                mLblHeader.setText(getString(R.string.header_mis_reservas));
+                mBtnConsultar.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ErrorApi error) {
                 showProgress(mProgressView,false);
-                Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
-                        .setActionTextColor(ContextCompat.getColor(getContext(), R.color.green) )
-                        .setAction("REINTENTAR", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                loadDetalleReservas();
-                            }
-                        })
-                        .show();
+                mBtnConsultar.setVisibility(View.VISIBLE);
+                if (error.getStatusCode() == 404){
+                    mLblHeader.setText(getString(R.string.header_sin_reservas));
+
+                }else{
+                    mLblHeader.setText(error.getMessage());
+                    mBtnConsultar.setText("CONSULTAR");
+                }
             }
         });
 
@@ -126,10 +145,30 @@ public class MisReservasFragment extends BaseFragment {
             int position = mRecyclerView.getChildAdapterPosition(v);
             DetalleReserva item = mLstDetalleReservas.get(position);
 
-            Intent i = new Intent(getActivity(), DetalleParqueActivity.class);
-//            i.putExtra(Parque.ID_PARQUE,item.getIDParque());
+            IntentHelper.addObjectForKey(item,DetalleReservas.TAG);
+            Intent i = new Intent(getActivity(), DetalleReservaActivity.class);
             startActivity(i);
 
         }
     };
+
+    @OnClick(R.id.btnConsultar) void onConsultar() {
+
+       if (mUsuario.getIdUsuario() > 0 ) {
+           loadDetalleReservas();
+       }else{
+           Intent i = new Intent(getActivity(), UsuarioActivity.class);
+           i.putExtra(UsuarioActivity.ORIGIN, UsuarioActivity.ORIGEN_RESERVA);
+           startActivityForResult(i,0);
+       }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mUsuario = new Usuarios().leer();
+        loadDetalleReservas();
+
+    }
 }

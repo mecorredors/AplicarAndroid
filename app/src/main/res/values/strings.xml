@@ -30,5 +30,8 @@
     <string name="reserva_creada2">Por favor reporte el pago en la sección de usuarios en el módulo MIS RESERVAS. Una vez realizada la reserva, cuenta con 24 horas para realizar la consignación (No transferencia) en formato de recaudo por el valor total </string>
     <string name="tramites">Trámites</string>
     <string name="expedientes">Expedientes</string>
+    <string name="error_500">Servicio no disponible </string>
+    <string name="header_sin_reservas">Aun no has realizado ninguna reserva</string>
+    <string name="header_mis_reservas">listado de las reservas realizadas (Debe presentar el tiquete de la reserva al llegar al parque)</string>
 
 </resources>
