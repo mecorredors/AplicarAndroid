@@ -33,5 +33,10 @@
     <string name="error_500">Servicio no disponible </string>
     <string name="header_sin_reservas">Aun no has realizado ninguna reserva</string>
     <string name="header_mis_reservas">listado de las reservas realizadas (Debe presentar el tiquete de la reserva al llegar al parque)</string>
+    <string name="enviar_consignacion">Enviar consignación</string>
+    <string name="valor">Valor</string>
+    <string name="nro_consignacion">Nro consignación</string>
+    <string name="seleccionar_comprobante">Seleccionar comprobante</string>
+    <string name="fecha_consignacion">Fecha consignación</string>
 
 </resources>

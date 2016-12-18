@@ -15,5 +15,217 @@
         android:layout_height="wrap_content"
         layout="@layout/item_mis_reservas"></include>
 
+    <TextView android:id="@+id/lblServicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/primaryText"
+        android:text="Servicio"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/lyDetalleReserva"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="Nro de reserva "
+            />
+
+        <TextView android:id="@+id/lblNroReserva"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="0"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/lyDetalleReserva"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="Nro de noches "
+            />
+
+        <TextView android:id="@+id/lblNroNoches"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="0"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/lyDetalleReserva"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="Precio por noche "
+            />
+
+        <TextView android:id="@+id/lblPrecio"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="0"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/lyDetalleReserva"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="Impuesto "
+            />
+
+        <TextView android:id="@+id/lblImpuesto"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="0"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/lyDetalleReserva"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="Desde "
+            />
+
+        <TextView android:id="@+id/lblFechaDesde"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="0"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/lyDetalleReserva"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="Hasta "
+            />
+
+        <TextView android:id="@+id/lblFechaHasta"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/text_size_13"
+            android:text="0"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dividerColor"
+        android:layout_marginTop="@dimen/margin_16dp"
+      ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/lyDetalleReserva"
+        android:gravity="center_horizontal"
+        >
+
+
+        <Button android:id="@+id/btnDescargaTiquete"
+            android:theme="@style/ButtonAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descarga tiquete"
+            android:visibility="visible"/>
+
+        <Button android:id="@+id/btnEnviarConsignacion"
+            android:theme="@style/ButtonAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enviar_consignacion"
+            android:visibility="visible"/>
+
+        <Button android:id="@+id/btnCancelarReserva"
+            android:theme="@style/ButtonBorderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancelar Reserva"/>
+    </LinearLayout>
+
 
 </LinearLayout>

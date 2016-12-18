@@ -30,6 +30,9 @@ public class ServicioReserva {
     private long TotalValorReserva;
     private long PrecioReserva;
     private int ImpuestoReserva;
+    private String ClaveUsuario;
+    private String Login;
+
 
     public ServicioReserva(){}
 
@@ -54,6 +57,9 @@ public class ServicioReserva {
                 this.PrecioReserva = element.PrecioReserva;
                 this.ImpuestoReserva = element.ImpuestoReserva;
                 this.IDParque = element.IDParque;
+                this.Login = element.Login;
+                this.ClaveUsuario = element.ClaveUsuario;
+
 
             } catch (JsonSyntaxException ex) {
                 Log.e("ServicioReserva.json", ex.toString());
@@ -168,5 +174,21 @@ public class ServicioReserva {
 
     public void setIDParque(int IDParque) {
         this.IDParque = IDParque;
+    }
+
+    public String getClaveUsuario() {
+        return ClaveUsuario;
+    }
+
+    public void setClaveUsuario(String claveUsuario) {
+        ClaveUsuario = claveUsuario;
+    }
+
+    public String getLogin() {
+        return Login;
+    }
+
+    public void setLogin(String login) {
+        Login = login;
     }
 }

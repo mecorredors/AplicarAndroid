@@ -72,7 +72,7 @@ public class Reservas {
         AppCar.VolleyQueue().add(objRequest);
     }
 
-    public void cancelarReserva(final IReserva iReserva, final ServicioReserva servicioReserva )
+    public void cancelarReserva(final ServicioReserva servicioReserva, final IReserva iReserva )
     {
         String url = Config.API_PARQUES_CANCELAR_RESERVA;
 

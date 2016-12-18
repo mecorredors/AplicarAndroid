@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="car.gov.co.carserviciociudadano.parques.activities.AbonoActivity"
+    >
+<LinearLayout
+    android:id="@+id/activity_abono"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/background"
+    android:orientation="vertical"
+    >
+
+    <TextView android:id="@+id/lblTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ENVIAR CONSIGNACIÓN"
+        android:textColor="@color/secondaryText"
+        android:textSize="@dimen/text_size_16"
+        android:paddingLeft="@dimen/margin_14dp"
+        android:paddingRight="@dimen/margin_16dp"
+        android:paddingTop="@dimen/margin_4dp"
+        android:paddingBottom="@dimen/margin_4dp"
+        android:background="@color/gray2"
+        />
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyControl">
+        <EditText
+            android:id="@+id/txtFechaConsignacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fecha_consignacion"
+            android:inputType="textNoSuggestions"
+            style="@style/editText"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyControl">
+        <EditText
+            android:id="@+id/txtValor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/valor"
+            android:inputType="textNoSuggestions"
+            style="@style/editText"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyControl"
+        android:layout_marginBottom="10dp">
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spiBanco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </android.support.v7.widget.AppCompatSpinner>
+    </FrameLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyControl">
+        <EditText
+            android:id="@+id/txtNroConsignacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nro_consignacion"
+            android:inputType="textNoSuggestions"
+            style="@style/editText"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyControl">
+        <EditText
+            android:id="@+id/txtObservaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nro_consignacion"
+            android:inputType="textNoSuggestions"
+            style="@style/editText"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyControl">
+        <EditText
+            android:id="@+id/txtArchivo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/seleccionar_comprobante"
+            android:inputType="textNoSuggestions"
+            style="@style/editText"
+            android:focusable="false"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button android:id="@+id/btnGuardar"
+        android:theme="@style/ButtonAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enviar_consignacion"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"/>
+
+</LinearLayout>
+</ScrollView>

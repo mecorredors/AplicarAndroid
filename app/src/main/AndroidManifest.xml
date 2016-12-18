@@ -34,7 +34,8 @@
         <activity
             android:name=".parques.activities.UsuarioActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".parques.activities.DetalleReservaActivity"></activity>
+        <activity android:name=".parques.activities.DetalleReservaActivity" />
+        <activity android:name=".parques.activities.AbonoActivity"></activity>
     </application>
 
 </manifest>
