@@ -1,7 +1,10 @@
 package car.gov.co.carserviciociudadano.parques.activities;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +39,7 @@ public class DetalleReservaActivity extends BaseActivity {
     @BindView(R.id.lblImpuesto)  TextView mLblImpuesto;
     @BindView(R.id.lblFechaDesde)  TextView mLblFechaDesde;
     @BindView(R.id.lblFechaHasta)  TextView mLblFechaHasta;
+    @BindView(R.id.lblNroReserva)  TextView mLblNroReserva;
     @BindView(R.id.btnCancelarReserva)  Button mBtnCancelarReserva;
     @BindView(R.id.btnDescargaTiquete)  Button mBtnDescargaTiquete;
     @BindView(R.id.btnEnviarConsignacion)  Button mBtnEnviarConsignacion;
@@ -43,6 +47,7 @@ public class DetalleReservaActivity extends BaseActivity {
 
 
     private DetalleReserva mDetalleReserva;
+    ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +70,13 @@ public class DetalleReservaActivity extends BaseActivity {
         mLblNroNoches.setText(String.valueOf(mDetalleReserva.getCantidadReserva()));
         mLblImpuesto.setText(String.valueOf(mDetalleReserva.getImpuestoReserva()));
         mLblPrecio.setText(Utils.formatoMoney(mDetalleReserva.getPrecioReserva()));
+        mLblNroReserva.setText(String.valueOf(mDetalleReserva.getIDReserva()));
 
         configurarControles();
 
     }
     private void configurarControles(){
-
+        mLblEstado.setText(mDetalleReserva.getEstadoReserva() +" "+ mDetalleReserva.getEstadoNombre());
         if (mDetalleReserva.getEstadoReserva() == 0){
             mBtnCancelarReserva.setVisibility(View.VISIBLE);
             mBtnDescargaTiquete.setVisibility(View.GONE);
@@ -94,8 +100,34 @@ public class DetalleReservaActivity extends BaseActivity {
     }
 
     @OnClick(R.id.btnCancelarReserva) void onCancelarReserva() {
-       cancelarReserva();
+        cancelarReservaDialog();
     }
+
+
+
+    private void cancelarReservaDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetalleReservaActivity.this);
+
+        builder.setMessage("¿Desea cancelar la reserva?");
+
+        builder.setPositiveButton("Cancelar Reserva", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                cancelarReserva();
+            }
+        });
+
+        builder.setNegativeButton("Cerrar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
 
     private void cancelarReserva(){
         Usuario usuario = new Usuarios().leer();
@@ -105,10 +137,11 @@ public class DetalleReservaActivity extends BaseActivity {
         servicioReserva.setIDReserva(mDetalleReserva.getIDReserva());
         servicioReserva.setLogin(usuario.getLogin());
         servicioReserva.setClaveUsuario(usuario.getClaveUsuario());
-
+        mostrarProgressDialog();
         reservas.cancelarReserva(servicioReserva, new IReserva() {
             @Override
             public void onSuccess(ServicioReserva servicioReserva) {
+                if (mProgressDialog!=null) mProgressDialog.dismiss();
                 mDetalleReserva.setEstadoReserva(3);
                 mDetalleReserva.setEstadoNombre("Anulada");
                 configurarControles();
@@ -122,9 +155,20 @@ public class DetalleReservaActivity extends BaseActivity {
 
             @Override
             public void onError(ErrorApi error) {
+                if (mProgressDialog!=null) mProgressDialog.dismiss();
                 mostrarMensaje(error.getMessage(),mActivity_detalle_reserva);
             }
         });
+    }
+
+    private void mostrarProgressDialog(){
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setMessage("Espere...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setMax(1);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.show();
     }
 
 }
