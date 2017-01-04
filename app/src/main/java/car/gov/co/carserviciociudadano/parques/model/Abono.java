@@ -30,6 +30,9 @@ public class Abono {
     private String NroConsignacion;
     private String ObservacionesAbono;
 
+    public Abono(){
+    }
+
     public  Abono(String json) {
         if (json!= null && !json.isEmpty()) {
             try {

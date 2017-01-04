@@ -38,5 +38,6 @@
     <string name="nro_consignacion">Nro consignación</string>
     <string name="seleccionar_comprobante">Seleccionar comprobante</string>
     <string name="fecha_consignacion">Fecha consignación</string>
+    <string name="observaciones">Observaciones</string>
 
 </resources>

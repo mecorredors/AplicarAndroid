@@ -38,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/fecha_consignacion"
+            android:focusable="false"
             android:inputType="textNoSuggestions"
             style="@style/editText"
             />
@@ -52,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/valor"
-            android:inputType="textNoSuggestions"
+            android:inputType="number"
             style="@style/editText"
             />
     </android.support.design.widget.TextInputLayout>
@@ -92,7 +93,7 @@
             android:id="@+id/txtObservaciones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/nro_consignacion"
+            android:hint="@string/observaciones"
             android:inputType="textNoSuggestions"
             style="@style/editText"
             />

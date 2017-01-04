@@ -95,15 +95,13 @@ public class DetalleReservaActivity extends BaseActivity {
 
     @OnClick(R.id.btnEnviarConsignacion) void onEnviarConsignacion() {
         Intent i = new Intent(this,AbonoActivity.class);
-        IntentHelper.addObjectForKey(mDetalleReserva,AbonoActivity.TAG);
+        i.putExtra(DetalleReserva.ID_RESERVA,mDetalleReserva.getIDReserva());
         startActivityForResult(i,0);
     }
 
     @OnClick(R.id.btnCancelarReserva) void onCancelarReserva() {
         cancelarReservaDialog();
     }
-
-
 
     private void cancelarReservaDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(DetalleReservaActivity.this);
@@ -163,11 +161,9 @@ public class DetalleReservaActivity extends BaseActivity {
 
     private void mostrarProgressDialog(){
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setMessage("Espere...");
         mProgressDialog.setCancelable(false);
-        mProgressDialog.setMax(1);
-        mProgressDialog.setProgress(0);
         mProgressDialog.show();
     }
 

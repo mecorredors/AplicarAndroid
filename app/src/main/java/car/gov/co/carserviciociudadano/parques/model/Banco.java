@@ -14,6 +14,10 @@ public class Banco {
     private int IDBanco;
     private String DetalleBanco;
 
+    public Banco(int idBanco, String detalleBanco){
+        this.IDBanco = idBanco;
+        this.DetalleBanco = detalleBanco;
+    }
     public  Banco(String json) {
         if (json!= null && !json.isEmpty()) {
             try {
@@ -45,5 +49,15 @@ public class Banco {
 
     public void setDetalleBanco(String detalleBanco) {
         DetalleBanco = detalleBanco;
+    }
+
+    @Override
+    public String  toString(){
+        return this.DetalleBanco;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return (o instanceof Municipio && getIDBanco() == ((Banco) o).getIDBanco() );
     }
 }

@@ -8,6 +8,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.nostra13.universalimageloader.utils.L;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,7 +94,7 @@ public class Abonos {
     }
 
 
-    public void insert(final IAbono iAbono, final Abono abono )
+    public void insert(final Abono abono,final IAbono iAbono )
     {
         String url = Config.API_PARQUES_INGRESAR_ABONO;
 
@@ -211,11 +213,12 @@ public class Abonos {
                     StringBuilder sb = new StringBuilder();
                     String line;
                     while ((line = br.readLine()) != null) {
-                        sb.append(line+"\n");
+                        sb.append(line);
                     }
                     br.close();
-                    abono.setComprobanteAbono(sb.toString());
-                    //  Media m=new Media(sb.toString());
+                    String name = sb.toString().replace("\"","");
+                    Log.d("imagen subida ",name);
+                    abono.setComprobanteAbono(name);
 
                     return serverResponseCode;
 

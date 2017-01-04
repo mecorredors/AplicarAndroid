@@ -26,6 +26,8 @@ public class DetalleReserva {
     private String NombreServicio;
     private String NombreParque;
 
+    public static final String ID_RESERVA = "IDReserva";
+
     public  DetalleReserva(String json) {
         if (json!= null && !json.isEmpty()) {
             try {
