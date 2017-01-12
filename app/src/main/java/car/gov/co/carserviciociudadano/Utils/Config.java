@@ -6,8 +6,8 @@ package car.gov.co.carserviciociudadano.Utils;
 
 public class Config {
 
-    public static String ServerParques = "http://169.254.153.207/parques/";    //local
-  //  public static String ServerParques = "http://192.168.1.53/parques/";    //pruebas car
+   // public static String ServerParques = "http://172.19.195.179/parques/";    //local
+    public static String ServerParques = "http://192.168.0.13/parques/";    //pruebas car
 
     public static String API_PARQUES_PARQUES =  ServerParques + "api/parque/parques/";
     public static String API_PARQUES_ARCHIVOS =  ServerParques + "api/parque/archivos/";

@@ -36,9 +36,11 @@
         <activity
             android:name=".parques.activities.UsuarioActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".parques.activities.DetalleReservaActivity" />
+        <activity android:name=".parques.activities.DetalleReservaActivity"
+            android:label="@string/title_detalle_reserva"/>
         <activity android:name=".parques.activities.AbonoActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:label="@string/enviar_consignacion"></activity>
     </application>
 
 </manifest>

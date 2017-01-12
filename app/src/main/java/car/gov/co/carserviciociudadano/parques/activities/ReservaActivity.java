@@ -34,6 +34,7 @@ import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Mantenimientos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ParametrosReserva;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Reservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ServicioReservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
@@ -75,7 +76,6 @@ public class ReservaActivity extends BaseActivity {
     @BindView(R.id.lblRespuestaOk) TextView mLblRespuestaOk;
     @BindView(R.id.lblNroCuenta) TextView mLblNroCuenta;
 
-    String mNombreServicio;
     List<Mantenimiento> mLstMatenimientos = new ArrayList<>();
     List<ServicioReserva> mLstEnReservas = new ArrayList<>();
     Map<String, String> mapParametros = new HashMap<>();
@@ -103,24 +103,9 @@ public class ReservaActivity extends BaseActivity {
 
         mUsuario = new Usuarios().leer();
 
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
-
-            mNombreServicio = bundle.getString(ServicioParque.NOMBRE_SERVICIO,"");
-            mLblNombreParque.setText(bundle.getString(Parque.NOMBRE_PARQUE,"")+" "+ mNombreServicio);
-            mParque.setDetalleCuenta(bundle.getString(Parque.DETALLE_CUENTA,""));
-            mParque.setPoliticasParque(bundle.getString(Parque.POLITICAS_PARQUE,""));
-
-            mServicioParque.setIDServiciosParque(bundle.getInt(ServicioParque.ID_SERVICIOS_PARQUE));
-            mServicioParque.setImpuestoServicio(bundle.getInt(ServicioParque.IMPUESTO_SERVICIO));
-            mServicioParque.setPrecioServicio(bundle.getLong(ServicioParque.PRECIO_SERVICIO));
-            mServicioParque.setPrecioCar(bundle.getLong(ServicioParque.PRECIO_CAR));
-            mServicioParque.setActivoServicio(bundle.getInt(ServicioParque.ACTIVO_SERVICIO));
-            mServicioParque.setIDParque(bundle.getInt(Parque.ID_PARQUE));
-
-        }
-
-        mLblRespuestaOk.setText(Html.fromHtml(reservaRealizadaHTML(4545)));
+        mParque = (Parque) IntentHelper.getObjectForKey(Parques.TAG);
+        mServicioParque = (ServicioParque) IntentHelper.getObjectForKey(ServiciosParque.TAG);
+        mLblNombreParque.setText(mParque.getNombreParque() +" "+ mServicioParque.getNombreServicio());
 
         loadDiasMantenimiento();
         loadDiasEnReserva();
@@ -399,7 +384,7 @@ public class ReservaActivity extends BaseActivity {
             precio = mServicioParque.getPrecioServicio();
 
 
-        mLblServicio.setText(mNombreServicio);
+        mLblServicio.setText(mServicioParque.getNombreServicio());
         mLblPrecio.setText("Precio: " + Utils.formatoMoney(precio));
         mLblImpuesto.setText("Impuesto: " + String.valueOf(mServicioParque.getImpuestoServicio() ));
         mLblFechaDesde.setText("Desde: " + Utils.toStringLargeFromDate(mServicioReserva.getFechaInicialReserva()));
@@ -452,7 +437,7 @@ public class ReservaActivity extends BaseActivity {
     IReserva iReserva = new IReserva() {
         @Override
         public void onSuccess(ServicioReserva servicioReserva) {
-            if (mProgressDialog != null) mProgressDialog.hide();
+            if (mProgressDialog != null) mProgressDialog.dismiss();
             mLyCanasta.setVisibility(View.GONE);
             mLyRespuestaOk.setVisibility(View.VISIBLE);
             mLblRespuestaOk.setText(Html.fromHtml(reservaRealizadaHTML(servicioReserva.getIDReserva())));
@@ -461,7 +446,7 @@ public class ReservaActivity extends BaseActivity {
 
         @Override
         public void onSuccess(boolean res) {
-            if (mProgressDialog != null) mProgressDialog.hide();
+            if (mProgressDialog != null) mProgressDialog.dismiss();
             if (res){
                 llenarCanasta();
                 mBtnPrereserva.setVisibility(View.GONE);
@@ -473,7 +458,7 @@ public class ReservaActivity extends BaseActivity {
 
         @Override
         public void onError(ErrorApi error) {
-           if (mProgressDialog != null) mProgressDialog.hide();
+           if (mProgressDialog != null) mProgressDialog.dismiss();
             mostrarMensajeDialog(error.getMessage() + " error "+error.getCode() + " error +");
         }
     };

@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.parques.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -24,11 +25,13 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.adapter.ServiciosParqueAdapter;
 import car.gov.co.carserviciociudadano.parques.businessrules.BRServiciosParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
+import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IArchivoParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IServicioParque;
 import car.gov.co.carserviciociudadano.parques.model.ArchivoParque;
+import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
@@ -69,18 +72,11 @@ public class DetalleParqueActivity extends BaseActivity {
 
         findViewsById();
 
-        Bundle bundle = getIntent().getExtras();
         mParque = new Parque();
-        if(bundle != null){
-            mParque.setIDParque(bundle.getInt(Parque.ID_PARQUE));
-            ImageLoader.getInstance().displayImage(bundle.getString(Parque.URL_ARCHIVO_PARQUE), mImagen, options);
-            mParque.setNombreParque(bundle.getString(Parque.NOMBRE_PARQUE));
-            mParque.setDetalleCuenta(bundle.getString(Parque.DETALLE_CUENTA));
-            mParque.setPoliticasParque(bundle.getString(Parque.POLITICAS_PARQUE));
-            mCollapsingToolbarLayout.setTitle(mParque.getNombreParque());
-            mLblObservaciones.setText(bundle.getString(Parque.OBSERVACIONES_PARQUE));
-
-        }
+        mParque = (Parque) IntentHelper.getObjectForKey(Parques.TAG);
+        ImageLoader.getInstance().displayImage(mParque.getUrlArchivoParque(), mImagen, options);
+        mCollapsingToolbarLayout.setTitle(mParque.getNombreParque());
+        mLblObservaciones.setText(mParque.getObservacionesParque());
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -113,6 +109,14 @@ public class DetalleParqueActivity extends BaseActivity {
         AppCar.VolleyQueue().cancelAll(ArchivosParque.TAG);
         AppCar.VolleyQueue().cancelAll(ServiciosParque.TAG);
         super.onPause();
+
+    }
+    @Override
+    public void onBackPressed(){
+
+        Intent intent = new Intent();
+        setResult(Activity.RESULT_OK, intent);
+        finish();
 
     }
     private void findViewsById(){
@@ -180,18 +184,20 @@ public class DetalleParqueActivity extends BaseActivity {
             ServicioParque servicio = mLstServiciosParque.get(position);
 
             Intent i = new Intent(getApplicationContext(), ReservaActivity.class);
-            i.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
-            i.putExtra(Parque.NOMBRE_PARQUE,mParque.getNombreParque());
-            i.putExtra(Parque.DETALLE_CUENTA,mParque.getDetalleCuenta());
-            i.putExtra(Parque.POLITICAS_PARQUE,mParque.getPoliticasParque());
-            i.putExtra(ServicioParque.ID_SERVICIOS_PARQUE,servicio.getIDServiciosParque());
-            i.putExtra(ServicioParque.NOMBRE_SERVICIO,servicio.getNombreServicio());
-            i.putExtra(ServicioParque.PRECIO_SERVICIO,servicio.getPrecioServicio());
-            i.putExtra(ServicioParque.IMPUESTO_SERVICIO,servicio.getImpuestoServicio());
-            i.putExtra(ServicioParque.DESCUENTO_SERVICIO,servicio.getDescuentoServicio());
-            i.putExtra(ServicioParque.ACTIVO_SERVICIO,servicio.getActivoServicio());
-            i.putExtra(ServicioParque.PRECIO_CAR,servicio.getPrecioCar());
+//            i.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
+//            i.putExtra(Parque.NOMBRE_PARQUE,mParque.getNombreParque());
+//            i.putExtra(Parque.DETALLE_CUENTA,mParque.getDetalleCuenta());
+//            i.putExtra(Parque.POLITICAS_PARQUE,mParque.getPoliticasParque());
+//            i.putExtra(ServicioParque.ID_SERVICIOS_PARQUE,servicio.getIDServiciosParque());
+//            i.putExtra(ServicioParque.NOMBRE_SERVICIO,servicio.getNombreServicio());
+//            i.putExtra(ServicioParque.PRECIO_SERVICIO,servicio.getPrecioServicio());
+//            i.putExtra(ServicioParque.IMPUESTO_SERVICIO,servicio.getImpuestoServicio());
+//            i.putExtra(ServicioParque.DESCUENTO_SERVICIO,servicio.getDescuentoServicio());
+//            i.putExtra(ServicioParque.ACTIVO_SERVICIO,servicio.getActivoServicio());
+//            i.putExtra(ServicioParque.PRECIO_CAR,servicio.getPrecioCar());
 
+            IntentHelper.addObjectForKey(servicio,ServiciosParque.TAG);
+            IntentHelper.addObjectForKey(mParque,Parques.TAG);
 
             startActivity(i);
         }

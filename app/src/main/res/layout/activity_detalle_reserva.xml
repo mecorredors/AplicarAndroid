@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<LinearLayout
     android:id="@+id/activity_detalle_reserva"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -228,4 +232,33 @@
     </LinearLayout>
 
 
+    <ProgressBar
+        android:id="@+id/progressView"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
+    <TextView android:id="@+id/lblAbonos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ABONOS"
+        android:textColor="@color/primaryText"
+        android:textSize="@dimen/text_size_13"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        />
+
+
 </LinearLayout>
+</ScrollView>

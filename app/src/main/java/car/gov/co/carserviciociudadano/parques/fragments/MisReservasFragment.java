@@ -87,14 +87,8 @@ public class MisReservasFragment extends BaseFragment {
 
         Usuarios usuarios = new Usuarios();
         mUsuario = usuarios.leer();
-        if (mUsuario.getIdUsuario() > 0)
-           loadDetalleReservas();
-        else{
-            mLblHeader.setText("Aun no tiene reservas, Ingrese con su usuario para consultar y realizar reservas ");
-            mBtnConsultar.setVisibility(View.VISIBLE);
-            mBtnConsultar.setText("INGRESAR");
-        }
 
+        loadDetalleReservas();
 
         return view;
     }
@@ -105,37 +99,45 @@ public class MisReservasFragment extends BaseFragment {
         super.onPause();
 
     }
-    private void loadDetalleReservas(){
+    private void loadDetalleReservas() {
 
-        DetalleReservas detalleReservas = new DetalleReservas();
-        showProgress(mProgressView,true);
+        if (mUsuario.getIdUsuario() > 0){
 
-        detalleReservas.list(mUsuario.getLogin(),0, new IDetalleReserva() {
-            @Override
-            public void onSuccess(List<DetalleReserva> lista) {
-                showProgress(mProgressView,false);
-                mLstDetalleReservas.clear();
-                mLstDetalleReservas.addAll(lista);
-                mAdaptador.notifyDataSetChanged();
-                mLblHeader.setText(getString(R.string.header_mis_reservas));
-                mBtnConsultar.setVisibility(View.GONE);
-            }
+            DetalleReservas detalleReservas = new DetalleReservas();
+            showProgress(mProgressView, true);
 
-            @Override
-            public void onError(ErrorApi error) {
-                showProgress(mProgressView,false);
-                mBtnConsultar.setVisibility(View.VISIBLE);
-                if (error.getStatusCode() == 404){
-                    mLblHeader.setText(getString(R.string.header_sin_reservas));
-
-                }else{
-                    mLblHeader.setText(error.getMessage());
-                    mBtnConsultar.setText("CONSULTAR");
+            detalleReservas.list(mUsuario.getLogin(), 0, new IDetalleReserva() {
+                @Override
+                public void onSuccess(List<DetalleReserva> lista) {
+                    showProgress(mProgressView, false);
+                    mLstDetalleReservas.clear();
+                    mLstDetalleReservas.addAll(lista);
+                    mAdaptador.notifyDataSetChanged();
+                    mLblHeader.setText(getString(R.string.header_mis_reservas));
+                    mBtnConsultar.setVisibility(View.GONE);
                 }
-            }
-        });
 
-
+                @Override
+                public void onError(ErrorApi error) {
+                    showProgress(mProgressView, false);
+                    mBtnConsultar.setVisibility(View.VISIBLE);
+                    if (error.getStatusCode() == 404) {
+                        mLblHeader.setText(getString(R.string.header_sin_reservas));
+                        mLstDetalleReservas.clear();
+                        mAdaptador.notifyDataSetChanged();
+                    } else {
+                        mLblHeader.setText(error.getMessage());
+                        mBtnConsultar.setText("CONSULTAR");
+                    }
+                }
+            });
+        } else{
+            mLblHeader.setText("Aun no tiene reservas, Ingrese con su usuario para consultar y realizar reservas ");
+            mBtnConsultar.setVisibility(View.VISIBLE);
+            mBtnConsultar.setText("INGRESAR");
+            mLstDetalleReservas.clear();
+            mAdaptador.notifyDataSetChanged();
+        }
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -158,7 +160,7 @@ public class MisReservasFragment extends BaseFragment {
            loadDetalleReservas();
        }else{
            Intent i = new Intent(getActivity(), UsuarioActivity.class);
-           i.putExtra(UsuarioActivity.ORIGIN, UsuarioActivity.ORIGEN_RESERVA);
+           i.putExtra(UsuarioActivity.ORIGIN, UsuarioActivity.ORIGEN_MANIN_PARQUES);
            startActivityForResult(i,0);
        }
     }

@@ -108,7 +108,8 @@ public class MainParques extends BaseActivity {
         if (id == R.id.item_mi_cuenta) {
 
             Intent i = new Intent(this, UsuarioActivity.class);
-            startActivity(i);
+            i.putExtra(UsuarioActivity.ORIGIN, UsuarioActivity.ORIGEN_MANIN_PARQUES);
+            startActivityForResult(i,0);
             return true;
         }
 

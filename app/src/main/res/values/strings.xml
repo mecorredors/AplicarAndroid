@@ -6,6 +6,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
     <string name="title_activity_detalle_parque">Detalle parque</string>
+    <string name="title_detalle_reserva">Detalle reserva</string>
 
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>

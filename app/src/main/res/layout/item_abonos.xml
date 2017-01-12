@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyResumen"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardUseCompatPadding="false"
+    card_view:cardElevation="0dp"
+    card_view:cardCornerRadius="0dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardBackgroundColor="@color/background"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        >
+
+
+
+         <!--<View-->
+             <!--android:layout_width="match_parent"-->
+             <!--android:layout_height="1dp"-->
+             <!--android:background="@color/dividerColor"-->
+             <!--android:layout_marginBottom="@dimen/margin_10dp"></View>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:orientation="horizontal">
+
+                <TextView android:id="@+id/lblFecha"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_10dp"
+                    android:text="Fecha "
+                    android:textSize="@dimen/text_size_13"
+                    android:textColor="@color/secondaryText"
+                    android:layout_gravity="center_vertical|right"
+                    />
+
+                <TextView android:id="@+id/lblValor"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_10dp"
+                    android:text="0 "
+                    android:textSize="@dimen/text_size_13"
+                    android:textColor="@color/secondaryText"
+                    android:layout_gravity="center_vertical|right"
+                    />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/lblBanco"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:text="Banco "
+                android:textSize="@dimen/text_size_13"
+                android:textColor="@color/secondaryText"
+                android:layout_gravity="center_vertical|right"
+                />
+
+            <TextView android:id="@+id/lblNroConsignacion"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:text="00"
+                android:textSize="@dimen/text_size_13"
+                android:textColor="@color/secondaryText"
+                android:layout_gravity="center_vertical|right"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

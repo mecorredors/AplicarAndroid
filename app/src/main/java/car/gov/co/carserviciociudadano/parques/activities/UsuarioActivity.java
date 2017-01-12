@@ -63,6 +63,7 @@ public class UsuarioActivity extends BaseActivity {
     public static final String ORIGIN = "origin";
     private int mOrigin = 0;
     public static final int ORIGEN_RESERVA = 10;
+    public static final int ORIGEN_MANIN_PARQUES = 11;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +89,19 @@ public class UsuarioActivity extends BaseActivity {
         super.onPause();
 
     }
+
+    @Override
+    public void onBackPressed(){
+
+        if (mOrigin == ORIGEN_MANIN_PARQUES) {
+            Intent intent = new Intent();
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }else{
+            super.onBackPressed();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_usuario, menu);
@@ -132,7 +146,7 @@ public class UsuarioActivity extends BaseActivity {
             mTxtNombre.setText(mUsuario.getNombreCompleto());
             mTxtDocumento.setText(mUsuario.getDocumento());
             mTxtDireccion.setText(mUsuario.getDireccionUsuario());
-
+            mSpiMunicipio.setSelection(adapterMunicipios.getPosition(new Municipio(mUsuario.getIDMunicipio(),"")));
         }
     }
 
@@ -292,7 +306,7 @@ public class UsuarioActivity extends BaseActivity {
         @Override
         public void onSuccess(Usuario usuario) {
             if (mUsuario.getIdUsuario() == 0){
-                if(progressDialog!=null)progressDialog.hide();
+                if(progressDialog!=null)progressDialog.dismiss();
                 mUsuario.setIdUsuario(usuario.getIdUsuario());
                 mostrarMensaje("Usuario creado correctamente");
 
@@ -304,7 +318,7 @@ public class UsuarioActivity extends BaseActivity {
                     finish();
                 }
             }else{
-                if(progressDialog!=null)progressDialog.hide();
+                if(progressDialog!=null)progressDialog.dismiss();
                 mostrarMensaje("Datos del usuario fueron modificados ");
 
             }
@@ -314,7 +328,7 @@ public class UsuarioActivity extends BaseActivity {
 
         @Override
         public void onError(ErrorApi error) {
-            if(progressDialog!=null)progressDialog.hide();
+            if(progressDialog!=null)progressDialog.dismiss();
             if (error.getStatusCode()== 300 && error.getCode() == ERROR_CONRASENA){
                 new Usuarios().guardar(new Usuario());
                 mostrarMensajeDialog(error.getMessage());

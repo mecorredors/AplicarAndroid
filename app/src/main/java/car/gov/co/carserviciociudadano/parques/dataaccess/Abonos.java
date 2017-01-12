@@ -40,7 +40,7 @@ public class Abonos {
 
     public static final String TAG ="Abonos";
 
-    public void list(final IAbono iAbono, long idReserva )
+    public void list(long idReserva, final IAbono iAbono)
     {
         String url = Config.API_PARQUES_ABONOS + "?idReserva="+ idReserva;
         url = url.replace(" ", "%20");

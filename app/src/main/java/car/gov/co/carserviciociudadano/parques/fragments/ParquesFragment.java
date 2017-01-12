@@ -20,7 +20,9 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
+import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 import car.gov.co.carserviciociudadano.parques.adapter.ParquesAdapter;
+import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
@@ -129,13 +131,16 @@ public class ParquesFragment extends BaseFragment {
             Parque parque = mLstParques.get(position);
 
             Intent i = new Intent(getActivity(), DetalleParqueActivity.class);
-            i.putExtra(Parque.ID_PARQUE,parque.getIDParque());
-            i.putExtra(Parque.NOMBRE_PARQUE,parque.getNombreParque());
-            i.putExtra(Parque.OBSERVACIONES_PARQUE,parque.getObservacionesParque());
-            i.putExtra(Parque.URL_ARCHIVO_PARQUE,parque.getUrlArchivoParque());
-            i.putExtra(Parque.DETALLE_CUENTA,parque.getDetalleCuenta());
-            i.putExtra(Parque.POLITICAS_PARQUE,parque.getPoliticasParque());
-            startActivity(i);
+            IntentHelper.addObjectForKey(parque, Parques.TAG);
+
+
+//            i.putExtra(Parque.ID_PARQUE,parque.getIDParque());
+//            i.putExtra(Parque.NOMBRE_PARQUE,parque.getNombreParque());
+//            i.putExtra(Parque.OBSERVACIONES_PARQUE,parque.getObservacionesParque());
+//            i.putExtra(Parque.URL_ARCHIVO_PARQUE,parque.getUrlArchivoParque());
+//            i.putExtra(Parque.DETALLE_CUENTA,parque.getDetalleCuenta());
+//            i.putExtra(Parque.POLITICAS_PARQUE,parque.getPoliticasParque());
+            startActivityForResult(i,0);
 
         }
     };

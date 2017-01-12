@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.parques.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,20 +8,32 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Utils;
+import car.gov.co.carserviciociudadano.parques.adapter.AbonosAdapter;
+import car.gov.co.carserviciociudadano.parques.adapter.MisReservasAdapter;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Reservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
+import car.gov.co.carserviciociudadano.parques.interfaces.IAbono;
 import car.gov.co.carserviciociudadano.parques.interfaces.IReserva;
+import car.gov.co.carserviciociudadano.parques.model.Abono;
 import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.ServicioReserva;
@@ -44,10 +57,15 @@ public class DetalleReservaActivity extends BaseActivity {
     @BindView(R.id.btnDescargaTiquete)  Button mBtnDescargaTiquete;
     @BindView(R.id.btnEnviarConsignacion)  Button mBtnEnviarConsignacion;
     @BindView(R.id.activity_detalle_reserva)  View mActivity_detalle_reserva;
+    @BindView(R.id.recycler_view)  RecyclerView mRecyclerView;
+    @BindView(R.id.progressView)  ProgressBar mProgressView;
+    @BindView(R.id.lblAbonos)  TextView mLblAbonos;
 
 
     private DetalleReserva mDetalleReserva;
     ProgressDialog mProgressDialog;
+    AbonosAdapter mAdaptador;
+    List<Abono> mLstAbonos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +92,17 @@ public class DetalleReservaActivity extends BaseActivity {
 
         configurarControles();
 
+
+        mRecyclerView.setHasFixedSize(true);
+
+        mLstAbonos= new ArrayList<>();
+        mAdaptador = new AbonosAdapter(mLstAbonos);
+
+        mRecyclerView.setAdapter(mAdaptador);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        loadAbonos();
+
     }
     private void configurarControles(){
         mLblEstado.setText(mDetalleReserva.getEstadoReserva() +" "+ mDetalleReserva.getEstadoNombre());
@@ -91,6 +120,33 @@ public class DetalleReservaActivity extends BaseActivity {
             }
         }
 
+    }
+
+    private void  loadAbonos(){
+        Abonos abonos = new Abonos();
+        showProgress(mProgressView,true);
+        abonos.list(mDetalleReserva.getIDReserva(), new IAbono() {
+            @Override
+            public void onSuccess(List<Abono> lstAbono) {
+                showProgress(mProgressView,false);
+                mLstAbonos.clear();
+                mLstAbonos.addAll(lstAbono);
+                mAdaptador.notifyDataSetChanged();
+                mLblAbonos.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSuccess() {
+                showProgress(mProgressView,false);
+
+
+            }
+
+            @Override
+            public void onError(ErrorApi error) {
+                showProgress(mProgressView,false);
+            }
+        });
     }
 
     @OnClick(R.id.btnEnviarConsignacion) void onEnviarConsignacion() {
@@ -167,4 +223,13 @@ public class DetalleReservaActivity extends BaseActivity {
         mProgressDialog.show();
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK){
+            loadAbonos();
+        }
+    }
 }
