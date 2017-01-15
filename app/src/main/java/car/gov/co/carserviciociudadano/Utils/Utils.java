@@ -80,6 +80,17 @@ public class Utils {
         String pass="";
         try {
             String autorization = Security.mAutorization;
+            pass=Security.Decrypt("ApiParquesKey", autorization);
+        }catch(Exception ex){
+
+        }
+        return pass;
+    }
+
+    public static String getAuthorizationSIDCAR(){
+        String pass="";
+        try {
+            String autorization = Security.mAutorizationSIDCAR;
             pass=Security.Decrypt("ApiSidCarKey", autorization);
         }catch(Exception ex){
 

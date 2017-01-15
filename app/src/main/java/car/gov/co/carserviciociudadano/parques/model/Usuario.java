@@ -35,6 +35,7 @@ public class Usuario {
     private int AplicaRango;
     private String Documento;
     private boolean FuncionarioCar;
+    private boolean loginSIDCAR;
 
 
     public static final String ID_USUARIO = "IdUsuario";
@@ -47,6 +48,7 @@ public class Usuario {
     public static final String DIRECCION_USUARIO = "DireccionUsuario";
     public static final String ID_MUNICIPIO = "IDMunicipio";
     public static final String FUNCIONARIO_CAR = "FuncionarioCar";
+    public static final String LOGIN_SIDCAR = "LoginSIDCAR";
 
     public  Usuario(){}
 
@@ -247,5 +249,13 @@ public class Usuario {
 
     public void setFuncionarioCar(boolean funcionarioCar) {
         FuncionarioCar = funcionarioCar;
+    }
+
+    public boolean isLoginSIDCAR() {
+        return loginSIDCAR;
+    }
+
+    public void setLoginSIDCAR(boolean loginSIDCAR) {
+        this.loginSIDCAR = loginSIDCAR;
     }
 }

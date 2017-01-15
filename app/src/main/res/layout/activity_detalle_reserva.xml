@@ -224,6 +224,47 @@
             android:text="@string/enviar_consignacion"
             android:visibility="visible"/>
 
+        <LinearLayout android:id="@+id/lyPagoElectronico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginBottom="@dimen/margin_10dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"></View>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/text_size_14"
+                android:text="@string/pago_electronico"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin_10dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/pago_electronico_des"/>
+
+             <ImageButton android:id="@+id/btnPagoElectronico"
+                 android:layout_width="120dp"
+                 android:layout_height="60dp"
+                 android:src="@mipmap/boton_avvillas"
+                 />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"></View>
+        </LinearLayout>
+
         <Button android:id="@+id/btnCancelarReserva"
             android:theme="@style/ButtonBorderless"
             android:layout_width="match_parent"

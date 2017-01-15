@@ -7,6 +7,7 @@
 
     <string name="title_activity_detalle_parque">Detalle parque</string>
     <string name="title_detalle_reserva">Detalle reserva</string>
+    <string name="title_pago_electronico">Pago electrónico</string>
 
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
@@ -38,7 +39,12 @@
     <string name="valor">Valor</string>
     <string name="nro_consignacion">Nro consignación</string>
     <string name="seleccionar_comprobante">Seleccionar comprobante</string>
+    <string name="capturar_comprobante">Capturar comprobante</string>
     <string name="fecha_consignacion">Fecha consignación</string>
     <string name="observaciones">Observaciones</string>
+    <string name="error_seleccionar_comprobante">Seleccione la imagen del comprobante, o capture una foto del comprobante </string>
+    <string name="login_funcionario_car">usted es un funcionario o contratista de la CAR, ingrese con las credenciales de SIDCAR para obtener descuento en la reserva </string>
+    <string name="pago_electronico">Pago por transferencia electrónica </string>
+    <string name="pago_electronico_des">Para poder realizar el abono debes ingresa al siguiente link del banco Av Villas y selecciona en intención de pago la opción: 108 - APROVECHAMIENTO POR PARQUES </string>
 
 </resources>

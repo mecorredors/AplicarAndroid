@@ -14,7 +14,7 @@ public class Security {
 
     private final static String FILE_NAME="Authorization.txt";
     public static String mAutorization = "2ACFC3421C25AAF2DEE68437E344CFE3971C7FB704C86BE9116C7256D44272172859115496232E7CB4354BA14D8A1698";
-
+    public static String mAutorizationSIDCAR = "2ACFC3421C25AAF2DEE68437E344CFE3971C7FB704C86BE9116C7256D44272172859115496232E7CB4354BA14D8A1698";
     public static String Encrypt(String secretKey, String data) throws Exception {
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");

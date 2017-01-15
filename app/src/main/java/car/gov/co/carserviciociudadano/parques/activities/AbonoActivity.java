@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -23,11 +25,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -38,6 +44,7 @@ import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.FechaDialogo;
+import car.gov.co.carserviciociudadano.Utils.ImageUtil;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.Utils.Validation;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;
@@ -55,15 +62,17 @@ import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
 
 public class AbonoActivity extends BaseActivity {
 
-
-
     @BindView(R.id.spiBanco)   Spinner mSpiBanco;
     @BindView(R.id.activity_abono)  View mActivity_abono;
     @BindView(R.id.txtFechaConsignacion) EditText mTxtFechaConsignacion;
-    @BindView(R.id.txtArchivo)     EditText mTxtArchivo;
     @BindView(R.id.txtValor)     EditText mTxtValor;
     @BindView(R.id.txtNroConsignacion)     EditText mTxtNroConsignacion;
     @BindView(R.id.txtObservaciones)     EditText mTxtObservaciones;
+    @BindView(R.id.btnCapturarComprobante)   Button mBtnCapturarComprobante;
+    @BindView(R.id.btnSeleccionarComprobante)   Button mBtnSeleccionarComprobante;
+    @BindView(R.id.lyImgComprobante)   View mLyImgComprobante;
+    @BindView(R.id.imgComprobante)    ImageView mImgComprobante;
+    @BindView(R.id.btnBorrarImagen)    ImageButton mBtnBorrarImagen;
 
     List<Banco> mLstBancos = new ArrayList<>();
     ArrayAdapter<Banco> adapterBancos;
@@ -71,15 +80,19 @@ public class AbonoActivity extends BaseActivity {
     public static final  String TAG = "Abono";
     public final static int GALLERY_INTENT_CALLED = 1;
     public final static int GALLERY_KITKAT_INTENT_CALLED = 2;
+    public final static int REQUEST_CODE_PHOTO = 3;
 
     public  static final  int MY_PERMISSION_READ_EXTERNAL_STORAGE = 11;
-
+    public  final static int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     Abono mAbono;
     ProgressDialog mProgressDialog;
 
     SubirArchivoAsincrona mSubirArchivoAsincrono;
 
     private long mIdReserva;
+
+    private String mSelectedImagePath = "";
+    private  Uri mOutputFileUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,76 +128,37 @@ public class AbonoActivity extends BaseActivity {
         fechaDialogo.listerFecha=listenerFecha;
         fechaDialogo.show(getSupportFragmentManager(), getResources().getString(R.string.fecha_consignacion));
     }
-    @OnClick(R.id.txtArchivo) void onArchivo() {
+
+    @OnClick(R.id.btnSeleccionarComprobante) void onSeleccionarComprobante() {
         if (Build.VERSION.SDK_INT <19){
             Intent intent = new Intent();
-            intent.setType("image/jpeg");
+            intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.seleccionar_comprobante)),GALLERY_INTENT_CALLED);
         } else {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("image/jpeg");
+            intent.setType("image/*");
             startActivityForResult(intent, GALLERY_KITKAT_INTENT_CALLED);
         }
+    }
+
+    @OnClick(R.id.btnBorrarImagen) void onBorrarImagen() {
+        mSelectedImagePath = "";
+        mLyImgComprobante.setVisibility(View.GONE);
+        mBtnCapturarComprobante.setVisibility(View.VISIBLE);
+        mBtnSeleccionarComprobante.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.btnCapturarComprobante) void onCapturarComprobante(){
+       tomarFoto();
     }
 
     @OnClick(R.id.btnGuardar) void onGuardar() {
        guardar();
     }
 
-    @SuppressLint("NewApi")
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALLERY_KITKAT_INTENT_CALLED && resultCode == RESULT_OK){
-
-            Uri originalUri = data.getData();
-
-          //  final int takeFlags = data.getFlags()  &   (Intent.FLAG_GRANT_READ_URI_PERMISSION    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            final int takeFlags =    (Intent.FLAG_GRANT_READ_URI_PERMISSION    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-            // Check for the freshest data.
-      //     getContentResolver().takePersistableUriPermission(originalUri, takeFlags);
-
-            getContentResolver().takePersistableUriPermission(originalUri,takeFlags);
-
-    /* now extract ID from Uri path using getLastPathSegment() and then split with ":"
-    then call get Uri to for Internal storage or External storage for media I have used getUri()
-    */
-
-            String id = originalUri.getLastPathSegment().split(":")[1];
-            final String[] imageColumns = {MediaStore.Images.Media.DATA };
-            final String imageOrderBy = null;
-
-            Uri uri = getUri();
-            String selectedImagePath = "path";
-
-            Cursor imageCursor = managedQuery(uri, imageColumns,
-                    MediaStore.Images.Media._ID + "="+id, null, imageOrderBy);
-
-            if (imageCursor.moveToFirst()) {
-                selectedImagePath = imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            }
-
-            mTxtArchivo.setText(selectedImagePath);
-
-        }else if(resultCode == RESULT_OK) {
-            Uri originalUri = data.getData();
-            String[] projection = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(originalUri, projection, null, null, null);
-            cursor.moveToFirst();
-
-            Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
-
-            int columnIndex = cursor.getColumnIndex(projection[0]);
-            String picturePath = cursor.getString(columnIndex); // returns null
-            cursor.close();
-
-            mTxtArchivo.setText(picturePath);
-        }
-    }
 
 
 
@@ -247,7 +221,6 @@ public class AbonoActivity extends BaseActivity {
         res = !Validation.IsEmpty(mTxtValor) && res;
         res = !Validation.IsEmpty(mTxtNroConsignacion) && res;
         res = !Validation.IsEmpty(mTxtObservaciones) && res;
-        res = !Validation.IsEmpty(mTxtArchivo) && res;
         res = !Validation.IsEmpty(mSpiBanco) && res;
 
         long valor = Utils.convertLong(mTxtValor.getText().toString());
@@ -255,6 +228,11 @@ public class AbonoActivity extends BaseActivity {
             mTxtValor.setError(AppCar.getContext().getResources().getString(R.string.error_campo_obligatorio));
             res = false;
         }
+
+        if ( mSelectedImagePath == null || mSelectedImagePath.isEmpty()){
+            mostrarMensaje(getString(R.string.error_seleccionar_comprobante),mActivity_abono);
+        }
+
         return res;
     }
 
@@ -265,7 +243,7 @@ public class AbonoActivity extends BaseActivity {
         mAbono.setValorAbono(Utils.convertLong(mTxtValor.getText().toString()));
         mAbono.setNroConsignacion(mTxtNroConsignacion.getText().toString());
         mAbono.setObservacionesAbono(mTxtObservaciones.getText().toString());
-        mAbono.setComprobanteAbono(mTxtArchivo.getText().toString());
+        mAbono.setComprobanteAbono(mSelectedImagePath);
         Banco banco = (Banco) mSpiBanco.getSelectedItem();
         if (banco != null)
             mAbono.setBanco(banco.getDetalleBanco());
@@ -275,7 +253,7 @@ public class AbonoActivity extends BaseActivity {
         mTxtValor.setText("");
         mTxtNroConsignacion.setText("");
         mTxtObservaciones.setText("");
-        mTxtArchivo.setText("");
+        mSelectedImagePath = "";
     }
 
     private void guardar(){
@@ -383,5 +361,158 @@ public class AbonoActivity extends BaseActivity {
 
 
 
+    private void tomarFoto() {
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(this,  android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            }
+        }else {
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+
+                if (CreateFile()) {
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
+                    startActivityForResult(takePictureIntent, REQUEST_CODE_PHOTO);
+                }
+            }
+        }
+    }
+
+    private boolean CreateFile(){
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state)){
+            mostrarMensaje("Error externa storag no encontrado");
+            return false;
+        }
+        if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            mostrarMensaje("Error externa storag solo lectura");
+            return false;
+        }
+
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/ServicioCiudanoCAR/";
+        File newdir = new File(dir);
+        newdir.mkdirs();
+
+        String imageFileName = "Imagen_" + Utils.getFechaActual() + "_.jpg";
+        String file = dir+imageFileName;
+      //  mImagen.setNombre(imageFileName);
+
+        File newfile = new File(file);
+        try {
+            newfile.createNewFile();
+        } catch (IOException e) {
+            return false;
+        }
+
+        mOutputFileUri = Uri.fromFile(newfile);
+        mSelectedImagePath = mOutputFileUri.getPath();
+        return true;
+    }
+
+
+    @SuppressLint("NewApi")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GALLERY_KITKAT_INTENT_CALLED && resultCode == RESULT_OK){
+
+            Uri originalUri = data.getData();
+
+            //  final int takeFlags = data.getFlags()  &   (Intent.FLAG_GRANT_READ_URI_PERMISSION    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            final int takeFlags =    (Intent.FLAG_GRANT_READ_URI_PERMISSION    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            // Check for the freshest data.
+            //     getContentResolver().takePersistableUriPermission(originalUri, takeFlags);
+
+            getContentResolver().takePersistableUriPermission(originalUri,takeFlags);
+
+    /* now extract ID from Uri path using getLastPathSegment() and then split with ":"
+    then call get Uri to for Internal storage or External storage for media I have used getUri()
+    */
+
+            String id = originalUri.getLastPathSegment().split(":")[1];
+            final String[] imageColumns = {MediaStore.Images.Media.DATA };
+            final String imageOrderBy = null;
+
+            Uri uri = getUri();
+            // String selectedImagePath = "path";
+
+            Cursor imageCursor = managedQuery(uri, imageColumns,
+                    MediaStore.Images.Media._ID + "="+id, null, imageOrderBy);
+
+            if (imageCursor.moveToFirst()) {
+                mSelectedImagePath = imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+
+
+            //  mTxtArchivo.setText(selectedImagePath);
+
+        }else if(requestCode == GALLERY_INTENT_CALLED && resultCode == RESULT_OK) {
+            Uri originalUri = data.getData();
+            String[] projection = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(originalUri, projection, null, null, null);
+            cursor.moveToFirst();
+
+            Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
+
+            int columnIndex = cursor.getColumnIndex(projection[0]);
+            mSelectedImagePath = cursor.getString(columnIndex); // returns null
+            cursor.close();
+
+            // mTxtArchivo.setText(picturePath);
+        }else  if (requestCode == REQUEST_CODE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+
+                String newPath = ImageUtil.scaledBitmap(mSelectedImagePath);
+                if (!newPath.isEmpty()) {
+                    File file = new File(mSelectedImagePath);
+                    file.delete();
+                    mSelectedImagePath = newPath;
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                File file = new File(mSelectedImagePath);
+                file.delete();
+                mSelectedImagePath = "";
+            } else {
+                mSelectedImagePath = "";
+            }
+        }
+
+
+
+        if (resultCode == RESULT_OK && (requestCode == GALLERY_INTENT_CALLED  || requestCode == GALLERY_KITKAT_INTENT_CALLED || requestCode == REQUEST_CODE_PHOTO ) ){
+            if (mSelectedImagePath != null && !mSelectedImagePath.isEmpty()) {
+                mLyImgComprobante.setVisibility(View.VISIBLE);
+                mBtnCapturarComprobante.setVisibility(View.GONE);
+                mBtnSeleccionarComprobante.setVisibility(View.GONE);
+                Bitmap bitmap = BitmapFactory.decodeFile(mSelectedImagePath);
+                mImgComprobante.setImageBitmap(bitmap);
+            }
+        }
+
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0   && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    tomarFoto();
+                } else {
+                    mostrarMensaje("Permiso denegado para guardar archivos");
+                }
+                return;
+            }
+        }
+    }
 
 }

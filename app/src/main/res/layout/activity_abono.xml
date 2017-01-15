@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nro_consignacion"
-            android:inputType="textNoSuggestions"
+            android:inputType="number"
             style="@style/editText"
             />
     </android.support.design.widget.TextInputLayout>
@@ -99,20 +99,46 @@
             />
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
+
+    <Button android:id="@+id/btnSeleccionarComprobante"
+        android:theme="@style/ButtonWhite"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/lyControl">
-        <EditText
-            android:id="@+id/txtArchivo"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:text="@string/seleccionar_comprobante"/>
+
+    <Button android:id="@+id/btnCapturarComprobante"
+        android:theme="@style/ButtonWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:drawableLeft="@drawable/ic_camera_alt_blue_24dp"
+        android:drawablePadding="@dimen/margin_4dp"
+        android:text="@string/capturar_comprobante"/>
+
+    <FrameLayout android:id="@+id/lyImgComprobante"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_6dp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" >
+        <ImageView android:id="@+id/imgComprobante"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/seleccionar_comprobante"
-            android:inputType="textNoSuggestions"
-            style="@style/editText"
-            android:focusable="false"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sin_foto"
             />
-    </android.support.design.widget.TextInputLayout>
+
+            <ImageButton android:id="@+id/btnBorrarImagen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_clear_blue_24dp"
+                android:layout_gravity="right|top"
+                android:background="@color/background"
+                />
+
+    </FrameLayout>
 
     <Button android:id="@+id/btnGuardar"
         android:theme="@style/ButtonAccent"

@@ -1,11 +1,15 @@
 package car.gov.co.carserviciociudadano.parques.dataaccess;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +87,7 @@ public class Usuarios {
                     public void onResponse(JSONObject response) {
                         Usuario usuarioRes = new Usuario(response.toString());
                         usuarioRes.setClaveUsuario(usuario.getClaveUsuario());
+                        usuarioRes.setLoginSIDCAR(usuario.isLoginSIDCAR());
                         iUsuario.onSuccess(usuarioRes);
                     }
                 },
@@ -124,6 +129,7 @@ public class Usuarios {
         preferencesApp.putString(Usuario.DIRECCION_USUARIO,usuario.getDireccionUsuario());
         preferencesApp.putInt(Usuario.ID_MUNICIPIO,usuario.getIDMunicipio());
         preferencesApp.putBoolean(Usuario.FUNCIONARIO_CAR,usuario.isFuncionarioCar());
+        preferencesApp.putBoolean(Usuario.LOGIN_SIDCAR,usuario.isLoginSIDCAR());
         preferencesApp.commit();
     }
 
@@ -142,9 +148,49 @@ public class Usuarios {
         usuario.setDocumento(preferencesApp.getString(Usuario.DOCUMENTO));
         usuario.setIDMunicipio(preferencesApp.getInt(Usuario.ID_MUNICIPIO,0));
         usuario.setFuncionarioCar(preferencesApp.getBoolean(Usuario.FUNCIONARIO_CAR,false));
+        usuario.setLoginSIDCAR(preferencesApp.getBoolean(Usuario.LOGIN_SIDCAR,false));
 
         return usuario;
 
+    }
+
+
+    public void loginSIDCAR( String login, String password, final IUsuario iUsuario)
+    {
+        String url = Config.API_VISITA_TENICA_LOGIN + "?login="+login+"&password="+password;
+        url = url.replace(" ", "%20");
+        Log.d("Url login", url );
+        StringRequest objRequest = new  StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        iUsuario.onSuccessSIDCAR(response.equals("true"));
+                    }
+                },	new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                iUsuario.onError(new ErrorApi(error));
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationSIDCAR());
+                return headerMap;
+            }
+        };
+
+        objRequest.setTag(TAG);
+        objRequest.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        10000,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppCar.VolleyQueue().add(objRequest);
     }
 
 }

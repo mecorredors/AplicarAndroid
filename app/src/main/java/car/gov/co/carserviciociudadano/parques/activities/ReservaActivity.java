@@ -395,12 +395,13 @@ public class ReservaActivity extends BaseActivity {
         mLblSubtotal.setText("Sub total: " + Utils.formatoMoney(subTotal));
 
 
-        if (mUsuario.getIdUsuario() > 0){
-            mLyDatosUsuario.setVisibility(View.GONE);
-            mBtnReserva.setVisibility(View.VISIBLE);
-        }else{
+
+        if (mUsuario.getIdUsuario() == 0 || ( mUsuario.getIdUsuario() > 0 && mUsuario.isFuncionarioCar() && !mUsuario.isLoginSIDCAR())){
             mLyDatosUsuario.setVisibility(View.VISIBLE);
             mBtnReserva.setVisibility(View.GONE);
+        }else{
+            mLyDatosUsuario.setVisibility(View.GONE);
+            mBtnReserva.setVisibility(View.VISIBLE);
         }
 
         mServicioReserva.setCantidadReserva(numDiasReserva);

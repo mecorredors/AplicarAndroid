@@ -11,5 +11,6 @@ import car.gov.co.carserviciociudadano.parques.model.Usuario;
 
 public interface IUsuario {
     void onSuccess(Usuario usuario);
+    void onSuccessSIDCAR(boolean value);
     void onError(ErrorApi error);
 }

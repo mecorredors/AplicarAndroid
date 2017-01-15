@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -60,6 +61,8 @@ public class DetalleReservaActivity extends BaseActivity {
     @BindView(R.id.recycler_view)  RecyclerView mRecyclerView;
     @BindView(R.id.progressView)  ProgressBar mProgressView;
     @BindView(R.id.lblAbonos)  TextView mLblAbonos;
+    @BindView(R.id.lyPagoElectronico)  View mLyPagoElectronico;
+    @BindView(R.id.btnPagoElectronico)    ImageButton mBtnPagoElectronico;
 
 
     private DetalleReserva mDetalleReserva;
@@ -110,11 +113,12 @@ public class DetalleReservaActivity extends BaseActivity {
             mBtnCancelarReserva.setVisibility(View.VISIBLE);
             mBtnDescargaTiquete.setVisibility(View.GONE);
             mBtnEnviarConsignacion.setVisibility(View.VISIBLE);
+            mLyPagoElectronico.setVisibility(View.VISIBLE);
         }else{
             mBtnCancelarReserva.setVisibility(View.GONE);
             mBtnDescargaTiquete.setVisibility(View.GONE);
             mBtnEnviarConsignacion.setVisibility(View.GONE);
-
+            mLyPagoElectronico.setVisibility(View.GONE);
             if (mDetalleReserva.getEstadoReserva() == 1){
                 mBtnDescargaTiquete.setVisibility(View.VISIBLE);
             }
@@ -153,6 +157,11 @@ public class DetalleReservaActivity extends BaseActivity {
         Intent i = new Intent(this,AbonoActivity.class);
         i.putExtra(DetalleReserva.ID_RESERVA,mDetalleReserva.getIDReserva());
         startActivityForResult(i,0);
+    }
+
+    @OnClick(R.id.btnPagoElectronico) void onPagoElectronico() {
+       Intent i = new Intent(this,PagoElectronicoActivity.class);
+        startActivity(i);
     }
 
     @OnClick(R.id.btnCancelarReserva) void onCancelarReserva() {

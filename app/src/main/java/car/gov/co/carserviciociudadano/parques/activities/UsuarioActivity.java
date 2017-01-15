@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,8 @@ public class UsuarioActivity extends BaseActivity {
     @BindView(R.id.txtDireccion) EditText mTxtDireccion;
     @BindView(R.id.spiMunicipio) Spinner mSpiMunicipio;
     @BindView(R.id.lyUsuario)  View mLyUsuario;
+    @BindView(R.id.lblFuncionarioCar)    TextView mLblFuncionarioCar;
+    @BindView(R.id.inputLayoutEmail)    TextInputLayout mInputLayoutEmail;
 
     Usuario mUsuario;
     List<Municipio> mLstMunicipios = new ArrayList<>();
@@ -64,6 +68,7 @@ public class UsuarioActivity extends BaseActivity {
     private int mOrigin = 0;
     public static final int ORIGEN_RESERVA = 10;
     public static final int ORIGEN_MANIN_PARQUES = 11;
+    private boolean isInsert = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,10 +126,22 @@ public class UsuarioActivity extends BaseActivity {
 
     private void init(){
         mUsuario = new Usuarios().leer();
-        if(mUsuario.getIdUsuario() == 0 ) {
+        if(mUsuario.getIdUsuario() == 0 || (mUsuario.getIdUsuario() > 0 && mUsuario.isFuncionarioCar()  && !mUsuario.isLoginSIDCAR())) {
             mLyLogin.setVisibility(View.VISIBLE);
             mLyUsuario.setVisibility(View.GONE);
             ocultarTeclado(mLyLogin);
+
+            if (mUsuario.getIdUsuario() > 0 && !mUsuario.isLoginSIDCAR()){
+                mLblFuncionarioCar.setVisibility(View.VISIBLE);
+                mLblFuncionarioCar.setText(mUsuario.getNombreCompleto() + " "+ getString(R.string.login_funcionario_car));
+                mInputLayoutEmail.setHint("Login SIDCAR");
+                mTxtEmail.setText("");
+                mTxtEmail.setHint("");
+                mTxtClave.setText("");
+            }else{
+                mLblFuncionarioCar.setVisibility(View.GONE);
+                mTxtEmail.setHint("Email");
+            }
         }
         else {
             mLyUsuario.setVisibility(View.VISIBLE);
@@ -146,7 +163,8 @@ public class UsuarioActivity extends BaseActivity {
             mTxtNombre.setText(mUsuario.getNombreCompleto());
             mTxtDocumento.setText(mUsuario.getDocumento());
             mTxtDireccion.setText(mUsuario.getDireccionUsuario());
-            mSpiMunicipio.setSelection(adapterMunicipios.getPosition(new Municipio(mUsuario.getIDMunicipio(),"")));
+            if(adapterMunicipios != null)
+                mSpiMunicipio.setSelection(adapterMunicipios.getPosition(new Municipio(mUsuario.getIDMunicipio(),"")));
         }
     }
 
@@ -195,43 +213,79 @@ public class UsuarioActivity extends BaseActivity {
         ocultarTeclado(mLyLogin);
         if (validarLogin()) {
             showProgress(mProgressView,true);
-            final Usuarios usuarios = new Usuarios();
-            usuarios.login(mTxtEmail.getText().toString().trim(), mTxtClave.getText().toString().trim(), new IUsuario() {
-                @Override
-                public void onSuccess(Usuario usuario) {
-                    usuarios.guardar(usuario);
-                    mUsuario = usuario;
-                    showProgress(mProgressView,false);
-
-                    if(mOrigin == ORIGEN_RESERVA){
-                        Intent intent = new Intent();
-                        intent.putExtra(Usuario.ID_USUARIO,mUsuario.getIdUsuario());
-                        intent.putExtra(Usuario.FUNCIONARIO_CAR,usuario.isFuncionarioCar());
-                        setResult(Activity.RESULT_OK,intent);
-                        finish();
-                    }else{
-                        init();
-                    }
-
-                }
-
-                @Override
-                public void onError(ErrorApi error) {
-                    showProgress(mProgressView,false);
-                    if (error.getStatusCode() == 404)
-                        mostrarMensajeDialog("Usuario o clave incorrecto");
-                    else
-                        mostrarMensajeDialog(error.getMessage());
-                }
-            });
+            Usuarios usuarios = new Usuarios();
+            if (mUsuario.getIdUsuario() > 0 &&  mUsuario.isFuncionarioCar() ) {
+                usuarios.loginSIDCAR (mTxtEmail.getText().toString().trim(), mTxtClave.getText().toString().trim(), iUsuarioLogin);
+            }else{
+                usuarios.login(mTxtEmail.getText().toString().trim(), mTxtClave.getText().toString().trim(), iUsuarioLogin);
+            }
         }
     }
+
+    IUsuario iUsuarioLogin = new IUsuario() {
+       final Usuarios usuarios = new Usuarios();
+
+        @Override
+        public void onSuccess(Usuario usuario) {
+            usuarios.guardar(usuario);
+            mUsuario = usuario;
+            showProgress(mProgressView,false);
+
+
+            if (usuario.isFuncionarioCar()){
+                init();
+                mostrarMensajeDialog(mUsuario.getNombreCompleto() + " "+ getString(R.string.login_funcionario_car));
+            }else {
+                if (mOrigin == ORIGEN_RESERVA) {
+                    Intent intent = new Intent();
+                    intent.putExtra(Usuario.ID_USUARIO, mUsuario.getIdUsuario());
+                    intent.putExtra(Usuario.FUNCIONARIO_CAR, mUsuario.isFuncionarioCar());
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } else {
+                    init();
+                }
+            }
+
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+            showProgress(mProgressView,false);
+            if (error.getStatusCode() == 404)
+                mostrarMensajeDialog("Usuario o clave incorrecto");
+            else
+                mostrarMensajeDialog(error.getMessage());
+        }
+
+        @Override
+        public void onSuccessSIDCAR(boolean value){
+            showProgress(mProgressView,false);
+            if (value){
+                mUsuario.setLoginSIDCAR(true);
+                usuarios.guardar(mUsuario);
+
+                if (mOrigin == ORIGEN_RESERVA) {
+                    Intent intent = new Intent();
+                    intent.putExtra(Usuario.ID_USUARIO, mUsuario.getIdUsuario());
+                    intent.putExtra(Usuario.FUNCIONARIO_CAR, mUsuario.isFuncionarioCar());
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } else {
+                    init();
+                }
+            }else{
+                mostrarMensajeDialog("Usuario o clave de SIDCAR incorrecto");
+            }
+        }
+    };
+
 
     private boolean validarLogin(){
         boolean res = true;
         if (mTxtEmail.getText().toString().isEmpty()) {
-            mostrarMensaje("Ingrese un email", mLyLogin);
-            mTxtEmail.setError("Ingrese un email");
+            mostrarMensaje("Ingrese el email o login", mLyLogin);
+            mTxtEmail.setError("Ingrese el email o login");
             res = false;
         }
          if (mTxtClave.getText().toString().isEmpty()){
@@ -294,10 +348,14 @@ public class UsuarioActivity extends BaseActivity {
             fillUsuario(mUsuario.getIdUsuario() == 0);
             Usuarios usuarios = new Usuarios();
             mostrarProgressDialog();
-            if (mUsuario.getIdUsuario() == 0)
+            if (mUsuario.getIdUsuario() == 0) {
+                isInsert = true;
                 usuarios.insert(iUsuario, mUsuario);
-            else
-                usuarios.update(iUsuario,mUsuario);
+            }
+            else {
+                isInsert = false;
+                usuarios.update(iUsuario, mUsuario);
+            }
         }
     }
 
@@ -305,24 +363,28 @@ public class UsuarioActivity extends BaseActivity {
     IUsuario iUsuario = new IUsuario() {
         @Override
         public void onSuccess(Usuario usuario) {
-            if (mUsuario.getIdUsuario() == 0){
+
+            if (isInsert){
                 if(progressDialog!=null)progressDialog.dismiss();
                 mUsuario.setIdUsuario(usuario.getIdUsuario());
                 mostrarMensaje("Usuario creado correctamente");
-
-                if(mOrigin == ORIGEN_RESERVA){
-                    Intent intent = new Intent();
-                    intent.putExtra(Usuario.ID_USUARIO,mUsuario.getIdUsuario());
-                    intent.putExtra(Usuario.FUNCIONARIO_CAR,usuario.isFuncionarioCar());
-                    setResult(Activity.RESULT_OK,intent);
-                    finish();
+                new Usuarios().guardar(usuario);
+                if (usuario.isFuncionarioCar()){
+                    mostrarMensajeDialog(mUsuario.getNombreCompleto() + " "+ getString(R.string.login_funcionario_car));
+                    init();
+                } else  if(mOrigin == ORIGEN_RESERVA){
+                        Intent intent = new Intent();
+                        intent.putExtra(Usuario.ID_USUARIO,usuario.getIdUsuario());
+                        intent.putExtra(Usuario.FUNCIONARIO_CAR,usuario.isFuncionarioCar());
+                        setResult(Activity.RESULT_OK,intent);
+                        finish();
                 }
             }else{
                 if(progressDialog!=null)progressDialog.dismiss();
                 mostrarMensaje("Datos del usuario fueron modificados ");
 
             }
-            new Usuarios().guardar(mUsuario);
+            new Usuarios().guardar(usuario);
             init();
         }
 
@@ -336,6 +398,9 @@ public class UsuarioActivity extends BaseActivity {
             }else {
                 mostrarMensajeDialog(error.getMessage());
             }
+        }
+        @Override
+        public void onSuccessSIDCAR(boolean value){
 
         }
     };

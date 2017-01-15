@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -36,11 +35,15 @@
         <activity
             android:name=".parques.activities.UsuarioActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".parques.activities.DetalleReservaActivity"
-            android:label="@string/title_detalle_reserva"/>
-        <activity android:name=".parques.activities.AbonoActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="@string/enviar_consignacion"></activity>
+        <activity
+            android:name=".parques.activities.DetalleReservaActivity"
+            android:label="@string/title_detalle_reserva" />
+        <activity
+            android:name=".parques.activities.AbonoActivity"
+            android:label="@string/enviar_consignacion"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".parques.activities.PagoElectronicoActivity"
+            android:label="@string/title_pago_electronico"></activity>
     </application>
 
 </manifest>
