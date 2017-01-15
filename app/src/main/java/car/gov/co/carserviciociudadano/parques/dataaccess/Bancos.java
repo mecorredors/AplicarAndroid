@@ -1,10 +1,14 @@
 package car.gov.co.carserviciociudadano.parques.dataaccess;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.anupcowkur.reservoir.Reservoir;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +42,14 @@ public class Bancos {
                     public void onResponse(JSONArray response)
                     {
                         try {
-                            iBanco.onSuccess(JSONArrayToList(response));
+                            List<Banco> lstBancos = JSONArrayToList(response);
+                            try {
+                                Reservoir.put(TAG, lstBancos);
+                                Utils.putFechaCache(TAG);
+                            } catch (Exception e) {
+                                Log.e(TAG, "Bancos.list guardar cache "+e.toString());
+                            }
+                            iBanco.onSuccess(lstBancos);
                         }catch (JSONException ex){
                             iBanco.onError(new ErrorApi(ex));
                         }

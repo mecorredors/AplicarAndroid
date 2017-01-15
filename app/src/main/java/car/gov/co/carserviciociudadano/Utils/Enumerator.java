@@ -13,4 +13,16 @@ public class Enumerator {
 
     }
 
+    /**
+     * Numero de dias en cache
+     */
+    public static class CacheNumDias{
+        public static final int PARQUES = 1;
+        public static final int SERVICIOS_PARQUE = 1;
+        public static final int MUNICIPIOS = 10;
+        public static final int BANCOS = 10;
+        public static final int ARCHIVOS_PARQUE = 1;
+
+    }
+
 }

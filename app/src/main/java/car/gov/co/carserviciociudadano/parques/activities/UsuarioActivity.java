@@ -19,16 +19,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Validation;
-import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
+import car.gov.co.carserviciociudadano.parques.businessrules.BRMunicipios;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Municipios;
-import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.interfaces.IMunicipio;
 import car.gov.co.carserviciociudadano.parques.interfaces.IUsuario;
@@ -170,7 +168,7 @@ public class UsuarioActivity extends BaseActivity {
 
     private void loadMunicipios(){
 
-        Municipios municipios = new Municipios();
+        BRMunicipios municipios = new BRMunicipios();
         municipios.list(new IMunicipio() {
             @Override
             public void onSuccess(List<Municipio> lstMunicipios) {

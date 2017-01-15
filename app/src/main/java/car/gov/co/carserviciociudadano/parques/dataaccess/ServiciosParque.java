@@ -1,10 +1,14 @@
 package car.gov.co.carserviciociudadano.parques.dataaccess;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.anupcowkur.reservoir.Reservoir;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +30,7 @@ import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
 public class ServiciosParque {
     public static final String TAG ="ServiciosParque";
 
-    public void list(final IServicioParque iServicioParque, int idParque )
+    public void list(final IServicioParque iServicioParque, final int idParque )
     {
         String url = Config.API_PARQUES_SERVICIOS + "?idParque=" + idParque;
         url = url.replace(" ", "%20");
@@ -37,7 +41,14 @@ public class ServiciosParque {
                     public void onResponse(JSONArray response)
                     {
                         try {
-                            iServicioParque.onSuccess(JSONArrayToList(response));
+                            List<ServicioParque> lstServiciosParque = JSONArrayToList(response);
+                            try {
+                                Reservoir.put(TAG+idParque, lstServiciosParque);
+                                Utils.putFechaCache(TAG+idParque);
+                            } catch (Exception e) {
+                                Log.e(TAG, "ServiciosParques.list guardar cache "+e.toString());
+                            }
+                            iServicioParque.onSuccess(lstServiciosParque);
                         }catch (JSONException ex){
                             iServicioParque.onError(new ErrorApi(ex));
                         }

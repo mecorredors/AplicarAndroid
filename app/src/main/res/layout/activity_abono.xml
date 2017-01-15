@@ -18,7 +18,7 @@
     <TextView android:id="@+id/lblTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ENVIAR CONSIGNACIÓN"
+        android:text="@string/enviar_consignacion_comprobante"
         android:textColor="@color/secondaryText"
         android:textSize="@dimen/text_size_16"
         android:paddingLeft="@dimen/margin_14dp"

@@ -1,10 +1,14 @@
 package car.gov.co.carserviciociudadano.parques.dataaccess;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.anupcowkur.reservoir.Reservoir;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +31,7 @@ public class ArchivosParque {
 
     public static final String TAG ="ArchivosParque";
 
-    public void list(final IArchivoParque iArchivosParque,int idParque )
+    public void list(final IArchivoParque iArchivosParque, final int idParque )
     {
         String url = Config.API_PARQUES_ARCHIVOS + "?idParque="+ idParque;
         url = url.replace(" ", "%20");
@@ -38,7 +42,14 @@ public class ArchivosParque {
                     public void onResponse(JSONArray response)
                     {
                         try {
-                            iArchivosParque.onSuccess(JSONArrayToList(response));
+                            List<ArchivoParque> lstArchivosParque = JSONArrayToList(response);
+                            try {
+                                Reservoir.put(TAG+idParque, lstArchivosParque);
+                                Utils.putFechaCache(TAG+idParque);
+                            } catch (Exception e) {
+                                Log.e(TAG, "Bancos.list guardar cache "+e.toString());
+                            }
+                            iArchivosParque.onSuccess(lstArchivosParque);
                         }catch (JSONException ex){
                             iArchivosParque.onError(new ErrorApi(ex));
                         }

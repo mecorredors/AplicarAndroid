@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 import car.gov.co.carserviciociudadano.parques.adapter.ParquesAdapter;
-import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
+import car.gov.co.carserviciociudadano.parques.businessrules.BRParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
@@ -94,7 +93,7 @@ public class ParquesFragment extends BaseFragment {
 
     }
     private void loadParques(){
-        Parques parques = new Parques();
+        BRParques parques = new BRParques();
         showProgress(mProgressView,true);
         parques.list(new IParque() {
             @Override

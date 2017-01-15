@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.anupcowkur.reservoir.Reservoir;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -22,7 +23,11 @@ public class AppCar  extends Application{
 
         super.onCreate();
         //  if (BuildConfig.DEBUG == false)//Solamente enviar crashes de produccion, no esta funcionando
-
+        try {
+            Reservoir.init(this, 51200);//en bytes = 50 mb
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         AppCar.context = getApplicationContext();
 

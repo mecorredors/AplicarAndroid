@@ -5,6 +5,8 @@ import android.net.NetworkInfo;
 import android.util.Base64;
 import android.util.Log;
 
+import com.anupcowkur.reservoir.Reservoir;
+
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +16,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 
 /**
  * Created by Olger on 26/11/2016.
@@ -34,10 +37,10 @@ public class Utils {
         }
         return res;
     }
-    public  static long convertInt(String value){
+    public  static int convertInt(String value){
         if (value == null ) return  0;
 
-        long res = 0;
+        int res = 0;
         try{
             res = Integer.parseInt(value);
         }catch (NumberFormatException e){
@@ -104,7 +107,19 @@ public class Utils {
            calendar1.setTime(fecha1);
            Calendar calendar2 = Calendar.getInstance();
            calendar2.setTime(fecha2);
-           return (calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) && calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH));
+
+           return isEqualsDate(calendar1,calendar2);
+
+           //return (calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) && calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH));
+       }
+        return false;
+    }
+    public static boolean isEqualsDate(Calendar fecha1, Calendar fecha2){
+       if (fecha1 != null && fecha2 != null) {
+           String fe1 = fecha1.get(Calendar.YEAR)+" "+ fecha1.get(Calendar.MONTH)+" "+fecha1.get(Calendar.DAY_OF_MONTH);
+           String fe2 = fecha2.get(Calendar.YEAR)+" "+ fecha2.get(Calendar.MONTH)+" "+fecha2.get(Calendar.DAY_OF_MONTH);
+
+           return fe1.equals(fe2);
        }
         return false;
     }
@@ -156,6 +171,9 @@ public class Utils {
     }
 
     public static int difDaysDates(Calendar fechaInicio, Calendar fechaFin){
+
+        if(isEqualsDate(fechaInicio,fechaFin )) return 0;
+
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(   fechaFin.getTime().getTime() - fechaInicio.getTime().getTime());
        return  c.get(Calendar.DAY_OF_YEAR);
@@ -172,7 +190,42 @@ public class Utils {
        return new Locale("es","CO");
     }
 
-//    public static String formatoFecha(){
-//        return "yyyy-MM-dd";
-//    }
+
+    public static boolean existeCache(String tag){
+        try {
+            return  Reservoir.contains(Parques.TAG);
+        }catch (Exception ex){
+            return false;
+        }
+    }
+    public static void putFechaCache(String tag){
+        try {
+            Calendar c = Calendar.getInstance();
+            String fecha = String.valueOf(c.get(Calendar.YEAR)) + String.valueOf(c.get(Calendar.MONTH) + 1) + String.valueOf(c.get(Calendar.DAY_OF_MONTH));
+
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putInt("EXPIRED" + tag, Integer.parseInt(fecha)).commit();
+        }catch (Exception ex){
+
+        }
+    }
+
+    public static int getFechaCache(String tag){
+        return PreferencesApp.getDefault(PreferencesApp.READ).getInt("EXPIRED" + tag,0);
+    }
+
+    public static int getFechaActualInt(){
+        Calendar c = Calendar.getInstance();
+        String fecha =  String.valueOf(c.get(Calendar.YEAR)) +  String.valueOf(c.get(Calendar.MONTH)+1) +  String.valueOf(c.get(Calendar.DAY_OF_MONTH)) ;
+
+        return Utils.convertInt(fecha);
+    }
+
+    public static boolean cacheExpiro(int dias,String tag){
+
+        int fechaCache = Utils.getFechaCache(tag);
+        int fechaActual = Utils.getFechaActualInt();
+
+        return ((fechaActual - fechaCache) > dias);
+
+    }
 }

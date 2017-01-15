@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -36,7 +37,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,18 +50,16 @@ import car.gov.co.carserviciociudadano.Utils.FechaDialogo;
 import car.gov.co.carserviciociudadano.Utils.ImageUtil;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.Utils.Validation;
+import car.gov.co.carserviciociudadano.parques.businessrules.BRBancos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Bancos;
-import car.gov.co.carserviciociudadano.parques.dataaccess.Reservas;
 import car.gov.co.carserviciociudadano.parques.interfaces.IAbono;
 import car.gov.co.carserviciociudadano.parques.interfaces.IBanco;
 import car.gov.co.carserviciociudadano.parques.model.Abono;
 import car.gov.co.carserviciociudadano.parques.model.Banco;
 import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Municipio;
-import car.gov.co.carserviciociudadano.parques.model.ParametroReserva;
-import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
+
 
 public class AbonoActivity extends BaseActivity {
 
@@ -93,6 +94,8 @@ public class AbonoActivity extends BaseActivity {
 
     private String mSelectedImagePath = "";
     private  Uri mOutputFileUri;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,8 +175,7 @@ public class AbonoActivity extends BaseActivity {
     }
 
     private void loadBancos(){
-
-        Bancos bancos = new Bancos();
+        BRBancos bancos = new BRBancos();
         bancos.list(new IBanco() {
             @Override
             public void onSuccess(List<Banco> lstBancos) {
@@ -191,11 +193,19 @@ public class AbonoActivity extends BaseActivity {
 
             @Override
             public void onError(ErrorApi error) {
-                mostrarMensaje("No fue posible obtener los bancos",mActivity_abono );
+
+                Snackbar.make(mLyImgComprobante, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
+                        .setAction("REINTENTAR", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                loadBancos();
+                            }
+                        })
+                        .show();
 
             }
         });
-
     }
 
 

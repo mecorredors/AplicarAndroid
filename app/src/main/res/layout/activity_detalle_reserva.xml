@@ -217,6 +217,14 @@
             android:text="Descarga tiquete"
             android:visibility="visible"/>
 
+
+        <TextView android:id="@+id/lblEnviarConsignacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryText"
+            android:text=""
+            android:textSize="@dimen/text_size_13"/>
+
         <Button android:id="@+id/btnEnviarConsignacion"
             android:theme="@style/ButtonAccent"
             android:layout_width="match_parent"
@@ -228,8 +236,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:layout_marginBottom="@dimen/margin_10dp">
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginBottom="@dimen/margin_16dp">
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

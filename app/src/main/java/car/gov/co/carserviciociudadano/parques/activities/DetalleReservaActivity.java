@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,24 +21,33 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.adapter.AbonosAdapter;
 import car.gov.co.carserviciociudadano.parques.adapter.MisReservasAdapter;
+import car.gov.co.carserviciociudadano.parques.businessrules.BRParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
+import car.gov.co.carserviciociudadano.parques.dataaccess.ParametrosReserva;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Reservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.interfaces.IAbono;
+import car.gov.co.carserviciociudadano.parques.interfaces.IParametro;
+import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IReserva;
 import car.gov.co.carserviciociudadano.parques.model.Abono;
 import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.parques.model.ParametroReserva;
+import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.parques.model.ServicioReserva;
 import car.gov.co.carserviciociudadano.parques.model.Usuario;
 
@@ -63,6 +74,7 @@ public class DetalleReservaActivity extends BaseActivity {
     @BindView(R.id.lblAbonos)  TextView mLblAbonos;
     @BindView(R.id.lyPagoElectronico)  View mLyPagoElectronico;
     @BindView(R.id.btnPagoElectronico)    ImageButton mBtnPagoElectronico;
+    @BindView(R.id.lblEnviarConsignacion)    TextView mLblEnviarConsignacion;
 
 
     private DetalleReserva mDetalleReserva;
@@ -82,7 +94,7 @@ public class DetalleReservaActivity extends BaseActivity {
 
         mImageView.setVisibility(View.GONE);
         mLblTitulo.setText(mDetalleReserva.getNombreParque());
-        mLblEstado.setText(mDetalleReserva.getEstadoReserva() +" "+ mDetalleReserva.getEstadoNombre());
+        mLblEstado.setText(mDetalleReserva.getEstadoNombre());
         mLblFecha.setText(Utils.toStringLargeFromDate(mDetalleReserva.getFechaSistemaReserva()));
         mLblTotal.setText(Utils.formatoMoney(mDetalleReserva.getTotalValorReserva()));
         mLblFechaDesde.setText(Utils.toStringLargeFromDate(mDetalleReserva.getFechaInicialReserva()));
@@ -95,7 +107,6 @@ public class DetalleReservaActivity extends BaseActivity {
 
         configurarControles();
 
-
         mRecyclerView.setHasFixedSize(true);
 
         mLstAbonos= new ArrayList<>();
@@ -104,7 +115,10 @@ public class DetalleReservaActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdaptador);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        loadParques();
         loadAbonos();
+
 
     }
     private void configurarControles(){
@@ -114,11 +128,13 @@ public class DetalleReservaActivity extends BaseActivity {
             mBtnDescargaTiquete.setVisibility(View.GONE);
             mBtnEnviarConsignacion.setVisibility(View.VISIBLE);
             mLyPagoElectronico.setVisibility(View.VISIBLE);
+            mLblEnviarConsignacion.setVisibility(View.VISIBLE);
         }else{
             mBtnCancelarReserva.setVisibility(View.GONE);
             mBtnDescargaTiquete.setVisibility(View.GONE);
             mBtnEnviarConsignacion.setVisibility(View.GONE);
             mLyPagoElectronico.setVisibility(View.GONE);
+            mLblEnviarConsignacion.setVisibility(View.GONE);
             if (mDetalleReserva.getEstadoReserva() == 1){
                 mBtnDescargaTiquete.setVisibility(View.VISIBLE);
             }
@@ -138,17 +154,44 @@ public class DetalleReservaActivity extends BaseActivity {
                 mAdaptador.notifyDataSetChanged();
                 mLblAbonos.setVisibility(View.VISIBLE);
             }
-
             @Override
             public void onSuccess() {
                 showProgress(mProgressView,false);
+            }
+            @Override
+            public void onError(ErrorApi error) {
+                showProgress(mProgressView,false);
+            }
+        });
+    }
 
+    private void loadParques(){
+        BRParques parques = new BRParques();
+
+        parques.list(new IParque() {
+            @Override
+            public void onSuccess(List<Parque> lstParques) {
+               for(Parque item: lstParques){
+                   if (item.getNombreParque().trim().equals(mDetalleReserva.getNombreParque().trim())){
+                       mLblEnviarConsignacion.setText(item.getDetalleCuenta() + " " + getString(R.string.envie_consignacion_des));
+                   }
+               }
 
             }
 
             @Override
             public void onError(ErrorApi error) {
-                showProgress(mProgressView,false);
+                Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                        //.setActionTextColor(Color.CYAN)
+                        .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
+                        .setAction("REINTENTAR", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                loadParques();
+                            }
+                        })
+                        .show();
+
             }
         });
     }

@@ -42,8 +42,10 @@
             android:name=".parques.activities.AbonoActivity"
             android:label="@string/enviar_consignacion"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".parques.activities.PagoElectronicoActivity"
-            android:label="@string/title_pago_electronico"></activity>
+        <activity
+            android:name=".parques.activities.PagoElectronicoActivity"
+            android:label="@string/title_pago_electronico" />
+        <activity android:name=".parques.activities.TerminosUsoActivity"></activity>
     </application>
 
 </manifest>

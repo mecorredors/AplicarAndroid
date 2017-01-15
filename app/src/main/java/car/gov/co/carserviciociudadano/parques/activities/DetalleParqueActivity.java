@@ -23,6 +23,7 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.adapter.ServiciosParqueAdapter;
+import car.gov.co.carserviciociudadano.parques.businessrules.BRArchivosParque;
 import car.gov.co.carserviciociudadano.parques.businessrules.BRServiciosParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
@@ -133,7 +134,7 @@ public class DetalleParqueActivity extends BaseActivity {
     }
 
     private void loadArchivosParque(){
-        ArchivosParque archivosParque = new ArchivosParque();
+        BRArchivosParque archivosParque = new BRArchivosParque();
         archivosParque.list(new IArchivoParque() {
             @Override
             public void onSuccess(List<ArchivoParque> lstArchivosParque) {
@@ -184,18 +185,6 @@ public class DetalleParqueActivity extends BaseActivity {
             ServicioParque servicio = mLstServiciosParque.get(position);
 
             Intent i = new Intent(getApplicationContext(), ReservaActivity.class);
-//            i.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
-//            i.putExtra(Parque.NOMBRE_PARQUE,mParque.getNombreParque());
-//            i.putExtra(Parque.DETALLE_CUENTA,mParque.getDetalleCuenta());
-//            i.putExtra(Parque.POLITICAS_PARQUE,mParque.getPoliticasParque());
-//            i.putExtra(ServicioParque.ID_SERVICIOS_PARQUE,servicio.getIDServiciosParque());
-//            i.putExtra(ServicioParque.NOMBRE_SERVICIO,servicio.getNombreServicio());
-//            i.putExtra(ServicioParque.PRECIO_SERVICIO,servicio.getPrecioServicio());
-//            i.putExtra(ServicioParque.IMPUESTO_SERVICIO,servicio.getImpuestoServicio());
-//            i.putExtra(ServicioParque.DESCUENTO_SERVICIO,servicio.getDescuentoServicio());
-//            i.putExtra(ServicioParque.ACTIVO_SERVICIO,servicio.getActivoServicio());
-//            i.putExtra(ServicioParque.PRECIO_CAR,servicio.getPrecioCar());
-
             IntentHelper.addObjectForKey(servicio,ServiciosParque.TAG);
             IntentHelper.addObjectForKey(mParque,Parques.TAG);
 

@@ -331,6 +331,12 @@ public class ReservaActivity extends BaseActivity {
 
     private boolean  validar(){
         boolean res = true;
+        Calendar fechaActual = Calendar.getInstance();
+        int diaDeSemana = fechaActual.get(Calendar.DAY_OF_WEEK) - 1;
+        if ( !( diaDeSemana >=  Utils.convertInt(mapParametros.get(ParametroReserva.reservasDiaSemanaDesde)) && diaDeSemana <=  Utils.convertInt(mapParametros.get(ParametroReserva.reservasDiaSemanaHasta)))){
+            mostrarMensajeDialog(mapParametros.get(ParametroReserva.reservasDiaMensaje));
+            return false;
+        }
 
         if(mTxtFechaLlegada.getText().toString().isEmpty() || mTxtFechaSalida.getText().toString().isEmpty() ) {
             mostrarMensajeDialog("Seleccione fecha de llegada y fecha de salida");
@@ -340,8 +346,7 @@ public class ReservaActivity extends BaseActivity {
         Calendar fechaLlegada = Utils.convertToCalendar(mServicioReserva.getFechaInicialReserva());
         Calendar fechaSalida = Utils.convertToCalendar(mServicioReserva.getFechaFinalReserva());
 
-
-        if (!fechaLlegada.before(fechaSalida)){
+        if (!fechaLlegada.before(fechaSalida) || Utils.isEqualsDate(fechaLlegada,fechaSalida) ){
             mostrarMensajeDialog("La fecha de salida debe ser mayor  a la de llegada");
             return false;
         }
@@ -351,8 +356,9 @@ public class ReservaActivity extends BaseActivity {
             mostrarMensajeDialog(getString(R.string.maximo_dias) +" "+ mapParametros.get(ParametroReserva.maximoNroDiasAReservar) +" " + getString(R.string.dias) );
             return false;
         }
-        Calendar fechaActual = Calendar.getInstance();
-        int numDiasInicioReserva = Utils.difDaysDates(fechaActual,fechaLlegada) - 1;
+
+        int numDiasInicioReserva = Utils.difDaysDates(fechaActual,fechaLlegada) -1 ;
+
         if ( numDiasInicioReserva < Utils.convertInt(mapParametros.get(ParametroReserva.minimoNumDiasReserva)) ){
             mostrarMensajeDialog(getString(R.string.fecha_llegada) +" "+ mapParametros.get(ParametroReserva.minimoNumDiasReserva) +" " + getString(R.string.dias_antelacion) );
             return false;
