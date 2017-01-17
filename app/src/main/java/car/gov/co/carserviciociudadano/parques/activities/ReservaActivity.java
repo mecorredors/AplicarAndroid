@@ -10,7 +10,9 @@ import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stacktips.view.CalendarListener;
 import com.stacktips.view.CustomCalendarView;
@@ -75,6 +77,9 @@ public class ReservaActivity extends BaseActivity {
     @BindView(R.id.lyRespuestaOk) View mLyRespuestaOk;
     @BindView(R.id.lblRespuestaOk) TextView mLblRespuestaOk;
     @BindView(R.id.lblNroCuenta) TextView mLblNroCuenta;
+    @BindView(R.id.cheAceptoPoliticas)    CheckBox mCheAceptoPoliticas;
+    @BindView(R.id.lyPoliticas)    LinearLayout mLyPoliticas;
+
 
     List<Mantenimiento> mLstMatenimientos = new ArrayList<>();
     List<ServicioReserva> mLstEnReservas = new ArrayList<>();
@@ -100,6 +105,7 @@ public class ReservaActivity extends BaseActivity {
         mBtnCerrar.setOnClickListener(onClickListener);
         mBtnReserva.setOnClickListener(onClickListener);
         mBtnDatosUsuario.setOnClickListener(onClickListener);
+        mLyPoliticas.setOnClickListener(onClickListener);
 
         mUsuario = new Usuarios().leer();
 
@@ -314,6 +320,10 @@ public class ReservaActivity extends BaseActivity {
                 case R.id.btnReservar:
                     reservar();
                     break;
+                case R.id.lyPoliticas:
+                    Intent j = new Intent(ReservaActivity.this,TerminosUsoActivity.class);
+                    startActivity(j);
+                    break;
             }
         }
     };
@@ -419,13 +429,17 @@ public class ReservaActivity extends BaseActivity {
 
 
     private void reservar(){
-        Reservas reservas = new Reservas();
-        mServicioReserva.setIDUsuario(mUsuario.getIdUsuario());
-        mServicioReserva.setIDParque(mServicioParque.getIDParque());
-        mServicioReserva.setEstadoReserva(0);
+        if (mCheAceptoPoliticas.isChecked()) {
+            Reservas reservas = new Reservas();
+            mServicioReserva.setIDUsuario(mUsuario.getIdUsuario());
+            mServicioReserva.setIDParque(mServicioParque.getIDParque());
+            mServicioReserva.setEstadoReserva(0);
 
-        mostrarProgressDialog();
-        reservas.insert(mServicioReserva, iReserva);
+            mostrarProgressDialog();
+            reservas.insert(mServicioReserva, iReserva);
+        }else{
+            mCheAceptoPoliticas.setError("Campo requerido");
+        }
     }
     private void mostrarProgressDialog(){
         mProgressDialog = new ProgressDialog(this);

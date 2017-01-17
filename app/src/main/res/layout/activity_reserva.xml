@@ -228,15 +228,26 @@
             android:layout_gravity="right"
             android:text="BORRAR"/>
 
-        <LinearLayout
+        <LinearLayout android:id="@+id/lyPoliticas"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"/>
+                android:textSize="@dimen/text_size_13"
+                android:textColor="@color/secondaryText"
+                android:text="@string/leer_politicas"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp" android:background="@color/dividerColor"/>
         </LinearLayout>
-
+         <CheckBox android:id="@+id/cheAceptoPoliticas"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/acepto_politicas"
+             android:textSize="@dimen/text_size_13"
+             android:textColor="@color/primaryText"/>
         <Button android:id="@+id/btnReservar"
             android:theme="@style/ButtonAccent"
             android:layout_width="match_parent"

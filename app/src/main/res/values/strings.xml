@@ -49,5 +49,6 @@
     <string name="pago_electronico_des">Para poder realizar el abono debes ingresa al siguiente link del banco Av Villas y selecciona en intención de pago la opción: 108 - APROVECHAMIENTO POR PARQUES </string>
     <string name="envie_consignacion_des"> y envie la consignación o el comprobante del pago electrónico </string>
     <string name="leer_politicas"> Leer políticas de uso </string>
+    <string name="acepto_politicas"> Acepto políticas de uso </string>
 
 </resources>

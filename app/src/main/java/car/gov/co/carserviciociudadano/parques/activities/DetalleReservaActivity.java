@@ -2,8 +2,11 @@ package car.gov.co.carserviciociudadano.parques.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -13,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -20,6 +24,23 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.Barcode128;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,24 +50,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
-import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.adapter.AbonosAdapter;
-import car.gov.co.carserviciociudadano.parques.adapter.MisReservasAdapter;
 import car.gov.co.carserviciociudadano.parques.businessrules.BRParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
-import car.gov.co.carserviciociudadano.parques.dataaccess.ParametrosReserva;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Reservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.interfaces.IAbono;
-import car.gov.co.carserviciociudadano.parques.interfaces.IParametro;
 import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IReserva;
 import car.gov.co.carserviciociudadano.parques.model.Abono;
 import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.ParametroReserva;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.parques.model.ServicioReserva;
 import car.gov.co.carserviciociudadano.parques.model.Usuario;
@@ -209,6 +225,166 @@ public class DetalleReservaActivity extends BaseActivity {
 
     @OnClick(R.id.btnCancelarReserva) void onCancelarReserva() {
         cancelarReservaDialog();
+    }
+
+    @OnClick(R.id.btnDescargaTiquete) void onDescargaTiquete() {
+       generarTiquetePDF();
+    }
+
+    private void generarTiquetePDF(){
+        Document doc=new Document();
+       // String outpath= Environment.getExternalStorageDirectory()+"/ReservaParque_"+ mDetalleReserva.getIDReserva()+".pdf";
+        String outpath=   Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/ReservaParque_"+ mDetalleReserva.getIDReserva()+".pdf";
+
+        try {
+
+            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(outpath));
+            doc.open();
+
+            Paragraph paragraph = new Paragraph();
+           paragraph.setAlignment(Element.ALIGN_CENTER);
+//            paragraph.add("CORPORACIÓN AUTONOMA REGIONAL");
+//            doc.add(new Paragraph(mDetalleReserva.getNombreParque()));
+
+            Font smallfont = new Font(Font.FontFamily.HELVETICA, 12);
+
+            PdfPTable table = new PdfPTable(3);
+            table.setTotalWidth(new float[]{ 50, 140,100 });
+            table.setLockedWidth(true);
+            PdfContentByte cb = writer.getDirectContent();
+            // first row
+            PdfPCell cell = new PdfPCell(new Phrase(" CORPORACION AUTONOMA REGIONAL \n NIT 899.999.062-6 \n\n IVA Reg común-IVA incluido"));
+            cell.setFixedHeight(80);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setBorder(Rectangle.BOX);
+            cell.setColspan(3);
+            table.addCell(cell);
+
+            String reserva = "  Reserva Nro."+mDetalleReserva.getIDReserva() +"     "+ Utils.toStringLargeFromDate(mDetalleReserva.getFechaSistemaReserva());
+
+            cell = new PdfPCell(new Phrase(reserva));
+            cell.setFixedHeight(30);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setBorder(Rectangle.BOX);
+            cell.setColspan(3);
+            table.addCell(cell);
+
+            //  row 1
+            cell = new PdfPCell(new Phrase("Nro noches", smallfont));
+            cell.setFixedHeight(30);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setBorder(Rectangle.BOX);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("Descripción", smallfont));
+            cell.setFixedHeight(30);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setBorder(Rectangle.BOX);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("Precio noche", smallfont));
+            cell.setFixedHeight(30);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setBorder(Rectangle.BOX);
+            table.addCell(cell);
+
+            ///row 2
+
+            cell = new PdfPCell(new Phrase(String.valueOf(mDetalleReserva.getCantidadReserva()), smallfont));
+            cell.setFixedHeight(30);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setBorder(Rectangle.BOX);
+            table.addCell(cell);
+
+
+            String descripcion = mDetalleReserva.getNombreServicio() +" Desde "+ Utils.toStringLargeFromDate(mDetalleReserva.getFechaInicialReserva()) +
+                    " Hasta "+ Utils.toStringLargeFromDate(mDetalleReserva.getFechaFinalReserva());
+
+            cell = new PdfPCell(new Phrase(descripcion, smallfont));
+            cell.setFixedHeight(30);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setBorder(Rectangle.BOX);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(Utils.formatoMoney(mDetalleReserva.getPrecioReserva()), smallfont));
+            cell.setFixedHeight(70);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setBorder(Rectangle.BOX);
+            table.addCell(cell);
+
+            //row total
+
+            cell = new PdfPCell(new Phrase("Total  "));
+            cell.setFixedHeight(50);
+            cell.setBorder(Rectangle.LEFT);
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(2);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(Utils.formatoMoney(mDetalleReserva.getTotalValorReserva())));
+            cell.setFixedHeight(50);
+            cell.setBorder(Rectangle.RIGHT);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(1);
+            table.addCell(cell);
+
+
+            cell = new PdfPCell(new Phrase(" Conserve su tiquete en el parque\n Debe presentar este tiquete al llegar al parque  ",smallfont));
+            cell.setFixedHeight(40);
+            cell.setBorder(Rectangle.BOX);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(3);
+            table.addCell(cell);
+
+//            Barcode128 code128 = new Barcode128();
+//            code128.setCode("14785236987541");
+//            code128.setCodeType(Barcode128.CODE128);
+//            Image code128Image = code128.createImageWithBarcode(cb, null, null);
+//            cell = new PdfPCell(code128Image, true);
+//            cell.setBorder(Rectangle.BOX);
+//            cell.setFixedHeight(30);
+//            table.addCell(cell);
+//            // third row
+//            table.addCell(cell);
+//            cell = new PdfPCell(new Phrase("and something else here", smallfont));
+//            cell.setBorder(Rectangle.NO_BORDER);
+//            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//            table.addCell(cell);
+
+            doc.add(table);
+
+            doc.close();
+
+            File file = new File(outpath);
+            openPDF(file);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void openPDF(File file){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        try {
+            startActivity(intent);
+        }catch (ActivityNotFoundException ex){
+            Log.d("OpenPDF", ex.toString());
+        }
     }
 
     private void cancelarReservaDialog(){
