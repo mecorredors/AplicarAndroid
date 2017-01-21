@@ -35,7 +35,7 @@ public class TerminosUsoActivity extends BaseActivity {
         myWebView.setWebChromeClient(new WebChromeClient());
         myWebView.getSettings().setJavaScriptEnabled(true);
 
-        myWebView.loadUrl(Config.ServerParques +"terminos.aspx");
+        myWebView.loadUrl(Config.ServerParques +"PaginaWeb/terminos.aspx");
     }
 
     public class myWebClient extends WebViewClient

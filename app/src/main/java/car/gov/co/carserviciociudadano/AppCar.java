@@ -6,10 +6,12 @@ import android.graphics.Bitmap;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.anupcowkur.reservoir.Reservoir;
+import com.crashlytics.android.Crashlytics;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Olger on 26/11/2016.
@@ -22,6 +24,7 @@ public class AppCar  extends Application{
     public void onCreate(){
 
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         //  if (BuildConfig.DEBUG == false)//Solamente enviar crashes de produccion, no esta funcionando
         try {
             Reservoir.init(this, 51200);//en bytes = 50 mb

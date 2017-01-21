@@ -210,11 +210,11 @@
         >
 
 
-        <Button android:id="@+id/btnDescargaTiquete"
+        <Button android:id="@+id/btnGenerarTiquete"
             android:theme="@style/ButtonAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Descarga tiquete"
+            android:text="Generar tiquete"
             android:visibility="visible"/>
 
 
@@ -223,6 +223,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/secondaryText"
             android:text=""
+            android:layout_marginBottom="@dimen/margin_10dp"
             android:textSize="@dimen/text_size_13"/>
 
         <Button android:id="@+id/btnEnviarConsignacion"

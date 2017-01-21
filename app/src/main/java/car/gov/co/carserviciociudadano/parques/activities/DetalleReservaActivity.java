@@ -82,7 +82,7 @@ public class DetalleReservaActivity extends BaseActivity {
     @BindView(R.id.lblFechaHasta)  TextView mLblFechaHasta;
     @BindView(R.id.lblNroReserva)  TextView mLblNroReserva;
     @BindView(R.id.btnCancelarReserva)  Button mBtnCancelarReserva;
-    @BindView(R.id.btnDescargaTiquete)  Button mBtnDescargaTiquete;
+    @BindView(R.id.btnGenerarTiquete)  Button mBtnGenerarTiquete;
     @BindView(R.id.btnEnviarConsignacion)  Button mBtnEnviarConsignacion;
     @BindView(R.id.activity_detalle_reserva)  View mActivity_detalle_reserva;
     @BindView(R.id.recycler_view)  RecyclerView mRecyclerView;
@@ -141,18 +141,18 @@ public class DetalleReservaActivity extends BaseActivity {
         mLblEstado.setText(mDetalleReserva.getEstadoReserva() +" "+ mDetalleReserva.getEstadoNombre());
         if (mDetalleReserva.getEstadoReserva() == 0){
             mBtnCancelarReserva.setVisibility(View.VISIBLE);
-            mBtnDescargaTiquete.setVisibility(View.GONE);
+            mBtnGenerarTiquete.setVisibility(View.GONE);
             mBtnEnviarConsignacion.setVisibility(View.VISIBLE);
             mLyPagoElectronico.setVisibility(View.VISIBLE);
             mLblEnviarConsignacion.setVisibility(View.VISIBLE);
         }else{
             mBtnCancelarReserva.setVisibility(View.GONE);
-            mBtnDescargaTiquete.setVisibility(View.GONE);
+            mBtnGenerarTiquete.setVisibility(View.GONE);
             mBtnEnviarConsignacion.setVisibility(View.GONE);
             mLyPagoElectronico.setVisibility(View.GONE);
             mLblEnviarConsignacion.setVisibility(View.GONE);
             if (mDetalleReserva.getEstadoReserva() == 1){
-                mBtnDescargaTiquete.setVisibility(View.VISIBLE);
+                mBtnGenerarTiquete.setVisibility(View.VISIBLE);
             }
         }
 
@@ -227,7 +227,7 @@ public class DetalleReservaActivity extends BaseActivity {
         cancelarReservaDialog();
     }
 
-    @OnClick(R.id.btnDescargaTiquete) void onDescargaTiquete() {
+    @OnClick(R.id.btnGenerarTiquete) void onGenerarTiquete() {
        generarTiquetePDF();
     }
 
@@ -249,7 +249,7 @@ public class DetalleReservaActivity extends BaseActivity {
             Font smallfont = new Font(Font.FontFamily.HELVETICA, 12);
 
             PdfPTable table = new PdfPTable(3);
-            table.setTotalWidth(new float[]{ 50, 140,100 });
+            table.setTotalWidth(new float[]{ 55, 140,100 });
             table.setLockedWidth(true);
             PdfContentByte cb = writer.getDirectContent();
             // first row
@@ -321,16 +321,55 @@ public class DetalleReservaActivity extends BaseActivity {
 
             //row total
 
-            cell = new PdfPCell(new Phrase("Total  "));
-            cell.setFixedHeight(50);
+            double iva = calculoIVA(mDetalleReserva.getTotalValorReserva(),mDetalleReserva.getImpuestoReserva());
+            double subTotal = mDetalleReserva.getTotalValorReserva() - iva;
+
+            cell = new PdfPCell(new Phrase("Sin IVA "));
+            cell.setFixedHeight(20);
             cell.setBorder(Rectangle.LEFT);
             cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell.setColspan(2);
             table.addCell(cell);
 
+
+            cell = new PdfPCell(new Phrase(Utils.formatoMoney(subTotal)));
+            cell.setFixedHeight(20);
+            cell.setBorder(Rectangle.RIGHT);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(1);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("Base IVA "));
+            cell.setFixedHeight(20);
+            cell.setBorder(Rectangle.LEFT);
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(2);
+            table.addCell(cell);
+
+
+            cell = new PdfPCell(new Phrase(Utils.formatoMoney(iva)));
+            cell.setFixedHeight(20);
+            cell.setBorder(Rectangle.RIGHT);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(1);
+            table.addCell(cell);
+
+
+            cell = new PdfPCell(new Phrase("Total  "));
+            cell.setFixedHeight(20);
+            cell.setBorder(Rectangle.LEFT);
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(2);
+            table.addCell(cell);
+
+
             cell = new PdfPCell(new Phrase(Utils.formatoMoney(mDetalleReserva.getTotalValorReserva())));
-            cell.setFixedHeight(50);
+            cell.setFixedHeight(20);
             cell.setBorder(Rectangle.RIGHT);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -345,21 +384,6 @@ public class DetalleReservaActivity extends BaseActivity {
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell.setColspan(3);
             table.addCell(cell);
-
-//            Barcode128 code128 = new Barcode128();
-//            code128.setCode("14785236987541");
-//            code128.setCodeType(Barcode128.CODE128);
-//            Image code128Image = code128.createImageWithBarcode(cb, null, null);
-//            cell = new PdfPCell(code128Image, true);
-//            cell.setBorder(Rectangle.BOX);
-//            cell.setFixedHeight(30);
-//            table.addCell(cell);
-//            // third row
-//            table.addCell(cell);
-//            cell = new PdfPCell(new Phrase("and something else here", smallfont));
-//            cell.setBorder(Rectangle.NO_BORDER);
-//            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-//            table.addCell(cell);
 
             doc.add(table);
 
@@ -376,15 +400,51 @@ public class DetalleReservaActivity extends BaseActivity {
 
     }
 
-    private void openPDF(File file){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        try {
-            startActivity(intent);
-        }catch (ActivityNotFoundException ex){
-            Log.d("OpenPDF", ex.toString());
+    private double calculoIVA(double total, double iva)
+    {
+        double valorBase = 0;
+        double valorTempIVA = 0;
+        if (iva > 0)
+        {
+            valorTempIVA = (iva / 100) + 1;
+            valorBase = total / valorTempIVA;
+            iva = total - valorBase;
         }
+
+        return Math.round(iva);
+    }
+
+    private void openPDF(final File file){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetalleReservaActivity.this);
+
+        builder.setMessage("El tiquete se ha guardado en tu carpeta de Descargas con el nombre "+file.getName());
+
+        builder.setPositiveButton("Ver tiquete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                try {
+                    startActivity(intent);
+                }catch (ActivityNotFoundException ex){
+                    Log.d("OpenPDF", ex.toString());
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cerrar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+
+
     }
 
     private void cancelarReservaDialog(){

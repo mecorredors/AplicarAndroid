@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.Utils.Security;
+import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
 
@@ -39,6 +42,13 @@ public class MainActivity extends BaseActivity {
 
 //        Intent i = new Intent(this,UsuarioActivity.class);
 //        startActivity(i);
+
+
+        try {
+            Log.d("key ", Security.Encrypt("ApiParquesKey", "QVBQUkVTRVJWQVMyNTYzMjU1N0FQSUNPREU3ODQ5NjUyOA=="));
+        }catch (Exception ex){
+
+        }
 
     }
 
