@@ -22,22 +22,23 @@ public class BaseFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     protected void showProgress( final View progress,final boolean show) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+//            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+//
+//            progress.setVisibility(show ? View.VISIBLE : View.GONE);
+//            progress.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    progress.setVisibility(show ? View.VISIBLE : View.GONE);
+//                }
+//            });
+//        } else {
+//            progress.setVisibility(show ? View.VISIBLE : View.GONE);
+//        }
+        if(isAdded())
             progress.setVisibility(show ? View.VISIBLE : View.GONE);
-            progress.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    progress.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            progress.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
     }
 
     protected void mostrarMensaje(String mensaje,View view){

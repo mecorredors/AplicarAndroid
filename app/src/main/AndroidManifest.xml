@@ -46,10 +46,13 @@
         <activity
             android:name=".parques.activities.PagoElectronicoActivity"
             android:label="@string/title_pago_electronico" />
-        <activity android:name=".parques.activities.TerminosUsoActivity"></activity>
+        <activity android:name=".parques.activities.TerminosUsoActivity" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="123dc7493b500f04a5dd89f863d1bc21b2fa57dd" />
+
+        <activity android:name=".parques.activities.ImageViewerActivity"></activity>
     </application>
 
 </manifest>

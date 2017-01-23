@@ -14,10 +14,14 @@ public class ArchivoParque {
     private int IDArchivoParque;
     private String TituloArchivo;
     private String ObservacionesArchivo;
-    private String ArchivoParque;
+    private String ArchivoParque1;
     private int IDTipoArchivo;
     private int IDParque;
     private int ActivoArchivoParque;
+
+    public static final String PATH = "PATH";
+
+    public ArchivoParque(){}
 
     public  ArchivoParque(String json) {
         if (json!= null && !json.isEmpty()) {
@@ -31,7 +35,7 @@ public class ArchivoParque {
                 this.IDArchivoParque = element.IDArchivoParque;
                 this.TituloArchivo = element.TituloArchivo;
                 this.ObservacionesArchivo = element.ObservacionesArchivo;
-                this.ArchivoParque = element.ArchivoParque;
+                this.ArchivoParque1 = element.ArchivoParque1;
                 this.IDTipoArchivo = element.IDTipoArchivo;
                 this.IDParque = element.IDParque;
                 this.ActivoArchivoParque = element.ActivoArchivoParque;
@@ -67,11 +71,11 @@ public class ArchivoParque {
     }
 
     public String getArchivoParque() {
-        return ArchivoParque;
+        return ArchivoParque1;
     }
 
     public void setArchivoParque(String archivoParque) {
-        ArchivoParque = archivoParque;
+        ArchivoParque1 = archivoParque;
     }
 
     public int getIDTipoArchivo() {

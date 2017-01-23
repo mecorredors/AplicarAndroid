@@ -138,7 +138,7 @@ public class DetalleReservaActivity extends BaseActivity {
 
     }
     private void configurarControles(){
-        mLblEstado.setText(mDetalleReserva.getEstadoReserva() +" "+ mDetalleReserva.getEstadoNombre());
+        mLblEstado.setText(mDetalleReserva.getEstadoNombre());
         if (mDetalleReserva.getEstadoReserva() == 0){
             mBtnCancelarReserva.setVisibility(View.VISIBLE);
             mBtnGenerarTiquete.setVisibility(View.GONE);

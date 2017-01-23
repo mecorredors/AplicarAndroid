@@ -7,6 +7,22 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@drawable/splash_screen</item>
+        <!-- styles alert dialog -->
+        <item name="android:dialogTheme">@style/AppTheme.Dialog</item>
+        <item name="dialogTheme">@style/AppTheme.Dialog</item>
+        <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
+        <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
+        <item name="spinnerDropDownItemStyle">@style/AppTheme.Dialog</item>
+
+    </style>
+
+
+    <!-- Style the dialog like the normal AppTheme -->
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/primaryText</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -20,12 +36,12 @@
 
 
     <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:textColor">@color/textLight</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_size_18</item>
         <item name="android:textColor">@color/textLight</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -35,12 +51,14 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="android:textColor">@color/textLight</item>
         <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:height">@dimen/button_height</item>
     </style>
     <style name="ButtonWhite" parent="Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/white</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="android:textColor">@color/primaryText</item>
         <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:height">@dimen/button_height</item>
     </style>
 
     <style name="ButtonBorderless" parent="Widget.AppCompat.Button.Borderless">
@@ -48,12 +66,14 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:height">@dimen/button_height</item>
     </style>
     <style name="ButtonBorderlessColored" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="colorButtonNormal">@color/white</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:height">@dimen/button_height</item>
     </style>
 
 

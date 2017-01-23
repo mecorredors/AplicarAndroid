@@ -183,7 +183,8 @@ public class AbonoActivity extends BaseActivity {
                 mLstBancos.addAll(lstBancos);
                 mLstBancos.add(0,new Banco(0,"Banco"));
                 adapterBancos = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstBancos);
-                adapterBancos.setDropDownViewResource( android.R.layout.select_dialog_singlechoice);
+
+                adapterBancos.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
                 mSpiBanco.setAdapter(adapterBancos);
                 adapterBancos.notifyDataSetChanged();
 

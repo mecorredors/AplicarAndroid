@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#000000"
+        android:gravity="center_vertical"
+        tools:context="car.gov.co.carserviciociudadano.parques.activities.ImageViewerActivity"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            >
+
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pagerImages"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:background="#000000"
+                />
+
+            <car.gov.co.carserviciociudadano.Utils.CirclePageIndicator
+                android:id="@+id/indicatorImages"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:paddingBottom = "5dp"
+                android:paddingTop="4dp"
+
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>

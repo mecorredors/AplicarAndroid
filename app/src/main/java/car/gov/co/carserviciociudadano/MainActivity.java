@@ -44,11 +44,7 @@ public class MainActivity extends BaseActivity {
 //        startActivity(i);
 
 
-        try {
-            Log.d("key ", Security.Encrypt("ApiParquesKey", "QVBQUkVTRVJWQVMyNTYzMjU1N0FQSUNPREU3ODQ5NjUyOA=="));
-        }catch (Exception ex){
 
-        }
 
     }
 

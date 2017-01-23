@@ -20,5 +20,11 @@
     <dimen name="text_size_18">18sp</dimen>
     <dimen name="app_bar_height">200dp</dimen>
 
+    <dimen name="menu_height">40dp</dimen>
+    <dimen name="parques_foto_height">120dp</dimen>
+    <dimen name="parques_foto_width">120dp</dimen>
+    <dimen name="button_height">35dp</dimen>
+    <dimen name="detalle_photo_height">250dp</dimen>
+
 
 </resources>

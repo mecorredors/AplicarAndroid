@@ -4,6 +4,7 @@ package car.gov.co.carserviciociudadano.parques.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
@@ -95,7 +96,10 @@ public class UsuarioActivity extends BaseActivity {
 
     @Override
     public void onBackPressed(){
+       cerrar();
+    }
 
+    private void cerrar(){
         if (mOrigin == ORIGEN_MANIN_PARQUES) {
             Intent intent = new Intent();
             setResult(Activity.RESULT_OK, intent);
@@ -176,7 +180,7 @@ public class UsuarioActivity extends BaseActivity {
                 mLstMunicipios.addAll(lstMunicipios);
                 mLstMunicipios.add(0,new Municipio(0,"Municipio"));
                 adapterMunicipios = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstMunicipios);
-                adapterMunicipios.setDropDownViewResource( android.R.layout.select_dialog_singlechoice);
+                adapterMunicipios.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
                 mSpiMunicipio.setAdapter(adapterMunicipios);
                 adapterMunicipios.notifyDataSetChanged();
 
@@ -195,6 +199,9 @@ public class UsuarioActivity extends BaseActivity {
 
     @OnClick(R.id.btnGuardar) void onGuardar() {
         guardar();
+    }
+    @OnClick(R.id.btnCerrar) void onCerrar() {
+        cerrar();
     }
     @OnClick(R.id.btnLogin) void onLogin() {
         login();
@@ -233,6 +240,7 @@ public class UsuarioActivity extends BaseActivity {
             if (usuario.isFuncionarioCar()){
                 init();
                 mostrarMensajeDialog(mUsuario.getNombreCompleto() + " "+ getString(R.string.login_funcionario_car));
+                mTxtEmail.requestFocus();
             }else {
                 if (mOrigin == ORIGEN_RESERVA) {
                     Intent intent = new Intent();

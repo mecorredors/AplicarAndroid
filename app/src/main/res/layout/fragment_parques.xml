@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="top"
     android:background="@color/background"
     tools:context="car.gov.co.carserviciociudadano.parques.fragments.ParquesFragment">
 
@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
+        android:layout_marginTop="@dimen/margin_16dp"
         />
     <ProgressBar
     android:id="@+id/progressView"

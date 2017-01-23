@@ -62,6 +62,7 @@ public class DetalleParqueActivity extends BaseActivity {
     List<ServicioParque> mLstServiciosParque;
     ProgressBar mProgressView;
     private Parque mParque;
+    TextView mLblVerFotos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +132,9 @@ public class DetalleParqueActivity extends BaseActivity {
         mLblTitulo = (TextView) findViewById(R.id.lblTitulo) ;
         mApp_bar = (AppBarLayout) findViewById(R.id.app_bar) ;
         mProgressView = (ProgressBar) findViewById(R.id.progressView);
+        mLblVerFotos = (TextView) findViewById(R.id.lblVerFotos);
+        mLblVerFotos.setOnClickListener(onClickListener);
+        mImagen.setOnClickListener(onClickListener);
     }
 
     private void loadArchivosParque(){
@@ -138,8 +142,10 @@ public class DetalleParqueActivity extends BaseActivity {
         archivosParque.list(new IArchivoParque() {
             @Override
             public void onSuccess(List<ArchivoParque> lstArchivosParque) {
-                if(lstArchivosParque.size()>0)
-                mLblArchivoObservaciones.setText(lstArchivosParque.get(0).getObservacionesArchivo());
+                if(lstArchivosParque.size()>0) {
+                    mLblArchivoObservaciones.setText(lstArchivosParque.get(0).getObservacionesArchivo());
+                    mLblVerFotos.setText(lstArchivosParque.size() + " FOTOS");
+                }
             }
 
             @Override
@@ -181,14 +187,23 @@ public class DetalleParqueActivity extends BaseActivity {
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            int position = mRecyclerView.getChildAdapterPosition(v);
-            ServicioParque servicio = mLstServiciosParque.get(position);
 
-            Intent i = new Intent(getApplicationContext(), ReservaActivity.class);
-            IntentHelper.addObjectForKey(servicio,ServiciosParque.TAG);
-            IntentHelper.addObjectForKey(mParque,Parques.TAG);
+            if (v.getId()== R.id.lblVerFotos || v.getId()== R.id.imagen){
+                Intent j = new Intent(getApplicationContext(),ImageViewerActivity.class);
+                j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
+                j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
+                startActivity(j);
+            }else {
 
-            startActivity(i);
+                int position = mRecyclerView.getChildAdapterPosition(v);
+                ServicioParque servicio = mLstServiciosParque.get(position);
+
+                Intent i = new Intent(getApplicationContext(), ReservaActivity.class);
+                IntentHelper.addObjectForKey(servicio, ServiciosParque.TAG);
+                IntentHelper.addObjectForKey(mParque, Parques.TAG);
+
+                startActivity(i);
+            }
         }
     };
 

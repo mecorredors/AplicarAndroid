@@ -77,6 +77,7 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             progress.setVisibility(show ? View.VISIBLE : View.GONE);
         }
+        progress.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     protected void mostrarMensajeDialog(String mensaje){

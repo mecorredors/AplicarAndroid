@@ -121,13 +121,13 @@ public class MisReservasFragment extends BaseFragment {
                 public void onError(ErrorApi error) {
                     showProgress(mProgressView, false);
                     mBtnConsultar.setVisibility(View.VISIBLE);
+                    mBtnConsultar.setText("CONSULTAR");
                     if (error.getStatusCode() == 404) {
                         mLblHeader.setText(getString(R.string.header_sin_reservas));
                         mLstDetalleReservas.clear();
                         mAdaptador.notifyDataSetChanged();
                     } else {
                         mLblHeader.setText(error.getMessage());
-                        mBtnConsultar.setText("CONSULTAR");
                     }
                 }
             });
