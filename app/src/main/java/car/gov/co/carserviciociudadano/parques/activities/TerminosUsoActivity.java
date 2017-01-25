@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
+import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 public class TerminosUsoActivity extends BaseActivity {
     private ProgressBar progress;
@@ -24,18 +26,24 @@ public class TerminosUsoActivity extends BaseActivity {
         ActionBar bar =  getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
 
-        Long mAdvertId;
-        String mAdvertisingType;
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
 
-        myWebView = (WebView) findViewById(R.id.webView);
+            int idParque = bundle.getInt(Parque.ID_PARQUE);
 
-        progress = (ProgressBar) findViewById(R.id.progressBar);
+            myWebView = (WebView) findViewById(R.id.webView);
 
-        myWebView.setWebViewClient(new TerminosUsoActivity.myWebClient());
-        myWebView.setWebChromeClient(new WebChromeClient());
-        myWebView.getSettings().setJavaScriptEnabled(true);
+            progress = (ProgressBar) findViewById(R.id.progressBar);
 
-        myWebView.loadUrl(Config.ServerParques +"PaginaWeb/terminos.aspx");
+            myWebView.setWebViewClient(new TerminosUsoActivity.myWebClient());
+            myWebView.setWebChromeClient(new WebChromeClient());
+            myWebView.getSettings().setJavaScriptEnabled(true);
+
+            myWebView.loadUrl(Config.ServerParques + "PaginaWeb/terminos.aspx?IDParque="+ idParque);
+        }else{
+            mostrarMensaje("NO se ha enviado el IDParque");
+            finish();
+        }
     }
 
     public class myWebClient extends WebViewClient

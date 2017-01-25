@@ -36,6 +36,7 @@ public class ArchivosParque {
         String url = Config.API_PARQUES_ARCHIVOS + "?idParque="+ idParque;
         url = url.replace(" ", "%20");
 
+        Log.d(TAG,url);
         JsonArrayRequest objRequest = new JsonArrayRequest( url,
                 new Response.Listener<JSONArray>(){
                     @Override

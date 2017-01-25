@@ -322,6 +322,7 @@ public class ReservaActivity extends BaseActivity {
                     break;
                 case R.id.lyPoliticas:
                     Intent j = new Intent(ReservaActivity.this,TerminosUsoActivity.class);
+                    j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
                     startActivity(j);
                     break;
             }
