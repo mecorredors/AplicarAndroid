@@ -12,6 +12,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Tramites;
@@ -19,6 +20,7 @@ import car.gov.co.carserviciociudadano.consultapublica.interfaces.ITramite;
 import car.gov.co.carserviciociudadano.consultapublica.model.Tramite;
 import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class TramitesActivity extends BaseActivity {
@@ -46,6 +48,11 @@ public class TramitesActivity extends BaseActivity {
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
         lyTramite.setVisibility(View.GONE);
+    }
+    @Override
+    public void onPause() {
+        AppCar.VolleyQueue().cancelAll(Tramites.TAG);
+        super.onPause();
     }
 
     @OnClick(R.id.btnConsultar) void onConsultar() {

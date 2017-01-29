@@ -7,16 +7,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.EditText;
-
+import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import car.gov.co.carserviciociudadano.Utils.Security;
-import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
-import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Tramites;
-import car.gov.co.carserviciociudadano.consultapublica.interfaces.ITramite;
-import car.gov.co.carserviciociudadano.consultapublica.model.Tramite;
+import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Documentos;
+import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
+import car.gov.co.carserviciociudadano.consultapublica.interfaces.IDocumento;
+import car.gov.co.carserviciociudadano.consultapublica.interfaces.IExpediente;
+import car.gov.co.carserviciociudadano.consultapublica.model.Documento;
+import car.gov.co.carserviciociudadano.consultapublica.model.Expediente;
+import car.gov.co.carserviciociudadano.consultapublica.model.ExpedienteResumen;
 import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
@@ -49,17 +51,36 @@ public class MainActivity extends BaseActivity {
 //        startActivity(i);
 
 
-        new Tramites().list("04091100001", new ITramite() {
-            @Override
-            public void onSuccess(Tramite tramite) {
-                Log.d(Tramites.TAG, tramite.toString());
-            }
+//       new Expedientes().list(12217,  new IExpediente() {
+//           @Override
+//           public void onSuccess(List<Expediente> lstExpediente) {
+//
+//              for(Expediente item: lstExpediente)
+//                Log.d(Expedientes.TAG,item.toString());
+//           }
+//           @Override
+//           public void onSuccess(ExpedienteResumen Expediente) {
+//                   Log.d(Expedientes.TAG,Expediente.toString());
+//           }
+//
+//           @Override
+//           public void onError(ErrorApi error) {
+//
+//           }
+//       });
 
-            @Override
-            public void onError(ErrorApi error) {
-                Log.d(Tramites.TAG, error.toString());
-            }
-        });
+//        new Documentos().list(12217, 19, new IDocumento() {
+//            @Override
+//            public void onSuccess(List<Documento> lstDocumentos) {
+//                for(Documento item: lstDocumentos)
+//                    Log.d(Expedientes.TAG,item.toString());
+//            }
+//
+//            @Override
+//            public void onError(ErrorApi error) {
+//
+//            }
+//        });
 
 
 
