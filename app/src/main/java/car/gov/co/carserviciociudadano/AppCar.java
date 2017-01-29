@@ -24,8 +24,10 @@ public class AppCar  extends Application{
     public void onCreate(){
 
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
-        //  if (BuildConfig.DEBUG == false)//Solamente enviar crashes de produccion, no esta funcionando
+
+        if (BuildConfig.DEBUG == false)//Solamente enviar crashes de produccion, no esta funcionando
+              Fabric.with(this, new Crashlytics());
+
         try {
             Reservoir.init(this, 51200);//en bytes = 50 mb
         } catch (Exception e) {

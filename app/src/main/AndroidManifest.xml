@@ -32,7 +32,9 @@
             android:name=".parques.activities.DetalleParqueActivity"
             android:label="@string/title_activity_detalle_parque"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".parques.activities.ReservaActivity" />
+        <activity
+            android:name=".parques.activities.ReservaActivity"
+            android:label="@string/title_realizar_reserva" />
         <activity
             android:name=".parques.activities.UsuarioActivity"
             android:windowSoftInputMode="stateHidden" />
@@ -46,13 +48,22 @@
         <activity
             android:name=".parques.activities.PagoElectronicoActivity"
             android:label="@string/title_pago_electronico" />
-        <activity android:name=".parques.activities.TerminosUsoActivity" />
+        <activity
+            android:name=".parques.activities.TerminosUsoActivity"
+            android:label="@string/title_terminos" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="123dc7493b500f04a5dd89f863d1bc21b2fa57dd" />
 
-        <activity android:name=".parques.activities.ImageViewerActivity"></activity>
+        <activity
+            android:name=".parques.activities.ImageViewerActivity"
+            android:label="@string/title_imagenes" />
+        <activity
+            android:name=".consultapublica.activities.TramitesActivity"
+            android:label="@string/title_consultar_tramite" />
+        <activity android:name=".consultapublica.activities.DocumentosRespuestaActivity"
+            android:label="@string/title_documentos_respuesta"></activity>
     </application>
 
 </manifest>

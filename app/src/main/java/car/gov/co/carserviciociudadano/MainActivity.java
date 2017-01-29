@@ -13,8 +13,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.Utils.Security;
 import car.gov.co.carserviciociudadano.Utils.Utils;
+import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
+import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Tramites;
+import car.gov.co.carserviciociudadano.consultapublica.interfaces.ITramite;
+import car.gov.co.carserviciociudadano.consultapublica.model.Tramite;
 import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
 public class MainActivity extends BaseActivity {
@@ -44,6 +49,18 @@ public class MainActivity extends BaseActivity {
 //        startActivity(i);
 
 
+        new Tramites().list("04091100001", new ITramite() {
+            @Override
+            public void onSuccess(Tramite tramite) {
+                Log.d(Tramites.TAG, tramite.toString());
+            }
+
+            @Override
+            public void onError(ErrorApi error) {
+                Log.d(Tramites.TAG, error.toString());
+            }
+        });
+
 
 
     }
@@ -57,6 +74,7 @@ public class MainActivity extends BaseActivity {
        mostrarMensaje("No implementado");
     }
     @OnClick(R.id.lyMenuTramites) void tramites(){
-       mostrarMensaje("No implementado");
+       Intent i = new Intent(this, TramitesActivity.class);
+        startActivity(i);
     }
 }

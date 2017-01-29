@@ -9,7 +9,8 @@ public class Config {
 
    // public static String ServerParques = "http://192.168.0.13/parques/";    //pruebas car
     public static String ServerParques = "http://parques.car.gov.co/";    //pruebas car
-    public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
+    //public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
+    public static String ServerSIDCAR = "http://192.168.0.13/SIDCAR/";    //produccion sidcar
 
     public static String API_PARQUES_PARQUES =  ServerParques + "api/parque/parques/";
     public static String API_PARQUES_ARCHIVOS =  ServerParques + "api/parque/archivos/";
@@ -30,4 +31,5 @@ public class Config {
     public static String API_PARQUES_CANCELAR_RESERVA =  ServerParques + "api/reserva/cancelarreserva/";
     public static String API_PARQUES_VALIDAR_RESERVA =  ServerParques + "api/reserva/validarreserva/";
     public static String API_VISITA_TENICA_LOGIN =  ServerSIDCAR + "api/visitatecnica/login/";
+    public static String API_CONSULTA_PUBLICA_TRAMITES =  ServerSIDCAR + "api/consultapublica/tramites/";
 }

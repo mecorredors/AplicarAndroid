@@ -9,6 +9,10 @@ import org.json.JSONObject;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+
+import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.R;
+
 /**
  * Created by Olger on 27/11/2016.
  */
@@ -69,8 +73,8 @@ public class ErrorApi {
             this.Message="Servicio no disponible";
         }
 
-        if (this.StatusCode == 404) this.Message = "No se encontro ningún registro";
-        if (this.StatusCode == 405) this.Message = "Operación no permitida en el servidor";
+        if (this.StatusCode == 404) this.Message = AppCar.getContext().getString(R.string.error_404);
+        if (this.StatusCode == 405) this.Message = AppCar.getContext().getString(R.string.error_405);
 
     }
 

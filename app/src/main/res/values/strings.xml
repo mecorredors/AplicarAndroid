@@ -8,7 +8,11 @@
     <string name="title_activity_detalle_parque">Detalle parque</string>
     <string name="title_detalle_reserva">Detalle reserva</string>
     <string name="title_pago_electronico">Pago electrónico</string>
-
+    <string name="title_realizar_reserva">Realizar reserva</string>
+    <string name="title_terminos">Términos de uso</string>
+    <string name="title_imagenes">Imágenes</string>
+    <string name="title_documentos_respuesta">Documentos respuesta</string>
+    <string name="title_consultar_tramite">Consultar trámite </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -50,5 +54,24 @@
     <string name="envie_consignacion_des"> y envie la consignación o el comprobante del pago electrónico </string>
     <string name="leer_politicas"> Leer políticas de uso </string>
     <string name="acepto_politicas"> Acepto políticas de uso </string>
+
+
+    <!-- consulta publica -->
+    <string name="ingrese_numero_radicado">Ingrese el número de radicado </string>
+    <string name="tipo_tramite">Tipo trámite </string>
+    <string name="numero">Número </string>
+    <string name="fecha">Fecha </string>
+    <string name="remitente">Remitente </string>
+    <string name="Asunto">Asunto </string>
+    <string name="tema">Tema </string>
+    <string name="area_responsable">Área responsable </string>
+    <string name="estado_actual">Estado actual </string>
+    <string name="cocumentos_respuesta">Documentos rsepuesta </string>
+    <string name="tipo_doc">Tipo Documento </string>
+    <string name="tipo_respuesta">Tipo respuesta </string>
+    <string name="consultar">CONSULTAR </string>
+    <string name="no_disponible_publico">Número de documento no disponible para consulta pública! </string>
+    <string name="error_404">No se encontró ningún registro </string>
+    <string name="error_405">Operación no permitida en el servidor </string>
 
 </resources>
