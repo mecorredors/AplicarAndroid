@@ -13,6 +13,7 @@
     <string name="title_imagenes">Imágenes</string>
     <string name="title_documentos_respuesta">Documentos respuesta</string>
     <string name="title_consultar_tramite">Consultar trámite </string>
+    <string name="title_buscar_expediente">Búsqueda de expedientes </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -73,5 +74,11 @@
     <string name="no_disponible_publico">Número de documento no disponible para consulta pública! </string>
     <string name="error_404">No se encontró ningún registro </string>
     <string name="error_405">Operación no permitida en el servidor </string>
+
+    <string name="nro_expediente">Nro. de Expediente </string>
+    <string name="nombre_usuario">Nombre de usuario </string>
+    <string name="id_usuario">Identificación de usuario </string>
+    <string name="ingrese_numero_expediente_valido">Ingrese número de expediente válido </string>
+    <string name="ingrese_datos_busqueda">Ingrese algún dato para la búsqueda </string>
 
 </resources>

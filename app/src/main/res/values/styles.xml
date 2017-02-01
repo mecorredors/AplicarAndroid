@@ -109,4 +109,14 @@
         <item name="android:imeOptions">actionDone</item>
     </style>
 
+    <style name="titulo">
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:background">@color/gray2</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/margin_6dp</item>
+        <item name="android:paddingBottom">@dimen/margin_6dp</item>
+    </style>
+
 </resources>

@@ -11,6 +11,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Documentos;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
@@ -92,10 +93,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnClick(R.id.lyMenuExpedientes) void expedientes(){
-       mostrarMensaje("No implementado");
+        Intent i = new Intent(this, BuscarExpedienteActivity.class);
+        startActivity(i);
     }
     @OnClick(R.id.lyMenuTramites) void tramites(){
-       Intent i = new Intent(this, TramitesActivity.class);
+        Intent i = new Intent(this, TramitesActivity.class);
         startActivity(i);
     }
 }
