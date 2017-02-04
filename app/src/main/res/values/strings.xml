@@ -14,6 +14,7 @@
     <string name="title_documentos_respuesta">Documentos respuesta</string>
     <string name="title_consultar_tramite">Consultar trámite </string>
     <string name="title_buscar_expediente">Búsqueda de expedientes </string>
+    <string name="title_expediente">Expediente </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -80,5 +81,19 @@
     <string name="id_usuario">Identificación de usuario </string>
     <string name="ingrese_numero_expediente_valido">Ingrese número de expediente válido </string>
     <string name="ingrese_datos_busqueda">Ingrese algún dato para la búsqueda </string>
+    <string name="buscar">BUSCAR </string>
+    <string name="informacion_tramite">INFORMACIÓN DEL TRÁMITE </string>
+    <string name="expediente_nro">EXPDIENTE NRO: </string>
+    <string name="fecha_creacion">Fecha de creación</string>
+    <string name="actividad_actual">Actividad actual</string>
+    <string name="ultimo_documento">Último documento</string>
+    <string name="informacion_adicional">INFORMACIÓN ADICIONAL</string>
+    <string name="costo_proyecto">Costo del proyecto</string>
+    <string name="cuadernos">Cuadernos</string>
+    <string name="anexos">Anexos</string>
+    <string name="sin_definir">(sin definir)</string>
+
+
+
 
 </resources>

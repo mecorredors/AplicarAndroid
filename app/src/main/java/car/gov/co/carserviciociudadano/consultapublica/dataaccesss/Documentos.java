@@ -34,9 +34,9 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 public class Documentos {
     public static final String TAG ="Documentos";
 
-    public void list(int idExpediente ,int idProceso, final IDocumento iDocumento)
+    public void list(int idExpediente , final IDocumento iDocumento)
     {
-        String url = Config.API_EXPEDIENTE_DOCUMENTOS + "?idExpediente="+ idExpediente+"&idProceso="+idProceso;
+        String url = Config.API_EXPEDIENTE_DOCUMENTOS + "?idExpediente="+ idExpediente;
         url = url.replace(" ", "%20");
 
         JsonArrayRequest objRequest = new JsonArrayRequest( url,

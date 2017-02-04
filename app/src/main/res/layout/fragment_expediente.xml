@@ -1,0 +1,241 @@
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentExpediente"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="car.gov.co.carserviciociudadano.consultapublica.fragments.ExpedienteFragment"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+
+    <ProgressBar
+        android:id="@+id/progressView"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray2"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/margin_6dp"
+        android:paddingBottom="@dimen/margin_6dp"
+        android:orientation="vertical">
+    <TextView android:id="@+id/lblNumero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/primaryText"
+        android:text="expediente nro:" />
+        <TextView android:id="@+id/lblProceso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_14"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Titulo :" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/informacion_tramite"
+        style="@style/titulo"
+        android:layout_marginTop="@dimen/margin_10dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:text="@string/fecha_creacion"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent" />
+        <TextView android:id="@+id/lblFechaCreacion"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent"
+            android:hint="@string/sin_definir"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_6dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:text="@string/actividad_actual"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent" />
+
+        <TextView android:id="@+id/lblActividad"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent"
+            android:hint="@string/sin_definir"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_6dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:text="@string/ultimo_documento"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent" />
+        <TextView android:id="@+id/lblUltimoActoAdmin"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent"
+            android:hint="@string/sin_definir"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_6dp">
+        <TextView android:id="@+id/lblTituloProceso"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:text="@string/ultimo_documento"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent" />
+        <TextView android:id="@+id/lblVigenciaProceso"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent"
+            android:hint="@string/sin_definir"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/informacion_adicional"
+        style="@style/titulo"
+        android:layout_marginTop="@dimen/margin_10dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:text="@string/costo_proyecto"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent" />
+        <TextView android:id="@+id/lblCostoProyecto"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent"
+            android:hint="@string/sin_definir"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:text="@string/cuadernos"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent" />
+        <TextView android:id="@+id/lblCuadernos"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent"
+            android:hint="@string/sin_definir"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:text="@string/anexos"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent" />
+        <TextView android:id="@+id/lblAnexos"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/text_size_13"
+            android:layout_height="match_parent"
+            android:hint="@string/sin_definir"/>
+    </LinearLayout>
+
+
+    <TextView android:id="@+id/lblIntegrantesTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/titulo"
+        android:layout_marginTop="@dimen/margin_10dp"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recyclerIntegrantes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10dp"
+
+        />
+
+</LinearLayout>

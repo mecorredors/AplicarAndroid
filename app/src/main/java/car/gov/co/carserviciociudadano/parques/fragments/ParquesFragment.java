@@ -132,13 +132,6 @@ public class ParquesFragment extends BaseFragment {
             Intent i = new Intent(getActivity(), DetalleParqueActivity.class);
             IntentHelper.addObjectForKey(parque, Parques.TAG);
 
-
-//            i.putExtra(Parque.ID_PARQUE,parque.getIDParque());
-//            i.putExtra(Parque.NOMBRE_PARQUE,parque.getNombreParque());
-//            i.putExtra(Parque.OBSERVACIONES_PARQUE,parque.getObservacionesParque());
-//            i.putExtra(Parque.URL_ARCHIVO_PARQUE,parque.getUrlArchivoParque());
-//            i.putExtra(Parque.DETALLE_CUENTA,parque.getDetalleCuenta());
-//            i.putExtra(Parque.POLITICAS_PARQUE,parque.getPoliticasParque());
             startActivityForResult(i,0);
 
         }

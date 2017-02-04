@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
+import car.gov.co.carserviciociudadano.consultapublica.activities.ExpedienteActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Documentos;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
@@ -83,7 +84,8 @@ public class MainActivity extends BaseActivity {
 //            }
 //        });
 
-
+      Intent i = new Intent(this, ExpedienteActivity.class);
+        startActivity(i);
 
     }
 

@@ -65,9 +65,13 @@
         <activity
             android:name=".consultapublica.activities.DocumentosRespuestaActivity"
             android:label="@string/title_documentos_respuesta" />
-        <activity android:name=".consultapublica.activities.BuscarExpedienteActivity"
+        <activity
+            android:name=".consultapublica.activities.BuscarExpedienteActivity"
             android:label="@string/title_buscar_expediente"
-            android:windowSoftInputMode="stateHidden" ></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".consultapublica.activities.ExpedienteActivity"
+            android:label="@string/title_expediente"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

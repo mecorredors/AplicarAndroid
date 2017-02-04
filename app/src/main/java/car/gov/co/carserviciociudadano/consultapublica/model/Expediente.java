@@ -32,7 +32,7 @@ public class Expediente {
     private String   Proceso;
     private Date  FRadicadoPrincipal;
 
-
+    public  static  final  String ID_EXPEDIENTE =   "Id_Expediente";
     public  Expediente(String json) {
         if (json!= null && !json.isEmpty()) {
             try {
