@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.consultapublica.activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +29,11 @@ import car.gov.co.carserviciociudadano.consultapublica.model.Expediente;
 import car.gov.co.carserviciociudadano.consultapublica.model.ExpedienteResumen;
 import car.gov.co.carserviciociudadano.consultapublica.model.RadicadosDigitalesRespuesta;
 import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
+import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
+import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 public class BuscarExpedienteActivity extends BaseActivity {
 
@@ -53,7 +58,7 @@ public class BuscarExpedienteActivity extends BaseActivity {
 
         mLstExpedientes = new ArrayList<>();
         mAdaptador = new ExpedienteAdapter(mLstExpedientes);
-
+        mAdaptador.setOnClickListener(onClickListener);
         mRecyclerView.setAdapter(mAdaptador);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -114,4 +119,18 @@ public class BuscarExpedienteActivity extends BaseActivity {
             });
         }
     }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            int position = mRecyclerView.getChildAdapterPosition(v);
+            Expediente expediente = mLstExpedientes.get(position);
+
+            Intent i = new Intent(getApplicationContext(), ExpedienteActivity.class);
+            i.putExtra(Expediente.ID_EXPEDIENTE,expediente.getIDExpediente());
+            startActivity(i);
+
+        }
+    };
 }

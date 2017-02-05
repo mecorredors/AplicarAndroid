@@ -3,19 +3,41 @@ package car.gov.co.carserviciociudadano.consultapublica.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ProgressBar;
+import java.util.ArrayList;
+import java.util.List;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.consultapublica.adapter.DocumentoExpedienteAdapter;
+import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Documentos;
+import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
+import car.gov.co.carserviciociudadano.consultapublica.interfaces.IDocumento;
+import car.gov.co.carserviciociudadano.consultapublica.model.Documento;
 import car.gov.co.carserviciociudadano.consultapublica.model.Expediente;
+import car.gov.co.carserviciociudadano.parques.fragments.BaseFragment;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
-public class DocumentosExpedienteFragment extends Fragment {
+public class DocumentosExpedienteFragment extends BaseFragment {
+
+    @BindView(R.id.recycler_view)   RecyclerView mRecyclerView;
+    @BindView(R.id.fragment_documento)   View fragment_documento;
+    @BindView(R.id.progressView) ProgressBar progressView;
 
     private OnFragmentInteractionListener mListener;
-
+    private int mIdExpediente;
+    DocumentoExpedienteAdapter mAdaptador;
+    List<Documento> mLstDocumentos;
     public DocumentosExpedienteFragment() {
 
     }
@@ -34,7 +56,8 @@ public class DocumentosExpedienteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            int idExpediente = getArguments().getInt(Expediente.ID_EXPEDIENTE,0);
+            mIdExpediente = getArguments().getInt(Expediente.ID_EXPEDIENTE,0);
+            obtenerDocumentos();
         }
     }
 
@@ -42,10 +65,19 @@ public class DocumentosExpedienteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_documentos_expediente, container, false);
+        View view = inflater.inflate(R.layout.fragment_documentos_expediente, container, false);
+        ButterKnife.bind(this, view);
+        mLstDocumentos = new ArrayList<>();
+        mAdaptador = new DocumentoExpedienteAdapter(mLstDocumentos);
+        mRecyclerView.setAdapter(mAdaptador);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        return  view;
+
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -63,9 +95,43 @@ public class DocumentosExpedienteFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+    @Override
+    public void onPause() {
+        AppCar.VolleyQueue().cancelAll(Documentos.TAG);
+        super.onPause();
 
+    }
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
+
+
+    private void obtenerDocumentos(){
+        showProgress(progressView,true);
+        new Documentos().list(mIdExpediente, new IDocumento() {
+            @Override
+            public void onSuccess(List<Documento> lstDocumentos) {
+                mLstDocumentos.clear();
+                mLstDocumentos.addAll(lstDocumentos);
+                mAdaptador.notifyDataSetChanged();
+                showProgress(progressView,false);
+            }
+
+            @Override
+            public void onError(ErrorApi error) {
+                showProgress(progressView,false);
+                Snackbar.make(fragment_documento, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                        //.setActionTextColor(Color.CYAN)
+                        .setActionTextColor(ContextCompat.getColor(getContext(), R.color.green) )
+                        .setAction("REINTENTAR", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                obtenerDocumentos();
+                            }
+                        }).show();
+            }
+        });
+    }
+
 }

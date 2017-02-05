@@ -49,6 +49,7 @@ public class ExpedienteFragment extends BaseFragment {
     @BindView(R.id.lblAnexos)    TextView lblAnexos;
     @BindView(R.id.recyclerIntegrantes)  RecyclerView recyclerIntegrantes;
     @BindView(R.id.lblIntegrantesTitulo)  TextView lblIntegrantesTitulo;
+    @BindView(R.id.lyDatos)  View lyDatos;
 
 
     private OnFragmentInteractionListener mListener;
@@ -73,7 +74,7 @@ public class ExpedienteFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mIdExpediente = getArguments().getInt(Expediente.ID_EXPEDIENTE,0);
-            obtenerExpediente();
+
         }
     }
 
@@ -84,14 +85,14 @@ public class ExpedienteFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_expediente, container, false);
 
         ButterKnife.bind(this, view);
-
         mLstIntegrantes = new ArrayList<>();
         mAdaptadorIntegrantes = new IntegrantesExpedienteAdapter(mLstIntegrantes);
 
         recyclerIntegrantes.setAdapter(mAdaptadorIntegrantes);
         recyclerIntegrantes.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         recyclerIntegrantes.setItemAnimator(new DefaultItemAnimator());
-        recyclerIntegrantes.setNestedScrollingEnabled(false);
+
+        obtenerExpediente();
         return  view;
     }
     @Override
@@ -101,6 +102,7 @@ public class ExpedienteFragment extends BaseFragment {
 
     }
    private void obtenerExpediente(){
+       lyDatos.setVisibility(View.GONE);
        showProgress(progressView,true);
        new Expedientes().list(mIdExpediente, new IExpediente() {
            @Override
@@ -111,11 +113,13 @@ public class ExpedienteFragment extends BaseFragment {
            @Override
            public void onSuccess(ExpedienteResumen expedienteResumen) {
                showProgress(progressView,false);
+               lyDatos.setVisibility(View.VISIBLE);
                bindData(expedienteResumen);
            }
 
            @Override
            public void onError(ErrorApi error) {
+               lyDatos.setVisibility(View.GONE);
                showProgress(progressView,false);
                Snackbar.make(fragmentExpediente, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
                        //.setActionTextColor(Color.CYAN)

@@ -59,7 +59,7 @@
 
 
     <!-- consulta publica -->
-    <string name="ingrese_numero_radicado">Ingrese el número de radicado </string>
+    <string name="ingrese_numero_radicado">INGRESE EL NÚMERO DE RADICADO </string>
     <string name="tipo_tramite">Tipo trámite </string>
     <string name="numero">Número </string>
     <string name="fecha">Fecha </string>

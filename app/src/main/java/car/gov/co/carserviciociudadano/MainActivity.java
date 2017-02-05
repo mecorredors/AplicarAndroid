@@ -84,8 +84,8 @@ public class MainActivity extends BaseActivity {
 //            }
 //        });
 
-      Intent i = new Intent(this, ExpedienteActivity.class);
-        startActivity(i);
+//      Intent i = new Intent(this, ExpedienteActivity.class);
+//        startActivity(i);
 
     }
 

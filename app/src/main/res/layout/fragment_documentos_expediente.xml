@@ -1,14 +1,25 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="car.gov.co.carserviciociudadano.consultapublica.fragments.DocumentosExpedienteFragment">
+    android:id="@+id/fragment_documento"
+    tools:context="car.gov.co.carserviciociudadano.consultapublica.fragments.DocumentosExpedienteFragment"
+    android:orientation="vertical">
 
-
-    <TextView
+    <ProgressBar
+        android:id="@+id/progressView"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="visible" />
+    <android.support.v7.widget.RecyclerView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="documentos" />
+        android:layout_marginTop="@dimen/margin_10dp"
+        />
 
-</FrameLayout>
+</LinearLayout>

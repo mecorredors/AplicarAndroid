@@ -16,6 +16,7 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.consultapublica.fragments.DocumentosExpedienteFragment;
 import car.gov.co.carserviciociudadano.consultapublica.fragments.ExpedienteFragment;
+import car.gov.co.carserviciociudadano.consultapublica.model.Expediente;
 import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
 
 import car.gov.co.carserviciociudadano.parques.activities.UsuarioActivity;
@@ -36,47 +37,26 @@ public class ExpedienteActivity extends BaseActivity {
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
 
-        mIdExpediente = 54620;
+        Bundle b = getIntent().getExtras();
+        if(b != null ) {
+            mIdExpediente = b.getInt(Expediente.ID_EXPEDIENTE);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+            mViewPager = (ViewPager) findViewById(R.id.container);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_parques, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.item_mi_cuenta) {
-
-            Intent i = new Intent(this, UsuarioActivity.class);
-            i.putExtra(UsuarioActivity.ORIGIN, UsuarioActivity.ORIGEN_MANIN_PARQUES);
-            startActivityForResult(i,0);
-            return true;
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(mViewPager);
+        }else{
+            mostrarMensaje(" IDExpediente es 0 ");
         }
 
-        return super.onOptionsItemSelected(item);
     }
-
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> mFragments;
-        String [] mTitulo = {"Expediente","Documentos"};
+        String [] mTitulo = {"Resumen","Documentos"};
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             mFragments = new ArrayList<Fragment>();

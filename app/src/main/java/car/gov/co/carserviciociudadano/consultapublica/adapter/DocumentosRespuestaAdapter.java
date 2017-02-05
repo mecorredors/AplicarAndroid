@@ -1,11 +1,21 @@
 package car.gov.co.carserviciociudadano.consultapublica.adapter;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.List;
+
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.consultapublica.model.RadicadosDigitalesRespuesta;
 
@@ -27,6 +37,7 @@ public class DocumentosRespuestaAdapter extends RecyclerView.Adapter<DocumentosR
         private TextView lblFecha;
         private TextView lblTipoRespuesta;
         private TextView lblAsunto;
+        private ImageButton imgPdf;
 
 
         public PlaceSelectorViewHolder(View itemView) {
@@ -37,15 +48,33 @@ public class DocumentosRespuestaAdapter extends RecyclerView.Adapter<DocumentosR
             lblNumero = (TextView) itemView.findViewById(R.id.lblNumero);
             lblTipoRespuesta = (TextView) itemView.findViewById(R.id.lblTipoRespuesta);
             lblAsunto = (TextView) itemView.findViewById(R.id.lblAsunto);
+            imgPdf = (ImageButton) itemView.findViewById(R.id.imgPdf);
 
         }
 
-        public void bindDocumentos(RadicadosDigitalesRespuesta item) {
+        public void bindDocumentos(final RadicadosDigitalesRespuesta item) {
             lblTipoDoc.setText(item.getTipoDocumento());
             lblFecha.setText(Utils.toStringLargeFromDate(item.getFechaRadicado()));
             lblNumero.setText(item.getNumeroRadicado());
             lblTipoRespuesta.setText(item.getDescTipoRespuesta());
             lblAsunto.setText(item.getAsunto());
+
+            imgPdf.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        String url = Config.ServerSIDCAR + "Modulos/BuzonMovil/PDFRadicado.aspx?ID="+  item.getIDRadicadoDigital()+"&public=user";
+
+                        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        AppCar.getContext().startActivity(myIntent);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(AppCar.getContext(),"Instala una App para ver PDF ",  Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                }
+            });
+
         }
     }
 
