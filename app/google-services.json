@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "201263408657",
+    "firebase_url": "https://car-apps.firebaseio.com",
+    "project_id": "car-apps",
+    "storage_bucket": "car-apps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201263408657:android:b3085d6c292c5e59",
+        "android_client_info": {
+          "package_name": "car.gov.co.carserviciociudadano"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201263408657-83ii1r5250bs122ua2a106vs4ol0pjed.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjaKaJAQN6RvuMRpwF9CejvH6-TwaJQLI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201263408657-83ii1r5250bs122ua2a106vs4ol0pjed.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

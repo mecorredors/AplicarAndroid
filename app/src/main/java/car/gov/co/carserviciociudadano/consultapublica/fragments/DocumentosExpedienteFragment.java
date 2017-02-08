@@ -11,11 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.consultapublica.adapter.DocumentoExpedienteAdapter;
@@ -33,6 +37,8 @@ public class DocumentosExpedienteFragment extends BaseFragment {
     @BindView(R.id.recycler_view)   RecyclerView mRecyclerView;
     @BindView(R.id.fragment_documento)   View fragment_documento;
     @BindView(R.id.progressView) ProgressBar progressView;
+    @BindView(R.id.lblStatus)   TextView lblEstatus;
+    @BindView(R.id.btnReintentar)   Button btnReintentar;
 
     private OnFragmentInteractionListener mListener;
     private int mIdExpediente;
@@ -57,7 +63,7 @@ public class DocumentosExpedienteFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mIdExpediente = getArguments().getInt(Expediente.ID_EXPEDIENTE,0);
-            obtenerDocumentos();
+
         }
     }
 
@@ -72,7 +78,7 @@ public class DocumentosExpedienteFragment extends BaseFragment {
         mRecyclerView.setAdapter(mAdaptador);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        obtenerDocumentos();
         return  view;
 
     }
@@ -107,8 +113,15 @@ public class DocumentosExpedienteFragment extends BaseFragment {
     }
 
 
+
+    @OnClick(R.id.btnReintentar) void onReintentar() {
+        obtenerDocumentos();
+    }
+
     private void obtenerDocumentos(){
         showProgress(progressView,true);
+        lblEstatus.setVisibility(View.GONE);
+        btnReintentar.setVisibility(View.GONE);
         new Documentos().list(mIdExpediente, new IDocumento() {
             @Override
             public void onSuccess(List<Documento> lstDocumentos) {
@@ -121,15 +134,15 @@ public class DocumentosExpedienteFragment extends BaseFragment {
             @Override
             public void onError(ErrorApi error) {
                 showProgress(progressView,false);
-                Snackbar.make(fragment_documento, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
-                        //.setActionTextColor(Color.CYAN)
-                        .setActionTextColor(ContextCompat.getColor(getContext(), R.color.green) )
-                        .setAction("REINTENTAR", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                obtenerDocumentos();
-                            }
-                        }).show();
+                lblEstatus.setVisibility(View.VISIBLE);
+                lblEstatus.setText(error.getMessage());
+
+                if (error.getStatusCode() == 404)
+                    lblEstatus.setText("No hay documentos");
+                else
+                    btnReintentar.setVisibility(View.VISIBLE);
+
+
             }
         });
     }

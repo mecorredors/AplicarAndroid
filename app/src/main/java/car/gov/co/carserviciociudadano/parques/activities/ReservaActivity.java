@@ -3,6 +3,7 @@ package car.gov.co.carserviciociudadano.parques.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,8 @@ import com.stacktips.view.CalendarListener;
 import com.stacktips.view.CustomCalendarView;
 import com.stacktips.view.DayDecorator;
 import com.stacktips.view.DayView;
+import com.stacktips.view.utils.CalendarUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -112,7 +115,7 @@ public class ReservaActivity extends BaseActivity {
         mParque = (Parque) IntentHelper.getObjectForKey(Parques.TAG);
         mServicioParque = (ServicioParque) IntentHelper.getObjectForKey(ServiciosParque.TAG);
         mLblNombreParque.setText(mParque.getNombreParque() +" "+ mServicioParque.getNombreServicio());
-
+        loadCalendar();
         loadDiasMantenimiento();
         loadDiasEnReserva();
         loadParametros();
@@ -190,10 +193,12 @@ public class ReservaActivity extends BaseActivity {
     private class ColorDecorator implements DayDecorator {
         @Override
         public void decorate(DayView dayView) {
-//            if (CalendarUtils.isPastDay(dayView.getDate())) {
-//                int color = Color.parseColor("#a9afb9");
-//                dayView.setBackgroundColor(color);
-//            }
+            if (CalendarUtils.isPastDay(dayView.getDate()) && Utils.isCurrentMonth(dayView.getDate())   ) {
+                int color = Color.parseColor("#E9E9E9");
+                dayView.setBackgroundColor(color);
+                dayView.setTextColor(Color.parseColor("#DCDCDC"));
+
+            }
 
             for(Mantenimiento item: mLstMatenimientos){
                 if(Utils.isEqualsDate(dayView.getDate(),item.getFecha())){

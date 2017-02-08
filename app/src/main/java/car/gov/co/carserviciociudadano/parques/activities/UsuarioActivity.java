@@ -58,6 +58,9 @@ public class UsuarioActivity extends BaseActivity {
     @BindView(R.id.lyUsuario)  View mLyUsuario;
     @BindView(R.id.lblFuncionarioCar)    TextView mLblFuncionarioCar;
     @BindView(R.id.inputLayoutEmail)    TextInputLayout mInputLayoutEmail;
+    @BindView(R.id.lyEmailUsuario)    View mLyEmailUsuario;
+    @BindView(R.id.lyClaveUsuario)    View mLyClaveUsuario;
+    @BindView(R.id.lyClaveUsuario2)    View mLyClaveUsuario2;
 
     Usuario mUsuario;
     List<Municipio> mLstMunicipios = new ArrayList<>();
@@ -128,6 +131,7 @@ public class UsuarioActivity extends BaseActivity {
 
     private void init(){
         mUsuario = new Usuarios().leer();
+
         if(mUsuario.getIdUsuario() == 0 || (mUsuario.getIdUsuario() > 0 && mUsuario.isFuncionarioCar()  && !mUsuario.isLoginSIDCAR())) {
             mLyLogin.setVisibility(View.VISIBLE);
             mLyUsuario.setVisibility(View.GONE);
@@ -151,6 +155,9 @@ public class UsuarioActivity extends BaseActivity {
             mTxtClaveUsuario.setVisibility(View.GONE);
             mTxtClaveUsuario2.setVisibility(View.GONE);
             mTxtEmailUsuario.setVisibility(View.GONE);
+            mLyClaveUsuario.setVisibility(View.GONE);
+            mLyClaveUsuario2.setVisibility(View.GONE);
+            mLyEmailUsuario.setVisibility(View.GONE);
             loadUsuario();
             ocultarTeclado(mLyUsuario);
         }

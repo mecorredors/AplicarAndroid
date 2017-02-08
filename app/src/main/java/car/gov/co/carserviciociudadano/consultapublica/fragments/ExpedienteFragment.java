@@ -121,6 +121,7 @@ public class ExpedienteFragment extends BaseFragment {
            public void onError(ErrorApi error) {
                lyDatos.setVisibility(View.GONE);
                showProgress(progressView,false);
+
                Snackbar.make(fragmentExpediente, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
                        //.setActionTextColor(Color.CYAN)
                        .setActionTextColor(ContextCompat.getColor(getContext(), R.color.green) )

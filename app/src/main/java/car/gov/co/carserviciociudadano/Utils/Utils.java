@@ -6,6 +6,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.anupcowkur.reservoir.Reservoir;
+import com.stacktips.view.utils.CalendarUtils;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -227,5 +228,17 @@ public class Utils {
 
         return ((fechaActual - fechaCache) > dias);
 
+    }
+
+    public static boolean isCurrentMonth(Date fecha1){
+        if (fecha1 != null ) {
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.setTime(fecha1);
+            Calendar calendar2 = Calendar.getInstance();
+
+            return CalendarUtils.isSameMonth (calendar1,calendar2);
+
+        }
+        return false;
     }
 }
