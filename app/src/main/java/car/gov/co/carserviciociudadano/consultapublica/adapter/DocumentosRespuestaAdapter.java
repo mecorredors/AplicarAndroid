@@ -18,6 +18,8 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.consultapublica.model.RadicadosDigitalesRespuesta;
+import car.gov.co.carserviciociudadano.parques.activities.ReservaActivity;
+import car.gov.co.carserviciociudadano.parques.activities.WebViewActivity;
 
 
 /**
@@ -63,11 +65,16 @@ public class DocumentosRespuestaAdapter extends RecyclerView.Adapter<DocumentosR
                 @Override
                 public void onClick(View v) {
                     try {
-                        String url = Config.ServerSIDCAR + "Modulos/BuzonMovil/PDFRadicado.aspx?ID="+  item.getIDRadicadoDigital()+"&public=user";
+                        String url = Config.ServerSIDCAR + "Modulos/Buzon/PDFRadicado.aspx?ID="+  item.getIDRadicadoDigital()+"&public=user&origin=app";
 
-                        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        AppCar.getContext().startActivity(myIntent);
+                        Intent j = new Intent(AppCar.getContext(),WebViewActivity.class);
+                        j.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        j.putExtra(WebViewActivity.URL,url);
+                        j.putExtra(WebViewActivity.TITULO, AppCar.getContext().getString(R.string.title_documentos_respuesta));
+                        AppCar.getContext().startActivity(j);
+//                        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        AppCar.getContext().startActivity(myIntent);
                     } catch (ActivityNotFoundException e) {
                         Toast.makeText(AppCar.getContext(),"Instala una App para ver PDF ",  Toast.LENGTH_LONG).show();
                         e.printStackTrace();

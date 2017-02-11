@@ -56,6 +56,7 @@
     <string name="envie_consignacion_des"> y envie la consignación o el comprobante del pago electrónico </string>
     <string name="leer_politicas"> Leer políticas de uso </string>
     <string name="acepto_politicas"> Acepto políticas de uso </string>
+    <string name="error_fecha_mayor"> La fecha no puede ser mayor al día de hoy </string>
 
 
     <!-- consulta publica -->
@@ -75,6 +76,11 @@
     <string name="no_disponible_publico">Número de documento no disponible para consulta pública! </string>
     <string name="error_404">No se encontró ningún registro </string>
     <string name="error_405">Operación no permitida en el servidor </string>
+    <string name="recuperar_contrasena">RECUPERAR CONTRASEÑA</string>
+    <string name="recuperar_contrasena_labe">Introduzca la dirección de correo electrónico y el sistema generará y le asignará una nueva contraseña</string>
+    <string name="identificarse">Identificarse </string>
+    <string name="olvidaste_contrasena">¿Olvidaste tu contraseña? </string>
+    <string name="clave_enviada">La nueva contraseña fue enviada a su correo </string>
 
     <string name="nro_expediente">Nro. de Expediente </string>
     <string name="nombre_usuario">Nombre de usuario </string>
@@ -92,6 +98,8 @@
     <string name="cuadernos">Cuadernos</string>
     <string name="anexos">Anexos</string>
     <string name="sin_definir">(sin definir)</string>
+    <string name="no_hay_expediente">No se encontró ningún expediente</string>
+
 
 
 

@@ -29,12 +29,14 @@
         >
 
         <TextView android:id="@+id/lblTitulo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="PARQUE EMBALSE DEL NEUSA"
             android:textColor="@color/primaryText"
             android:textSize="@dimen/text_size_16"
+            android:background="@color/blue50"
             android:layout_marginBottom="@dimen/margin_10dp"
+            android:padding="@dimen/margin_4dp"
             />
          <!--<View-->
              <!--android:layout_width="match_parent"-->
@@ -61,6 +63,7 @@
                     android:textSize="@dimen/text_size_13"
                     android:textColor="@color/secondaryText"
                     android:layout_gravity="center_vertical|right"
+                    android:lineSpacingMultiplier="1.2"
                     />
 
         </LinearLayout>

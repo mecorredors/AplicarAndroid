@@ -61,6 +61,11 @@ public class UsuarioActivity extends BaseActivity {
     @BindView(R.id.lyEmailUsuario)    View mLyEmailUsuario;
     @BindView(R.id.lyClaveUsuario)    View mLyClaveUsuario;
     @BindView(R.id.lyClaveUsuario2)    View mLyClaveUsuario2;
+    @BindView(R.id.lyRecuperarContrasena)    View mLyRecuperarContrasena;
+    @BindView(R.id.txtEmailRecuperar)    EditText mTxtEmailRecuperar;
+    @BindView(R.id.btnRecuperarContrasena)    Button mBtnRecuperarContrasena;
+    @BindView(R.id.btnIdentificarse)    Button mBtnIdentificarse;
+    @BindView(R.id.btnOlvidateContrasena)    Button mBtnOlvidateContrasena;
 
     Usuario mUsuario;
     List<Municipio> mLstMunicipios = new ArrayList<>();
@@ -144,6 +149,7 @@ public class UsuarioActivity extends BaseActivity {
                 mTxtEmail.setText("");
                 mTxtEmail.setHint("");
                 mTxtClave.setText("");
+                mBtnOlvidateContrasena.setVisibility(View.GONE);
             }else{
                 mLblFuncionarioCar.setVisibility(View.GONE);
                 mTxtEmail.setHint("Email");
@@ -219,6 +225,20 @@ public class UsuarioActivity extends BaseActivity {
         mTxtClaveUsuario.setVisibility(View.VISIBLE);
         mTxtClaveUsuario2.setVisibility(View.VISIBLE);
         mTxtEmailUsuario.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.btnOlvidateContrasena) void onRecuperarContrasena() {
+        mLyLogin.setVisibility(View.GONE);
+        mLyUsuario.setVisibility(View.GONE);
+        mLyRecuperarContrasena.setVisibility(View.VISIBLE);
+    }
+    @OnClick(R.id.btnIdentificarse) void onIdentificarse() {
+        mLyLogin.setVisibility(View.VISIBLE);
+        mLyUsuario.setVisibility(View.GONE);
+        mLyRecuperarContrasena.setVisibility(View.GONE);
+    }
+    @OnClick(R.id.btnRecuperarContrasena) void onRecupearContrasena() {
+       recuperarContrasena();
     }
 
     private void login() {
@@ -352,6 +372,7 @@ public class UsuarioActivity extends BaseActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setIndeterminate(false);
         progressDialog.setCancelable(true);
+        progressDialog.setMessage("Guardando");
         //progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
     }
@@ -415,6 +436,44 @@ public class UsuarioActivity extends BaseActivity {
         @Override
         public void onSuccessSIDCAR(boolean value){
 
+        }
+    };
+
+
+
+    private void recuperarContrasena(){
+        ocultarTeclado(mLyUsuario);
+        if(Validation.IsValidEmail(mTxtEmailRecuperar)) {
+            Usuarios usuarios = new Usuarios();
+            Usuario usuario = new Usuario();
+            usuario.setEmailUsuario(mTxtEmailRecuperar.getText().toString());
+            showProgress(mProgressView,true);
+            usuarios.recuperarContrasena(iUsuarioRecuperarContrasena, usuario);
+
+        }
+    }
+    IUsuario iUsuarioRecuperarContrasena = new IUsuario() {
+        final Usuarios usuarios = new Usuarios();
+
+        @Override
+        public void onSuccess(Usuario usuario) {
+
+            showProgress(mProgressView,false);
+            mLyUsuario.setVisibility(View.GONE);
+            mLyLogin.setVisibility(View.VISIBLE);
+            mLyRecuperarContrasena.setVisibility(View.GONE);
+            mostrarMensajeDialog(getString(R.string.clave_enviada));
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+            showProgress(mProgressView,false);
+             mostrarMensajeDialog(error.getMessage());
+        }
+
+        @Override
+        public void onSuccessSIDCAR(boolean value){
+            showProgress(mProgressView,false);
         }
     };
 

@@ -117,6 +117,43 @@ public class Usuarios {
     }
 
 
+    public void recuperarContrasena(final IUsuario iUsuario, final Usuario usuario )
+    {
+        String url =  Config.API_PARQUES_USUARIO_RECUPERAR_CONTRASENA;
+
+        JsonObjectRequest objRequest = new JsonObjectRequest (
+                Request.Method.POST, url,   usuario.toJSONObject() ,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        iUsuario.onSuccess(usuario);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        iUsuario.onError(new ErrorApi(error));
+                    }
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "Basic " + Utils.getAuthorizationParques());
+                return headers;
+            }
+        };
+
+        objRequest.setTag(TAG);
+        objRequest.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        20000,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppCar.VolleyQueue().add(objRequest);
+    }
+
     public void guardar(Usuario usuario){
         PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.WRITE,TAG);
         preferencesApp.putInt(Usuario.ID_USUARIO,usuario.getIdUsuario());

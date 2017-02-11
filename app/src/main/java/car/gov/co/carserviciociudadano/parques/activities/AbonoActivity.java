@@ -33,6 +33,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.stacktips.view.utils.CalendarUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -234,6 +236,13 @@ public class AbonoActivity extends BaseActivity {
         res = !Validation.IsEmpty(mTxtObservaciones) && res;
         res = !Validation.IsEmpty(mSpiBanco) && res;
 
+
+       if (Utils.isAfterDay(Utils.convertToDate(mTxtFechaConsignacion.getText().toString()))){
+           mostrarMensajeDialog(getString(R.string.error_fecha_mayor));
+           res = false;
+           return res;
+       }
+
         long valor = Utils.convertLong(mTxtValor.getText().toString());
         if (valor == 0) {
             mTxtValor.setError(AppCar.getContext().getResources().getString(R.string.error_campo_obligatorio));
@@ -241,7 +250,7 @@ public class AbonoActivity extends BaseActivity {
         }
 
         if ( mSelectedImagePath == null || mSelectedImagePath.isEmpty()){
-            mostrarMensaje(getString(R.string.error_seleccionar_comprobante),mActivity_abono);
+            mostrarMensajeDialog(getString(R.string.error_seleccionar_comprobante));
         }
 
         return res;

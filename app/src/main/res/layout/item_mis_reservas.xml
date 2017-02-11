@@ -36,14 +36,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="PARQUE EMBALSE DEL NEUSA"
-                android:textColor="@color/secondaryText"
+                android:textColor="@color/primaryText"
                 android:textSize="@dimen/text_size_16"
-
                 android:paddingLeft="@dimen/margin_14dp"
                 android:paddingRight="@dimen/margin_16dp"
                 android:paddingTop="@dimen/margin_4dp"
                 android:paddingBottom="@dimen/margin_4dp"
-                android:background="@color/gray2"
+                android:background="@color/blue50"
                 />
             <ImageView
                 android:layout_width="wrap_content"

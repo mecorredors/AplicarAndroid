@@ -12,12 +12,13 @@ import android.widget.ProgressBar;
 
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Config;
-import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 
-public class TerminosUsoActivity extends BaseActivity {
+public class WebViewActivity extends BaseActivity {
     private ProgressBar progress;
     WebView myWebView;
+    public static final String URL="url_weeb_view";
+    public static final String TITULO="titulo";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,17 +30,16 @@ public class TerminosUsoActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
 
-            int idParque = bundle.getInt(Parque.ID_PARQUE);
-
+            String url = bundle.getString(URL);
+            bar.setTitle(bundle.getString(TITULO,"Servicio al ciudadano"));
             myWebView = (WebView) findViewById(R.id.webView);
 
             progress = (ProgressBar) findViewById(R.id.progressBar);
 
-            myWebView.setWebViewClient(new TerminosUsoActivity.myWebClient());
+            myWebView.setWebViewClient(new WebViewActivity.myWebClient());
             myWebView.setWebChromeClient(new WebChromeClient());
             myWebView.getSettings().setJavaScriptEnabled(true);
-
-            myWebView.loadUrl(Config.ServerParques + "PaginaWeb/terminos.aspx?IDParque="+ idParque);
+            myWebView.loadUrl( url );
         }else{
             mostrarMensaje("NO se ha enviado el IDParque");
             finish();

@@ -49,7 +49,7 @@
             android:name=".parques.activities.PagoElectronicoActivity"
             android:label="@string/title_pago_electronico" />
         <activity
-            android:name=".parques.activities.TerminosUsoActivity"
+            android:name=".parques.activities.WebViewActivity"
             android:label="@string/title_terminos" />
 
         <meta-data

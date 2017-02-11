@@ -137,6 +137,15 @@ public class Utils {
         return convertedDate;
     }
 
+    public static boolean isAfterDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return date.after(calendar.getTime());
+    }
+
     public static Calendar convertToCalendar(String dateString){
         SimpleDateFormat dateFormat = new SimpleDateFormat(FORMATO_FECHA);
         Date convertedDate = new Date();

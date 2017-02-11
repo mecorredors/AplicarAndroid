@@ -28,8 +28,7 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar_layout)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
 
 
     @Override

@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,7 +22,6 @@ import com.stacktips.view.DayDecorator;
 import com.stacktips.view.DayView;
 import com.stacktips.view.utils.CalendarUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,9 +34,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
-import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Mantenimientos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ParametrosReserva;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
@@ -326,8 +326,10 @@ public class ReservaActivity extends BaseActivity {
                     reservar();
                     break;
                 case R.id.lyPoliticas:
-                    Intent j = new Intent(ReservaActivity.this,TerminosUsoActivity.class);
-                    j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
+                    Intent j = new Intent(ReservaActivity.this,WebViewActivity.class);
+                    String url = Config.ServerParques + "PaginaWeb/terminos.aspx?IDParque="+ mParque.getIDParque();
+                    j.putExtra(WebViewActivity.URL,url);
+                    j.putExtra(WebViewActivity.TITULO,getString(R.string.title_terminos));
                     startActivity(j);
                     break;
             }

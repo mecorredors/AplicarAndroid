@@ -66,6 +66,7 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:buttonStyle">?android:attr/borderlessButtonStyle</item>
         <item name="android:height">@dimen/button_height</item>
     </style>
     <style name="ButtonBorderlessColored" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -111,8 +112,8 @@
 
     <style name="titulo">
         <item name="android:textSize">@dimen/text_size_14</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:background">@color/gray2</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:background">@color/blue50</item>
         <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
         <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
         <item name="android:paddingTop">@dimen/margin_6dp</item>

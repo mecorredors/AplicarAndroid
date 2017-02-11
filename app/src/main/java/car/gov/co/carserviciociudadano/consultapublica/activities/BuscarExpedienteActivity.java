@@ -112,7 +112,9 @@ public class BuscarExpedienteActivity extends BaseActivity {
                 @Override
                 public void onError(ErrorApi error) {
                     showProgress(progressView, false);
-                    mostrarMensaje(error.getMessage(), activity_buscar_expediente);
+                    String mensaje = error.getStatusCode() == 404 ? getString(R.string.no_hay_expediente) : error.getMessage();
+
+                    mostrarMensaje(mensaje, activity_buscar_expediente);
                     mLstExpedientes.clear();
                     mAdaptador.notifyDataSetChanged();
                 }

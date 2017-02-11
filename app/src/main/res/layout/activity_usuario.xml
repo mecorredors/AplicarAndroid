@@ -48,7 +48,9 @@
             android:layout_marginTop="@dimen/margin_10dp"
             android:layout_marginBottom="@dimen/margin_10dp"
             android:layout_marginLeft="@dimen/margin_16dp"
-            android:layout_marginRight="@dimen/margin_16dp"/>
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:lineSpacingMultiplier="1.2"
+            />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/inputLayoutEmail"
@@ -102,6 +104,15 @@
             android:layout_marginLeft="@dimen/margin_16dp"
             android:layout_marginRight="@dimen/margin_16dp"/>
 
+        <Button android:id="@+id/btnOlvidateContrasena"
+            android:theme="@style/ButtonBorderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/olvidaste_contrasena"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp"/>
+
 
         <TextView
             android:layout_width="match_parent"
@@ -115,7 +126,7 @@
             android:textSize="@dimen/text_size_13"
             />
         <Button android:id="@+id/btnCrearCuenta"
-            android:theme="@style/ButtonAccent"
+            android:theme="@style/ButtonBorderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="CREAR CUENTA"
@@ -165,7 +176,7 @@
             android:id="@+id/lyClaveUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/lyUsuario">
+            style="@style/lyUsuario" >
             <EditText
                 android:id="@+id/txtClaveUsuario"
                 android:layout_width="match_parent"
@@ -300,6 +311,74 @@
                 />
         </LinearLayout>
         </LinearLayout>
+
+    <LinearLayout android:id="@+id/lyRecuperarContrasena"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recuperar_contrasena"
+            android:background="@color/gray2"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="@dimen/margin_10dp"
+            android:textSize="@dimen/text_size_13"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_13"
+            android:text="@string/recuperar_contrasena_labe"
+            android:textColor="@color/primaryText"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginBottom="@dimen/margin_10dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_marginRight="@dimen/margin_16dp"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/lyEmailRecuperar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtEmailRecuperar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textNoSuggestions"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button android:id="@+id/btnRecuperarContrasena"
+            android:theme="@style/ButtonAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:text="@string/recuperar_contrasena"
+            />
+
+        <Button android:id="@+id/btnIdentificarse"
+            android:theme="@style/ButtonBorderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/identificarse"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            />
+
+        </LinearLayout>
+
 
 
     <ProgressBar
