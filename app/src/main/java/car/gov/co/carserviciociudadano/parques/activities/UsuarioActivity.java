@@ -277,6 +277,8 @@ public class UsuarioActivity extends BaseActivity {
                     finish();
                 } else {
                     init();
+                    mostrarMensaje(getString(R.string.sesion_iniciada) +" "+ mUsuario.getNombreCompleto());
+                    cerrar();
                 }
             }
 
@@ -306,6 +308,8 @@ public class UsuarioActivity extends BaseActivity {
                     finish();
                 } else {
                     init();
+                    mostrarMensaje(getString(R.string.sesion_iniciada) +" "+ mUsuario.getNombreCompleto());
+                    cerrar();
                 }
             }else{
                 mostrarMensajeDialog("Usuario o clave de SIDCAR incorrecto");
@@ -412,14 +416,16 @@ public class UsuarioActivity extends BaseActivity {
                         intent.putExtra(Usuario.FUNCIONARIO_CAR,usuario.isFuncionarioCar());
                         setResult(Activity.RESULT_OK,intent);
                         finish();
+                }else{
+                    cerrar();
                 }
             }else{
                 if(progressDialog!=null)progressDialog.dismiss();
                 mostrarMensaje("Datos del usuario fueron modificados ");
-
+                new Usuarios().guardar(usuario);
+                init();
             }
-            new Usuarios().guardar(usuario);
-            init();
+
         }
 
         @Override

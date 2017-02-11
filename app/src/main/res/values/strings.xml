@@ -81,6 +81,7 @@
     <string name="identificarse">Identificarse </string>
     <string name="olvidaste_contrasena">¿Olvidaste tu contraseña? </string>
     <string name="clave_enviada">La nueva contraseña fue enviada a su correo </string>
+    <string name="sesion_iniciada">Sesión iniciada:  </string>
 
     <string name="nro_expediente">Nro. de Expediente </string>
     <string name="nombre_usuario">Nombre de usuario </string>
