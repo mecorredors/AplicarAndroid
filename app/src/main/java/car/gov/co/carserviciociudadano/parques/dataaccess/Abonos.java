@@ -125,7 +125,7 @@ public class Abonos {
         objRequest.setTag(TAG);
         objRequest.setRetryPolicy(
                 new DefaultRetryPolicy(
-                        20000,
+                        40000,
                         0,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppCar.VolleyQueue().add(objRequest);

@@ -117,7 +117,7 @@ public class UsuarioActivity extends BaseActivity {
         }
     }
 
-    @Override
+  /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_usuario, menu);
         return true;
@@ -133,7 +133,7 @@ public class UsuarioActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+*/
     private void init(){
         mUsuario = new Usuarios().leer();
 
@@ -160,10 +160,12 @@ public class UsuarioActivity extends BaseActivity {
             mLyLogin.setVisibility(View.GONE);
             mTxtClaveUsuario.setVisibility(View.GONE);
             mTxtClaveUsuario2.setVisibility(View.GONE);
-            mTxtEmailUsuario.setVisibility(View.GONE);
+
             mLyClaveUsuario.setVisibility(View.GONE);
             mLyClaveUsuario2.setVisibility(View.GONE);
-            mLyEmailUsuario.setVisibility(View.GONE);
+            mTxtEmailUsuario.setEnabled(false);
+            mLyEmailUsuario.setEnabled(false);
+            mTxtDocumento.setEnabled(false);
             loadUsuario();
             ocultarTeclado(mLyUsuario);
         }
@@ -224,7 +226,9 @@ public class UsuarioActivity extends BaseActivity {
         mLyUsuario.setVisibility(View.VISIBLE);
         mTxtClaveUsuario.setVisibility(View.VISIBLE);
         mTxtClaveUsuario2.setVisibility(View.VISIBLE);
-        mTxtEmailUsuario.setVisibility(View.VISIBLE);
+        mTxtEmailUsuario.setEnabled(true);
+        mLyEmailUsuario.setEnabled(true);
+        mTxtDocumento.setEnabled(true);
     }
 
     @OnClick(R.id.btnOlvidateContrasena) void onRecuperarContrasena() {

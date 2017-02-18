@@ -23,10 +23,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.GZIPOutputStream;
 
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.fragments.MisReservasFragment;
 import car.gov.co.carserviciociudadano.parques.fragments.ParquesFragment;
+import car.gov.co.carserviciociudadano.parques.model.Usuario;
 
 public class MainParques extends BaseActivity {
 
@@ -44,7 +47,10 @@ public class MainParques extends BaseActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-
+    private Usuario mUsuario;
+    MenuItem mMenuEditar;
+    MenuItem mMenuCambiarContrasena;
+    MenuItem mMenuCerrarSesion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +61,7 @@ public class MainParques extends BaseActivity {
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
 
+        mUsuario = new Usuarios().leer();
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -88,7 +95,19 @@ public class MainParques extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mMenuEditar = menu.findItem(R.id.item_editar_datos);
+        mMenuCambiarContrasena = menu.findItem(R.id.item_cambiar_contrasena);
+        mMenuCerrarSesion = menu.findItem(R.id.item_cerrar_sesion);
 
+        boolean visibleStatus =  (mUsuario.getIdUsuario() > 0) ;
+        mMenuEditar.setVisible(visibleStatus);
+        mMenuCambiarContrasena.setVisible(visibleStatus);
+        mMenuCerrarSesion.setVisible(visibleStatus);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -105,11 +124,29 @@ public class MainParques extends BaseActivity {
 //            super.onBackPressed();
 //        }
 
-        if (id == R.id.item_mi_cuenta) {
+        if (id == R.id.item_mi_cuenta || id == R.id.item_editar_datos) {
 
-            Intent i = new Intent(this, UsuarioActivity.class);
-            i.putExtra(UsuarioActivity.ORIGIN, UsuarioActivity.ORIGEN_MANIN_PARQUES);
-            startActivityForResult(i,0);
+                  Intent i = new Intent(this, UsuarioActivity.class);
+                  i.putExtra(UsuarioActivity.ORIGIN, UsuarioActivity.ORIGEN_MANIN_PARQUES);
+                  startActivityForResult(i, 0);
+
+            return true;
+        }
+        if (id == R.id.item_cambiar_contrasena) {
+            if (mUsuario.getIdUsuario()>0) {
+                Intent i = new Intent(this, CambiarContrasenaActivity.class);
+                startActivity(i);
+                return true;
+            }else{
+                mostrarMensaje("Debe iniciar con su cuenta de usuario");
+            }
+        }
+
+        if (id == R.id.item_cerrar_sesion) {
+            mUsuario = new Usuario();
+            new Usuarios().guardar(mUsuario);
+            mostrarMensaje(getString(R.string.sesion_finalizada));
+            finish();
             return true;
         }
 
@@ -186,5 +223,13 @@ public class MainParques extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         mSectionsPagerAdapter.getItem(1).onActivityResult(requestCode,resultCode,data);
+
+        mUsuario = new Usuarios().leer();
+        invalidateOptionsMenu();
+      /*  if (mUsuario.getIdUsuario() > 0 ){
+            mMenuEditar.setVisible(true);
+            mMenuCambiarContrasena.setVisible(true);
+            mMenuCerrarSesion.setVisible(true);
+        }*/
     }
 }

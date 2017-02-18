@@ -442,6 +442,7 @@ public class ReservaActivity extends BaseActivity {
             mServicioReserva.setIDUsuario(mUsuario.getIdUsuario());
             mServicioReserva.setIDParque(mServicioParque.getIDParque());
             mServicioReserva.setEstadoReserva(0);
+            mServicioReserva.setOrigenReserva("ANDROID");
 
             mostrarProgressDialog();
             reservas.insert(mServicioReserva, iReserva);

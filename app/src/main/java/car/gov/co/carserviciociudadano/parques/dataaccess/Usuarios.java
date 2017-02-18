@@ -110,7 +110,7 @@ public class Usuarios {
         objRequest.setTag(TAG);
         objRequest.setRetryPolicy(
                 new DefaultRetryPolicy(
-                        20000,
+                        40000,
                         0,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppCar.VolleyQueue().add(objRequest);
@@ -148,7 +148,44 @@ public class Usuarios {
         objRequest.setTag(TAG);
         objRequest.setRetryPolicy(
                 new DefaultRetryPolicy(
-                        20000,
+                        40000,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppCar.VolleyQueue().add(objRequest);
+    }
+
+    public void cambiarContrasena( final Usuario usuario, final IUsuario iUsuario )
+    {
+        String url =  Config.API_PARQUES_USUARIO_CAMBIAR_CONTRASENA;
+
+        JsonObjectRequest objRequest = new JsonObjectRequest (
+                Request.Method.POST, url,   usuario.toJSONObject() ,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        iUsuario.onSuccess(usuario);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        iUsuario.onError(new ErrorApi(error));
+                    }
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "Basic " + Utils.getAuthorizationParques());
+                return headers;
+            }
+        };
+
+        objRequest.setTag(TAG);
+        objRequest.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        40000,
                         0,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppCar.VolleyQueue().add(objRequest);
@@ -224,7 +261,7 @@ public class Usuarios {
         objRequest.setTag(TAG);
         objRequest.setRetryPolicy(
                 new DefaultRetryPolicy(
-                        10000,
+                        20000,
                         0,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppCar.VolleyQueue().add(objRequest);

@@ -23,6 +23,7 @@ public class ServicioReserva {
     private int CantidadReserva;
     private int EstadoReserva;
     private int IDParque;
+    private String  OrigenReserva;
     //datos canasta
     private int IDUsuario;
     private Date FechaInicialReserva;
@@ -190,5 +191,13 @@ public class ServicioReserva {
 
     public void setLogin(String login) {
         Login = login;
+    }
+
+    public String getOrigenReserva() {
+        return OrigenReserva;
+    }
+
+    public void setOrigenReserva(String origenReserva) {
+        OrigenReserva = origenReserva;
     }
 }

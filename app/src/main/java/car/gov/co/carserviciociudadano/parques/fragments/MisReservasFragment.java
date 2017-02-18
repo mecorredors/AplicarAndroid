@@ -3,8 +3,6 @@ package car.gov.co.carserviciociudadano.parques.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,20 +21,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
-import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
 import car.gov.co.carserviciociudadano.parques.activities.DetalleReservaActivity;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 import car.gov.co.carserviciociudadano.parques.activities.UsuarioActivity;
 import car.gov.co.carserviciociudadano.parques.adapter.MisReservasAdapter;
-import car.gov.co.carserviciociudadano.parques.adapter.ParquesAdapter;
 import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.interfaces.IDetalleReserva;
-import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
 import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.parques.model.Usuario;
 
 
@@ -95,11 +88,13 @@ public class MisReservasFragment extends BaseFragment {
 
     @Override
     public void onPause() {
-        AppCar.VolleyQueue().cancelAll(Parques.TAG);
+        AppCar.VolleyQueue().cancelAll(DetalleReservas.TAG);
         super.onPause();
 
     }
     private void loadDetalleReservas() {
+
+        double s= 5/0;
 
         if (mUsuario.getIdUsuario() > 0){
 

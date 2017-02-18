@@ -36,6 +36,7 @@ public class Usuario {
     private String Documento;
     private boolean FuncionarioCar;
     private boolean loginSIDCAR;
+    private String NuevaClaveUsuario;
 
 
     public static final String ID_USUARIO = "IdUsuario";
@@ -80,6 +81,7 @@ public class Usuario {
                 this.AplicaRango = element.AplicaRango;
                 this.Documento = element.Documento;
                 this.FuncionarioCar = element.FuncionarioCar;
+                this.NuevaClaveUsuario = element.NuevaClaveUsuario;
 
             } catch (JsonSyntaxException ex) {
                 Log.e("Usuario.json", ex.toString());
@@ -257,5 +259,13 @@ public class Usuario {
 
     public void setLoginSIDCAR(boolean loginSIDCAR) {
         this.loginSIDCAR = loginSIDCAR;
+    }
+
+    public String getNuevaClaveUsuario() {
+        return NuevaClaveUsuario;
+    }
+
+    public void setNuevaClaveUsuario(String nuevaClaveUsuario) {
+        NuevaClaveUsuario = nuevaClaveUsuario;
     }
 }

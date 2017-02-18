@@ -15,6 +15,7 @@
     <string name="title_consultar_tramite">Consultar trámite </string>
     <string name="title_buscar_expediente">Búsqueda de expedientes </string>
     <string name="title_expediente">Expediente </string>
+    <string name="title_cambiar_contrasena">Cambiar contraseña </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -57,6 +58,7 @@
     <string name="leer_politicas"> Leer políticas de uso </string>
     <string name="acepto_politicas"> Acepto políticas de uso </string>
     <string name="error_fecha_mayor"> La fecha no puede ser mayor al día de hoy </string>
+    <string name="editar_mis_datos">Editar mis datos  </string>
 
 
     <!-- consulta publica -->
@@ -82,6 +84,16 @@
     <string name="olvidaste_contrasena">¿Olvidaste tu contraseña? </string>
     <string name="clave_enviada">La nueva contraseña fue enviada a su correo </string>
     <string name="sesion_iniciada">Sesión iniciada:  </string>
+    <string name="cambiar_contrasena">CAMBIAR CONTRASEÑA  </string>
+    <string name="contrasena_actual">Contraseña actual  </string>
+    <string name="nueva_contrasena">Nueva contraseña  </string>
+    <string name="actualizar_contrasena">ACTUALIZAR CONTRASEÑA  </string>
+    <string name="validar_contrasena">La contraseña debe tener mínimo 4 caracteres  </string>
+    <string name="contrasena_no_coincide">Las contraseñas ingresadas no coinciden  </string>
+    <string name="contrasen_actualizada">La contraseña fue actualizada correctamente </string>
+    <string name="sesion_finalizada">Su sesión a finalizado </string>
+
+
 
     <string name="nro_expediente">Nro. de Expediente </string>
     <string name="nombre_usuario">Nombre de usuario </string>
@@ -100,9 +112,6 @@
     <string name="anexos">Anexos</string>
     <string name="sin_definir">(sin definir)</string>
     <string name="no_hay_expediente">No se encontró ningún expediente</string>
-
-
-
 
 
 </resources>

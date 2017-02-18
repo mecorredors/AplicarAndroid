@@ -8,4 +8,19 @@
         android:title="@string/mi_cuenta"
         android:icon="@drawable/ic_person_24dp"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/item_editar_datos"
+        android:orderInCategory="101"
+        android:title="@string/editar_mis_datos"
+               app:showAsAction="never" />
+    <item
+        android:id="@+id/item_cambiar_contrasena"
+        android:orderInCategory="102"
+        android:title="@string/title_cambiar_contrasena"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/item_cerrar_sesion"
+        android:orderInCategory="103"
+        android:title="@string/cerrar_sesion"
+        app:showAsAction="never" />
 </menu>

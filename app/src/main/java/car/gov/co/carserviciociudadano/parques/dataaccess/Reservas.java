@@ -66,7 +66,7 @@ public class Reservas {
         objRequest.setTag(TAG);
         objRequest.setRetryPolicy(
                 new DefaultRetryPolicy(
-                        20000,
+                        40000,
                         0,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppCar.VolleyQueue().add(objRequest);
@@ -81,12 +81,14 @@ public class Reservas {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.e("ok","anulacion");
                        iReserva.onSuccess(servicioReserva);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.e("error anulacion",error.toString());
                         iReserva.onError(new ErrorApi(error));
                     }
                 }) {
@@ -103,7 +105,7 @@ public class Reservas {
         objRequest.setTag(TAG);
         objRequest.setRetryPolicy(
                 new DefaultRetryPolicy(
-                        20000,
+                        40000,
                         0,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppCar.VolleyQueue().add(objRequest);

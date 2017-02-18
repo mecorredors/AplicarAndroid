@@ -32,6 +32,7 @@ public class Config {
     public static String API_PARQUES_USUARIO_ACTUALIZAR =  ServerParques + "api/usuario/actualizar";
     public static String API_PARQUES_USUARIO_RECUPERAR_CONTRASENA =  ServerParques + "api/usuario/recuperarcontrasena";
     public static String API_PARQUES_USUARIO_LOGIN =  ServerParques + "api/usuario/login/";
+    public static String API_PARQUES_USUARIO_CAMBIAR_CONTRASENA =  ServerParques + "api/usuario/cambiarcontrasena/";
     public static String API_PARQUES_MUNICIPIOS =  ServerParques + "api/catalogo/municipios/";
     public static String API_PARQUES_BANCOS =  ServerParques + "api/catalogo/bancos/";
     public static String API_PARQUES_PARAMETROS =  ServerParques + "api/catalogo/parametros/";
