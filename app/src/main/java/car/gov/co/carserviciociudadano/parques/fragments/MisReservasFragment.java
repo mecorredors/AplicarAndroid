@@ -94,8 +94,6 @@ public class MisReservasFragment extends BaseFragment {
     }
     private void loadDetalleReservas() {
 
-        double s= 5/0;
-
         if (mUsuario.getIdUsuario() > 0){
 
             DetalleReservas detalleReservas = new DetalleReservas();

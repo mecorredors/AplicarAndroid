@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -76,6 +77,11 @@ public class AbonoActivity extends BaseActivity {
     @BindView(R.id.lyImgComprobante)   View mLyImgComprobante;
     @BindView(R.id.imgComprobante)    ImageView mImgComprobante;
     @BindView(R.id.btnBorrarImagen)    ImageButton mBtnBorrarImagen;
+
+    @BindView(R.id.inputLyFechaConsignacion)  TextInputLayout mInputLyFechaConsignacion;
+    @BindView(R.id.inputLyNroConsignacion)  TextInputLayout mInputLyNroConsignacion;
+    @BindView(R.id.inputLyObservaciones)  TextInputLayout mInputLyObservaciones;
+    @BindView(R.id.inputLyValor)  TextInputLayout mInputLyValor;
 
     List<Banco> mLstBancos = new ArrayList<>();
     ArrayAdapter<Banco> adapterBancos;
@@ -230,10 +236,10 @@ public class AbonoActivity extends BaseActivity {
     private boolean  validar(){
         boolean res = true;
 
-        res = !Validation.IsEmpty(mTxtFechaConsignacion) && res;
-        res = !Validation.IsEmpty(mTxtValor) && res;
-        res = !Validation.IsEmpty(mTxtNroConsignacion) && res;
-        res = !Validation.IsEmpty(mTxtObservaciones) && res;
+        res = !Validation.IsEmpty(mTxtFechaConsignacion,mInputLyFechaConsignacion) && res;
+        res = !Validation.IsEmpty(mTxtValor, mInputLyValor) && res;
+        res = !Validation.IsEmpty(mTxtNroConsignacion, mInputLyNroConsignacion) && res;
+        res = !Validation.IsEmpty(mTxtObservaciones, mInputLyObservaciones) && res;
         res = !Validation.IsEmpty(mSpiBanco) && res;
 
 

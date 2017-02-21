@@ -33,6 +33,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/inputLyFechaConsignacion"
         style="@style/lyControl">
         <EditText
             android:id="@+id/txtFechaConsignacion"
@@ -48,6 +49,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/inputLyValor"
         style="@style/lyControl">
         <EditText
             android:id="@+id/txtValor"
@@ -75,6 +77,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/inputLyNroConsignacion"
         style="@style/lyControl">
         <EditText
             android:id="@+id/txtNroConsignacion"
@@ -89,6 +92,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/inputLyObservaciones"
         style="@style/lyControl">
         <EditText
             android:id="@+id/txtObservaciones"

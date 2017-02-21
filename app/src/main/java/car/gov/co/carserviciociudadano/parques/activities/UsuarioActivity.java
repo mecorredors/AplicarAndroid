@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,14 +59,22 @@ public class UsuarioActivity extends BaseActivity {
     @BindView(R.id.lyUsuario)  View mLyUsuario;
     @BindView(R.id.lblFuncionarioCar)    TextView mLblFuncionarioCar;
     @BindView(R.id.inputLayoutEmail)    TextInputLayout mInputLayoutEmail;
-    @BindView(R.id.lyEmailUsuario)    View mLyEmailUsuario;
-    @BindView(R.id.lyClaveUsuario)    View mLyClaveUsuario;
-    @BindView(R.id.lyClaveUsuario2)    View mLyClaveUsuario2;
+    @BindView(R.id.lyEmailUsuario)    TextInputLayout mLyEmailUsuario;
+    @BindView(R.id.lyClaveUsuario)    TextInputLayout mLyClaveUsuario;
+    @BindView(R.id.lyClaveUsuario2)    TextInputLayout mLyClaveUsuario2;
     @BindView(R.id.lyRecuperarContrasena)    View mLyRecuperarContrasena;
     @BindView(R.id.txtEmailRecuperar)    EditText mTxtEmailRecuperar;
     @BindView(R.id.btnRecuperarContrasena)    Button mBtnRecuperarContrasena;
     @BindView(R.id.btnIdentificarse)    Button mBtnIdentificarse;
     @BindView(R.id.btnOlvidateContrasena)    Button mBtnOlvidateContrasena;
+
+    @BindView(R.id.inputlyTelefono)    TextInputLayout mInputlyTelefono;
+    @BindView(R.id.inputLyCelular)    TextInputLayout mInputlyCelular;
+    @BindView(R.id.inputLyNombre)    TextInputLayout mInputLyNombre;
+    @BindView(R.id.inputLyDireccion)    TextInputLayout mInputLyDireccion;
+    @BindView(R.id.inputLyDocumento)    TextInputLayout mInputLyDocumento;
+    @BindView(R.id.inputLyEmailRecuperar)    TextInputLayout mInputLyEmailRecuperar;
+    @BindView(R.id.inputLyClave)    TextInputLayout mInputLyClave;
 
     Usuario mUsuario;
     List<Municipio> mLstMunicipios = new ArrayList<>();
@@ -324,14 +333,14 @@ public class UsuarioActivity extends BaseActivity {
 
     private boolean validarLogin(){
         boolean res = true;
+        mInputLayoutEmail.setErrorEnabled(false);
+        mInputLyClave.setErrorEnabled(false);
         if (mTxtEmail.getText().toString().isEmpty()) {
-            mostrarMensaje("Ingrese el email o login", mLyLogin);
-            mTxtEmail.setError("Ingrese el email o login");
+            mInputLayoutEmail.setError("Ingrese el email o login");
             res = false;
         }
          if (mTxtClave.getText().toString().isEmpty()){
-            mostrarMensaje("Ingrese una valor",mLyLogin);
-            mTxtClave.setError("Ingrese un valor");
+            mInputLyClave.setError("Ingrese una clave");
              res = false;
         }
         return res;
@@ -340,21 +349,23 @@ public class UsuarioActivity extends BaseActivity {
     private boolean validarDatosUsuario(boolean isNewUser){
         boolean res = true;
 
-       res = Validation.IsValidEmail(mTxtEmailUsuario);
+       res = Validation.IsValidEmail(mTxtEmailUsuario,mLyEmailUsuario);
         if (isNewUser) {
-            res = Validation.IsValidPassword(mTxtClaveUsuario) && res;
+            res = Validation.IsValidPassword(mTxtClaveUsuario,mLyClaveUsuario) && res;
+            mLyClaveUsuario2.setErrorEnabled(false);
             if (!mTxtClaveUsuario.getText().toString().equals(mTxtClaveUsuario2.getText().toString())){
                 res = false;
-                mTxtClaveUsuario2.setError(getString(R.string.error_contrasena2));
+                mLyClaveUsuario2.setError(getString(R.string.error_contrasena2));
             }
         }
-        res = !Validation.IsEmpty(mTxtNombre) && res;
-        res = Validation.IsPhone(mTxtCelular) && res;
-        res = Validation.IsPhone(mTxtTelefono) && res;
-        res = !Validation.IsEmpty(mTxtDireccion) && res;
-        res = !Validation.IsEmpty(mTxtDocumento) && res;
+        res = !Validation.IsEmpty(mTxtNombre,mInputLyNombre) && res;
+        res = Validation.IsPhone(mTxtCelular,mInputlyCelular) && res;
+        res = Validation.IsPhone(mTxtTelefono,mInputlyTelefono) && res;
+        res = !Validation.IsEmpty(mTxtDireccion, mInputLyDireccion) && res;
+        res = !Validation.IsEmpty(mTxtDocumento, mInputLyDocumento) && res;
         res = !Validation.IsEmpty(mSpiMunicipio) && res;
 
+        Log.d("validacion usuario ",res +"");
         return res;
     }
 
@@ -453,7 +464,7 @@ public class UsuarioActivity extends BaseActivity {
 
     private void recuperarContrasena(){
         ocultarTeclado(mLyUsuario);
-        if(Validation.IsValidEmail(mTxtEmailRecuperar)) {
+        if(Validation.IsValidEmail(mTxtEmailRecuperar,mInputLyEmailRecuperar)) {
             Usuarios usuarios = new Usuarios();
             Usuario usuario = new Usuario();
             usuario.setEmailUsuario(mTxtEmailRecuperar.getText().toString());

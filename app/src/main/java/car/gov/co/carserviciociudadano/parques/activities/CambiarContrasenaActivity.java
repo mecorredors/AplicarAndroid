@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.parques.activities;
 
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,8 @@ public class CambiarContrasenaActivity extends BaseActivity {
     @BindView(R.id.txtContrasenaActual)  EditText mTxtContrasenaActual;
     @BindView(R.id.txtNuevaContrasena)  EditText mTxtNuevaContrasena;
     @BindView(R.id.txtConfirmarContrasena)  EditText mTxtConfirmarContrasena;
+    @BindView(R.id.inputLyContrasenaActual)   TextInputLayout mInputLyContrasenaActual;
+    @BindView(R.id.inputLyNuevaContrasena)  TextInputLayout mInputLyNuevaContrasena;
 
 
     @Override
@@ -45,8 +48,8 @@ public class CambiarContrasenaActivity extends BaseActivity {
 
     private boolean validar(){
         boolean res = true;
-        res = !Validation.IsEmpty(mTxtContrasenaActual) && res;
-        res = !Validation.IsEmpty(mTxtNuevaContrasena) && res;
+        res = !Validation.IsEmpty(mTxtContrasenaActual, mInputLyContrasenaActual) && res;
+        res = !Validation.IsEmpty(mTxtNuevaContrasena, mInputLyNuevaContrasena) && res;
 
 
         if (mTxtConfirmarContrasena.getText().toString().trim().length() < 4){

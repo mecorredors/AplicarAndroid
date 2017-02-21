@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.TextInputLayout;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -37,12 +38,13 @@ public class Validation {
         return matcher.matches();
     }
 
-    public static boolean IsValidEmail(EditText campo) {
+    public static boolean IsValidEmail(EditText campo, TextInputLayout inputLayout) {
         if(!Validation.IsValidEmail(campo.getText().toString())){
-
-            campo.setError(AppCar.getContext().getResources().getString(R.string.email_incorrecto));
+            inputLayout.setError(AppCar.getContext().getResources().getString(R.string.email_incorrecto));
+            campo.requestFocus();
             return  false;
         }
+        inputLayout.setErrorEnabled(false);
         return true;
     }
 
@@ -53,24 +55,27 @@ public class Validation {
         return matcher.matches();
     }
 
-    public static boolean IsValidPassword(EditText campo){
+    public static boolean IsValidPassword(EditText campo, TextInputLayout inputLayout){
         if (campo.getText().toString().length() < 4 ) {
-            campo.setError(AppCar.getContext().getResources().getString(R.string.error_contrasena));
+            inputLayout.setError(AppCar.getContext().getResources().getString(R.string.error_contrasena));
+            campo.requestFocus();
             return  false;
         }
+        inputLayout.setErrorEnabled(false);
         return true;
     }
 
 
 
-    public static boolean IsEmpty(EditText campo){
+    public static boolean IsEmpty(EditText campo, TextInputLayout inputLayout){
         if(campo.getText().toString().trim().isEmpty()){
+            inputLayout.setError(AppCar.getContext().getResources().getString(R.string.error_campo_obligatorio));
             campo.requestFocus();
-            campo.setError(AppCar.getContext().getResources().getString(R.string.error_campo_obligatorio));
             return true;
         }
         else
-            campo.setError(null);
+        inputLayout.setErrorEnabled(false);
+
         return false;
     }
 
@@ -94,11 +99,15 @@ public class Validation {
 
     }
 
-    public static boolean IsPhone(EditText campo){
+    public static boolean IsPhone(EditText campo, TextInputLayout inputLayout){
         if(!Validation.IsPhone(campo.getText().toString())){
-            campo.setError(AppCar.getContext().getResources().getString(R.string.error_telefono));
+            //campo.setError(AppCar.getContext().getResources().getString(R.string.error_telefono));
+            inputLayout.setError(AppCar.getContext().getResources().getString(R.string.error_telefono));
+            campo.requestFocus();
             return false;
         }
+
+        inputLayout.setErrorEnabled(false);
         return true;
     }
 
@@ -107,8 +116,9 @@ public class Validation {
         {
             TextView errorText = (TextView)spinner.getSelectedView();
 
-            if (errorText != null)
+            if (errorText != null) {
                 errorText.setError(AppCar.getContext().getResources().getString(R.string.error_campo_obligatorio));
+            }
             return true;
         }
         return false;
