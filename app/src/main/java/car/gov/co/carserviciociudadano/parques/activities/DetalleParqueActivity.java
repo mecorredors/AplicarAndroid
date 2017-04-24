@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -63,6 +64,7 @@ public class DetalleParqueActivity extends BaseActivity {
     ProgressBar mProgressView;
     private Parque mParque;
     TextView mLblVerFotos;
+    Button btnComoLlegar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +137,8 @@ public class DetalleParqueActivity extends BaseActivity {
         mLblVerFotos = (TextView) findViewById(R.id.lblVerFotos);
         mLblVerFotos.setOnClickListener(onClickListener);
         mImagen.setOnClickListener(onClickListener);
+        btnComoLlegar = (Button) findViewById(R.id.btnComoLlegar);
+        btnComoLlegar.setOnClickListener(onClickListener);
     }
 
     private void loadArchivosParque(){
@@ -144,7 +148,11 @@ public class DetalleParqueActivity extends BaseActivity {
             public void onSuccess(List<ArchivoParque> lstArchivosParque) {
                 if(lstArchivosParque.size()>0) {
                     mLblArchivoObservaciones.setText(lstArchivosParque.get(0).getObservacionesArchivo());
-                    mLblVerFotos.setText(lstArchivosParque.size() + " FOTOS");
+
+                   int size = 0;
+                   for(ArchivoParque item : lstArchivosParque)
+                       if (item.getIDTipoArchivo()==1) size++;
+                    mLblVerFotos.setText(size + " FOTOS");
                 }
             }
 
@@ -187,14 +195,17 @@ public class DetalleParqueActivity extends BaseActivity {
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            if (v.getId()== R.id.lblVerFotos || v.getId()== R.id.imagen){
+            int id = v.getId();
+            if (id== R.id.lblVerFotos || id == R.id.imagen){
                 Intent j = new Intent(getApplicationContext(),ImageViewerActivity.class);
                 j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
                 j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
                 startActivity(j);
+            }else if (id == R.id.btnComoLlegar) {
+                Intent i = new Intent(DetalleParqueActivity.this, ComoLLegarActivity.class);
+                IntentHelper.addObjectForKey(mParque, Parques.TAG);
+                startActivity(i);
             }else {
-
                 int position = mRecyclerView.getChildAdapterPosition(v);
                 ServicioParque servicio = mLstServiciosParque.get(position);
 

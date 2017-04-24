@@ -29,6 +29,8 @@ public class Parque {
     private String PoliticasParque;
     private String ArchivoParque;
     private String UrlArchivoParque;
+    private double Latitude;
+    private double Longitude;
 
     public static final String ID_PARQUE = "IDParque";
     public static final String NOMBRE_PARQUE = "NombreParque";
@@ -64,6 +66,8 @@ public class Parque {
                 this.PoliticasParque = element.PoliticasParque;
                 this.ArchivoParque = element.ArchivoParque;
                 this.UrlArchivoParque = element.UrlArchivoParque;
+                this.Latitude = element.Latitude;
+                this.Longitude = element.Longitude;
 
             } catch (JsonSyntaxException ex) {
                 Log.e("Parque.json", ex.toString());
@@ -197,5 +201,21 @@ public class Parque {
 
     public void setUrlArchivoParque(String urlArchivoParque) {
         UrlArchivoParque = urlArchivoParque;
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
     }
 }

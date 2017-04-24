@@ -489,7 +489,7 @@ public class ReservaActivity extends BaseActivity {
         @Override
         public void onError(ErrorApi error) {
            if (mProgressDialog != null) mProgressDialog.dismiss();
-            mostrarMensajeDialog(error.getMessage() + " error "+error.getCode() + " error +");
+            mostrarMensajeDialog(error.getMessage() + " error "+error.getCode() );
         }
     };
 

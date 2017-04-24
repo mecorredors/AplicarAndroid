@@ -26,7 +26,7 @@ public class ImageViewerActivity extends BaseActivity {
     ImageViewerPagerAdapter _AdapterImages;
     PageIndicator mIndicatorImages;
 
-    List<ArchivoParque> _LstMedias= new ArrayList<>();
+    List<ArchivoParque> mLstMedias= new ArrayList<>();
     private int mIdParque;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,11 @@ public class ImageViewerActivity extends BaseActivity {
             @Override
             public void onSuccess(List<ArchivoParque> lstArchivosParque) {
 
-                _AdapterImages.addAllImageViewer(lstArchivosParque);
+                mLstMedias.clear();
+                for(ArchivoParque item : lstArchivosParque)
+                    if (item.getIDTipoArchivo()==1) mLstMedias.add(item);
+
+                _AdapterImages.addAllImageViewer(mLstMedias);
                 _AdapterImages.notifyDataSetChanged();
                 mIndicatorImages.notifyDataSetChanged();
 //                if(medias.size() > _Position){

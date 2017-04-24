@@ -19,7 +19,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName "0.6"
+        versionName "0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -67,7 +67,10 @@ dependencies {
     compile 'com.anupcowkur:reservoir:3.1.0'
     compile 'com.itextpdf:itextg:5.5.10'
     compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
+   // compile 'com.android.support.constraint:constraint-layout:+'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.akexorcist:googledirectionlibrary:1.0.5'
 }
 apply plugin: 'com.google.gms.google-services'

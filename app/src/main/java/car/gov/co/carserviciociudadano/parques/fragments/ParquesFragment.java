@@ -8,10 +8,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
+import com.anupcowkur.reservoir.Reservoir;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 import car.gov.co.carserviciociudadano.parques.adapter.ParquesAdapter;
 import car.gov.co.carserviciociudadano.parques.businessrules.BRParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
+import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
@@ -102,6 +106,7 @@ public class ParquesFragment extends BaseFragment {
                 mLstParques.clear();
                 mLstParques.addAll(lstParques);
                 mAdaptador.notifyDataSetChanged();
+                removeCacheServicios();
             }
 
             @Override
@@ -136,4 +141,14 @@ public class ParquesFragment extends BaseFragment {
 
         }
     };
+
+    private void removeCacheServicios(){
+        try {
+            for (Parque item : mLstParques) {
+                Reservoir.delete( ServiciosParque.TAG+item.getIDParque());
+            }
+        } catch (Exception e) {
+            //failure
+        }
+    }
 }
