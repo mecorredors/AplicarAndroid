@@ -78,6 +78,9 @@ public class ErrorApi {
 
     }
 
+    public ErrorApi(){
+       setMessage("");
+    }
     public ErrorApi(JSONException ex){
         StatusCode = 0;
         Message = ex.toString();

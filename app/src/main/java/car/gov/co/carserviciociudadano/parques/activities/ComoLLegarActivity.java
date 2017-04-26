@@ -57,10 +57,8 @@ import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallback {
 
-    @BindView(R.id.lblDuracion)
-    TextView lblDuracion;
-    @BindView(R.id.lblDistancia)
-    TextView lblDistancia;
+    @BindView(R.id.lblDuracion)   TextView lblDuracion;
+    @BindView(R.id.lblDistancia)  TextView lblDistancia;
     @BindView(R.id.progressView)
     ProgressBar progressView;
 
@@ -91,8 +89,7 @@ public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallba
         bar.setDisplayHomeAsUpEnabled(true);
         mParque = (Parque) IntentHelper.getObjectForKey(Parques.TAG);
         destinoLatLng = new LatLng(mParque.getLatitude(),mParque.getLongitude());
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
 
@@ -111,7 +108,7 @@ public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallba
     }
 
     private void insertarMarcador() {
-        mapa.addMarker(new MarkerOptions().position(destinoLatLng).title("Embalse del Neusa"));
+        mapa.addMarker(new MarkerOptions().position(destinoLatLng).title(mParque.getNombreParque()));
 
 
     }

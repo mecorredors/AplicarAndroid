@@ -24,16 +24,14 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.adapter.ServiciosParqueAdapter;
-import car.gov.co.carserviciociudadano.parques.businessrules.BRArchivosParque;
+import car.gov.co.carserviciociudadano.parques.businessrules.BRArchivosParquePresenter;
 import car.gov.co.carserviciociudadano.parques.businessrules.BRServiciosParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
-import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
+import car.gov.co.carserviciociudadano.parques.dataaccess.IViewArchivoParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
-import car.gov.co.carserviciociudadano.parques.interfaces.IArchivoParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IServicioParque;
 import car.gov.co.carserviciociudadano.parques.model.ArchivoParque;
-import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
@@ -142,26 +140,22 @@ public class DetalleParqueActivity extends BaseActivity {
     }
 
     private void loadArchivosParque(){
-        BRArchivosParque archivosParque = new BRArchivosParque();
-        archivosParque.list(new IArchivoParque() {
-            @Override
-            public void onSuccess(List<ArchivoParque> lstArchivosParque) {
-                if(lstArchivosParque.size()>0) {
-                    mLblArchivoObservaciones.setText(lstArchivosParque.get(0).getObservacionesArchivo());
-
-                   int size = 0;
-                   for(ArchivoParque item : lstArchivosParque)
-                       if (item.getIDTipoArchivo()==1) size++;
-                    mLblVerFotos.setText(size + " FOTOS");
-                }
-            }
-
-            @Override
-            public void onError(ErrorApi error) {
-
-            }
-        },mParque.getIDParque());
+        BRArchivosParquePresenter archivosParque = new BRArchivosParquePresenter(iViewArchivoParque);
+         archivosParque.list(mParque.getIDParque());
     }
+
+    IViewArchivoParque iViewArchivoParque = new IViewArchivoParque() {
+        @Override
+        public void onSuccess(List<ArchivoParque> lstArchivosParque,ArchivoParque imagenPrincipal, int count) {
+           if (count>0){
+               mLblVerFotos.setText(count + " FOTOS");
+               mLblArchivoObservaciones.setText(imagenPrincipal.getObservacionesArchivo());
+           }
+        }
+        @Override
+        public void onError(ErrorApi error) {
+        }
+    };
 
     private void loadServiciosParque(){
         showProgress(mProgressView,true);
