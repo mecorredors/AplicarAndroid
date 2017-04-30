@@ -10,8 +10,10 @@ import java.util.List;
 
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.CirclePageIndicator;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.parques.adapter.ImageViewerPagerAdapter;
 import car.gov.co.carserviciociudadano.parques.businessrules.BRArchivosParquePresenter;
+import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.IViewArchivoParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.PageIndicator;
 import car.gov.co.carserviciociudadano.parques.model.ArchivoParque;
@@ -26,6 +28,7 @@ public class ImageViewerActivity extends BaseActivity implements  IViewArchivoPa
 
     List<ArchivoParque> mLstMedias= new ArrayList<>();
     private int mIdParque;
+    private int mTypoArchivoParque;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,7 @@ public class ImageViewerActivity extends BaseActivity implements  IViewArchivoPa
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             mIdParque = bundle.getInt(Parque.ID_PARQUE);
+            mTypoArchivoParque = bundle.getInt(Enumerator.TipoArchivoParque.TAG);
         }
 
         _PagerImages = (ViewPager) this.findViewById(R.id.pagerImages);
@@ -52,7 +56,7 @@ public class ImageViewerActivity extends BaseActivity implements  IViewArchivoPa
 
     private void loadArchivosParque() {
         BRArchivosParquePresenter archivosParque = new BRArchivosParquePresenter(this);
-        archivosParque.list(mIdParque);
+        archivosParque.list(mIdParque, mTypoArchivoParque);
     }
 
     public void onSuccess(List<ArchivoParque> lstArchivosParque, ArchivoParque archivoParque, int count) {

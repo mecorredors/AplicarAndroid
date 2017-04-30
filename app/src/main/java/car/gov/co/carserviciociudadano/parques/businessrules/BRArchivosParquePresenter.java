@@ -20,14 +20,16 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class BRArchivosParquePresenter {
 
-IViewArchivoParque viewArchivoParque;
+    IViewArchivoParque viewArchivoParque;
+    int mTypoArchivoParque;
 
     public BRArchivosParquePresenter(IViewArchivoParque view){
         this.viewArchivoParque= view;
     }
 
-    public void list( int idParque )    {
+    public void list( int idParque, int typoArchivoParque )    {
         String tag = ArchivosParque.TAG+idParque;
+        mTypoArchivoParque = typoArchivoParque;
         ArchivosParque archivosParque = new ArchivosParque();
 
         if (Utils.existeCache(tag) && !Utils.cacheExpiro(Enumerator.CacheNumDias.ARCHIVOS_PARQUE,tag)) {
@@ -63,16 +65,26 @@ IViewArchivoParque viewArchivoParque;
 
             int count = 0;
             for(ArchivoParque item : lstArchivosParque) {
-                if (item.getIDTipoArchivo() == 1) {
-                    count++;
-                    imagenPrincipal = item;
-                }
-                if (item.getIDTipoArchivo() == 3) {
+
+                if (mTypoArchivoParque == Enumerator.TipoArchivoParque.PRINCIPAL_Y_GALERIA) {
+                    if (item.getIDTipoArchivo() == 1) {
+                        count++;
+                        imagenPrincipal = item;
+                    }
+                    if (item.getIDTipoArchivo() == 3) {
+                        lstImagenesParque.add(item);
+                        count++;
+                    }
+                }else if (item.getIDTipoArchivo() == mTypoArchivoParque) {
                     lstImagenesParque.add(item);
                     count++;
                 }
             }
-            if(count>0 && imagenPrincipal != null) lstImagenesParque.add(0,imagenPrincipal);
+            if(count>0 && imagenPrincipal != null){
+                lstImagenesParque.add(0,imagenPrincipal);
+            }else if ( count > 0 && imagenPrincipal == null){
+                imagenPrincipal = lstImagenesParque.get(0); // se retorna la primer archivo como principal, solo para no retornar null
+            }
 
            viewArchivoParque.onSuccess(lstImagenesParque, imagenPrincipal,count);
 

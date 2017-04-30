@@ -4,43 +4,35 @@ package car.gov.co.carserviciociudadano.parques.fragments;
  * Created by Olger on 21/01/2017.
  */
 
-import java.io.FileNotFoundException;
-
+import com.github.chrisbanes.photoview.PhotoView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.model.ArchivoParque;
-//import uk.co.senab.photoview.PhotoViewAttacher;
+
 
 public class ImageViewerFragment extends BaseFragment  {
 
-    ImageView Image;
+   PhotoView Image;
     private boolean IsUrl;
     // private int MultimediaType;
     //String ImagePath="";
     ProgressBar ImageProgress;
     Button btnPlayVideo;
     ArchivoParque _Media= new ArchivoParque();
-   // PhotoViewAttacher mAttacher;
+    //PhotoViewAttacher mAttacher;
     String ImagePath = "";
     public static Fragment newInstance(ArchivoParque media){
         ImageViewerFragment img= new ImageViewerFragment();
@@ -62,7 +54,7 @@ public class ImageViewerFragment extends BaseFragment  {
 
         }
 
-        Image= (ImageView) view.findViewById(R.id.Image);
+        Image= (PhotoView) view.findViewById(R.id.Image);
         ImageProgress=(ProgressBar) view.findViewById(R.id.image_progress);
 
         if (ImagePath != null && !ImagePath.isEmpty()) {
@@ -102,7 +94,6 @@ public class ImageViewerFragment extends BaseFragment  {
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                     ImageProgress.setVisibility(View.GONE);
                     Image.setImageBitmap(loadedImage);
-                    //mAttacher = new PhotoViewAttacher(Image);
                 }
 
                 @Override
@@ -115,7 +106,6 @@ public class ImageViewerFragment extends BaseFragment  {
                     ImageProgress.setVisibility(View.GONE);
                 }
             });
-
         }
     }
 

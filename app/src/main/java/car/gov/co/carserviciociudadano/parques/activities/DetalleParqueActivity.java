@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.parques.adapter.ServiciosParqueAdapter;
 import car.gov.co.carserviciociudadano.parques.businessrules.BRArchivosParquePresenter;
 import car.gov.co.carserviciociudadano.parques.businessrules.BRServiciosParques;
@@ -62,7 +63,8 @@ public class DetalleParqueActivity extends BaseActivity {
     ProgressBar mProgressView;
     private Parque mParque;
     TextView mLblVerFotos;
-    Button btnComoLlegar;
+    Button mBtnComoLlegar;
+    Button mBtnMapasDelParque;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,13 +137,15 @@ public class DetalleParqueActivity extends BaseActivity {
         mLblVerFotos = (TextView) findViewById(R.id.lblVerFotos);
         mLblVerFotos.setOnClickListener(onClickListener);
         mImagen.setOnClickListener(onClickListener);
-        btnComoLlegar = (Button) findViewById(R.id.btnComoLlegar);
-        btnComoLlegar.setOnClickListener(onClickListener);
+        mBtnComoLlegar = (Button) findViewById(R.id.btnComoLlegar);
+        mBtnComoLlegar.setOnClickListener(onClickListener);
+        mBtnMapasDelParque = (Button) findViewById(R.id.btnMapasDelParque);
+        mBtnMapasDelParque.setOnClickListener(onClickListener);
     }
 
     private void loadArchivosParque(){
         BRArchivosParquePresenter archivosParque = new BRArchivosParquePresenter(iViewArchivoParque);
-         archivosParque.list(mParque.getIDParque());
+         archivosParque.list(mParque.getIDParque(), Enumerator.TipoArchivoParque.PRINCIPAL_Y_GALERIA);
     }
 
     IViewArchivoParque iViewArchivoParque = new IViewArchivoParque() {
@@ -193,12 +197,18 @@ public class DetalleParqueActivity extends BaseActivity {
             if (id== R.id.lblVerFotos || id == R.id.imagen){
                 Intent j = new Intent(getApplicationContext(),ImageViewerActivity.class);
                 j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
-                j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
+                j.putExtra(Enumerator.TipoArchivoParque.TAG, Enumerator.TipoArchivoParque.PRINCIPAL_Y_GALERIA);
                 startActivity(j);
             }else if (id == R.id.btnComoLlegar) {
                 Intent i = new Intent(DetalleParqueActivity.this, ComoLLegarActivity.class);
                 IntentHelper.addObjectForKey(mParque, Parques.TAG);
                 startActivity(i);
+            }else if (id == R.id.btnMapasDelParque){
+                Intent j = new Intent(getApplicationContext(),ImageViewerActivity.class);
+                j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
+                j.putExtra(Enumerator.TipoArchivoParque.TAG, Enumerator.TipoArchivoParque.PRINCIPAL);
+                startActivity(j);
+
             }else {
                 int position = mRecyclerView.getChildAdapterPosition(v);
                 ServicioParque servicio = mLstServiciosParque.get(position);
