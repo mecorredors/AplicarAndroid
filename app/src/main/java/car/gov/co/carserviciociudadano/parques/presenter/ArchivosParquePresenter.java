@@ -1,4 +1,4 @@
-package car.gov.co.carserviciociudadano.parques.businessrules;
+package car.gov.co.carserviciociudadano.parques.presenter;
 
 import com.anupcowkur.reservoir.Reservoir;
 import com.google.gson.reflect.TypeToken;
@@ -8,7 +8,6 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
-import car.gov.co.carserviciociudadano.parques.dataaccess.IViewArchivoParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IArchivoParque;
 import car.gov.co.carserviciociudadano.parques.model.ArchivoParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
@@ -18,12 +17,12 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
  * Created by Olger on 15/01/2017.
  */
 
-public class BRArchivosParquePresenter {
+public class ArchivosParquePresenter {
 
     IViewArchivoParque viewArchivoParque;
     int mTypoArchivoParque;
 
-    public BRArchivosParquePresenter(IViewArchivoParque view){
+    public ArchivosParquePresenter(IViewArchivoParque view){
         this.viewArchivoParque= view;
     }
 

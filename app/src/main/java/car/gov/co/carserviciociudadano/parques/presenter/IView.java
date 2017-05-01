@@ -1,4 +1,4 @@
-package car.gov.co.carserviciociudadano.parques.dataaccess;
+package car.gov.co.carserviciociudadano.parques.presenter;
 
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 

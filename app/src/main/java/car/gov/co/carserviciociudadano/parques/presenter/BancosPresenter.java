@@ -1,4 +1,4 @@
-package car.gov.co.carserviciociudadano.parques.businessrules;
+package car.gov.co.carserviciociudadano.parques.presenter;
 
 import com.anupcowkur.reservoir.Reservoir;
 import com.google.gson.reflect.TypeToken;
@@ -9,13 +9,18 @@ import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Bancos;
 import car.gov.co.carserviciociudadano.parques.interfaces.IBanco;
 import car.gov.co.carserviciociudadano.parques.model.Banco;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 /**
  * Created by Olger on 15/01/2017.
  */
 
-public class BRBancos {
-    public void list(final IBanco iBanco )    {
+public class BancosPresenter {
+    IViewBancos iViewBancos;
+    public BancosPresenter(IViewBancos iViewBancos){
+        this.iViewBancos = iViewBancos;
+    }
+    public void list()    {
         String tag = Bancos.TAG;
         Bancos bancos = new Bancos();
 
@@ -31,4 +36,16 @@ public class BRBancos {
             bancos.list(iBanco);
         }
     }
+
+    IBanco iBanco = new IBanco() {
+        @Override
+        public void onSuccess(List<Banco> lstBanco) {
+
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+
+        }
+    };
 }

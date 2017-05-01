@@ -1,4 +1,4 @@
-package car.gov.co.carserviciociudadano.parques.businessrules;
+package car.gov.co.carserviciociudadano.parques.presenter;
 
 import com.anupcowkur.reservoir.Reservoir;
 import com.google.gson.reflect.TypeToken;
@@ -8,21 +8,23 @@ import java.util.List;
 
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
-import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IServicioParque;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
-import car.gov.co.carserviciociudadano.parques.model.ServicioReserva;
 
 /**
  * Created by Olger on 02/12/2016.
  */
 
 public class BRServiciosParques {
-    public void list(final IServicioParque iServicioParque, int idParque  )
-    {
 
+    IViewServiciosParque iViewServiciosParque;
+    public BRServiciosParques(IViewServiciosParque iViewServiciosParque){
+        this.iViewServiciosParque = iViewServiciosParque;
+    }
+    public void list(int idParque  )
+    {
         String tag = ServiciosParque.TAG+idParque;
 
         ServiciosParque serviciosParque = new ServiciosParque();
@@ -38,6 +40,18 @@ public class BRServiciosParques {
         }else {
             serviciosParque.list(iServicioParque,idParque);
         }
-
     }
+
+    IServicioParque iServicioParque = new IServicioParque() {
+        @Override
+        public void onSuccess(List<ServicioParque> lista) {
+            iViewServiciosParque.onSuccess(lista);
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+            iViewServiciosParque.onError(error);
+        }
+    };
+
 }

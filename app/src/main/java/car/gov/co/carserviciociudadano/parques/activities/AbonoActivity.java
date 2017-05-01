@@ -22,7 +22,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,16 +32,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
-import com.stacktips.view.utils.CalendarUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,11 +47,10 @@ import car.gov.co.carserviciociudadano.Utils.FechaDialogo;
 import car.gov.co.carserviciociudadano.Utils.ImageUtil;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.Utils.Validation;
-import car.gov.co.carserviciociudadano.parques.businessrules.BRBancos;
+import car.gov.co.carserviciociudadano.parques.presenter.BancosPresenter;
+import car.gov.co.carserviciociudadano.parques.presenter.IViewBancos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;
-import car.gov.co.carserviciociudadano.parques.dataaccess.Bancos;
 import car.gov.co.carserviciociudadano.parques.interfaces.IAbono;
-import car.gov.co.carserviciociudadano.parques.interfaces.IBanco;
 import car.gov.co.carserviciociudadano.parques.model.Abono;
 import car.gov.co.carserviciociudadano.parques.model.Banco;
 import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
@@ -183,40 +176,41 @@ public class AbonoActivity extends BaseActivity {
     }
 
     private void loadBancos(){
-        BRBancos bancos = new BRBancos();
-        bancos.list(new IBanco() {
-            @Override
-            public void onSuccess(List<Banco> lstBancos) {
-                mLstBancos.clear();
-                mLstBancos.addAll(lstBancos);
-                mLstBancos.add(0,new Banco(0,"Banco"));
-                adapterBancos = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstBancos);
-
-                adapterBancos.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
-                mSpiBanco.setAdapter(adapterBancos);
-                adapterBancos.notifyDataSetChanged();
-
-               // mSpiBanco.setSelection(adapterBancos.getPosition(new Municipio(mUsuario.getIDMunicipio(),"")));
-                //mSpiMunicipio.setOnItemSelectedListener(this);
-            }
-
-            @Override
-            public void onError(ErrorApi error) {
-
-                Snackbar.make(mLyImgComprobante, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
-                        .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
-                        .setAction("REINTENTAR", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                loadBancos();
-                            }
-                        })
-                        .show();
-
-            }
-        });
+        BancosPresenter bancos = new BancosPresenter(iViewBancos);
+        bancos.list();
     }
 
+    IViewBancos iViewBancos = new IViewBancos() {
+        @Override
+        public void onSuccess(List<Banco> lstBancos) {
+            mLstBancos.clear();
+            mLstBancos.addAll(lstBancos);
+            mLstBancos.add(0,new Banco(0,"Banco"));
+            adapterBancos = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstBancos);
+
+            adapterBancos.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
+            mSpiBanco.setAdapter(adapterBancos);
+            adapterBancos.notifyDataSetChanged();
+
+            // mSpiBanco.setSelection(adapterBancos.getPosition(new Municipio(mUsuario.getIDMunicipio(),"")));
+            //mSpiMunicipio.setOnItemSelectedListener(this);
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+
+            Snackbar.make(mLyImgComprobante, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                    .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
+                    .setAction("REINTENTAR", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            loadBancos();
+                        }
+                    })
+                    .show();
+
+        }
+    };
 
     FechaDialogo.OnListerFecha listenerFecha= new FechaDialogo.OnListerFecha() {
         @Override

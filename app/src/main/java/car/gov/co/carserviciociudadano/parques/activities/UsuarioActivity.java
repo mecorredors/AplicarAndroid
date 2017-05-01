@@ -4,13 +4,10 @@ package car.gov.co.carserviciociudadano.parques.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,10 +24,10 @@ import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Validation;
-import car.gov.co.carserviciociudadano.parques.businessrules.BRMunicipios;
+import car.gov.co.carserviciociudadano.parques.presenter.MunicipiosPresenter;
+import car.gov.co.carserviciociudadano.parques.presenter.IViewMunicipios;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Municipios;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
-import car.gov.co.carserviciociudadano.parques.interfaces.IMunicipio;
 import car.gov.co.carserviciociudadano.parques.interfaces.IUsuario;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Municipio;
@@ -195,31 +192,31 @@ public class UsuarioActivity extends BaseActivity {
     }
 
     private void loadMunicipios(){
-
-        BRMunicipios municipios = new BRMunicipios();
-        municipios.list(new IMunicipio() {
-            @Override
-            public void onSuccess(List<Municipio> lstMunicipios) {
-                mLstMunicipios.clear();
-                mLstMunicipios.addAll(lstMunicipios);
-                mLstMunicipios.add(0,new Municipio(0,"Municipio"));
-                adapterMunicipios = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstMunicipios);
-                adapterMunicipios.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
-                mSpiMunicipio.setAdapter(adapterMunicipios);
-                adapterMunicipios.notifyDataSetChanged();
-
-                mSpiMunicipio.setSelection(adapterMunicipios.getPosition(new Municipio(mUsuario.getIDMunicipio(),"")));
-                //mSpiMunicipio.setOnItemSelectedListener(this);
-            }
-
-            @Override
-            public void onError(ErrorApi error) {
-                mostrarMensaje("No fue posible obtener los municipios",mActvityUsuario );
-
-            }
-        });
-
+        MunicipiosPresenter municipios = new MunicipiosPresenter(iViewMunicipios);
+        municipios.list();
     }
+
+    IViewMunicipios iViewMunicipios =  new IViewMunicipios() {
+        @Override
+        public void onSuccess(List<Municipio> lstMunicipios) {
+            mLstMunicipios.clear();
+            mLstMunicipios.addAll(lstMunicipios);
+            mLstMunicipios.add(0,new Municipio(0,"Municipio"));
+            adapterMunicipios = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstMunicipios);
+            adapterMunicipios.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
+            mSpiMunicipio.setAdapter(adapterMunicipios);
+            adapterMunicipios.notifyDataSetChanged();
+
+            mSpiMunicipio.setSelection(adapterMunicipios.getPosition(new Municipio(mUsuario.getIDMunicipio(),"")));
+            //mSpiMunicipio.setOnItemSelectedListener(this);
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+            mostrarMensaje("No fue posible obtener los municipios",mActvityUsuario );
+
+        }
+    };
 
     @OnClick(R.id.btnGuardar) void onGuardar() {
         guardar();

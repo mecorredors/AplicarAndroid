@@ -11,7 +11,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,11 +27,9 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.Barcode128;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -42,9 +39,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,13 +47,13 @@ import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.adapter.AbonosAdapter;
-import car.gov.co.carserviciociudadano.parques.businessrules.BRParques;
+import car.gov.co.carserviciociudadano.parques.presenter.ParquePresenter;
+import car.gov.co.carserviciociudadano.parques.presenter.IViewParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.DetalleReservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Reservas;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.interfaces.IAbono;
-import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.IReserva;
 import car.gov.co.carserviciociudadano.parques.model.Abono;
 import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
@@ -182,35 +177,35 @@ public class DetalleReservaActivity extends BaseActivity {
     }
 
     private void loadParques(){
-        BRParques parques = new BRParques();
+        ParquePresenter parques = new ParquePresenter(iViewParque);
+        parques.list();
 
-        parques.list(new IParque() {
-            @Override
-            public void onSuccess(List<Parque> lstParques) {
-               for(Parque item: lstParques){
-                   if (item.getNombreParque().trim().equals(mDetalleReserva.getNombreParque().trim())){
-                       mLblEnviarConsignacion.setText(item.getDetalleCuenta() + " " + getString(R.string.envie_consignacion_des));
-                   }
-               }
-
-            }
-
-            @Override
-            public void onError(ErrorApi error) {
-                Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
-                        //.setActionTextColor(Color.CYAN)
-                        .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
-                        .setAction("REINTENTAR", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                loadParques();
-                            }
-                        })
-                        .show();
-
-            }
-        });
     }
+    IViewParque iViewParque = new IViewParque() {
+        @Override
+        public void onSuccess(List<Parque> lstParques) {
+            for(Parque item: lstParques){
+                if (item.getNombreParque().trim().equals(mDetalleReserva.getNombreParque().trim())){
+                    mLblEnviarConsignacion.setText(item.getDetalleCuenta() + " " + getString(R.string.envie_consignacion_des));
+                }
+            }
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+            Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                    //.setActionTextColor(Color.CYAN)
+                    .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
+                    .setAction("REINTENTAR", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            loadParques();
+                        }
+                    })
+                    .show();
+
+        }
+    };
 
     @OnClick(R.id.btnEnviarConsignacion) void onEnviarConsignacion() {
         Intent i = new Intent(this,AbonoActivity.class);

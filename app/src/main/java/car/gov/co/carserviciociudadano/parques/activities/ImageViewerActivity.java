@@ -12,9 +12,8 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.CirclePageIndicator;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.parques.adapter.ImageViewerPagerAdapter;
-import car.gov.co.carserviciociudadano.parques.businessrules.BRArchivosParquePresenter;
-import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
-import car.gov.co.carserviciociudadano.parques.dataaccess.IViewArchivoParque;
+import car.gov.co.carserviciociudadano.parques.presenter.ArchivosParquePresenter;
+import car.gov.co.carserviciociudadano.parques.presenter.IViewArchivoParque;
 import car.gov.co.carserviciociudadano.parques.interfaces.PageIndicator;
 import car.gov.co.carserviciociudadano.parques.model.ArchivoParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
@@ -55,7 +54,7 @@ public class ImageViewerActivity extends BaseActivity implements  IViewArchivoPa
     }
 
     private void loadArchivosParque() {
-        BRArchivosParquePresenter archivosParque = new BRArchivosParquePresenter(this);
+        ArchivosParquePresenter archivosParque = new ArchivosParquePresenter(this);
         archivosParque.list(mIdParque, mTypoArchivoParque);
     }
 

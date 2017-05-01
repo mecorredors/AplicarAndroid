@@ -25,13 +25,13 @@ import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.parques.adapter.ServiciosParqueAdapter;
-import car.gov.co.carserviciociudadano.parques.businessrules.BRArchivosParquePresenter;
-import car.gov.co.carserviciociudadano.parques.businessrules.BRServiciosParques;
+import car.gov.co.carserviciociudadano.parques.presenter.ArchivosParquePresenter;
+import car.gov.co.carserviciociudadano.parques.presenter.BRServiciosParques;
+import car.gov.co.carserviciociudadano.parques.presenter.IViewServiciosParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
-import car.gov.co.carserviciociudadano.parques.dataaccess.IViewArchivoParque;
+import car.gov.co.carserviciociudadano.parques.presenter.IViewArchivoParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
-import car.gov.co.carserviciociudadano.parques.interfaces.IServicioParque;
 import car.gov.co.carserviciociudadano.parques.model.ArchivoParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
@@ -97,7 +97,6 @@ public class DetalleParqueActivity extends BaseActivity {
 
       //  mProgressView = (ProgressBar) view.findViewById(R.id.progressView);
 
-
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -144,7 +143,7 @@ public class DetalleParqueActivity extends BaseActivity {
     }
 
     private void loadArchivosParque(){
-        BRArchivosParquePresenter archivosParque = new BRArchivosParquePresenter(iViewArchivoParque);
+        ArchivosParquePresenter archivosParque = new ArchivosParquePresenter(iViewArchivoParque);
          archivosParque.list(mParque.getIDParque(), Enumerator.TipoArchivoParque.PRINCIPAL_Y_GALERIA);
     }
 
@@ -163,32 +162,34 @@ public class DetalleParqueActivity extends BaseActivity {
 
     private void loadServiciosParque(){
         showProgress(mProgressView,true);
-        BRServiciosParques serviciosParque = new BRServiciosParques();
-        serviciosParque.list(new IServicioParque() {
-            @Override
-            public void onSuccess(List<ServicioParque> lista) {
-                showProgress(mProgressView,false);
-                mLstServiciosParque.clear();
-                mLstServiciosParque.addAll(lista);
-                mAdaptador.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onError(ErrorApi error) {
-                showProgress(mProgressView,false);
-                Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_LONG)
-                        //.setActionTextColor(Color.CYAN)
-                        .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
-                        .setAction("REINTENTAR", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                loadServiciosParque();
-                            }
-                        })
-                        .show();
-            }
-        },mParque.getIDParque());
+        BRServiciosParques serviciosParque = new BRServiciosParques(iViewServiciosParque);
+        serviciosParque.list(mParque.getIDParque());
     }
+
+    IViewServiciosParque iViewServiciosParque =  new IViewServiciosParque() {
+        @Override
+        public void onSuccess(List<ServicioParque> lista) {
+            showProgress(mProgressView,false);
+            mLstServiciosParque.clear();
+            mLstServiciosParque.addAll(lista);
+            mAdaptador.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+            showProgress(mProgressView,false);
+            Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_LONG)
+                    //.setActionTextColor(Color.CYAN)
+                    .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
+                    .setAction("REINTENTAR", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            loadServiciosParque();
+                        }
+                    })
+                    .show();
+        }
+    };
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override

@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +23,15 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 import car.gov.co.carserviciociudadano.parques.adapter.ParquesAdapter;
-import car.gov.co.carserviciociudadano.parques.businessrules.BRParques;
+import car.gov.co.carserviciociudadano.parques.presenter.ParquePresenter;
+import car.gov.co.carserviciociudadano.parques.presenter.IViewParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
-import car.gov.co.carserviciociudadano.parques.interfaces.IParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 
-public class ParquesFragment extends BaseFragment {
+public class ParquesFragment extends BaseFragment implements  IViewParque {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -97,35 +96,37 @@ public class ParquesFragment extends BaseFragment {
 
     }
     private void loadParques(){
-        BRParques parques = new BRParques();
+        ParquePresenter parques = new ParquePresenter(this);
         showProgress(mProgressView,true);
-        parques.list(new IParque() {
-            @Override
-            public void onSuccess(List<Parque> lstParques) {
-                showProgress(mProgressView,false);
-                mLstParques.clear();
-                mLstParques.addAll(lstParques);
-                mAdaptador.notifyDataSetChanged();
-                removeCacheServicios();
-            }
-
-            @Override
-            public void onError(ErrorApi error) {
-                showProgress(mProgressView,false);
-                Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
-                        //.setActionTextColor(Color.CYAN)
-                        .setActionTextColor(ContextCompat.getColor(getContext(), R.color.green) )
-                        .setAction("REINTENTAR", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                               loadParques();
-                            }
-                        })
-                        .show();
-
-            }
-        });
+        parques.list();
     }
+
+   // IViewParque iViewParque =   new IViewParque() {
+        @Override
+        public void onSuccess(List<Parque> lstParques) {
+            showProgress(mProgressView,false);
+            mLstParques.clear();
+            mLstParques.addAll(lstParques);
+            mAdaptador.notifyDataSetChanged();
+            removeCacheServicios();
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+            showProgress(mProgressView,false);
+            Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                    //.setActionTextColor(Color.CYAN)
+                    .setActionTextColor(ContextCompat.getColor(getContext(), R.color.green) )
+                    .setAction("REINTENTAR", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            loadParques();
+                        }
+                    })
+                    .show();
+
+        }
+   // };
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
