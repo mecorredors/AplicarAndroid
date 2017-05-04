@@ -26,7 +26,7 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.parques.adapter.ServiciosParqueAdapter;
 import car.gov.co.carserviciociudadano.parques.presenter.ArchivosParquePresenter;
-import car.gov.co.carserviciociudadano.parques.presenter.BRServiciosParques;
+import car.gov.co.carserviciociudadano.parques.presenter.ServiciosParquesPresenter;
 import car.gov.co.carserviciociudadano.parques.presenter.IViewServiciosParque;
 import car.gov.co.carserviciociudadano.parques.dataaccess.ArchivosParque;
 import car.gov.co.carserviciociudadano.parques.presenter.IViewArchivoParque;
@@ -162,7 +162,7 @@ public class DetalleParqueActivity extends BaseActivity {
 
     private void loadServiciosParque(){
         showProgress(mProgressView,true);
-        BRServiciosParques serviciosParque = new BRServiciosParques(iViewServiciosParque);
+        ServiciosParquesPresenter serviciosParque = new ServiciosParquesPresenter(iViewServiciosParque);
         serviciosParque.list(mParque.getIDParque());
     }
 

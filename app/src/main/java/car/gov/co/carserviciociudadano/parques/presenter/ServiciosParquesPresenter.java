@@ -17,10 +17,10 @@ import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
  * Created by Olger on 02/12/2016.
  */
 
-public class BRServiciosParques {
+public class ServiciosParquesPresenter {
 
     IViewServiciosParque iViewServiciosParque;
-    public BRServiciosParques(IViewServiciosParque iViewServiciosParque){
+    public ServiciosParquesPresenter(IViewServiciosParque iViewServiciosParque){
         this.iViewServiciosParque = iViewServiciosParque;
     }
     public void list(int idParque  )
