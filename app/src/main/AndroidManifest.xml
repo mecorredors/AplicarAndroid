@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!---Configuracion -->
+        <!-- -Configuracion -->
         <service android:name=".services.FirebaseMessagin">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -77,8 +77,6 @@
         <activity
             android:name=".parques.activities.WebViewActivity"
             android:label="@string/title_terminos" />
-
-
         <activity
             android:name=".parques.activities.ImageViewerActivity"
             android:label="@string/title_imagenes" />
@@ -100,12 +98,8 @@
             android:name=".parques.activities.CambiarContrasenaActivity"
             android:label="@string/title_cambiar_contrasena"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".parques.activities.ComoLLegarActivity"></activity>
-
-
-
-
-
+        <activity android:name=".parques.activities.ComoLLegarActivity" />
+        <activity android:name=".common.LocationBaseGoogleApiActivity"></activity>
     </application>
 
 </manifest>

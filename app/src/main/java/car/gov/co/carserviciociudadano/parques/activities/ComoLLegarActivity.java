@@ -2,18 +2,21 @@ package car.gov.co.carserviciociudadano.parques.activities;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
+import com.google.android.gms.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -35,6 +38,17 @@ import com.akexorcist.googledirection.model.Info;
 import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.util.DirectionConverter;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,10 +66,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Utils;
+import car.gov.co.carserviciociudadano.common.LocationBaseGoogleApiActivity;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 
-public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallback {
+
+
+public class ComoLLegarActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback  {
 
     @BindView(R.id.lblDuracion)   TextView lblDuracion;
     @BindView(R.id.lblDistancia)  TextView lblDistancia;
@@ -73,12 +90,8 @@ public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallba
     private int colorRutaAlterna = 0xFF757575;
 
     public final static int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 2;
-    private LocationManager locationManager;
-    boolean gps_enabled = false;
-    boolean network_enabled = false;
-    boolean isRunning = false;
-    ProgressDialog mProgressDialog;
-    private int REQUEST_CODE_SETTINGS_LOCATION = 101;
+    private static final String LOGTAG = "android-localizacion";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +106,7 @@ public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallba
 
         mapFragment.getMapAsync(this);
 
+        //Construcción cliente API Google
     }
 
     @Override
@@ -103,9 +117,39 @@ public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallba
 
         insertarMarcador();
         moverCamara();
-        getPosition();
+
+        startGoogleApiClient();
+        enableLocationUpdates();
+
+      //  getPosition();
+
+       /* if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_PERMISSIONS_ACCESS_FINE_LOCATION);
+
+        } else {
+            mapa.setMyLocationEnabled(true);
+        }
+*/
+
+        mapa.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+
+            @Override
+            public void onMyLocationChange(Location arg0) {
+                miPosicion = new LatLng(arg0.getLatitude(), arg0.getLongitude());
+                // mapa.addMarker(new MarkerOptions().position(miPosicion).title("Mi posición").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location_blue_16dp)));
+                dibujarRuta();
+
+               // mapa.addMarker(new MarkerOptions().position(new LatLng(arg0.getLatitude(), arg0.getLongitude())).title("It's Me!"));
+            }
+        });
 
     }
+
+
 
     private void insertarMarcador() {
         mapa.addMarker(new MarkerOptions().position(destinoLatLng).title(mParque.getNombreParque()));
@@ -129,6 +173,14 @@ public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallba
 
     }
 
+   /* @Override
+    protected void resultLocation(Location location) {
+        miPosicion = new LatLng(location.getLatitude(), location.getLongitude());
+        // mapa.addMarker(new MarkerOptions().position(miPosicion).title("Mi posición").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location_blue_16dp)));
+        dibujarRuta();
+        Log.d("latitude ", "" + location.getLatitude());
+
+    }*/
 
     private void dibujarRuta() {
         progressView.setVisibility(View.VISIBLE);
@@ -201,163 +253,15 @@ public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallba
         mapa.addPolyline(polylineOptions);
     }
 
-
-    private void mostrarProgressDialog() {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setMessage("Obteniendo mi ubicación...");
-        mProgressDialog.setCancelable(true);
-        mProgressDialog.show();
-        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                cancel();
-            }
-        });
-
-    }
-
-    private void getPosition() {
-
-        if (isRunning) {
-            cancel();
-            isRunning = false;
-            if (mProgressDialog != null) mProgressDialog.dismiss();
-
-        } else {
-            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            try {
-                gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            } catch (Exception ex) {
-            }
-            try {
-                network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            } catch (Exception ex) {
-            }
-
-            if (Build.VERSION.SDK_INT >= 23 &&
-                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                        MY_PERMISSIONS_ACCESS_FINE_LOCATION);
-
-            } else {
-                mapa.setMyLocationEnabled(true);
-                if (gps_enabled == false) {
-
-                    dialogUbicationSettings();
-
-                } else {
-                    mostrarProgressDialog();
-                    if (gps_enabled) {
-                        isRunning = true;
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListenerGps);
-                        Log.d(" gps enabled", "gps ejecutadi");
-                    }
-                    if (network_enabled) {
-                        isRunning = true;
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListenerNetwork);
-                        Log.d("network enable", "ejecutado");
-                    }
-                }
-            }
-        }
-
-    }
-
-
-    final LocationListener locationListenerGps = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            Log.d("resultado gps", "" + location.getLatitude());
-            Log.d("resultado gps altitude", "" + location.getAltitude());
-            Log.d("resultado gps precision", "" + location.getAccuracy());
-            if (mProgressDialog != null) mProgressDialog.dismiss();
-            resultLocation(location);
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-            if (mProgressDialog != null) mProgressDialog.dismiss();
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-            if (mProgressDialog != null) mProgressDialog.dismiss();
-            Toast.makeText(getBaseContext(), "Gps is turned on!! ", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-            if (mProgressDialog != null) mProgressDialog.dismiss();
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            getBaseContext().startActivity(intent);
-            Toast.makeText(getBaseContext(), "Gps is turned off!! ", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    final LocationListener locationListenerNetwork = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            Log.d("resultado network", "" + location.getLatitude());
-            Log.d("res network altitude", "" + location.getAltitude());
-            Log.d("res network preci", "" + location.getAccuracy());
-            if (mProgressDialog != null) mProgressDialog.dismiss();
-            resultLocation(location);
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-            if (mProgressDialog != null) mProgressDialog.dismiss();
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-            if (mProgressDialog != null) mProgressDialog.dismiss();
-            Toast.makeText(getBaseContext(), "Gps is turned on!! ", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            getBaseContext().startActivity(intent);
-            if (mProgressDialog != null) mProgressDialog.dismiss();
-            Toast.makeText(getBaseContext(), "Gps is turned off!! ", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    public void cancel() {
-        if (locationManager != null) {
-            if (Build.VERSION.SDK_INT >= 23 &&
-                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Log.d("permiso", "Permiso denegado");
-                return;
-            }
-            locationManager.removeUpdates(locationListenerGps);
-            locationManager.removeUpdates(locationListenerNetwork);
-
-        }
-        if (mProgressDialog != null) mProgressDialog.dismiss();
-    }
-
-    private void resultLocation(Location location) {
-        cancel();
-        miPosicion = new LatLng(location.getLatitude(), location.getLongitude());
-       // mapa.addMarker(new MarkerOptions().position(miPosicion).title("Mi posición").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location_blue_16dp)));
-        dibujarRuta();
-        Log.d("latitude ", "" + location.getLatitude());
-
-    }
-
-    @Override
+   /*  @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-
+       switch (requestCode) {
             case MY_PERMISSIONS_ACCESS_FINE_LOCATION: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getPosition();
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED  ) {
+                    try {
+                        mapa.setMyLocationEnabled(true);
+                    }catch (SecurityException ex){
+                    }
                 } else {
                     mostrarMensaje("Permiso denegado para obtener ubicación");
                 }
@@ -365,39 +269,33 @@ public class ComoLLegarActivity extends BaseActivity implements OnMapReadyCallba
             }
         }
     }
+*/
+
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Log.d("resultCode", "" + resultCode + "requestCode: " + requestCode);
-        if (requestCode == REQUEST_CODE_SETTINGS_LOCATION) {
-            getPosition();
+    public void onLastLocation(Location loc) {
+        if (loc != null) {
+            miPosicion = new LatLng(loc.getLatitude(), loc.getLongitude());
+            // mapa.addMarker(new MarkerOptions().position(miPosicion).title("Mi posición").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location_blue_16dp)));
+            dibujarRuta();
+            Log.i(LOGTAG, "Ultima ubicacion conocidad");
+        } else {
+            Log.e(LOGTAG, "Aun no hay ultima localizacion");
         }
     }
 
-    public void dialogUbicationSettings() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage(getString(R.string.acceso_ubicacion));
-
-        builder.setPositiveButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton(getString(R.string.configuracion), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                ComoLLegarActivity.this.startActivityForResult(intent, REQUEST_CODE_SETTINGS_LOCATION);
-                dialog.dismiss();
-            }
-        });
-
-        builder.show();
+    @Override
+    public void onLocationChanged(Location loc) {
+         if (loc != null) {
+             miPosicion = new LatLng(loc.getLatitude(), loc.getLongitude());
+             // mapa.addMarker(new MarkerOptions().position(miPosicion).title("Mi posición").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location_blue_16dp)));
+             dibujarRuta();
+             disableLocationUpdates();
+             Log.i(LOGTAG, "Recibida nueva ubicación!");
+         } else {
+             Log.e(LOGTAG, "No hay localizacion");
+         }
     }
 
 }
