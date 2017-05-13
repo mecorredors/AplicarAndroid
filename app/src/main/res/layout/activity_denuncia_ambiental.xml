@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context="car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_13"
+        android:textColor="@color/primaryText"
+        android:text="@string/header_map"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+      <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="24dp"
+            android:src="@drawable/ic_person_pin_circle_blue_24dp"/>
+
+        <!--<Button android:id="@+id/btnUbicacion"-->
+            <!--android:theme="@style/ButtonAccent"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/cambiar_ubicacion"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:textSize="@dimen/text_size_12"-->
+            <!--/>-->
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+
+        <LinearLayout android:id="@+id/lyInicial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Selecciona o toma unas fotos sobre la denuncia"
+                android:textColor="@color/primaryText"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginBottom="@dimen/margin_16dp"/>
+
+
+        <LinearLayout android:id="@+id/lyAgregarFotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="#E6E6E6"
+            android:orientation="vertical">
+
+            <ImageView android:id="@+id/imgAgregarFotos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_photo_camera_gray_80dp" />
+
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+        <GridView
+            android:id="@+id/gridGallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/lyHeader"
+            android:layout_above="@+id/LinearBtnNext"
+            android:layout_gravity="top"
+            android:verticalSpacing="3dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="3"
+            android:padding="0dp"
+            android:stretchMode="columnWidth"
+            tools:listitem="@layout/item_gallery"
+            android:visibility="visible"
+            android:layout_marginBottom="@dimen/margin_6dp"
+            android:layout_marginTop="@dimen/margin_6dp"
+            android:layout_marginLeft="@dimen/margin_6dp"
+            android:layout_marginRight="@dimen/margin_6dp"
+            >
+        </GridView>
+
+
+    </LinearLayout>
+
+</LinearLayout>

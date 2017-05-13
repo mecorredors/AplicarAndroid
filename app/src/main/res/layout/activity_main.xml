@@ -61,6 +61,55 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/lyMenuDenunciaAmbiental"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardUseCompatPadding="false"
+                card_view:cardElevation="0dp"
+                card_view:cardCornerRadius="0dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardBackgroundColor="@color/background"
+                android:clickable="true"
+                app:cardPreventCornerOverlap="false"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/menu_height"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:clickable="false">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_parque"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reportar_denuncia_abiental"
+                        android:textColor="@color/secondaryText"
+                        android:textSize="@dimen/text_size_14"
+                        android:layout_marginLeft="@dimen/margin_16dp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_chevron_right_24dp"
+                        />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
             <android.support.v7.widget.CardView
                 android:id="@+id/lyMenuParques"
                 android:layout_gravity="center"
@@ -74,7 +123,11 @@
                 android:clickable="true"
                 app:cardPreventCornerOverlap="false"
                 >
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor"
+                    android:layout_marginTop="@dimen/margin_10dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/menu_height"

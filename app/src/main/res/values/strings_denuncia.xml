@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="title_denuncia_ambiental_activity">Denuncia ambiental</string>
+
+    <string name="ubicacion_denuncia">Ubicación de la denuncia</string>
+    <string name="cambiar_ubicacion">Cambiar ubicación</string>
+    <string name="reportar_denuncia_abiental">Reportar denuncia ambiental</string>
+    <string name="header_map">Selecciona la ubicación de la denuncia</string>
+    <string name="max_photos">Máximo fotos permitidas (20)</string>
+
+</resources>

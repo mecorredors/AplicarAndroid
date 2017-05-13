@@ -47,6 +47,7 @@ import car.gov.co.carserviciociudadano.Utils.FechaDialogo;
 import car.gov.co.carserviciociudadano.Utils.ImageUtil;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.Utils.Validation;
+import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.presenter.BancosPresenter;
 import car.gov.co.carserviciociudadano.parques.presenter.IViewBancos;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;

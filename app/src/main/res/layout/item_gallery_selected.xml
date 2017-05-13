@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+   android:background="@color/background"
+    >
+
+    <FrameLayout
+        android:layout_width="@dimen/denuncia_gallery_photo"
+        android:layout_height="@dimen/denuncia_gallery_photo"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        >
+
+        <FrameLayout
+            android:id="@+id/frmPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="6dp">
+
+            <ImageView
+                android:id="@+id/imgPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                />
+
+        </FrameLayout>
+        <!--<TextView android:id="@+id/txtPrincipal"-->
+            <!--android:layout_marginLeft="0dp"-->
+            <!--android:layout_marginBottom="0dp"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:maxHeight="50dp"-->
+            <!--android:minHeight="20dp"-->
+            <!--android:text="Foto Principal"-->
+            <!--android:background="@color/gallery_backgroud_principal"-->
+            <!--android:textColor="@color/text_color_light"-->
+            <!--android:visibility="gone"-->
+            <!--android:layout_marginRight="6dp"-->
+            <!--android:textSize="@dimen/text_size_small_13"-->
+            <!--/>-->
+
+        <ImageButton
+            android:id="@+id/imgButClose"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="right|top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ico_close"
+            android:gravity="center"
+            android:background="#00000000"
+            />
+
+    </FrameLayout>
+
+</LinearLayout>

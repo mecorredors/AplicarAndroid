@@ -2,7 +2,6 @@ package car.gov.co.carserviciociudadano.consultapublica.activities;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,20 +19,13 @@ import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Utils;
-import car.gov.co.carserviciociudadano.consultapublica.adapter.DocumentosRespuestaAdapter;
 import car.gov.co.carserviciociudadano.consultapublica.adapter.ExpedienteAdapter;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
-import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Tramites;
 import car.gov.co.carserviciociudadano.consultapublica.interfaces.IExpediente;
 import car.gov.co.carserviciociudadano.consultapublica.model.Expediente;
 import car.gov.co.carserviciociudadano.consultapublica.model.ExpedienteResumen;
-import car.gov.co.carserviciociudadano.consultapublica.model.RadicadosDigitalesRespuesta;
-import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
-import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
-import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
-import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
+import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 public class BuscarExpedienteActivity extends BaseActivity {
 

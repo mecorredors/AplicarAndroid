@@ -3,8 +3,9 @@ package car.gov.co.carserviciociudadano.parques.activities;
 import android.os.Bundle;
 
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.common.BaseActivity;
+
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.View;

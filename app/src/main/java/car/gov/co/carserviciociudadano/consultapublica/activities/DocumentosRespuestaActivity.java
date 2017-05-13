@@ -1,7 +1,6 @@
 package car.gov.co.carserviciociudadano.consultapublica.activities;
 
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +16,8 @@ import car.gov.co.carserviciociudadano.consultapublica.adapter.DocumentosRespues
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Tramites;
 import car.gov.co.carserviciociudadano.consultapublica.model.RadicadosDigitalesRespuesta;
 import car.gov.co.carserviciociudadano.consultapublica.model.Tramite;
-import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
+import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
-import car.gov.co.carserviciociudadano.parques.adapter.AbonosAdapter;
 
 public class DocumentosRespuestaActivity extends BaseActivity {
 

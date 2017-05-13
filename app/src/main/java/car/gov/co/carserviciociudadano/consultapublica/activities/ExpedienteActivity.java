@@ -1,6 +1,5 @@
 package car.gov.co.carserviciociudadano.consultapublica.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,17 +8,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import java.util.ArrayList;
 import java.util.List;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.consultapublica.fragments.DocumentosExpedienteFragment;
 import car.gov.co.carserviciociudadano.consultapublica.fragments.ExpedienteFragment;
 import car.gov.co.carserviciociudadano.consultapublica.model.Expediente;
-import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
-
-import car.gov.co.carserviciociudadano.parques.activities.UsuarioActivity;
+import car.gov.co.carserviciociudadano.common.BaseActivity;
 
 
 public class ExpedienteActivity extends BaseActivity {

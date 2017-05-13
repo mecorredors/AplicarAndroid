@@ -11,8 +11,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import car.gov.co.carserviciociudadano.R;
-import car.gov.co.carserviciociudadano.Utils.Config;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
+import car.gov.co.carserviciociudadano.common.BaseActivity;
 
 public class WebViewActivity extends BaseActivity {
     private ProgressBar progress;

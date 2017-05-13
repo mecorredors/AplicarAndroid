@@ -18,9 +18,8 @@ import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Tramites;
 import car.gov.co.carserviciociudadano.consultapublica.interfaces.ITramite;
 import car.gov.co.carserviciociudadano.consultapublica.model.Tramite;
-import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
+import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
-import car.gov.co.carserviciociudadano.parques.dataaccess.Abonos;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class TramitesActivity extends BaseActivity {

@@ -27,4 +27,8 @@
     <dimen name="detalle_photo_height">250dp</dimen>
 
 
+    <!-- denuncia hambiental -->
+    <dimen name="denuncia_map_height">200dp</dimen>
+    <dimen name="denuncia_gallery_photo">100dp</dimen>
+
 </resources>

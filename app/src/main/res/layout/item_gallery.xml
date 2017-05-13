@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:gravity="center"     >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/denuncia_gallery_photo" >
+
+        <FrameLayout
+            android:id="@+id/frmQueue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/imgQueue"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/denuncia_gallery_photo"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                android:background="@color/gray2"
+                />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/frmBtnPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:background="#ff000000"
+            >
+
+            <ImageView
+                android:id="@+id/btnPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/denuncia_gallery_photo"
+                android:src="@drawable/ic_tomar_photo_camera_gray_80dp"
+                android:visibility="visible"
+                android:scaleType="centerCrop"
+                android:background="@color/background"
+                />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frmOpacity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/denuncia_gallery_photo"
+            android:background="#60004891"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:id="@+id/imgQueueMultiSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:background="@drawable/ic_check_white_24dp"
+                android:contentDescription="@string/app_name"
+                android:gravity="center"
+                android:scaleType="center"
+                android:visibility="gone" />
+        </FrameLayout>
+    </FrameLayout>
+
+</LinearLayout>

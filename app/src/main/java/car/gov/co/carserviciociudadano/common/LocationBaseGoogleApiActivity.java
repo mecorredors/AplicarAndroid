@@ -23,10 +23,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.maps.model.LatLng;
-
-import car.gov.co.carserviciociudadano.parques.activities.BaseActivity;
-import car.gov.co.carserviciociudadano.parques.activities.ComoLLegarActivity;
 
 /**
  * Forma antigua de obtener ubicacion, ahor ase usa google play services
@@ -59,12 +55,10 @@ public class LocationBaseGoogleApiActivity extends BaseActivity implements Googl
 
     @Override protected void onDestroy() {
         super.onDestroy();
-       // disableLocationUpdates();
     }
 
     @Override protected void onPause(){
         super.onPause();
-        //disableLocationUpdates();
     }
 
     @Override

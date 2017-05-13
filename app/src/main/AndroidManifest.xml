@@ -99,7 +99,9 @@
             android:label="@string/title_cambiar_contrasena"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".parques.activities.ComoLLegarActivity" />
-        <activity android:name=".common.LocationBaseGoogleApiActivity"></activity>
+        <activity android:name=".common.LocationBaseGoogleApiActivity" />
+        <activity android:name=".denunciaambiental.activities.DenunciaAmbientalActivity" />
+        <activity android:name=".denunciaambiental.activities.GalleryActivity"></activity>
     </application>
 
 </manifest>

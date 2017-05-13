@@ -32,4 +32,10 @@ public class Enumerator {
         public static final int GALERIA = 3;
         public static final int MAP_PHOTO = 4;
     }
+
+    public static class TipoFoto{
+        public static final int BOTON_AGREGAR_MAS = 0;
+        public static final int FOTO = 1;
+
+    }
 }

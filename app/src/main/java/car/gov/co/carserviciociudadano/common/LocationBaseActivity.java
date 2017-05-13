@@ -1,4 +1,4 @@
-package car.gov.co.carserviciociudadano.parques.activities;
+package car.gov.co.carserviciociudadano.common;
 
 import android.Manifest;
 import android.app.ProgressDialog;
