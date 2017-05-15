@@ -20,7 +20,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="45">
       <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
@@ -45,10 +45,10 @@
             <!--/>-->
     </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="55" >
 
 
         <LinearLayout android:id="@+id/lyInicial"
@@ -112,6 +112,14 @@
         </GridView>
 
 
-    </LinearLayout>
+        <Button android:id="@+id/btnSiguiente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_14"
+            android:theme="@style/ButtonAccent"
+            android:text="Siguiente"
+            android:layout_gravity="bottom|end"
+            />
+    </FrameLayout>
 
 </LinearLayout>

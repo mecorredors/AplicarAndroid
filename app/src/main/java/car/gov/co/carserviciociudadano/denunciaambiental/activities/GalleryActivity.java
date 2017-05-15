@@ -1,11 +1,12 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.activities;
 
 import android.os.Bundle;
+
+
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.adapter.GalleryAdapter;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.CustomGallery;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ import android.os.SystemClock;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
@@ -31,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-
 import android.widget.AbsListView.OnScrollListener;
 
 
@@ -41,11 +42,8 @@ public class GalleryActivity extends BaseActivity {
     GridView gridGallery;
     Handler handler;
     GalleryAdapter adapter;
-
     ImageView imgNoMedia;
     Button btnGalleryOk;
-
-    String action;
 
     Uri outputFileUri;
     public final static int RESULT_CODE_PHOTO=100;
@@ -66,11 +64,8 @@ public class GalleryActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
-
-      /*  action = getIntent().getAction();
-        if (action == null) {
-            finish();
-        }*/
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
@@ -127,25 +122,14 @@ public class GalleryActivity extends BaseActivity {
         gridGallery = (GridView) findViewById(R.id.gridGallery);
         adapter = new GalleryAdapter(getApplicationContext());
 
-       // if (action.equalsIgnoreCase(config.ACTION_MULTIPLE_PICK)) {
-
-            gridGallery.setOnItemClickListener(mItemMulClickListener);
-            adapter.setMultiplePick(true);
-
-     /*   } else if (action.equalsIgnoreCase(config.ACTION_PICK)) {
-
-
-            gridGallery.setOnItemClickListener(mItemSingleClickListener);
-            adapter.setMultiplePick(false);
-
-        }*/
+        gridGallery.setOnItemClickListener(mItemMulClickListener);
+        adapter.setMultiplePick(true);
 
         gridGallery.setAdapter(adapter);
         imgNoMedia = (ImageView) findViewById(R.id.imgNoMedia);
 
         btnGalleryOk = (Button) findViewById(R.id.btnGalleryOk);
         btnGalleryOk.setOnClickListener(mOkClickListener);
-
 
         gridGallery.setOnScrollListener(new OnScrollListener() {
 

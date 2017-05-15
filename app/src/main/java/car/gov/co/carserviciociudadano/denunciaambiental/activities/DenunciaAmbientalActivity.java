@@ -8,22 +8,22 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,11 +32,13 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.LocationBaseGoogleApiActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.adapter.GallerySelectedAdapter;
+import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
 
 public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback {
     @BindView(R.id.lyInicial)  LinearLayout lyInicial;
     @BindView(R.id.gridGallery)    GridView gridView;
+    @BindView(R.id.btnSiguiente)   Button btnSiguiente;
 
     private GoogleMap mMap;
     LatLng miPosicion = new LatLng(0, 0);
@@ -44,18 +46,23 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     private static final int PETICION_PERMISO_LOCALIZACION = 101;
     private static final int PETICION_GALLERY = 102;
     GallerySelectedAdapter mAdapter;
-    public ArrayList<Foto> mFotos = new ArrayList<>();
+   // private List<Foto> mFotos = new ArrayList<>();
+
+    private Denuncia mDenuncia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_denuncia_ambiental);
         ButterKnife.bind(this);
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        mDenuncia = Denuncia.newInstance();
 
-        mAdapter = new GallerySelectedAdapter(this, mFotos);
+        mAdapter = new GallerySelectedAdapter(this, new ArrayList<>(mDenuncia.getFotos()));
         mAdapter.SetOnItemClickListener(listenerGallerySelected);
         gridView.setAdapter(mAdapter);
         setNumPhotosSelect();
@@ -150,7 +157,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
 
             String[] datos = new String[size];
             for (int t = 0; t < size; t++)
-                datos[t] =  mAdapter.Photos.get(t).getPath();
+                datos[t] =  mAdapter.getPhotos().get(t).getPath();
 
             i.putExtra(GalleryActivity.PATH_PHOTOS_SELECT, datos);
             startActivityForResult(i, PETICION_GALLERY);
@@ -163,7 +170,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
 
         @Override
         public void onItemClick(View view, int position) {
-            Foto foto = mAdapter.Photos.get(position);
+            Foto foto = mAdapter.getPhotos().get(position);
             if (foto.getType() == Enumerator.TipoFoto.BOTON_AGREGAR_MAS) {
                 openGalleryPhotos();
             }
@@ -182,12 +189,25 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         if (mAdapter.getItemCount() <= 1) {
             lyInicial.setVisibility(View.VISIBLE);
             gridView.setVisibility(View.GONE);
-           // linearBtnNext.setBackgroundColor(getResources().getColor(R.color.button_publish_disabled));
+            btnSiguiente.setVisibility(View.GONE);
         }
         else {
             lyInicial.setVisibility(View.GONE);
             gridView.setVisibility(View.VISIBLE);
-           // linearBtnNext.setBackgroundColor(getResources().getColor(R.color.button_publish));
+            btnSiguiente.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void llenarDenuncia(){
+        mDenuncia.getFotos().clear();
+        if (mAdapter.getItemCount() > 1) {
+            List<Foto> lstFotos = new ArrayList<>(mAdapter.getPhotos());
+            lstFotos.remove(0);
+            mDenuncia.setFotos(lstFotos);
+        }
+
+        mDenuncia.setLatitude(miPosicion.latitude);
+        mDenuncia.setLongitude(miPosicion.longitude);
+
     }
 }

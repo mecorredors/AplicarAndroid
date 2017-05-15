@@ -101,7 +101,8 @@
         <activity android:name=".parques.activities.ComoLLegarActivity" />
         <activity android:name=".common.LocationBaseGoogleApiActivity" />
         <activity android:name=".denunciaambiental.activities.DenunciaAmbientalActivity" />
-        <activity android:name=".denunciaambiental.activities.GalleryActivity"></activity>
+        <activity android:name=".denunciaambiental.activities.GalleryActivity" />
+        <activity android:name=".denunciaambiental.activities.DenunciaAmbiental2Activity"></activity>
     </application>
 
 </manifest>

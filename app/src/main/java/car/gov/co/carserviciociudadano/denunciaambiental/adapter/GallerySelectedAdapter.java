@@ -5,6 +5,7 @@ package car.gov.co.carserviciociudadano.denunciaambiental.adapter;
  */
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -43,7 +44,7 @@ public class GallerySelectedAdapter extends  ArrayAdapter<Foto> {
             .build();
 
 
-    public ArrayList<Foto> Photos;
+    private List<Foto> Photos;
 
     OnItemClickListener mItemClickListener;
 
@@ -65,7 +66,7 @@ public class GallerySelectedAdapter extends  ArrayAdapter<Foto> {
 
         Foto itemButton = new Foto();
         itemButton.setType(Enumerator.TipoFoto.BOTON_AGREGAR_MAS);
-        Photos.add(itemButton);
+        Photos.add(0,itemButton);
     }
 
     public ArrayList<Foto> toListPhotos(String[] all_path){
@@ -95,7 +96,7 @@ public class GallerySelectedAdapter extends  ArrayAdapter<Foto> {
     }
 
 
-    public GallerySelectedAdapter(Context context, ArrayList<Foto> photos) {
+    public GallerySelectedAdapter(Context context, List<Foto> photos) {
         super(context, R.layout.item_gallery_selected, photos);
         Photos=photos;
         // initImageLoader();
@@ -195,5 +196,9 @@ public class GallerySelectedAdapter extends  ArrayAdapter<Foto> {
 
     public int getItemCount() {
         return Photos.size();
+    }
+
+    public List<Foto> getPhotos() {
+      return Photos;
     }
 }
