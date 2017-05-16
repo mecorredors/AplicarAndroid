@@ -7,5 +7,8 @@
     <string name="reportar_denuncia_abiental">Reportar denuncia ambiental</string>
     <string name="header_map">Selecciona la ubicación de la denuncia</string>
     <string name="max_photos">Máximo fotos permitidas (20)</string>
+    <string name="cedula">Cédula</string>
+    <string name="reportar_anonimo">Deseo reportar como anónimo</string>
+    <string name="validacion_ubicacion">No ha sido posible obtener la ubicacion en el mapa</string>
 
 </resources>

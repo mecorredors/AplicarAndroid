@@ -210,4 +210,16 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         mDenuncia.setLongitude(miPosicion.longitude);
 
     }
+
+    @OnClick(R.id.btnSiguiente) void onSiguiente(){
+        llenarDenuncia();
+        if (mDenuncia.getFotos().size() == 0){
+            mostrarMensaje("Es necesario ingresar alguna foto");
+        }else if (mDenuncia.getLatitude() == 0 && mDenuncia.getLongitude() == 0){
+                mostrarMensaje(getResources().getString(R.string.validacion_ubicacion));
+        }else{
+            Intent i = new Intent(this, DenunciaAmbiental2Activity.class);
+            startActivity(i);
+        }
+    }
 }
