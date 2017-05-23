@@ -38,6 +38,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity {
 
     Denuncia mDenuncia;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

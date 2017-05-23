@@ -208,7 +208,7 @@ public class DetalleParqueActivity extends BaseActivity {
             }else if (id == R.id.btnMapasDelParque){
                 Intent j = new Intent(getApplicationContext(),ImageViewerActivity.class);
                 j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
-                j.putExtra(Enumerator.TipoArchivoParque.TAG, Enumerator.TipoArchivoParque.PRINCIPAL);
+                j.putExtra(Enumerator.TipoArchivoParque.TAG, Enumerator.TipoArchivoParque.MAP_PHOTO);
                 startActivity(j);
 
             }else {

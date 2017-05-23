@@ -1,5 +1,8 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 
@@ -25,6 +28,8 @@ import android.os.SystemClock;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
@@ -60,6 +65,9 @@ public class GalleryActivity extends BaseActivity {
     private boolean SaveGallerySelected=true;
     ArrayList<CustomGallery> _GalleryList = new ArrayList<CustomGallery>();
     public static final int MAX_PHOTOS = 10;
+
+    public  static final  int MY_PERMISSION_EXTERNAL_STORAGE = 11;
+   // public  final static int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +97,14 @@ public class GalleryActivity extends BaseActivity {
             savedInstanceState.remove(GALLERY_LIST);
 
         }
-        init();
+
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission( this, Manifest.permission.READ_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED  ) {
+
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE  },  MY_PERMISSION_EXTERNAL_STORAGE );
+        }else {
+            init();
+        }
     }
 
     @Override
@@ -445,5 +460,19 @@ public class GalleryActivity extends BaseActivity {
 
         if( _GalleryList!=null )
             outState.putSerializable(GALLERY_LIST,_GalleryList);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0   && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    init();
+                } else {
+                    mostrarMensaje("Permiso denegado para guardar archivos");
+                }
+                return;
+            }
+        }
     }
 }
