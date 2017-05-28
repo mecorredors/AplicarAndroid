@@ -8,13 +8,13 @@ public class Config {
 
 
 
-    public static String ServerParques = "http://parques.car.gov.co/";    //pruebas car
-    public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
-    public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
+   // public static String ServerParques = "http://parques.car.gov.co/";    //pruebas car
+    //public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
+    //public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
 
-   // public static String ServerParques = "http://192.168.0.13/parques/";    //pruebas car
-    //public static String ServerSIDCAR = "http://192.168.0.13/SIDCAR/";    //pruebas sidcar
-    //public static String ServerSAE = "http://192.168.0.13/SAE/";    //pruebas sidcar
+    public static String ServerParques = "http://192.168.0.13/parques/";    //pruebas car
+    public static String ServerSIDCAR = "http://192.168.0.13/SIDCAR/";    //pruebas sidcar
+    public static String ServerSAE = "http://192.168.0.13/SAE/";    //pruebas sidcar
 
  //public static String API_PARQUES_PUBLICAR_IMAGENES =  "http://192.168.0.13/parques/" + "api/reserva/publicarimagenes/";
 
@@ -44,4 +44,8 @@ public class Config {
     public static String API_BUSCAR_EXPEDIENTE =  ServerSAE + "api/expediente/buscar/";
     public static String API_OBTENER_EXPEDIENTE =  ServerSAE + "api/expediente/obtenerexpediente/";
     public static String API_EXPEDIENTE_DOCUMENTOS =  ServerSAE + "api/expediente/obtenerdocumentos/";
+
+    public static String API_SIDCAR_LUGARES =  ServerSIDCAR + "api/catalogos/listarlugares/";
+    public static String API_SIDCAR_RADICARPQR =  ServerSIDCAR + "api/radicados/radicarpqr/";
+    public static String API_SIDCAR_RADICARPQR_IMAGENES =  ServerSIDCAR + "api/radicados/publicarimagenestemporal/";
 }

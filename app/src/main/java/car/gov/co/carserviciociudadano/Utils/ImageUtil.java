@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import car.gov.co.carserviciociudadano.AppCar;
 
 
 /**
@@ -23,11 +24,52 @@ import java.io.InputStream;
  */
 public class ImageUtil {
 
-    public static String scaledBitmap(String path) {
+    public static  class Image{
+        String path;
+        String newName;
+        String name;
+        long size;
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public long getSize() {
+            return size;
+        }
+
+        public void setSize(long size) {
+            this.size = size;
+        }
+
+        public String getNewName() {
+            return newName;
+        }
+
+        public void setNewName(String newName) {
+            this.newName = newName;
+        }
+    }
+    public static Image scaledBitmap(String path,String nameDirectory) {
+       return scaledBitmap(path,nameDirectory,false);
+    }
+    public static Image scaledBitmap(String path,String nameDirectory, boolean modePrivate) {
         float maxWidth = 832;
         float maxHeight = 624;
         String filePath = path;
-
+        Image image = new Image();
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -93,20 +135,20 @@ public class ImageUtil {
                     BitmapFactory.decodeStream(inputStream, null, options);
                     inputStream.close();
                 } catch (FileNotFoundException exception) {
-                    exception.printStackTrace(); return  "";
+                    exception.printStackTrace(); return  null;
                 } catch (IOException exception) {
-                    exception.printStackTrace();  return  "";
+                    exception.printStackTrace();  return  null;
                 }
             }
         } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();  return  "";
+            exception.printStackTrace();  return  null;
         }
         try {
             scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
         } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();  return  "";
+            exception.printStackTrace();  return  null;
         }catch (IllegalArgumentException ex){
-            ex.printStackTrace(); return "";
+            ex.printStackTrace(); return null;
         }
 
         float ratioX = actualWidth / (float) options.outWidth;
@@ -136,12 +178,15 @@ public class ImageUtil {
                     scaledBitmap.getWidth(), scaledBitmap.getHeight(),
                     matrix, true);
         } catch (IOException e) {
-            e.printStackTrace();  return  "";
+            e.printStackTrace();  return  null;
         }
 
         // String dir =   Environment.getExternalStorageDirectory() + "/FincaRaizPublish/";
-        // String dir = AppSidCar.getContext().getFilesDir() + "/VisitaTecnicaPublish/";
-        String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/ServicioCiudanoCAR/";;
+        String dir = "";
+        if (modePrivate)
+             dir = AppCar.getContext().getFilesDir() + "/" +nameDirectory +"/";
+        else
+            dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" +nameDirectory +"/";
 
         File newdir = new File(dir);
         if (newdir.mkdirs() || newdir.isDirectory()) {
@@ -151,6 +196,8 @@ public class ImageUtil {
 
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+            image.setSize(bytes.size());
 
             File f = new File(fileName);
 
@@ -162,17 +209,22 @@ public class ImageUtil {
 
             } catch (IOException e) {
                 Log.d("Utils.ScaledBitmap", e.toString());
-                return "";
+                return null;
             }
 
             if(scaledBitmap!=null) scaledBitmap.recycle();
             if(scaledBitmap!=null)	scaledBitmap.recycle();
 
+            image.setPath(fileName);
+            image.setNewName(imageFileName);
+            int index = filePath.lastIndexOf("/");
+            if (index < filePath.length())
+                image.setName(filePath.substring(index+1));
 
-            return fileName;
+            return image;
         } else {
             Log.d("Utils.ScaledBitmap", "No fue posible crear el directorio" + dir);
-            return "";
+            return null;
         }
     }
 

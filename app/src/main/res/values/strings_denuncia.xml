@@ -9,6 +9,10 @@
     <string name="max_photos">Máximo fotos permitidas (20)</string>
     <string name="cedula">Cédula</string>
     <string name="reportar_anonimo">Deseo reportar como anónimo</string>
-    <string name="validacion_ubicacion">No ha sido posible obtener la ubicacion en el mapa</string>
+    <string name="validacion_ubicacion">Selecciona una ubicación en el mapa</string>
+    <string name="error_load_deptos">No fue posible obtener los departamentos</string>
+    <string name="error_load_municipios">No fue posible obtener los municipios</string>
+    <string name="error_load_veredas">No fue posible obtener las veredas</string>
+    <string name="radicar_pqr_ok">Hemos recibido su reporte y ha quedado radicado con el número </string>
 
 </resources>

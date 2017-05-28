@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 
@@ -32,8 +33,9 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.LocationBaseGoogleApiActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.adapter.GallerySelectedAdapter;
-import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
+import car.gov.co.carserviciociudadano.denunciaambiental.model.ArchivoAdjunto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
+import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
 
 public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback {
     @BindView(R.id.lyInicial)  LinearLayout lyInicial;
@@ -203,8 +205,17 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         if (mAdapter.getItemCount() > 1) {
             List<Foto> lstFotos = new ArrayList<>(mAdapter.getPhotos());
             lstFotos.remove(0);
+
             mDenuncia.setFotos(lstFotos);
+          //  List<ArchivoAdjunto> lstArchivoAdjunto = new ArrayList<>();
+            /*for(Foto foto: lstFotos){
+                lstArchivoAdjunto.add(new ArchivoAdjunto(foto.getPath(),""));
+            }
+            mDenuncia.setArchivosAdjuntos(lstArchivoAdjunto);*/
+
         }
+        CameraPosition camPos = mMap.getCameraPosition();
+        miPosicion  = new LatLng(camPos.target.latitude,camPos.target.longitude);
 
         mDenuncia.setLatitude(miPosicion.latitude);
         mDenuncia.setLongitude(miPosicion.longitude);

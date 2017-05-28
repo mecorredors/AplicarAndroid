@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.FechaDialogo;
 import car.gov.co.carserviciociudadano.Utils.ImageUtil;
 import car.gov.co.carserviciociudadano.Utils.Utils;
@@ -188,7 +189,6 @@ public class AbonoActivity extends BaseActivity {
             mLstBancos.addAll(lstBancos);
             mLstBancos.add(0,new Banco(0,"Banco"));
             adapterBancos = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstBancos);
-
             adapterBancos.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
             mSpiBanco.setAdapter(adapterBancos);
             adapterBancos.notifyDataSetChanged();
@@ -490,12 +490,12 @@ public class AbonoActivity extends BaseActivity {
             // mTxtArchivo.setText(picturePath);
         }else  if (requestCode == REQUEST_CODE_PHOTO) {
             if (resultCode == RESULT_OK) {
-
-                String newPath = ImageUtil.scaledBitmap(mSelectedImagePath);
-                if (!newPath.isEmpty()) {
+               // newPath
+                ImageUtil.Image image = ImageUtil.scaledBitmap(mSelectedImagePath, Enumerator.NAME_DIRECTORY_IMAGES);
+                if (image != null && !image.getPath().isEmpty()) {
                     File file = new File(mSelectedImagePath);
                     file.delete();
-                    mSelectedImagePath = newPath;
+                    mSelectedImagePath = image.getPath();
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 File file = new File(mSelectedImagePath);
@@ -519,8 +519,6 @@ public class AbonoActivity extends BaseActivity {
         }
 
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {

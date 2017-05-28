@@ -38,4 +38,7 @@ public class Enumerator {
         public static final int FOTO = 1;
 
     }
+
+    public static final int TIMEOUT_PUBLISH_IMAGES = 40000;
+    public static final String NAME_DIRECTORY_IMAGES = "CAR-Servicio-Ciudadano";
 }

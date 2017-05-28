@@ -25,6 +25,7 @@ import android.graphics.Bitmap;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
+import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
 
 public class GallerySelectedAdapter extends  ArrayAdapter<Foto> {
 
@@ -65,7 +66,7 @@ public class GallerySelectedAdapter extends  ArrayAdapter<Foto> {
     public void setButtonAddMore(){
 
         Foto itemButton = new Foto();
-        itemButton.setType(Enumerator.TipoFoto.BOTON_AGREGAR_MAS);
+        itemButton.setType (Enumerator.TipoFoto.BOTON_AGREGAR_MAS);
         Photos.add(0,itemButton);
     }
 

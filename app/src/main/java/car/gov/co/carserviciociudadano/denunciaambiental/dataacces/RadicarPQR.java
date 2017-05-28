@@ -1,29 +1,18 @@
-package car.gov.co.carserviciociudadano.parques.dataaccess;
+package car.gov.co.carserviciociudadano.denunciaambiental.dataacces;
 
 import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.nostra13.universalimageloader.utils.L;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import car.gov.co.carserviciociudadano.AppCar;
-import car.gov.co.carserviciociudadano.Utils.Config;
-import car.gov.co.carserviciociudadano.Utils.Enumerator;
-import car.gov.co.carserviciociudadano.Utils.Utils;
-import car.gov.co.carserviciociudadano.parques.interfaces.IAbono;
-import car.gov.co.carserviciociudadano.parques.model.Abono;
-import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -32,85 +21,42 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.Utils;
+import car.gov.co.carserviciociudadano.denunciaambiental.interfaces.IRadicarPQR;
+import car.gov.co.carserviciociudadano.denunciaambiental.model.ArchivoAdjunto;
+import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
+import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
+import car.gov.co.carserviciociudadano.denunciaambiental.model.Lugar;
+import car.gov.co.carserviciociudadano.parques.model.Abono;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 /**
- * Created by Olger on 27/11/2016.
+ * Created by Olger on 26/05/2017.
  */
 
-public class Abonos {
-
-    public static final String TAG ="Abonos";
-
-    public void list(long idReserva, final IAbono iAbono)
+public class RadicarPQR {
+    public static final String TAG ="RadicarPQR";
+    public void insert(final Denuncia denuncia, final IRadicarPQR iRadicarPQR )
     {
-        String url = Config.API_PARQUES_ABONOS + "?idReserva="+ idReserva;
-        url = url.replace(" ", "%20");
-
-        JsonArrayRequest objRequest = new JsonArrayRequest( url,
-                new Response.Listener<JSONArray>(){
-                    @Override
-                    public void onResponse(JSONArray response)
-                    {
-                        try {
-                            iAbono.onSuccess(JSONArrayToList(response));
-                        }catch (JSONException ex){
-                            iAbono.onError(new ErrorApi(ex));
-                        }
-
-                    }
-                },	new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                iAbono.onError(new ErrorApi(error));
-            }
-        }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-
-                Map<String, String> headerMap = new HashMap<>();
-                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationParques());
-                return headerMap;
-            }
-        };
-
-        objRequest.setTag(TAG);
-        objRequest.setRetryPolicy(
-                new DefaultRetryPolicy(
-                        20000,
-                        0,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppCar.VolleyQueue().add(objRequest);
-    }
-
-    private List<Abono> JSONArrayToList(JSONArray response) throws JSONException{
-        List<Abono> lista = new ArrayList<>();
-        for(int i = 0; i < response.length(); i++){
-            JSONObject jresponse = response.getJSONObject(i);
-            lista.add(new Abono(jresponse.toString()));
-        }
-        return lista;
-    }
-
-
-    public void insert(final Abono abono,final IAbono iAbono )
-    {
-        String url = Config.API_PARQUES_INGRESAR_ABONO;
+        String url = Config.API_SIDCAR_RADICARPQR;
 
         JsonObjectRequest objRequest = new JsonObjectRequest (
-                Request.Method.POST, url,   abono.toJSONObject() ,
+                Request.Method.POST, url,   denuncia.toJSONObject() ,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                          iAbono.onSuccess();
+                        iRadicarPQR.onSuccess(new Denuncia(response.toString()));
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        iAbono.onError(new ErrorApi(error));
+                        iRadicarPQR.onError(new ErrorApi(error));
                     }
                 }) {
 
@@ -118,7 +64,7 @@ public class Abonos {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
-                headers.put("Authorization", "Basic " + Utils.getAuthorizationParques());
+                headers.put("Authorization", "Basic " + Utils.getAuthorizationSIDCAR());
                 return headers;
             }
         };
@@ -132,11 +78,10 @@ public class Abonos {
         AppCar.VolleyQueue().add(objRequest);
     }
 
-
-    public int publicarImagen(Abono abono) {
+    public int publicarImagenTemporal(Foto foto, String usuario) {
 
         int serverResponseCode = 0;
-        String sourceFileUri = abono.getComprobanteAbono();
+        String sourceFileUri = foto.getDirLocal();
 
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
@@ -159,7 +104,7 @@ public class Abonos {
             try {
                 // open a URL connection to the Servlet
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                URL url = new URL(Config.API_PARQUES_PUBLICAR_IMAGENES);
+                URL url = new URL(Config.API_SIDCAR_RADICARPQR_IMAGENES+ "?usuario="+usuario);
 
                 // Open a HTTP  connection to  the URL
                 conn = (HttpURLConnection) url.openConnection();
@@ -173,7 +118,7 @@ public class Abonos {
                 conn.setRequestProperty("ENCTYPE", "multipart/form-data");
                 conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
                 conn.setRequestProperty("uploaded_file", sourceFileUri);
-                conn.setRequestProperty("Authorization", "Basic " + Utils.getAuthorizationParques());
+                conn.setRequestProperty("Authorization", "Basic " + Utils.getAuthorizationSIDCAR());
 
                 dos = new DataOutputStream(conn.getOutputStream());
 
@@ -219,9 +164,13 @@ public class Abonos {
                         sb.append(line);
                     }
                     br.close();
-                    String name = sb.toString().replace("\"","");
-                    Log.d("imagen subida ",name);
-                    abono.setComprobanteAbono(name);
+
+                    GsonBuilder builder = new GsonBuilder();
+                    builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    Gson gson = builder.create();
+                    String pathTemporal = gson.fromJson(sb.toString(), String.class);
+                    Log.d("imagen subida ",pathTemporal);
+                    foto.setDirLocal(pathTemporal);
 
                     return serverResponseCode;
 
@@ -247,5 +196,4 @@ public class Abonos {
         } // End else block
 
     }
-
 }

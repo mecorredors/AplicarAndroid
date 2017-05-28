@@ -1,7 +1,19 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.model;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.jakewharton.disklrucache.Util;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import car.gov.co.carserviciociudadano.Utils.Utils;
 
 /**
  * Created by Olger on 14/05/2017.
@@ -9,14 +21,18 @@ import java.util.List;
 
 public class Denuncia {
 
+    private String NumeroRadicado;
     private boolean Anonimo;
     private String Cedula;
     private String Nombre;
     private String Email;
     private String Direccion;
-    private int Departamento;
-    private int Ciudad;
-    private int Vereda;
+    private String Departamento;
+    private String Municipio;
+    private String Vereda;
+    private String MunicipioQueja;
+    private String VeredaQueja;
+    private String DesUbicacionQueja;
     private String Telefono;
     private String Comentarios;
     private double Latitude;
@@ -24,6 +40,7 @@ public class Denuncia {
     private double Altitud;
 
     private List<Foto> Fotos ;
+  //  private List<ArchivoAdjunto> ArchivosAdjuntos ;
 
     private static Denuncia instance = null;
 
@@ -34,6 +51,14 @@ public class Denuncia {
         return instance;
     }
 
+//    public List<ArchivoAdjunto> getArchivosAdjuntos() {
+//        if (ArchivosAdjuntos == null)  return new ArrayList<>();
+//        return ArchivosAdjuntos;
+//    }
+//
+//    public void setArchivosAdjuntos(List<ArchivoAdjunto> archivosAdjuntos) {
+//        ArchivosAdjuntos = archivosAdjuntos;
+//    }
 
     public boolean isAnonimo() {
         return Anonimo;
@@ -75,27 +100,27 @@ public class Denuncia {
         Direccion = direccion;
     }
 
-    public int getDepartamento() {
+    public String getDepartamento() {
         return Departamento;
     }
 
-    public void setDepartamento(int departamento) {
+    public void setDepartamento(String departamento) {
         Departamento = departamento;
     }
 
-    public int getCiudad() {
-        return Ciudad;
+    public String getMunicipio() {
+        return Municipio;
     }
 
-    public void setCiudad(int ciudad) {
-        Ciudad = ciudad;
+    public void setMunicipio(String municipio) {
+        Municipio = municipio;
     }
 
-    public int getVereda() {
+    public String getVereda() {
         return Vereda;
     }
 
-    public void setVereda(int vereda) {
+    public void setVereda(String vereda) {
         Vereda = vereda;
     }
 
@@ -113,16 +138,6 @@ public class Denuncia {
 
     public void setComentarios(String comentarios) {
         Comentarios = comentarios;
-    }
-
-    public List<Foto> getFotos() {
-       if (Fotos == null)  return new ArrayList<>();
-
-        return Fotos;
-    }
-
-    public void setFotos(List<Foto> fotos) {
-        Fotos = fotos;
     }
 
     public double getLatitude() {
@@ -148,4 +163,98 @@ public class Denuncia {
     public void setAltitud(double altitud) {
         Altitud = altitud;
     }
+
+    public String getNumeroRadicado() {
+        return NumeroRadicado;
+    }
+
+    public void setNumeroRadicado(String numeroRadicado) {
+        NumeroRadicado = numeroRadicado;
+    }
+
+    public String getMunicipioQueja() {
+        return MunicipioQueja;
+    }
+
+    public void setMunicipioQueja(String municipioQueja) {
+        MunicipioQueja = municipioQueja;
+    }
+
+    public String getVeredaQueja() {
+        return VeredaQueja;
+    }
+
+    public void setVeredaQueja(String veredaQueja) {
+        VeredaQueja = veredaQueja;
+    }
+
+    public String getDesUbicacionQueja() {
+        return DesUbicacionQueja;
+    }
+
+    public void setDesUbicacionQueja(String desUbicacionQueja) {
+        DesUbicacionQueja = desUbicacionQueja;
+    }
+
+    public List<Foto> getFotos() {
+        if (this.Fotos == null) return  new ArrayList<>();
+        return Fotos;
+    }
+
+    public void setFotos(List<Foto> fotos) {
+        Fotos = fotos;
+    }
+
+    public String getUsuario(){
+        if (!this.Anonimo) return this.Cedula;
+
+        return  "ANONIMO" + Utils.getFechaActual();
+
+    }
+
+    public  Denuncia() {
+    }
+
+    public  Denuncia(String json) {
+        if (json!= null && !json.isEmpty()) {
+            try {
+                GsonBuilder builder = new GsonBuilder();
+                builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                Gson gson = builder.create();
+                Denuncia element = gson.fromJson(json, Denuncia.class);
+
+                this.NumeroRadicado = element.getNumeroRadicado();
+                this.Anonimo = element.isAnonimo();
+                this.Cedula = element.getCedula();
+                this.Nombre = element.getNombre();
+                this.Email = element.getEmail();
+                this.Direccion = element.getDireccion();
+                this.Departamento = element.getDepartamento();
+                this.Municipio = element.getMunicipio();
+                this.Vereda = element.getVereda();
+                this.Telefono = element.getTelefono();
+                this.Comentarios = element.getComentarios();
+                this.Latitude = element.getLatitude();
+                this.Longitude = element.getLongitude();
+                this.Altitud = element.getAltitud();
+
+            } catch (JsonSyntaxException ex) {
+                Log.e("Lugar.json", ex.toString());
+            }
+        }
+    }
+
+    public JSONObject toJSONObject(){
+
+        Gson gson = new Gson();
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(gson.toJson(this));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return jsonObject;
+    }
+
 }
