@@ -1,4 +1,5 @@
 <resources>
+    <string name="api_key_map">AIzaSyANX_3o4ILDTiUEB0_t5CF5LscEiw5Ie5M</string>
     <string name="app_name">Servicio al ciudadano</string>
     <string name="title_main_activity">Servicio al ciudadano</string>
     <string name="title_activity_main_parques">Reserva de parques</string>

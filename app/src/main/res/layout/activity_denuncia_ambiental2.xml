@@ -11,6 +11,11 @@
     android:orientation="vertical"
     tools:context="car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbiental2Activity">
 
+   <LinearLayout android:id="@+id/lyFormulario"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical"
+       android:visibility="visible">
 
     <TextView
         android:layout_width="match_parent"
@@ -38,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
 
 
     <android.support.design.widget.TextInputLayout
@@ -113,6 +117,13 @@
             android:layout_height="wrap_content"
             >
         </android.support.v7.widget.AppCompatSpinner>
+        <ProgressBar
+            android:id="@+id/pbDepartamento"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
@@ -125,6 +136,13 @@
             android:layout_height="wrap_content"
             >
         </android.support.v7.widget.AppCompatSpinner>
+        <ProgressBar
+            android:id="@+id/pbMunicipio"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
@@ -137,6 +155,13 @@
             android:layout_height="wrap_content"
             >
         </android.support.v7.widget.AppCompatSpinner>
+        <ProgressBar
+            android:id="@+id/pbVereda"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
     </FrameLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -154,6 +179,8 @@
             />
     </android.support.design.widget.TextInputLayout>
 
+    </LinearLayout>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/lyComentarios"
         android:layout_width="match_parent"
@@ -165,10 +192,10 @@
             android:layout_height="wrap_content"
             android:hint="Comentarios"
             android:inputType="textNoSuggestions"
+            android:maxEms="500"
             style="@style/editTextUsuario"
             />
     </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
 
     <Button android:id="@+id/btnDenunciar"
         android:layout_width="match_parent"
@@ -177,5 +204,32 @@
         android:text="Enviar denuncia"
         android:layout_marginTop="@dimen/margin_10dp"
         />
+       </LinearLayout>
+
+    <LinearLayout android:id="@+id/lyRespuesta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView android:id="@+id/lblRespuesta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"
+            android:text="@string/radicar_pqr_ok"
+            android:textSize="@dimen/text_size_16"
+            android:layout_margin="@dimen/margin_16dp"
+            android:padding="@dimen/margin_6dp"
+            android:background="#eff7f9"/>
+        <Button android:id="@+id/btnCerrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ButtonAccent"
+            android:text="Cerrar"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp"
+            />
+    </LinearLayout>
+
 </LinearLayout>
 </ScrollView>

@@ -16,4 +16,5 @@ public interface IViewRadicarPQR {
     void onErrorRadicarPQR(ErrorApi errorApi);
 
 
+
 }

@@ -18,6 +18,8 @@ public class Config {
 
  //public static String API_PARQUES_PUBLICAR_IMAGENES =  "http://192.168.0.13/parques/" + "api/reserva/publicarimagenes/";
 
+
+
     public static String API_PARQUES_PARQUES =  ServerParques + "api/parque/parques/";
     public static String API_PARQUES_ARCHIVOS =  ServerParques + "api/parque/archivos/";
     public static String API_PARQUES_MANTENIMIENTOS =  ServerParques + "api/parque/mantenimientos/";
@@ -48,4 +50,5 @@ public class Config {
     public static String API_SIDCAR_LUGARES =  ServerSIDCAR + "api/catalogos/listarlugares/";
     public static String API_SIDCAR_RADICARPQR =  ServerSIDCAR + "api/radicados/radicarpqr/";
     public static String API_SIDCAR_RADICARPQR_IMAGENES =  ServerSIDCAR + "api/radicados/publicarimagenestemporal/";
+
 }

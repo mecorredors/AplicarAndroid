@@ -37,6 +37,8 @@ public class Denuncia {
     private String Comentarios;
     private double Latitude;
     private double Longitude;
+    private double Norte;
+    private double Este;
     private double Altitud;
 
     private List<Foto> Fotos ;
@@ -50,15 +52,6 @@ public class Denuncia {
 
         return instance;
     }
-
-//    public List<ArchivoAdjunto> getArchivosAdjuntos() {
-//        if (ArchivosAdjuntos == null)  return new ArrayList<>();
-//        return ArchivosAdjuntos;
-//    }
-//
-//    public void setArchivosAdjuntos(List<ArchivoAdjunto> archivosAdjuntos) {
-//        ArchivosAdjuntos = archivosAdjuntos;
-//    }
 
     public boolean isAnonimo() {
         return Anonimo;
@@ -205,11 +198,30 @@ public class Denuncia {
         Fotos = fotos;
     }
 
+    public double getNorte() {
+        return Norte;
+    }
+
+    public void setNorte(double norte) {
+        Norte = norte;
+    }
+
+    public double getEste() {
+        return Este;
+    }
+
+    public void setEste(double este) {
+        Este = este;
+    }
+
     public String getUsuario(){
-        if (!this.Anonimo) return this.Cedula;
-
-        return  "ANONIMO" + Utils.getFechaActual();
-
+        if (this.Cedula != null && !this.Cedula.trim().isEmpty() && !this.Anonimo)
+            return this.Cedula.trim();
+        else if (Anonimo){
+            return  "ANONIMO" + Utils.getFechaActual();
+        }else {
+            return "SIN_CEDULA" + Utils.getFechaActual();
+        }
     }
 
     public  Denuncia() {

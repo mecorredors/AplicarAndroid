@@ -112,7 +112,7 @@ public class Validation {
     }
 
     public static boolean IsEmpty(Spinner spinner){
-        if(spinner.getSelectedItemPosition()<=0)
+        if(spinner.getSelectedItemPosition() <= 0)
         {
             TextView errorText = (TextView)spinner.getSelectedView();
 

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
+    android:id="@+id/lyDenuncia"
     tools:context="car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity">
 
 

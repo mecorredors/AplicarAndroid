@@ -1,11 +1,13 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -31,14 +33,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.SexaDecimalCoordinate;
 import car.gov.co.carserviciociudadano.common.LocationBaseGoogleApiActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.adapter.GallerySelectedAdapter;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.ArchivoAdjunto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
+import car.gov.co.carserviciociudadano.denunciaambiental.presenter.ElevationPresenter;
+import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewElevation;
 
-public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback {
+public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback, IViewElevation {
     @BindView(R.id.lyInicial)  LinearLayout lyInicial;
+    @BindView(R.id.lyDenuncia)  LinearLayout lyDenuncia;
     @BindView(R.id.gridGallery)    GridView gridView;
     @BindView(R.id.btnSiguiente)   Button btnSiguiente;
 
@@ -47,11 +53,12 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     private static final String LOGTAG = "Denuncia ambiental";
     private static final int PETICION_PERMISO_LOCALIZACION = 101;
     private static final int PETICION_GALLERY = 102;
+    private static final int PETICION_DENUCIA_PARTE_2 = 105;
     GallerySelectedAdapter mAdapter;
    // private List<Foto> mFotos = new ArrayList<>();
-
+    ElevationPresenter mElevationPresenter;
     private Denuncia mDenuncia;
-
+    private ProgressDialog mProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +75,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         mAdapter.SetOnItemClickListener(listenerGallerySelected);
         gridView.setAdapter(mAdapter);
         setNumPhotosSelect();
+        mElevationPresenter = new ElevationPresenter(this);
     }
 
     @Override
@@ -91,6 +99,12 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
             mMap.setMyLocationEnabled(true);
         }
 
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if (mProgressDialog != null) mProgressDialog.dismiss();
     }
 
     private void moveCamara() {
@@ -147,6 +161,8 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
 
                 mAdapter.AddPhotos(all_path);
                 setNumPhotosSelect();
+            }else if (requestCode == PETICION_DENUCIA_PARTE_2){
+                finish();
             }
         }
     }
@@ -205,20 +221,18 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         if (mAdapter.getItemCount() > 1) {
             List<Foto> lstFotos = new ArrayList<>(mAdapter.getPhotos());
             lstFotos.remove(0);
-
             mDenuncia.setFotos(lstFotos);
-          //  List<ArchivoAdjunto> lstArchivoAdjunto = new ArrayList<>();
-            /*for(Foto foto: lstFotos){
-                lstArchivoAdjunto.add(new ArchivoAdjunto(foto.getPath(),""));
-            }
-            mDenuncia.setArchivosAdjuntos(lstArchivoAdjunto);*/
-
         }
         CameraPosition camPos = mMap.getCameraPosition();
         miPosicion  = new LatLng(camPos.target.latitude,camPos.target.longitude);
 
         mDenuncia.setLatitude(miPosicion.latitude);
         mDenuncia.setLongitude(miPosicion.longitude);
+
+        SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+        sexaDecimalCoordinate.ConvertToFlatCoordinate();
+        mDenuncia.setNorte(sexaDecimalCoordinate.get_coorPlanaNorteFinal());
+        mDenuncia.setEste(sexaDecimalCoordinate.get_coorPlanaEsteFinal());
 
     }
 
@@ -229,8 +243,34 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         }else if (mDenuncia.getLatitude() == 0 && mDenuncia.getLongitude() == 0){
                 mostrarMensaje(getResources().getString(R.string.validacion_ubicacion));
         }else{
-            Intent i = new Intent(this, DenunciaAmbiental2Activity.class);
-            startActivity(i);
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setMessage("Guardando...");
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+            mElevationPresenter.getElevation(mDenuncia.getLatitude(),mDenuncia.getLongitude());
         }
+    }
+
+    @Override
+    public void onSuccessElevation(double elevation) {
+        if (mProgressDialog != null) mProgressDialog.dismiss();
+        mDenuncia.setAltitud(elevation);
+        Intent i = new Intent(this, DenunciaAmbiental2Activity.class);
+        startActivityForResult(i,PETICION_DENUCIA_PARTE_2);
+    }
+
+    @Override
+    public void onErrrorElevation(int statusCode) {
+        if (mProgressDialog != null) mProgressDialog.dismiss();
+        Snackbar.make(lyDenuncia, getResources().getString(R.string.error_load_elevation), Snackbar.LENGTH_INDEFINITE)
+                .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
+                .setAction("REINTENTAR", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mElevationPresenter.getElevation(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+                    }
+                })
+                .show();
     }
 }

@@ -191,7 +191,7 @@ public class ImageUtil {
         File newdir = new File(dir);
         if (newdir.mkdirs() || newdir.isDirectory()) {
 
-            String imageFileName = "Imagen_" + Utils.getFechaActual() + "_.jpg";
+            String imageFileName = "Imagen_" + Utils.getTimeInMillis() + "_.jpg";
             String fileName = dir + imageFileName;
 
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -217,10 +217,15 @@ public class ImageUtil {
 
             image.setPath(fileName);
             image.setNewName(imageFileName);
+            image.setName(imageFileName);
             int index = filePath.lastIndexOf("/");
-            if (index < filePath.length())
-                image.setName(filePath.substring(index+1));
-
+            if (index > 0){
+                filePath = filePath.substring(index+1);
+                index = filePath.lastIndexOf(".");
+                if (index > 0){
+                    image.setName(filePath.substring(0,index));
+                }
+            }
             return image;
         } else {
             Log.d("Utils.ScaledBitmap", "No fue posible crear el directorio" + dir);

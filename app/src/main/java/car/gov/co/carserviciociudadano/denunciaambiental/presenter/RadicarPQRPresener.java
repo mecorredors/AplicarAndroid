@@ -22,6 +22,10 @@ public class RadicarPQRPresener {
         this.viewRadicarPQR = iViewRadicarPQR;
     }
 
+    public void setmPublicando(boolean mPublicando) {
+        this.mPublicando = mPublicando;
+    }
+
     public void publicarImagenes(List<Foto> lstArchivosAdjuntos, String usuario){
         if (mPublicando == false ){
             mPublicando = true;

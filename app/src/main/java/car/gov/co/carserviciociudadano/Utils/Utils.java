@@ -250,4 +250,8 @@ public class Utils {
         }
         return false;
     }
+    public static long getTimeInMillis(){
+        Calendar calendar = Calendar.getInstance();
+        return calendar.getTimeInMillis();
+    }
 }

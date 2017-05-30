@@ -1,16 +1,23 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.activities;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +59,12 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
     @BindView(R.id.lyComentarios)   TextInputLayout lyComentarios;
     @BindView(R.id.lyDatos)   View lyDatos;
     @BindView(R.id.lyDenuncia)   View lyDenuncia;
+    @BindView(R.id.pbDepartamento)   ProgressBar pbDepartamento;
+    @BindView(R.id.pbMunicipio)   ProgressBar pbMunicipio;
+    @BindView(R.id.pbVereda)   ProgressBar pbVereda;
+    @BindView(R.id.lyFormulario)   View lyFormulario;
+    @BindView(R.id.lyRespuesta)    View lyRespuesta;
+    @BindView(R.id.lblRespuesta)   TextView lblRespuesta;
 
     Denuncia mDenuncia;
     LugaresPresenter mLugaresPresenter;
@@ -62,7 +75,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
     ArrayAdapter<Lugar> adapterMunicipios;
     List<Lugar> mLstVeredas = new ArrayList<>();
     ArrayAdapter<Lugar> adapterVeredas;
-
+    private ProgressDialog mProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +83,6 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
         ButterKnife.bind(this);
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
-        ocultarTeclado(lyDenuncia);
-
         mDenuncia = Denuncia.newInstance();
         cargarDatos();
         spiDepartamento.setOnItemSelectedListener(this);
@@ -79,22 +90,41 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
         mLugaresPresenter = new LugaresPresenter(this);
         mRadicarPQRPresenter = new RadicarPQRPresener(this);
         mLugaresPresenter.obtenerDepartamentos();
-
+        pbDepartamento.setVisibility(View.VISIBLE);
+        ocultarTeclado(lyDenuncia);
     }
 
     @Override protected void onPause(){
         super.onPause();
         llenarDenuncia();
+        mDenuncia.setComentarios("");
+        mRadicarPQRPresenter.setmPublicando(false);
+        if (mProgressDialog != null) mProgressDialog.dismiss();
+    }
+    @Override protected void onDestroy(){
+        super.onDestroy();
+        mRadicarPQRPresenter.setmPublicando(false);
+        if (mProgressDialog != null) mProgressDialog.dismiss();
     }
 
     private boolean validar(){
         boolean res = true;
-        if (cheAnonimo.isChecked()){
-            res = Validation.IsEmpty(txtComentarios, lyComentarios);
-        }else {
-            res = res && !Validation.IsEmpty(txtNombre, lyNombre);
-            res = res && !Validation.IsEmpty(txtEmail, lyEmail);
-            res = res && !Validation.IsEmpty(txtComentarios, lyComentarios);
+        if (!cheAnonimo.isChecked()){
+
+            if (Validation.IsEmpty(txtNombre, lyNombre)) res = false;
+            if (!Validation.IsValidEmail(txtEmail, lyEmail)) res = false;
+            if (Validation.IsEmpty(txtComentarios, lyComentarios)) res = false;
+            if (txtDireccion.getText().length()> 0){
+                if (Validation.IsEmpty(spiDepartamento)) res = false;
+                if (Validation.IsEmpty(spiMunicipio)) res = false;
+            }
+        }
+
+        if (Validation.IsEmpty(txtComentarios, lyComentarios)) res = false;
+        if (res && txtComentarios.getText().length() < 15){
+            res = false;
+            mostrarMensajeDialog(getResources().getString(R.string.error_longitud_comentarios));
+            txtComentarios.requestFocus();
         }
         return res;
     }
@@ -116,15 +146,15 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
             Lugar depto = (Lugar) spiDepartamento.getSelectedItem();
             if (depto != null)
-                mDenuncia.setMunicipio(depto.getIDLugar());
+                mDenuncia.setDepartamento(depto.getIDLugar());
 
             Lugar municipio = (Lugar) spiMunicipio.getSelectedItem();
             if (municipio!= null)
                 mDenuncia.setMunicipio(municipio.getIDLugar());
 
             Lugar vereda = (Lugar) spiVereda.getSelectedItem();
-            if (vereda!= null)
-                mDenuncia.setMunicipio(vereda.getIDLugar());
+            if (vereda!= null )
+                mDenuncia.setVereda(vereda.getIDLugar());
         }
     }
     private  void limpiarDatos(){
@@ -150,12 +180,17 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
         txtDireccion.setText(mDenuncia.getDireccion());
         txtEmail.setText(mDenuncia.getEmail());
         txtTelefono.setText(mDenuncia.getTelefono());
-        txtComentarios.setText(mDenuncia.getComentarios());
+
     }
 
     @OnClick(R.id.btnDenunciar) void onDenunciar(){
         if (validar()){
             llenarDenuncia();
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setMessage("Enviado...");
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
             mRadicarPQRPresenter.publicarImagenes(mDenuncia.getFotos(),mDenuncia.getUsuario());
             // iniciar progress
         }else{
@@ -165,12 +200,20 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
     @OnClick(R.id.cheAnonimo) void onAnonimo(){
         lyDatos.setVisibility(cheAnonimo.isChecked()== true ? View.GONE : View.VISIBLE);
-        if (!cheAnonimo.isChecked() && mLstDepartamentos.size()==0)
+        if (!cheAnonimo.isChecked() && mLstDepartamentos.size()==0) {
+            pbDepartamento.setVisibility(View.VISIBLE);
             mLugaresPresenter.obtenerDepartamentos();
+        }
+        ocultarTeclado(lyDenuncia);
+    }
+    @OnClick(R.id.btnCerrar) void onCerrar(){
+        setResult(Activity.RESULT_OK, getIntent());
+        finish();
     }
 
     @Override
     public void onSuccessDepartamentos(List<Lugar> lstDepartamentos) {
+        pbDepartamento.setVisibility(View.GONE);
         this.mLstDepartamentos = lstDepartamentos;
         adapterDepartamentos = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstDepartamentos);
         adapterDepartamentos.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
@@ -180,6 +223,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
     @Override
     public void onSuccessMunicipios(List<Lugar> lstMunicipios) {
+        pbMunicipio.setVisibility(View.GONE);
         this.mLstMunicipios = lstMunicipios;
         adapterMunicipios = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstMunicipios);
         adapterMunicipios.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
@@ -189,6 +233,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
     @Override
     public void onSuccessVeredas(List<Lugar> lstVeredas) {
+        pbVereda.setVisibility(View.GONE);
         this.mLstVeredas = lstVeredas;
         adapterVeredas = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstVeredas);
         adapterVeredas.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
@@ -198,6 +243,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
     @Override
     public void onErrorDepartamentos(ErrorApi errorApi) {
+        pbDepartamento.setVisibility(View.GONE);
         if (!cheAnonimo.isChecked()) {
             Snackbar.make(lyDenuncia, getResources().getString(R.string.error_load_deptos), Snackbar.LENGTH_INDEFINITE)
                     .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
@@ -213,6 +259,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
     @Override
     public void onErrorMunicipios(ErrorApi errorApi) {
+        pbMunicipio.setVisibility(View.GONE);
         if (!cheAnonimo.isChecked()) {
             Snackbar.make(lyDenuncia, getResources().getString(R.string.error_load_municipios), Snackbar.LENGTH_INDEFINITE)
                     .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
@@ -230,6 +277,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
     @Override
     public void onErrorVeredas(ErrorApi errorApi) {
+        pbVereda.setVisibility(View.GONE);
      if (errorApi.getStatusCode() >= 500 && !cheAnonimo.isChecked()){
          Snackbar.make(lyDenuncia,getResources().getString(R.string.error_load_veredas), Snackbar.LENGTH_INDEFINITE)
                  .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
@@ -250,14 +298,18 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
         switch (parent.getId()) {
             case R.id.spiDepartamento:
                 Lugar lugar = (Lugar) parent.getItemAtPosition(position);
-                if (lugar!=null)
-                mLugaresPresenter.obtenerMunicipios(lugar.getIDLugar());
+                if (lugar!=null) {
+                    pbMunicipio.setVisibility(View.VISIBLE);
+                    mLugaresPresenter.obtenerMunicipios(lugar.getIDLugar());
+                }
                 break;
             case R.id.spiMunicipio:
                 //Lugar depto = (Lugar) parent.getItemAtPosition(position);
                 Lugar municipio = (Lugar) spiMunicipio.getSelectedItem();
-                if(municipio!=null)
-                mLugaresPresenter.obtenerVeredas(municipio.getIDLugar());
+                if(municipio!=null) {
+                    pbVereda.setVisibility(View.VISIBLE);
+                    mLugaresPresenter.obtenerVeredas(municipio.getIDLugar());
+                }
                 break;
         }
     }
@@ -275,11 +327,17 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
     @Override
     public void onSuccessRadicarPQR(Denuncia denunciad) {
-        mostrarMensajeDialog(getResources().getString(R.string.radicar_pqr_ok) +" "+ denunciad.getNumeroRadicado());
+        if (mProgressDialog != null) mProgressDialog.dismiss();
+
+        mDenuncia.getFotos().clear();
+        lyFormulario.setVisibility(View.GONE);
+        lyRespuesta.setVisibility(View.VISIBLE);
+        lblRespuesta.setText(getResources().getString(R.string.radicar_pqr_ok) +" "+ denunciad.getNumeroRadicado());
     }
 
     @Override
     public void onErrorImages(String mensaje) {
+        if (mProgressDialog != null) mProgressDialog.dismiss();
         if (!mensaje.isEmpty()){
             mostrarMensajeDialog(mensaje);
         }
@@ -287,6 +345,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
     @Override
     public void onErrorRadicarPQR(ErrorApi errorApi) {
+        if (mProgressDialog != null) mProgressDialog.dismiss();
         mostrarMensajeDialog(errorApi.getMessage());
     }
 }
