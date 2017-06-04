@@ -13,7 +13,6 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class LugaresPresenter {
     IViewLugares viewLugares;
-
     public LugaresPresenter(IViewLugares viewLugares){
         this.viewLugares = viewLugares;
     }
@@ -24,6 +23,8 @@ public class LugaresPresenter {
              public void onSuccess(List<Lugar> lstLugares) {
                  lstLugares.add(0,new Lugar("","Departamento"));
                  viewLugares.onSuccessDepartamentos(lstLugares);
+             }
+             public void onSuccessIdXCoordenada(String idLugar) {
              }
              @Override
              public void onError(ErrorApi errorApi) {
@@ -39,7 +40,8 @@ public class LugaresPresenter {
                 lstLugares.add(0,new Lugar("","Municipio"));
                 viewLugares.onSuccessMunicipios(lstLugares);
             }
-
+            public void onSuccessIdXCoordenada(String idLugar) {
+            }
             @Override
             public void onError(ErrorApi errorApi) {
                 viewLugares.onErrorMunicipios(errorApi);
@@ -58,7 +60,9 @@ public class LugaresPresenter {
 
                 viewLugares.onSuccessVeredas(lstLugares);
             }
-
+            @Override
+            public void onSuccessIdXCoordenada(String idLugar) {
+            }
             @Override
             public void onError(ErrorApi errorApi) {
                 viewLugares.onErrorVeredas(errorApi);

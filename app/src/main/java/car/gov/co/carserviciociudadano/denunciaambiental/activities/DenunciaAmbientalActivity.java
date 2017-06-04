@@ -31,18 +31,24 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.SexaDecimalCoordinate;
 import car.gov.co.carserviciociudadano.common.LocationBaseGoogleApiActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.adapter.GallerySelectedAdapter;
+import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Elevation;
+import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Lugares;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.ArchivoAdjunto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.ElevationPresenter;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewElevation;
+import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewIdLugarXCoordenada;
+import car.gov.co.carserviciociudadano.denunciaambiental.presenter.LugarXCoordendaPresenter;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
-public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback, IViewElevation {
+public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback, IViewElevation, IViewIdLugarXCoordenada{
     @BindView(R.id.lyInicial)  LinearLayout lyInicial;
     @BindView(R.id.lyDenuncia)  LinearLayout lyDenuncia;
     @BindView(R.id.gridGallery)    GridView gridView;
@@ -57,6 +63,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     GallerySelectedAdapter mAdapter;
    // private List<Foto> mFotos = new ArrayList<>();
     ElevationPresenter mElevationPresenter;
+    LugarXCoordendaPresenter mLugarXCoordenadaPresenter;
     private Denuncia mDenuncia;
     private ProgressDialog mProgressDialog;
     @Override
@@ -76,19 +83,22 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         gridView.setAdapter(mAdapter);
         setNumPhotosSelect();
         mElevationPresenter = new ElevationPresenter(this);
+        mLugarXCoordenadaPresenter = new LugarXCoordendaPresenter(this);
+
+
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        //mapa.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(true);
        // mMap.setPadding(0,0,0,80);
-        startGoogleApiClient();
-      //  enableLocationUpdates();
-        mMap.setMyLocationEnabled(true);
 
-         if (Build.VERSION.SDK_INT >= 23 &&
+      //  enableLocationUpdates();  // para obtener posicion de gps, si no se activa solo se obtine la ultima ubicacion conocida
+
+        startGoogleApiClient(); //
+
+        if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -98,13 +108,26 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         } else {
             mMap.setMyLocationEnabled(true);
         }
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
     }
 
     @Override
     public void onPause(){
         super.onPause();
         if (mProgressDialog != null) mProgressDialog.dismiss();
+        AppCar.VolleyQueue().cancelAll(Lugares.TAG);
+        AppCar.VolleyQueue().cancelAll(Elevation.TAG);
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if (mProgressDialog != null) mProgressDialog.dismiss();
+        AppCar.VolleyQueue().cancelAll(Lugares.TAG);
+        AppCar.VolleyQueue().cancelAll(Elevation.TAG);
     }
 
     private void moveCamara() {
@@ -116,12 +139,16 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
 
     @Override
     public void onLastLocation(Location loc) {
-        if (loc != null) {
+        if (loc != null && mDenuncia.getLatitude() == 0 && mDenuncia.getLongitude() == 0 ) {
             miPosicion = new LatLng(loc.getLatitude(), loc.getLongitude());
            // insertarMarcador();
             moveCamara();
             Log.i(LOGTAG, "Ultima ubicacion conocidad");
-        } else {
+        } else if (mDenuncia.getLongitude() != 0 && mDenuncia.getLongitude() != 0) {
+            miPosicion = new LatLng(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+            moveCamara();
+
+        }else{
             Log.e(LOGTAG, "Aun no hay ultima localizacion");
         }
     }
@@ -170,6 +197,12 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     private void openGalleryPhotos(){
         int size = mAdapter.getItemCount();
         if (size <= GalleryActivity.MAX_PHOTOS) {
+
+            CameraPosition camPos = mMap.getCameraPosition();
+            miPosicion  = new LatLng(camPos.target.latitude,camPos.target.longitude);
+            mDenuncia.setLatitude(miPosicion.latitude);
+            mDenuncia.setLongitude(miPosicion.longitude);
+
             Intent i = new Intent(this, GalleryActivity.class);
             i.putExtra(GalleryActivity.ITEM_COUNT, size);
 
@@ -225,7 +258,6 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         }
         CameraPosition camPos = mMap.getCameraPosition();
         miPosicion  = new LatLng(camPos.target.latitude,camPos.target.longitude);
-
         mDenuncia.setLatitude(miPosicion.latitude);
         mDenuncia.setLongitude(miPosicion.longitude);
 
@@ -243,13 +275,44 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         }else if (mDenuncia.getLatitude() == 0 && mDenuncia.getLongitude() == 0){
                 mostrarMensaje(getResources().getString(R.string.validacion_ubicacion));
         }else{
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setMessage("Guardando...");
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.show();
-            mElevationPresenter.getElevation(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+            obtenterLugarXCoordenda();
         }
+    }
+
+    private void obtenterLugarXCoordenda(){
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setMessage("Guardando...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+
+        mLugarXCoordenadaPresenter.getId(mDenuncia.getNorteString(),mDenuncia.getEsteString());
+    }
+
+    @Override
+    public void onSuccessIdLugarXCoordenada(String idLugar) {
+        Log.d("id lugar x coorde", idLugar);
+       if (idLugar != null &&  !idLugar.isEmpty() && !idLugar.equals("0")){
+           mDenuncia.setMunicipioQueja(idLugar);
+           mElevationPresenter.getElevation(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+       }else{
+           if (mProgressDialog != null) mProgressDialog.dismiss();
+           mostrarMensajeDialog(getResources().getString(R.string.error_juridiccion_car));
+       }
+    }
+
+    @Override
+    public void onErrorIdLugarXCoordenada(ErrorApi errorApi) {
+        if (mProgressDialog != null) mProgressDialog.dismiss();
+        Snackbar.make(lyDenuncia,errorApi.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
+                .setAction("REINTENTAR", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        obtenterLugarXCoordenda();
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -273,4 +336,5 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
                 })
                 .show();
     }
+
 }

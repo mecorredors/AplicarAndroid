@@ -78,7 +78,17 @@ public class Validation {
 
         return false;
     }
+    public static boolean IsEmpty(EditText campo){
+        if(campo.getText().toString().trim().isEmpty()){
+            campo.setError(AppCar.getContext().getResources().getString(R.string.error_campo_obligatorio));
+            campo.requestFocus();
+            return true;
+        }
+        else
+            campo.setError(null);
 
+        return false;
+    }
 
 
     public static boolean IsChecked(CheckBox campo){

@@ -30,5 +30,6 @@
     <!-- denuncia hambiental -->
     <dimen name="denuncia_map_height">200dp</dimen>
     <dimen name="denuncia_gallery_photo">100dp</dimen>
+    <dimen name="denuncia_height_description">70dp</dimen>
 
 </resources>

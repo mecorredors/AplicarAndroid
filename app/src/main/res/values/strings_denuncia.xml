@@ -16,5 +16,6 @@
     <string name="error_load_veredas">No fue posible obtener las veredas</string>
     <string name="radicar_pqr_ok">Hemos recibido su reporte y ha quedado radicado con el número </string>
     <string name="error_longitud_comentarios">El comentario es muy corto </string>
+    <string name="error_juridiccion_car">La ubicación de la queja no corresponde a ningún municipio de la jurisdicción CAR de Cundinamarca </string>
 
 </resources>

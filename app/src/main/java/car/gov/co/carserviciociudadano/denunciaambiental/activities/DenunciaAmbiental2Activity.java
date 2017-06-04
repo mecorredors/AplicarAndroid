@@ -25,9 +25,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Validation;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
+import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
+import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Lugares;
+import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.RadicarPQR;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.ArchivoAdjunto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
@@ -56,7 +60,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
     @BindView(R.id.txtTelefono)    EditText txtTelefono;
     @BindView(R.id.lyTelefono)    TextInputLayout lyTelefono;
     @BindView(R.id.txtComentarios)    EditText txtComentarios;
-    @BindView(R.id.lyComentarios)   TextInputLayout lyComentarios;
+  //  @BindView(R.id.lyComentarios)   TextInputLayout lyComentarios;
     @BindView(R.id.lyDatos)   View lyDatos;
     @BindView(R.id.lyDenuncia)   View lyDenuncia;
     @BindView(R.id.pbDepartamento)   ProgressBar pbDepartamento;
@@ -91,6 +95,10 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
         mRadicarPQRPresenter = new RadicarPQRPresener(this);
         mLugaresPresenter.obtenerDepartamentos();
         pbDepartamento.setVisibility(View.VISIBLE);
+
+        txtComentarios.setHorizontallyScrolling(false);
+            //txtDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
+         txtComentarios.setMaxLines(10);
         ocultarTeclado(lyDenuncia);
     }
 
@@ -100,11 +108,15 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
         mDenuncia.setComentarios("");
         mRadicarPQRPresenter.setmPublicando(false);
         if (mProgressDialog != null) mProgressDialog.dismiss();
+        AppCar.VolleyQueue().cancelAll(Lugares.TAG);
+        AppCar.VolleyQueue().cancelAll(RadicarPQR.TAG);
     }
     @Override protected void onDestroy(){
         super.onDestroy();
         mRadicarPQRPresenter.setmPublicando(false);
         if (mProgressDialog != null) mProgressDialog.dismiss();
+        AppCar.VolleyQueue().cancelAll(Lugares.TAG);
+        AppCar.VolleyQueue().cancelAll(RadicarPQR.TAG);
     }
 
     private boolean validar(){
@@ -113,14 +125,13 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
             if (Validation.IsEmpty(txtNombre, lyNombre)) res = false;
             if (!Validation.IsValidEmail(txtEmail, lyEmail)) res = false;
-            if (Validation.IsEmpty(txtComentarios, lyComentarios)) res = false;
             if (txtDireccion.getText().length()> 0){
                 if (Validation.IsEmpty(spiDepartamento)) res = false;
                 if (Validation.IsEmpty(spiMunicipio)) res = false;
             }
         }
 
-        if (Validation.IsEmpty(txtComentarios, lyComentarios)) res = false;
+        if (Validation.IsEmpty(txtComentarios)) res = false;
         if (res && txtComentarios.getText().length() < 15){
             res = false;
             mostrarMensajeDialog(getResources().getString(R.string.error_longitud_comentarios));
@@ -330,6 +341,8 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
         if (mProgressDialog != null) mProgressDialog.dismiss();
 
         mDenuncia.getFotos().clear();
+        mDenuncia.setLatitude(0);
+        mDenuncia.setLongitude(0);
         lyFormulario.setVisibility(View.GONE);
         lyRespuesta.setVisibility(View.VISIBLE);
         lblRespuesta.setText(getResources().getString(R.string.radicar_pqr_ok) +" "+ denunciad.getNumeroRadicado());

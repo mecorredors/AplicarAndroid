@@ -11,5 +11,6 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public interface ILugar {
     void onSuccess(List<Lugar> lstLugares);
+    void onSuccessIdXCoordenada(String idLugar);
     void onError(ErrorApi errorApi);
 }

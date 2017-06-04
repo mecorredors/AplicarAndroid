@@ -7,6 +7,8 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +61,44 @@ public class Lugares {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
 
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationParques());
+                return headerMap;
+            }
+        };
+
+        objRequest.setTag(TAG);
+        objRequest.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        20000,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppCar.VolleyQueue().add(objRequest);
+    }
+
+    public void getIdxCoordenada(String norte, String este, final ILugar iLugar )
+    {
+        String url = Config.API_SIDCAR_ID_LUGAR_X_COORDENADA +"?norte="+norte+"&este="+este;
+        url = url.replace(" ", "%20");
+
+        StringRequest objRequest = new StringRequest( url,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response)
+                    {
+                       iLugar.onSuccessIdXCoordenada(response.replace("\"",""));
+                    }
+                },	new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                iLugar.onError(new ErrorApi(error));
+            }
+        }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Basic " + Utils.getAuthorizationParques());
                 return headerMap;

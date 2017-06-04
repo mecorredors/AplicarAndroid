@@ -10,6 +10,7 @@ import com.jakewharton.disklrucache.Util;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -212,6 +213,17 @@ public class Denuncia {
 
     public void setEste(double este) {
         Este = este;
+    }
+
+    public String getEsteString(){
+        BigDecimal bd = new BigDecimal(this.Este);
+        bd = bd.setScale(0, BigDecimal.ROUND_HALF_UP);
+        return bd.toString();
+    }
+    public String getNorteString(){
+        BigDecimal bd = new BigDecimal(this.Norte);
+        bd = bd.setScale(0, BigDecimal.ROUND_HALF_UP);
+        return bd.toString();
     }
 
     public String getUsuario(){

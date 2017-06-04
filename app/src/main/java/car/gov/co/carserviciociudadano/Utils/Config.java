@@ -48,6 +48,8 @@ public class Config {
     public static String API_EXPEDIENTE_DOCUMENTOS =  ServerSAE + "api/expediente/obtenerdocumentos/";
 
     public static String API_SIDCAR_LUGARES =  ServerSIDCAR + "api/catalogos/listarlugares/";
+    public static String API_SIDCAR_ID_LUGAR_X_COORDENADA =  ServerSIDCAR + "api/catalogos/obteneridmunicipioxcoordenada/";
+
     public static String API_SIDCAR_RADICARPQR =  ServerSIDCAR + "api/radicados/radicarpqr/";
     public static String API_SIDCAR_RADICARPQR_IMAGENES =  ServerSIDCAR + "api/radicados/publicarimagenestemporal/";
 
