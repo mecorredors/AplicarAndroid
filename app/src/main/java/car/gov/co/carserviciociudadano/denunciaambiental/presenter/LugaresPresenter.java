@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Lugares;
@@ -21,7 +22,7 @@ public class LugaresPresenter {
          new Lugares().list("COL", 1, new ILugar() {
              @Override
              public void onSuccess(List<Lugar> lstLugares) {
-                 lstLugares.add(0,new Lugar("","Departamento"));
+                 lstLugares.add(0,new Lugar("","Departamentos (" +lstLugares.size() +")"));
                  viewLugares.onSuccessDepartamentos(lstLugares);
              }
              public void onSuccessIdXCoordenada(String idLugar) {
@@ -34,39 +35,56 @@ public class LugaresPresenter {
     }
 
     public void obtenerMunicipios(String idPadreLugar){
-        new Lugares().list(idPadreLugar, 2, new ILugar() {
-            @Override
-            public void onSuccess(List<Lugar> lstLugares) {
-                lstLugares.add(0,new Lugar("","Municipio"));
-                viewLugares.onSuccessMunicipios(lstLugares);
-            }
-            public void onSuccessIdXCoordenada(String idLugar) {
-            }
-            @Override
-            public void onError(ErrorApi errorApi) {
-                viewLugares.onErrorMunicipios(errorApi);
-            }
-        });
+        if (idPadreLugar.equals("")) {
+            List<Lugar> lstLugares = new ArrayList<>();
+            lstLugares.add(0, new Lugar("", "Municipio"));
+            viewLugares.onSuccessMunicipios(lstLugares);
+        }else {
+            new Lugares().list(idPadreLugar, 2, new ILugar() {
+                @Override
+                public void onSuccess(List<Lugar> lstLugares) {
+                    lstLugares.add(0, new Lugar("", "Municipios (" +lstLugares.size() +")" ));
+                    viewLugares.onSuccessMunicipios(lstLugares);
+                }
+
+                public void onSuccessIdXCoordenada(String idLugar) {
+                }
+
+                @Override
+                public void onError(ErrorApi errorApi) {
+                    viewLugares.onErrorMunicipios(errorApi);
+                }
+            });
+        }
     }
 
     public void obtenerVeredas(String idPadreLugar){
-        new Lugares().list(idPadreLugar, 3, new ILugar() {
-            @Override
-            public void onSuccess(List<Lugar> lstLugares) {
-                if (lstLugares.size() > 1  )
-                    lstLugares.add(0,new Lugar("","Vereda"));
-                if (lstLugares.size()==0)
-                    lstLugares.add(0,new Lugar("","No hay veredas"));
 
-                viewLugares.onSuccessVeredas(lstLugares);
-            }
-            @Override
-            public void onSuccessIdXCoordenada(String idLugar) {
-            }
-            @Override
-            public void onError(ErrorApi errorApi) {
-                viewLugares.onErrorVeredas(errorApi);
-            }
-        });
+        if (idPadreLugar.equals("")) {
+            List<Lugar> lstLugares = new ArrayList<>();
+            lstLugares.add(0, new Lugar("", "Vereda"));
+            viewLugares.onSuccessVeredas(lstLugares);
+        }else {
+            new Lugares().list(idPadreLugar, 3, new ILugar() {
+                @Override
+                public void onSuccess(List<Lugar> lstLugares) {
+                    if (lstLugares.size() > 1)
+                        lstLugares.add(0, new Lugar("", "Veredas (" +lstLugares.size() +")"));
+                    if (lstLugares.size() == 0)
+                        lstLugares.add(0, new Lugar("", "No hay veredas"));
+
+                    viewLugares.onSuccessVeredas(lstLugares);
+                }
+
+                @Override
+                public void onSuccessIdXCoordenada(String idLugar) {
+                }
+
+                @Override
+                public void onError(ErrorApi errorApi) {
+                    viewLugares.onErrorVeredas(errorApi);
+                }
+            });
+        }
     }
 }

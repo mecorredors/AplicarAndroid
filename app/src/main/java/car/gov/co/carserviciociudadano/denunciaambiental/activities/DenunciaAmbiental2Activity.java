@@ -43,7 +43,7 @@ import car.gov.co.carserviciociudadano.denunciaambiental.presenter.RadicarPQRPre
 import car.gov.co.carserviciociudadano.parques.model.Banco;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
-public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLugares,IViewRadicarPQR, AdapterView.OnItemSelectedListener {
+public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRadicarPQR, IViewLugares, AdapterView.OnItemSelectedListener {
 
     @BindView(R.id.cheAnonimo)   CheckBox cheAnonimo;
     @BindView(R.id.txtNombre)    EditText txtNombre;
@@ -93,13 +93,23 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
         spiMunicipio.setOnItemSelectedListener(this);
         mLugaresPresenter = new LugaresPresenter(this);
         mRadicarPQRPresenter = new RadicarPQRPresener(this);
-        mLugaresPresenter.obtenerDepartamentos();
-        pbDepartamento.setVisibility(View.VISIBLE);
+        obtenerDepartamentos();
 
-        txtComentarios.setHorizontallyScrolling(false);
-            //txtDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
-         txtComentarios.setMaxLines(10);
-        ocultarTeclado(lyDenuncia);
+        mLstDepartamentos.add(new Lugar("","Departamento"));
+        adapterDepartamentos = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstDepartamentos);
+        adapterDepartamentos.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
+        spiDepartamento.setAdapter(adapterDepartamentos);
+
+        mLstMunicipios.add(new Lugar("","Municipio"));
+        adapterMunicipios = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstMunicipios);
+        adapterMunicipios.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
+        spiMunicipio.setAdapter(adapterMunicipios);
+
+        mLstVeredas.add(new Lugar("","Vereda"));
+        adapterVeredas = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstVeredas);
+        adapterVeredas.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
+        spiVereda.setAdapter(adapterVeredas);
+
     }
 
     @Override protected void onPause(){
@@ -183,14 +193,18 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
         mDenuncia.setDesUbicacionQueja("");
     }
 
-
-
     private void cargarDatos(){
         txtNombre.setText(mDenuncia.getNombre());
         txtCedula.setText(mDenuncia.getCedula());
         txtDireccion.setText(mDenuncia.getDireccion());
         txtEmail.setText(mDenuncia.getEmail());
         txtTelefono.setText(mDenuncia.getTelefono());
+
+    }
+
+    private void obtenerDepartamentos(){
+        mLugaresPresenter.obtenerDepartamentos();
+        pbDepartamento.setVisibility(View.VISIBLE);
 
     }
 
@@ -224,32 +238,28 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
 
     @Override
     public void onSuccessDepartamentos(List<Lugar> lstDepartamentos) {
-        pbDepartamento.setVisibility(View.GONE);
-        this.mLstDepartamentos = lstDepartamentos;
-        adapterDepartamentos = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstDepartamentos);
-        adapterDepartamentos.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
-        spiDepartamento.setAdapter(adapterDepartamentos);
+        adapterDepartamentos.clear();
+        adapterDepartamentos.addAll(lstDepartamentos);
         adapterDepartamentos.notifyDataSetChanged();
+        pbDepartamento.setVisibility(View.GONE);
     }
 
     @Override
     public void onSuccessMunicipios(List<Lugar> lstMunicipios) {
-        pbMunicipio.setVisibility(View.GONE);
-        this.mLstMunicipios = lstMunicipios;
-        adapterMunicipios = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstMunicipios);
-        adapterMunicipios.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
-        spiMunicipio.setAdapter(adapterMunicipios);
+        adapterMunicipios.clear();
+        adapterMunicipios.addAll(lstMunicipios);
         adapterMunicipios.notifyDataSetChanged();
+        spiMunicipio.setSelection(0);
+        pbMunicipio.setVisibility(View.GONE);
     }
 
     @Override
     public void onSuccessVeredas(List<Lugar> lstVeredas) {
-        pbVereda.setVisibility(View.GONE);
-        this.mLstVeredas = lstVeredas;
-        adapterVeredas = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstVeredas);
-        adapterVeredas.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
-        spiVereda.setAdapter(adapterVeredas);
+        adapterVeredas.clear();
+        adapterVeredas.addAll(lstVeredas);
         adapterVeredas.notifyDataSetChanged();
+        spiVereda.setSelection(0);
+        pbVereda.setVisibility(View.GONE);
     }
 
     @Override
@@ -289,20 +299,22 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
     @Override
     public void onErrorVeredas(ErrorApi errorApi) {
         pbVereda.setVisibility(View.GONE);
-     if (errorApi.getStatusCode() >= 500 && !cheAnonimo.isChecked()){
-         Snackbar.make(lyDenuncia,getResources().getString(R.string.error_load_veredas), Snackbar.LENGTH_INDEFINITE)
-                 .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
-                 .setAction("REINTENTAR", new View.OnClickListener() {
-                     @Override
-                     public void onClick(View view) {
-                         Lugar municipio = (Lugar) spiMunicipio.getSelectedItem();
-                         if (municipio!= null)
-                         mLugaresPresenter.obtenerMunicipios(municipio.getIDLugar());
-                     }
-                 })
-                 .show();
-     }
+        if (errorApi.getStatusCode() >= 500 && !cheAnonimo.isChecked()){
+            Snackbar.make(lyDenuncia,getResources().getString(R.string.error_load_veredas), Snackbar.LENGTH_INDEFINITE)
+                    .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
+                    .setAction("REINTENTAR", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Lugar municipio = (Lugar) spiMunicipio.getSelectedItem();
+                            if (municipio!= null)
+                                mLugaresPresenter.obtenerMunicipios(municipio.getIDLugar());
+                        }
+                    })
+                    .show();
+        }
     }
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -315,7 +327,6 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewLug
                 }
                 break;
             case R.id.spiMunicipio:
-                //Lugar depto = (Lugar) parent.getItemAtPosition(position);
                 Lugar municipio = (Lugar) spiMunicipio.getSelectedItem();
                 if(municipio!=null) {
                     pbVereda.setVisibility(View.VISIBLE);

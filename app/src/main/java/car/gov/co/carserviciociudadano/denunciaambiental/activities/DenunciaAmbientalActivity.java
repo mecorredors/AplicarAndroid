@@ -282,7 +282,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     private void obtenterLugarXCoordenda(){
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setMessage("Guardando...");
+        mProgressDialog.setMessage(getResources().getString(R.string.verificando_ubicacion));
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
 

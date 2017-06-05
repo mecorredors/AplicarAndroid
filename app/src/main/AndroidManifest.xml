@@ -100,9 +100,13 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".parques.activities.ComoLLegarActivity" />
         <activity android:name=".common.LocationBaseGoogleApiActivity" />
-        <activity android:name=".denunciaambiental.activities.DenunciaAmbientalActivity" />
-        <activity android:name=".denunciaambiental.activities.GalleryActivity" />
-        <activity android:name=".denunciaambiental.activities.DenunciaAmbiental2Activity"/>
+        <activity android:name=".denunciaambiental.activities.DenunciaAmbientalActivity"
+            android:label="@string/title_denuncia_ambiental_activity"/>
+        <activity android:name=".denunciaambiental.activities.GalleryActivity"
+            android:label="@string/title_gallery"/>
+        <activity android:name=".denunciaambiental.activities.DenunciaAmbiental2Activity"
+            android:label="@string/title_denuncia_ambiental_activity"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>
