@@ -192,7 +192,6 @@ public class RadicarPQR {
 
             return  serverResponseCode;
 
-
         } // End else block
 
     }

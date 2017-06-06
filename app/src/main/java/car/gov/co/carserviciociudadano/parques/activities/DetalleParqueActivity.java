@@ -179,16 +179,18 @@ public class DetalleParqueActivity extends BaseActivity {
         @Override
         public void onError(ErrorApi error) {
             showProgress(mProgressView,false);
-            Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_LONG)
-                    //.setActionTextColor(Color.CYAN)
-                    .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green) )
-                    .setAction("REINTENTAR", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            loadServiciosParque();
-                        }
-                    })
-                    .show();
+            if (error.getStatusCode() != 404) {
+                Snackbar.make(mRecyclerView, error.getMessage(), Snackbar.LENGTH_LONG)
+                        //.setActionTextColor(Color.CYAN)
+                        .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
+                        .setAction("REINTENTAR", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                loadServiciosParque();
+                            }
+                        })
+                        .show();
+            }
         }
     };
 

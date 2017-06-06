@@ -62,7 +62,7 @@ public class Lugares {
             public Map<String, String> getHeaders() throws AuthFailureError {
 
                 Map<String, String> headerMap = new HashMap<>();
-                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationParques());
+                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationSIDCAR());
                 return headerMap;
             }
         };
@@ -100,7 +100,7 @@ public class Lugares {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
-                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationParques());
+                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationSIDCAR());
                 return headerMap;
             }
         };

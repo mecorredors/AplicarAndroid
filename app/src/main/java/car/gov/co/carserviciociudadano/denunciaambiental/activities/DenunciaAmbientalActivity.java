@@ -93,7 +93,6 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         mMap = map;
         mMap.getUiSettings().setZoomControlsEnabled(true);
        // mMap.setPadding(0,0,0,80);
-
       //  enableLocationUpdates();  // para obtener posicion de gps, si no se activa solo se obtine la ultima ubicacion conocida
 
         startGoogleApiClient(); //
@@ -103,7 +102,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    1);
+                    PETICION_PERMISO_LOCALIZACION);
 
         } else {
             mMap.setMyLocationEnabled(true);
@@ -198,10 +197,12 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         int size = mAdapter.getItemCount();
         if (size <= GalleryActivity.MAX_PHOTOS) {
 
-            CameraPosition camPos = mMap.getCameraPosition();
-            miPosicion  = new LatLng(camPos.target.latitude,camPos.target.longitude);
-            mDenuncia.setLatitude(miPosicion.latitude);
-            mDenuncia.setLongitude(miPosicion.longitude);
+            if (mMap!= null) {
+                CameraPosition camPos = mMap.getCameraPosition();
+                miPosicion = new LatLng(camPos.target.latitude, camPos.target.longitude);
+                mDenuncia.setLatitude(miPosicion.latitude);
+                mDenuncia.setLongitude(miPosicion.longitude);
+            }
 
             Intent i = new Intent(this, GalleryActivity.class);
             i.putExtra(GalleryActivity.ITEM_COUNT, size);
@@ -256,11 +257,12 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
             lstFotos.remove(0);
             mDenuncia.setFotos(lstFotos);
         }
-        CameraPosition camPos = mMap.getCameraPosition();
-        miPosicion  = new LatLng(camPos.target.latitude,camPos.target.longitude);
-        mDenuncia.setLatitude(miPosicion.latitude);
-        mDenuncia.setLongitude(miPosicion.longitude);
-
+        if (mMap!= null) {
+            CameraPosition camPos = mMap.getCameraPosition();
+            miPosicion = new LatLng(camPos.target.latitude, camPos.target.longitude);
+            mDenuncia.setLatitude(miPosicion.latitude);
+            mDenuncia.setLongitude(miPosicion.longitude);
+        }
         SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(mDenuncia.getLatitude(),mDenuncia.getLongitude());
         sexaDecimalCoordinate.ConvertToFlatCoordinate();
         mDenuncia.setNorte(sexaDecimalCoordinate.get_coorPlanaNorteFinal());

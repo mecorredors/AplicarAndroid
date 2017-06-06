@@ -1,15 +1,15 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.activities;
 
+import car.gov.co.carserviciociudadano.R;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-
-
-import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.adapter.GalleryAdapter;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.CustomGallery;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -32,6 +32,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -126,6 +128,35 @@ public class GalleryActivity extends BaseActivity {
     public void onBackPressed() {
         setResultPhotos();
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_gallery, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+//
+//        if(id== android.R.id.home){
+//            super.onBackPressed();
+//        }
+
+        if (id == R.id.item_listo) {
+            setResultPhotos();
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
 

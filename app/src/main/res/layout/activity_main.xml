@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/reportar_denuncia_abiental"
                         android:textColor="@color/secondaryText"
-                        android:textSize="@dimen/text_size_14"
+                        android:textSize="@dimen/text_size_16"
                         android:layout_marginLeft="@dimen/margin_16dp"/>
 
                     <ImageView
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:text="Reserva de parques"
                     android:textColor="@color/secondaryText"
-                    android:textSize="@dimen/text_size_14"
+                    android:textSize="@dimen/text_size_16"
                     android:layout_marginLeft="@dimen/margin_16dp"/>
 
                 <ImageView
@@ -201,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tramites"
                     android:textColor="@color/secondaryText"
-                    android:textSize="@dimen/text_size_14"
+                    android:textSize="@dimen/text_size_16"
                     android:layout_marginLeft="@dimen/margin_16dp"/>
 
                 <ImageView
@@ -255,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/expedientes"
                     android:textColor="@color/secondaryText"
-                    android:textSize="@dimen/text_size_14"
+                    android:textSize="@dimen/text_size_16"
                     android:layout_marginLeft="@dimen/margin_16dp"/>
 
                 <ImageView

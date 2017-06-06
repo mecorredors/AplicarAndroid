@@ -16,9 +16,6 @@ public class Config {
     public static String ServerSIDCAR = "http://192.168.0.13/SIDCAR/";    //pruebas sidcar
     public static String ServerSAE = "http://192.168.0.13/SAE/";    //pruebas sidcar
 
- //public static String API_PARQUES_PUBLICAR_IMAGENES =  "http://192.168.0.13/parques/" + "api/reserva/publicarimagenes/";
-
-
 
     public static String API_PARQUES_PARQUES =  ServerParques + "api/parque/parques/";
     public static String API_PARQUES_ARCHIVOS =  ServerParques + "api/parque/archivos/";

@@ -80,10 +80,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Selecciona o toma unas fotos sobre la denuncia"
+                android:text="Seleccione o tome unas fotos sobre la denuncia"
                 android:textColor="@color/primaryText"
-                android:layout_marginLeft="@dimen/margin_16dp"
-                android:layout_marginRight="@dimen/margin_16dp"
+                android:textSize="@dimen/text_size_16"
+                android:gravity="center_horizontal"
+                android:lines="2"
+                android:minLines="2"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginBottom="@dimen/margin_16dp"/>
 
 
@@ -122,7 +126,7 @@
             android:stretchMode="columnWidth"
             tools:listitem="@layout/item_gallery"
             android:visibility="visible"
-            android:layout_marginBottom="@dimen/margin_6dp"
+            android:layout_marginBottom="@dimen/denuncia_margin_bottom_images"
             android:layout_marginTop="@dimen/margin_6dp"
             android:layout_marginLeft="@dimen/margin_6dp"
             android:layout_marginRight="@dimen/margin_6dp"
@@ -131,12 +135,14 @@
 
 
         <Button android:id="@+id/btnSiguiente"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_14"
             android:theme="@style/ButtonAccent"
             android:text="Siguiente"
             android:layout_gravity="bottom|end"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
             />
     </FrameLayout>
 

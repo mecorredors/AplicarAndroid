@@ -25,4 +25,11 @@
     <dimen name="parques_foto_width">150dp</dimen>
     <dimen name="button_height">55dp</dimen>
     <dimen name="detalle_photo_height">350dp</dimen>
+
+
+    <!-- denuncia hambiental -->
+      <dimen name="denuncia_gallery_photo">150dp</dimen>
+    <dimen name="denuncia_height_description">80dp</dimen>
+    <dimen name="denuncia_margin_bottom_images">75dp</dimen>
+
 </resources>
