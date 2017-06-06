@@ -23,6 +23,13 @@ public class Enumerator {
         public static final int BANCOS = 1;
         public static final int ARCHIVOS_PARQUE = 1;
     }
+    public static class CacheTimeInMilliSeconds{
+        public static final int PARQUES = 300000;
+        public static final int SERVICIOS_PARQUE = 300000;
+        public static final int MUNICIPIOS = 300000;
+        public static final int BANCOS = 300000;
+        public static final int ARCHIVOS_PARQUE = 300000;
+    }
 
     public static class TipoArchivoParque{
         public static final String TAG = "TypoArchivoParque";

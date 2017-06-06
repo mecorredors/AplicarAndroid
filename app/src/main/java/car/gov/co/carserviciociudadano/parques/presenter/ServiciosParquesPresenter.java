@@ -25,21 +25,9 @@ public class ServiciosParquesPresenter {
     }
     public void list(int idParque  )
     {
-        String tag = ServiciosParque.TAG+idParque;
-
         ServiciosParque serviciosParque = new ServiciosParque();
+        serviciosParque.list(iServicioParque,idParque);
 
-        if (Utils.existeCache(tag) && !Utils.cacheExpiro(Enumerator.CacheNumDias.SERVICIOS_PARQUE,tag)) {
-            try {
-                Type resultType = new TypeToken<List<ServicioParque>>() {}.getType();
-                List<ServicioParque> lstServiciosParques =  Reservoir.get(tag, resultType);
-                iServicioParque.onSuccess( lstServiciosParques);
-            } catch (Exception e) {
-                serviciosParque.list(iServicioParque,idParque);
-            }
-        }else {
-            serviciosParque.list(iServicioParque,idParque);
-        }
     }
 
     IServicioParque iServicioParque = new IServicioParque() {

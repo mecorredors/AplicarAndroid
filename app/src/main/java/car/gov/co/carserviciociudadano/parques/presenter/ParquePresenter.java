@@ -23,8 +23,9 @@ public class ParquePresenter {
     public void list( )    {
         String tag = Parques.TAG;
         Parques parques = new Parques();
+        parques.list(iParque);
 
-        if (Utils.existeCache(tag) && !Utils.cacheExpiro(Enumerator.CacheNumDias.PARQUES,tag)) {
+       /* if (Utils.existeCache(tag) && !Utils.cacheExpiro(Enumerator.CacheNumDias.PARQUES,tag)) {
             try {
                 Type resultType = new TypeToken<List<Parque>>() {}.getType();
                 List<Parque> lstParques =  Reservoir.get(tag, resultType);
@@ -34,7 +35,7 @@ public class ParquePresenter {
             }
         }else {
             parques.list(iParque);
-        }
+        }*/
     }
 
     IParque iParque = new IParque() {

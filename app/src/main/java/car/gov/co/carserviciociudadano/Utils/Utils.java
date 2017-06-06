@@ -203,7 +203,7 @@ public class Utils {
 
     public static boolean existeCache(String tag){
         try {
-            return  Reservoir.contains(Parques.TAG);
+            return  Reservoir.contains(tag);
         }catch (Exception ex){
             return false;
         }

@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.anupcowkur.reservoir.Reservoir;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,10 +18,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.denunciaambiental.interfaces.ILugar;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Lugar;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Municipios;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
@@ -30,50 +34,66 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class Lugares {
     public static final String TAG ="Lugares";
-
+    public List<Lugar> mLstLugares;
     public void list(String idLugarPadre, int tipoLugar, final ILugar iLugar )
     {
         String url = Config.API_SIDCAR_LUGARES +"?tipo="+tipoLugar+"&idlugarpadre="+idLugarPadre;
         url = url.replace(" ", "%20");
-
-        JsonArrayRequest objRequest = new JsonArrayRequest( url,
-                new Response.Listener<JSONArray>(){
-                    @Override
-                    public void onResponse(JSONArray response)
-                    {
-                        try {
-                            List<Lugar> lstLugares = JSONArrayToList(response);
-                            iLugar.onSuccess(lstLugares);
-                        }catch (JSONException ex){
-                            iLugar.onError(new ErrorApi(ex));
-                        }
-
-                    }
-                },	new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                iLugar.onError(new ErrorApi(error));
+        final String keycache = url + BuildConfig.VERSION_CODE;
+        Lugares lugares  = null;
+        if (Utils.existeCache(keycache)) {
+            try {
+                lugares = Reservoir.get(keycache, Lugares.class);
+            } catch (Exception ex) {
+                Log.e(TAG, ex.toString());
             }
         }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+        if (lugares != null ){
+            Log.d(TAG,"Se lee de cache");
+            iLugar.onSuccess(lugares.mLstLugares);
+        }else {
+            JsonArrayRequest objRequest = new JsonArrayRequest(url,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            try {
+                                mLstLugares = JSONArrayToList(response);
+                                try {
+                                    Reservoir.put(keycache,Lugares.this,  Enumerator.CacheTimeInMilliSeconds.MUNICIPIOS);
+                                    Log.d(TAG," guaardado cache");
+                                } catch (Exception e) {
+                                    Log.e(TAG, " guardar cache " + e.toString());
+                                }
+                                iLugar.onSuccess(mLstLugares);
+                            } catch (JSONException ex) {
+                                iLugar.onError(new ErrorApi(ex));
+                            }
 
-                Map<String, String> headerMap = new HashMap<>();
-                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationSIDCAR());
-                return headerMap;
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    iLugar.onError(new ErrorApi(error));
+                }
             }
-        };
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
 
-        objRequest.setTag(TAG);
-        objRequest.setRetryPolicy(
-                new DefaultRetryPolicy(
-                        20000,
-                        0,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppCar.VolleyQueue().add(objRequest);
+                    Map<String, String> headerMap = new HashMap<>();
+                    headerMap.put("Authorization", "Basic " + Utils.getAuthorizationSIDCAR());
+                    return headerMap;
+                }
+            };
+
+            objRequest.setTag(TAG);
+            objRequest.setRetryPolicy(
+                    new DefaultRetryPolicy(
+                            20000,
+                            0,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            AppCar.VolleyQueue().add(objRequest);
+        }
     }
 
     public void getIdxCoordenada(String norte, String este, final ILugar iLugar )

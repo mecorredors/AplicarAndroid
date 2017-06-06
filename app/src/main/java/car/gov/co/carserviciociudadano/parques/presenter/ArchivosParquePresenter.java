@@ -31,17 +31,17 @@ public class ArchivosParquePresenter {
         mTypoArchivoParque = typoArchivoParque;
         ArchivosParque archivosParque = new ArchivosParque();
 
-        if (Utils.existeCache(tag) && !Utils.cacheExpiro(Enumerator.CacheNumDias.ARCHIVOS_PARQUE,tag)) {
-            try {
-                Type resultType = new TypeToken<List<ArchivoParque>>() {}.getType();
-                List<ArchivoParque> lstArchivosParque =  Reservoir.get(tag, resultType);
-                setResult(lstArchivosParque);
-            } catch (Exception e) {
-                archivosParque.list(iArchivosParque,idParque);
-            }
-        }else {
+//        if (Utils.existeCache(tag) && !Utils.cacheExpiro(Enumerator.CacheNumDias.ARCHIVOS_PARQUE,tag)) {
+//            try {
+//                Type resultType = new TypeToken<List<ArchivoParque>>() {}.getType();
+//                List<ArchivoParque> lstArchivosParque =  Reservoir.get(tag, resultType);
+//                setResult(lstArchivosParque);
+//            } catch (Exception e) {
+//                archivosParque.list(iArchivosParque,idParque);
+//            }
+//        }else {
             archivosParque.list(iArchivosParque,idParque);
-        }
+//        }
 
     }
 

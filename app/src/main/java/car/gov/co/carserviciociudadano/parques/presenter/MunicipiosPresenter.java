@@ -23,20 +23,8 @@ public class MunicipiosPresenter {
         this.iViewMunicipios = iViewMunicipios;
     }
     public void list()    {
-        String tag = Municipios.TAG;
         Municipios municipios = new Municipios();
-
-        if (Utils.existeCache(tag) && !Utils.cacheExpiro(Enumerator.CacheNumDias.MUNICIPIOS,tag)) {
-            try {
-                Type resultType = new TypeToken<List<Municipio>>() {}.getType();
-                List<Municipio> lstMunicipios =  Reservoir.get(tag, resultType);
-                iMunicipio.onSuccess( lstMunicipios);
-            } catch (Exception e) {
-                municipios.list(iMunicipio);
-            }
-        }else {
-            municipios.list(iMunicipio);
-        }
+         municipios.list(iMunicipio);
     }
 
     IMunicipio iMunicipio = new IMunicipio() {

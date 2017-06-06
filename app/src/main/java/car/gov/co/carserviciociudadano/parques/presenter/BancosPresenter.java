@@ -23,29 +23,18 @@ public class BancosPresenter {
     public void list()    {
         String tag = Bancos.TAG;
         Bancos bancos = new Bancos();
-
-        if (Utils.existeCache(tag) && !Utils.cacheExpiro(Enumerator.CacheNumDias.BANCOS,tag)) {
-            try {
-                Type resultType = new TypeToken<List<Banco>>() {}.getType();
-                List<Banco> lstBancos =  Reservoir.get(tag, resultType);
-                iBanco.onSuccess( lstBancos);
-            } catch (Exception e) {
-                bancos.list(iBanco);
-            }
-        }else {
-            bancos.list(iBanco);
-        }
+        bancos.list(iBanco);
     }
 
     IBanco iBanco = new IBanco() {
         @Override
         public void onSuccess(List<Banco> lstBanco) {
-
+            iViewBancos.onSuccess(lstBanco);
         }
 
         @Override
         public void onError(ErrorApi error) {
-
+            iViewBancos.onError(error);
         }
     };
 }
