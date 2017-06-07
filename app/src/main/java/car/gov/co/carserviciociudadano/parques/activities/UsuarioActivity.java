@@ -96,9 +96,8 @@ public class UsuarioActivity extends BaseActivity {
             mOrigin = bundle.getInt(ORIGIN,0);
         }
 
-
-        loadMunicipios();
         init();
+        loadMunicipios();
     }
 
     @Override

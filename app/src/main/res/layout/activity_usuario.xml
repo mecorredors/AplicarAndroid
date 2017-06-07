@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Email"
                 android:imeOptions="actionDone"
-                android:inputType="textNoSuggestions"
+                android:inputType="textNoSuggestions|textEmailAddress"
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_14"
                 android:textColor="@color/secondaryText"
@@ -127,7 +127,7 @@
             android:textSize="@dimen/text_size_13"
             />
         <Button android:id="@+id/btnCrearCuenta"
-            android:theme="@style/ButtonBorderless"
+            android:theme="@style/ButtonAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="CREAR CUENTA"
@@ -168,7 +168,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:inputType="textNoSuggestions"
+            android:inputType="textNoSuggestions|textEmailAddress"
             style="@style/editTextUsuario"
             />
     </android.support.design.widget.TextInputLayout>
@@ -242,7 +242,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/telefono"
-                android:inputType="textNoSuggestions"
+                android:inputType="number"
                 style="@style/editTextUsuario"
                 />
         </android.support.design.widget.TextInputLayout>
@@ -256,7 +256,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Celular"
-                android:inputType="textNoSuggestions"
+                android:inputType="number"
                 style="@style/editTextUsuario"
                 />
         </android.support.design.widget.TextInputLayout>

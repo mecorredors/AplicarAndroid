@@ -5,7 +5,9 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -35,7 +37,9 @@ public class ParquesAdapter extends RecyclerView.Adapter<ParquesAdapter.PlaceSel
 
         private TextView lblTitulo;
         private ImageView imagen;
-        private TextView lblDescripcion;
+        private FrameLayout lyNombre;
+        private FrameLayout lyFooter;
+     //   private TextView lblDescripcion;
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
@@ -51,14 +55,18 @@ public class ParquesAdapter extends RecyclerView.Adapter<ParquesAdapter.PlaceSel
             super(itemView);
 
             lblTitulo = (TextView)itemView.findViewById(R.id.lblTitulo);
-            lblDescripcion = (TextView)itemView.findViewById(R.id.lblDescripcion);
+            lyNombre = (FrameLayout) itemView.findViewById(R.id.lyNombre);
+            lyFooter = (FrameLayout) itemView.findViewById(R.id.lyFooter);
+            //lblDescripcion = (TextView)itemView.findViewById(R.id.lblDescripcion);
             imagen = (ImageView) itemView.findViewById(R.id.imagen);
 
         }
 
         public void bindParque(Parque p) {
             lblTitulo.setText(p.getNombreParque());
-            lblDescripcion.setText( p.getObservacionesParque());
+            lyNombre.setBackgroundColor(p.getColor());
+            lyFooter.setBackgroundColor(p.getColor());
+          //  lblDescripcion.setText( p.getObservacionesParque());
             ImageLoader.getInstance().displayImage(p.getUrlArchivoParque(), imagen, options, aniList);
         }
 

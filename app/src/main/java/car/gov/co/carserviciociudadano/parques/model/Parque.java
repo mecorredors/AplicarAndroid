@@ -31,6 +31,7 @@ public class Parque {
     private String UrlArchivoParque;
     private double Latitude;
     private double Longitude;
+    private int color;
 
     public static final String ID_PARQUE = "IDParque";
     public static final String NOMBRE_PARQUE = "NombreParque";
@@ -217,5 +218,13 @@ public class Parque {
 
     public void setLongitude(double longitude) {
         Longitude = longitude;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

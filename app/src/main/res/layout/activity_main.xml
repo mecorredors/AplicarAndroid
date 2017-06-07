@@ -24,6 +24,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleGravity="center_horizontal|bottom"
+
             >
 
             <ImageView android:id="@+id/imagen"

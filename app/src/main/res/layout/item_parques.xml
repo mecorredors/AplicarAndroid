@@ -21,57 +21,58 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/margin_10dp"
-        android:layout_marginRight="@dimen/margin_10dp"
+        android:orientation="horizontal"
         android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginBottom="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_6dp"
         >
 
-        <TextView android:id="@+id/lblTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="PARQUE EMBALSE DEL NEUSA"
-            android:textColor="@color/primaryText"
-            android:textSize="@dimen/text_size_16"
-            android:background="@color/blue50"
-            android:layout_marginBottom="@dimen/margin_10dp"
-            android:padding="@dimen/margin_4dp"
-            />
-         <!--<View-->
-             <!--android:layout_width="match_parent"-->
-             <!--android:layout_height="1dp"-->
-             <!--android:background="@color/dividerColor"-->
-             <!--android:layout_marginBottom="@dimen/margin_10dp"></View>-->
+        <FrameLayout android:id="@+id/lyNombre"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="#1AB2E4"
+          >
+            <TextView android:id="@+id/lblTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PARQUE EMBALSE DEL NEUSA"
+                android:textColor="@color/textLight"
+                android:textSize="@dimen/text_size_16"
+                android:padding="@dimen/margin_4dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                />
+        </FrameLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+          android:layout_weight="6"
             android:orientation="horizontal">
 
                 <ImageView android:id="@+id/imagen"
-                    android:layout_width="@dimen/parques_foto_width"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/parques_foto_height"
                     android:scaleType="centerCrop"
-                    />
-
-                <TextView android:id="@+id/lblDescripcion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_10dp"
-                    android:text="Descripcion "
-                    android:textSize="@dimen/text_size_13"
-                    android:textColor="@color/secondaryText"
-                    android:layout_gravity="center_vertical|right"
-                    android:lineSpacingMultiplier="1.2"
                     />
 
         </LinearLayout>
 
     </LinearLayout>
-        <View
+        <FrameLayout android:id="@+id/lyFooter"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor"/>
+            android:layout_height="20dp"
+            android:background="#1AB2E4"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RESERVAR"
+                android:textColor="@color/textLight"
+                android:textSize="@dimen/text_size_13"
+                android:paddingRight="@dimen/margin_4dp"
+                android:layout_gravity="right|center"
+                />
+            </FrameLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

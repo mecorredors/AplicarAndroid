@@ -1,7 +1,7 @@
 <resources>
     <string name="api_key_map">AIzaSyANX_3o4ILDTiUEB0_t5CF5LscEiw5Ie5M</string>
-    <string name="app_name">Servicio al ciudadano</string>
-    <string name="title_main_activity">Servicio al ciudadano</string>
+    <string name="app_name">CAR a mi servicio</string>
+    <string name="title_main_activity">CAR A MI SERVICIO</string>
     <string name="title_activity_main_parques">Reserva de parques</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
