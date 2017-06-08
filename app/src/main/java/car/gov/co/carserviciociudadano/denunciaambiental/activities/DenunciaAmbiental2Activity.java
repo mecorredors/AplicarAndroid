@@ -60,7 +60,6 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
     @BindView(R.id.txtTelefono)    EditText txtTelefono;
     @BindView(R.id.lyTelefono)    TextInputLayout lyTelefono;
     @BindView(R.id.txtComentarios)    EditText txtComentarios;
-  //  @BindView(R.id.lyComentarios)   TextInputLayout lyComentarios;
     @BindView(R.id.lyDatos)   View lyDatos;
     @BindView(R.id.lyDenuncia)   View lyDenuncia;
     @BindView(R.id.pbDepartamento)   ProgressBar pbDepartamento;
@@ -88,12 +87,11 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
         mDenuncia = Denuncia.newInstance();
-        cargarDatos();
+
         spiDepartamento.setOnItemSelectedListener(this);
         spiMunicipio.setOnItemSelectedListener(this);
         mLugaresPresenter = new LugaresPresenter(this);
         mRadicarPQRPresenter = new RadicarPQRPresener(this);
-        obtenerDepartamentos();
 
         mLstDepartamentos.add(new Lugar("","Departamento"));
         adapterDepartamentos = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstDepartamentos);
@@ -109,6 +107,9 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
         adapterVeredas = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstVeredas);
         adapterVeredas.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
         spiVereda.setAdapter(adapterVeredas);
+
+        cargarDatos();
+        obtenerDepartamentos();
 
     }
 
@@ -189,7 +190,6 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
         mDenuncia.setMunicipio("");
         mDenuncia.setVereda("");
         mDenuncia.setVeredaQueja("");
-        mDenuncia.setMunicipioQueja("");
         mDenuncia.setDesUbicacionQueja("");
     }
 
@@ -203,8 +203,9 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
     }
 
     private void obtenerDepartamentos(){
-        mLugaresPresenter.obtenerDepartamentos();
         pbDepartamento.setVisibility(View.VISIBLE);
+        mLugaresPresenter.obtenerDepartamentos();
+
 
     }
 
@@ -226,8 +227,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
     @OnClick(R.id.cheAnonimo) void onAnonimo(){
         lyDatos.setVisibility(cheAnonimo.isChecked()== true ? View.GONE : View.VISIBLE);
         if (!cheAnonimo.isChecked() && mLstDepartamentos.size()==0) {
-            pbDepartamento.setVisibility(View.VISIBLE);
-            mLugaresPresenter.obtenerDepartamentos();
+           obtenerDepartamentos();
         }
         ocultarTeclado(lyDenuncia);
     }
@@ -238,10 +238,10 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
 
     @Override
     public void onSuccessDepartamentos(List<Lugar> lstDepartamentos) {
+        pbDepartamento.setVisibility(View.GONE);
         adapterDepartamentos.clear();
         adapterDepartamentos.addAll(lstDepartamentos);
         adapterDepartamentos.notifyDataSetChanged();
-        pbDepartamento.setVisibility(View.GONE);
     }
 
     @Override
@@ -271,7 +271,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
                     .setAction("REINTENTAR", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            mLugaresPresenter.obtenerDepartamentos();
+                            obtenerDepartamentos();
                         }
                     })
                     .show();
@@ -352,6 +352,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
         if (mProgressDialog != null) mProgressDialog.dismiss();
 
         mDenuncia.getFotos().clear();
+        mDenuncia.setMunicipioQueja("");
         mDenuncia.setLatitude(0);
         mDenuncia.setLongitude(0);
         lyFormulario.setVisibility(View.GONE);

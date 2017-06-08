@@ -90,7 +90,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_denuncia_36dp"/>
+                        android:src="@drawable/ic_person_pin_circle_main_36dp"/>
 
                     <TextView
                         android:layout_width="0dp"

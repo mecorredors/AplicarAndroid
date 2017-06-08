@@ -282,7 +282,7 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private boolean CreateFile(){
-        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/FincaRaiz/";
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Car_a_mi_servicio/";
         File newdir = new File(dir);
         newdir.mkdirs();
 

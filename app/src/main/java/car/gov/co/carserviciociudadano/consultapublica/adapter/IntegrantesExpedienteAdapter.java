@@ -40,9 +40,9 @@ public class IntegrantesExpedienteAdapter extends RecyclerView.Adapter<Integrant
             html.append("<html> <b>");
             html.append(item.getNombre());
             html.append("</b>");
-            html.append("<br><font color='#1976D2'> "+item.getTipoIdentificacion() +" "+ item.getIdentificacion() + " de "+ item.getExpedicionIdentificacion()+ " </font>" );
-            html.append("<br><font color='#4CAF50'>Datos de Contacto: </font> Tel: "+item.getTelefonos());
-            html.append("<br>Dir. Notificación: "+item.getDireccion());
+           if (item.getTipoIdentificacion().equals("NIT"))
+               html.append("<br><font color='#1976D2'> "+item.getTipoIdentificacion() +" "+ item.getIdentificacion() + " de "+ item.getExpedicionIdentificacion()+ " </font>" );
+
             html.append("<br><font color='#757575'>Calidad que actua: "+item.getRol() +"</font>");
             html.append("<br><font color='#1976D2'>Cédula catastral de "+item.getCedulaCatastral() +" " + item.getPredio() + "</font>");
             html.append("<br><font color='#4CAF50'> Dirección </font>"+item.getDireccionPredio() );
