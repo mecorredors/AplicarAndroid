@@ -6,13 +6,13 @@ package car.gov.co.carserviciociudadano.Utils;
 
 public class Config {
 
-   // public static String ServerParques = "http://parques.car.gov.co/";    //pruebas car
-    //public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
-    //public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
+     public static String ServerParques = "http://parques.car.gov.co/";    //pruebas car
+     public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
+     public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
 
-    public static String ServerParques = "http://192.168.0.13/parques/";    //pruebas car
-    public static String ServerSIDCAR = "http://192.168.0.13/SIDCAR/";    //pruebas sidcar
-    public static String ServerSAE = "http://192.168.0.13/SAE/";    //pruebas sidcar
+//    public static String ServerParques = "http://192.168.0.13/parques/";    //pruebas car
+//    public static String ServerSIDCAR = "http://192.168.0.13/SIDCAR/";    //pruebas sidcar
+//    public static String ServerSAE = "http://192.168.0.13/SAE/";    //pruebas sidcar
 
 
     public static String API_PARQUES_PARQUES =  ServerParques + "api/parque/parques/";
