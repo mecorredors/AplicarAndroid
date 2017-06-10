@@ -2,7 +2,6 @@ package car.gov.co.carserviciociudadano.parques.activities;
 
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 
 import java.util.ArrayList;
@@ -12,6 +11,7 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.CirclePageIndicator;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
+import car.gov.co.carserviciociudadano.common.ViewPagerExtend;
 import car.gov.co.carserviciociudadano.parques.adapter.ImageViewerPagerAdapter;
 import car.gov.co.carserviciociudadano.parques.presenter.ArchivosParquePresenter;
 import car.gov.co.carserviciociudadano.parques.presenter.IViewArchivoParque;
@@ -22,7 +22,7 @@ import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 public class ImageViewerActivity extends BaseActivity implements  IViewArchivoParque {
 
-    ViewPager _PagerImages;
+    ViewPagerExtend _PagerImages;
     ImageViewerPagerAdapter _AdapterImages;
     PageIndicator mIndicatorImages;
 
@@ -42,7 +42,7 @@ public class ImageViewerActivity extends BaseActivity implements  IViewArchivoPa
             mTypoArchivoParque = bundle.getInt(Enumerator.TipoArchivoParque.TAG);
         }
 
-        _PagerImages = (ViewPager) this.findViewById(R.id.pagerImages);
+        _PagerImages = (ViewPagerExtend) this.findViewById(R.id.pagerImages);
         _AdapterImages = new ImageViewerPagerAdapter(getSupportFragmentManager());
         _PagerImages.setAdapter(_AdapterImages);
 
@@ -59,7 +59,7 @@ public class ImageViewerActivity extends BaseActivity implements  IViewArchivoPa
         archivosParque.list(mIdParque, mTypoArchivoParque);
     }
 
-    public void onSuccess(List<ArchivoParque> lstArchivosParque, ArchivoParque archivoParque, int count) {
+    public void onSuccess(List<ArchivoParque> lstArchivosParque, ArchivoParque archivoParque, ArchivoParque logoParque,int count) {
         mLstMedias.clear();
         mLstMedias.addAll(lstArchivosParque);
         _AdapterImages.addAllImageViewer(mLstMedias);

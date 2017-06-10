@@ -17,7 +17,7 @@
             >
 
 
-            <android.support.v4.view.ViewPager
+            <car.gov.co.carserviciociudadano.common.ViewPagerExtend
                 android:id="@+id/pagerImages"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

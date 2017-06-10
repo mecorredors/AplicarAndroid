@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 
 /**
  * Created by Olger on 21/09/2016.

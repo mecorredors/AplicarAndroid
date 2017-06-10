@@ -21,13 +21,18 @@ public final class IntentHelper {
         return instance;
     }
     public static void addObjectForKey(Object object, String key) {
-        getInstance().mHash.put(key, object);
+        IntentHelper helper = getInstance();
+        helper.mHash.remove(key);
+        helper.mHash.put(key, object);
+        helper = null;
     }
     public static Object getObjectForKey(String key) {
         IntentHelper helper = getInstance();
         Object data = helper.mHash.get(key);
-        helper.mHash.remove(key);
         helper = null;
         return data;
+    }
+    public static void remove(String key){
+        getInstance().mHash.remove(key);
     }
 }

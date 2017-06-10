@@ -30,19 +30,7 @@ public class ArchivosParquePresenter {
         String tag = ArchivosParque.TAG+idParque;
         mTypoArchivoParque = typoArchivoParque;
         ArchivosParque archivosParque = new ArchivosParque();
-
-//        if (Utils.existeCache(tag) && !Utils.cacheExpiro(Enumerator.CacheNumDias.ARCHIVOS_PARQUE,tag)) {
-//            try {
-//                Type resultType = new TypeToken<List<ArchivoParque>>() {}.getType();
-//                List<ArchivoParque> lstArchivosParque =  Reservoir.get(tag, resultType);
-//                setResult(lstArchivosParque);
-//            } catch (Exception e) {
-//                archivosParque.list(iArchivosParque,idParque);
-//            }
-//        }else {
-            archivosParque.list(iArchivosParque,idParque);
-//        }
-
+        archivosParque.list(iArchivosParque,idParque);
     }
 
     IArchivoParque iArchivosParque = new IArchivoParque() {
@@ -59,20 +47,25 @@ public class ArchivosParquePresenter {
 
     private void setResult(List<ArchivoParque> lstArchivosParque){
         if(lstArchivosParque.size()>0) {
-           ArchivoParque imagenPrincipal = null;
+            ArchivoParque imagenPrincipal = null;
+            ArchivoParque logoParque = null;
+
             List<ArchivoParque> lstImagenesParque = new ArrayList<>();
 
             int count = 0;
             for(ArchivoParque item : lstArchivosParque) {
 
                 if (mTypoArchivoParque == Enumerator.TipoArchivoParque.PRINCIPAL_Y_GALERIA) {
-                    if (item.getIDTipoArchivo() == 1) {
+                    if (item.getIDTipoArchivo() == Enumerator.TipoArchivoParque.PRINCIPAL) {
                         count++;
                         imagenPrincipal = item;
                     }
-                    if (item.getIDTipoArchivo() == 3) {
+                    if (item.getIDTipoArchivo() == Enumerator.TipoArchivoParque.GALERIA) {
                         lstImagenesParque.add(item);
                         count++;
+                    }
+                    if (item.getIDTipoArchivo() == Enumerator.TipoArchivoParque.LOGO) {
+                        logoParque = item;
                     }
                 }else if (item.getIDTipoArchivo() == mTypoArchivoParque) {
                     lstImagenesParque.add(item);
@@ -85,7 +78,7 @@ public class ArchivosParquePresenter {
                 imagenPrincipal = lstImagenesParque.get(0); // se retorna la primer archivo como principal, solo para no retornar null
             }
 
-           viewArchivoParque.onSuccess(lstImagenesParque, imagenPrincipal,count);
+           viewArchivoParque.onSuccess(lstImagenesParque, imagenPrincipal, logoParque ,count);
 
         }else{
             viewArchivoParque.onError(new ErrorApi());

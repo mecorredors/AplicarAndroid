@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity {
 
 
 
-        mCollapsingToolbarLayout.setTitle(getTitle());
+        mCollapsingToolbarLayout.setTitle(" ");
         mCollapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 

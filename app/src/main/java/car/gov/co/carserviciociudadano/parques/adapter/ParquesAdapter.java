@@ -65,7 +65,7 @@ public class ParquesAdapter extends RecyclerView.Adapter<ParquesAdapter.PlaceSel
         public void bindParque(Parque p) {
             lblTitulo.setText(p.getNombreParque());
             lyNombre.setBackgroundColor(p.getColor());
-            lyFooter.setBackgroundColor(p.getColor());
+            lyFooter.setBackgroundColor(p.getColorFooter());
           //  lblDescripcion.setText( p.getObservacionesParque());
             ImageLoader.getInstance().displayImage(p.getUrlArchivoParque(), imagen, options, aniList);
         }

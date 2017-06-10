@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -66,6 +67,8 @@ public class DetalleParqueActivity extends BaseActivity {
     TextView mLblVerFotos;
     Button mBtnComoLlegar;
     Button mBtnMapasDelParque;
+    ImageView mImgLogoParque;
+    NestedScrollView nestedScrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +83,7 @@ public class DetalleParqueActivity extends BaseActivity {
         mParque = new Parque();
         mParque = (Parque) IntentHelper.getObjectForKey(Parques.TAG);
         ImageLoader.getInstance().displayImage(mParque.getUrlArchivoParque(), mImagen, options);
+
         mCollapsingToolbarLayout.setTitle(mParque.getNombreParque());
         mLblObservaciones.setText(mParque.getObservacionesParque());
 
@@ -96,18 +100,14 @@ public class DetalleParqueActivity extends BaseActivity {
         loadArchivosParque();
         loadServiciosParque();
 
-      //  mProgressView = (ProgressBar) view.findViewById(R.id.progressView);
+        nestedScrollView.getParent().requestChildFocus(nestedScrollView, nestedScrollView); // para subir el scroll
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
+   public void onDestroy(){
+       super.onDestroy();
+      // IntentHelper.remove(Parques.TAG);
+   }
     @Override
     public void onPause() {
         AppCar.VolleyQueue().cancelAll(ArchivosParque.TAG);
@@ -125,6 +125,7 @@ public class DetalleParqueActivity extends BaseActivity {
     }
     private void findViewsById(){
         mImagen = (ImageView) findViewById(R.id.imagen);
+        mImgLogoParque = (ImageView) findViewById(R.id.imgLogoParque);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         mCollapsingToolbarLayout.setTitle(getTitle());
         mCollapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
@@ -135,8 +136,11 @@ public class DetalleParqueActivity extends BaseActivity {
         mApp_bar = (AppBarLayout) findViewById(R.id.app_bar) ;
         mProgressView = (ProgressBar) findViewById(R.id.progressView);
         mLblVerFotos = (TextView) findViewById(R.id.lblVerFotos);
+        nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
         mLblVerFotos.setOnClickListener(onClickListener);
         mImagen.setOnClickListener(onClickListener);
+        mImgLogoParque.setOnClickListener(onClickListener);
+
         mBtnComoLlegar = (Button) findViewById(R.id.btnComoLlegar);
         mBtnComoLlegar.setOnClickListener(onClickListener);
         mBtnMapasDelParque = (Button) findViewById(R.id.btnMapasDelParque);
@@ -150,10 +154,12 @@ public class DetalleParqueActivity extends BaseActivity {
 
     IViewArchivoParque iViewArchivoParque = new IViewArchivoParque() {
         @Override
-        public void onSuccess(List<ArchivoParque> lstArchivosParque,ArchivoParque imagenPrincipal, int count) {
+        public void onSuccess(List<ArchivoParque> lstArchivosParque,ArchivoParque imagenPrincipal,ArchivoParque logoParque,  int count) {
            if (count>0){
                mLblVerFotos.setText(count + " FOTOS");
                mLblArchivoObservaciones.setText(imagenPrincipal.getObservacionesArchivo());
+               if(logoParque!=null )
+                  ImageLoader.getInstance().displayImage(logoParque.getArchivoParque(), mImgLogoParque, options);
            }
         }
         @Override
@@ -174,6 +180,7 @@ public class DetalleParqueActivity extends BaseActivity {
             mLstServiciosParque.clear();
             mLstServiciosParque.addAll(lista);
             mAdaptador.notifyDataSetChanged();
+
         }
 
         @Override
@@ -198,7 +205,7 @@ public class DetalleParqueActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             int id = v.getId();
-            if (id== R.id.lblVerFotos || id == R.id.imagen){
+            if (id== R.id.lblVerFotos || id == R.id.imagen || id == R.id.imgLogoParque){
                 Intent j = new Intent(getApplicationContext(),ImageViewerActivity.class);
                 j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
                 j.putExtra(Enumerator.TipoArchivoParque.TAG, Enumerator.TipoArchivoParque.PRINCIPAL_Y_GALERIA);
@@ -207,6 +214,7 @@ public class DetalleParqueActivity extends BaseActivity {
                 Intent i = new Intent(DetalleParqueActivity.this, ComoLLegarActivity.class);
                 IntentHelper.addObjectForKey(mParque, Parques.TAG);
                 startActivity(i);
+
             }else if (id == R.id.btnMapasDelParque){
                 Intent j = new Intent(getApplicationContext(),ImageViewerActivity.class);
                 j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());

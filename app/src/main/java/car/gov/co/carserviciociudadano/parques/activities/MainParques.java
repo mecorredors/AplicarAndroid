@@ -71,12 +71,13 @@ public class MainParques extends BaseActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         TextView tab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tab.setText("Parques");
+        tab.setText("PARQUES");
         tab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_parque_24, 0, 0);
+
         tabLayout.getTabAt(0).setCustomView(tab);
 
         TextView tabReservas = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabReservas.setText("Mis reservas");
+        tabReservas.setText("MIS RESERVAS");
         tabReservas.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_hotel_black_24dp, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabReservas);
 

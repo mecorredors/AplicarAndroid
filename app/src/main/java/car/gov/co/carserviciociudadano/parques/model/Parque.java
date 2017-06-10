@@ -32,6 +32,7 @@ public class Parque {
     private double Latitude;
     private double Longitude;
     private int color;
+    private int colorFooter;
 
     public static final String ID_PARQUE = "IDParque";
     public static final String NOMBRE_PARQUE = "NombreParque";
@@ -226,5 +227,13 @@ public class Parque {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public int getColorFooter() {
+        return colorFooter;
+    }
+
+    public void setColorFooter(int colorFooter) {
+        this.colorFooter = colorFooter;
     }
 }

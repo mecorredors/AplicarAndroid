@@ -38,6 +38,7 @@ public class Enumerator {
         public static final int PDF = 2;
         public static final int GALERIA = 3;
         public static final int MAP_PHOTO = 4;
+        public static final int LOGO = 5;
     }
 
     public static class TipoFoto{
