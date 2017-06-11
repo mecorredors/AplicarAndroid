@@ -4,6 +4,8 @@ package car.gov.co.carserviciociudadano.parques.activities;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 public class ImageViewerActivity extends BaseActivity implements  IViewArchivoParque {
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     ViewPagerExtend _PagerImages;
     ImageViewerPagerAdapter _AdapterImages;
     PageIndicator mIndicatorImages;
@@ -52,6 +55,11 @@ public class ImageViewerActivity extends BaseActivity implements  IViewArchivoPa
 
         loadArchivosParque();
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Image Viewer");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     private void loadArchivosParque() {

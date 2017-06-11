@@ -28,11 +28,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.LocationBaseGoogleApiActivity;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
@@ -45,6 +48,7 @@ public class ComoLLegarActivity extends LocationBaseGoogleApiActivity implements
     @BindView(R.id.progressView)
     ProgressBar progressView;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     private Parque mParque;
     private GoogleMap mapa;
 
@@ -72,7 +76,12 @@ public class ComoLLegarActivity extends LocationBaseGoogleApiActivity implements
 
         mapFragment.getMapAsync(this);
 
-        //Construcción cliente API Google
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mParque.getNombreParque()));
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Como llegar");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     @Override

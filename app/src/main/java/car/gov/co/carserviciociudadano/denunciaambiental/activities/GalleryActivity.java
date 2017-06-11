@@ -5,6 +5,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.adapter.GalleryAdapter;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.CustomGallery;
@@ -44,8 +46,10 @@ import android.widget.AbsListView.OnScrollListener;
 
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class GalleryActivity extends BaseActivity {
+    private FirebaseAnalytics mFirebaseAnalytics;
     GridView gridGallery;
     Handler handler;
     GalleryAdapter adapter;
@@ -107,6 +111,12 @@ public class GalleryActivity extends BaseActivity {
         }else {
             init();
         }
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Gallery denuncia");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.DENUNCIA_AMBIENTAL);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     @Override

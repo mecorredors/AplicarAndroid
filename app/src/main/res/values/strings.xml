@@ -2,7 +2,7 @@
     <string name="api_key_map">AIzaSyANX_3o4ILDTiUEB0_t5CF5LscEiw5Ie5M</string>
     <string name="app_name">CAR a mi servicio</string>
     <string name="title_main_activity">CAR A MI SERVICIO</string>
-    <string name="title_activity_main_parques">Reserva de parques</string>
+    <string name="title_activity_main_parques">Su reserva eco turística</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
@@ -17,6 +17,7 @@
     <string name="title_buscar_expediente">Búsqueda de expedientes </string>
     <string name="title_expediente">Expediente </string>
     <string name="title_cambiar_contrasena">Cambiar contraseña </string>
+    <string name="title_como_llegar">Cómo llegar </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -38,8 +39,8 @@
     <string name="mi_cuenta">Mi cuenta</string>
     <string name="reserva_creada">La reserva ha sido creada. Reserva Nro. </string>
     <string name="reserva_creada2">Por favor reporte el pago en la sección de usuarios en el módulo MIS RESERVAS. Una vez realizada la reserva, cuenta con 24 horas para realizar la consignación (No transferencia) en formato de recaudo por el valor total </string>
-    <string name="tramites">Trámites</string>
-    <string name="expedientes">Expedientes</string>
+    <string name="tramites">Su trámite</string>
+    <string name="expedientes">Su expediente</string>
     <string name="error_500">Servicio no disponible </string>
     <string name="header_sin_reservas">Aun no has realizado ninguna reserva</string>
     <string name="header_mis_reservas">listado de las reservas realizadas (Debe presentar el tiquete de la reserva al llegar al parque)</string>

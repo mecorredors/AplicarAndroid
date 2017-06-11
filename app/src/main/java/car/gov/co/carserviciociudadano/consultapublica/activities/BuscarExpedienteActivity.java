@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.consultapublica.adapter.ExpedienteAdapter;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
@@ -36,6 +39,7 @@ public class BuscarExpedienteActivity extends BaseActivity {
     @BindView(R.id.activity_buscar_expediente) View activity_buscar_expediente;
     @BindView(R.id.progressView) ProgressBar progressView;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     ExpedienteAdapter mAdaptador;
     List<Expediente> mLstExpedientes;
 
@@ -54,6 +58,12 @@ public class BuscarExpedienteActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdaptador);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Buscar expediente");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.CONSULTA_EXPEDIENTE);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     @Override

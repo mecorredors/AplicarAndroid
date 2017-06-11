@@ -20,8 +20,8 @@ import car.gov.co.carserviciociudadano.parques.model.Parque;
 public class ParquePresenter {
     IViewParque iviewParque;
    // String colores[] = {"#009052","#3EB000","#FFC000","#00AFE0","#058ABF","#006993"};
-   String colores[] = {"#90962C","#0D5AAC","#9C8E70","#BE0033","#E2A900","#77B5BA"};
-    String coloresFooter[] = {"#6F7724","#0A509C","#857555","#8E1731","#C5911A","#387775"};
+    String colores[] = {"#90962C","#005CA5","#9C8E70","#BE0033","#E2A900","#77B5BA"};
+    String coloresFooter[] = {"#6F7724","#084A7A","#857555","#8E1731","#C5911A","#387775"};
 
     public ParquePresenter(IViewParque iviewParque){
         this.iviewParque = iviewParque;

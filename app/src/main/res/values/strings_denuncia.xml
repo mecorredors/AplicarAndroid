@@ -5,7 +5,7 @@
 
     <string name="ubicacion_denuncia">Ubicación de la denuncia</string>
     <string name="cambiar_ubicacion">Cambiar ubicación</string>
-    <string name="reportar_denuncia_abiental">Reportar denuncia ambiental</string>
+    <string name="reportar_denuncia_abiental">Su denuncia ambiental</string>
     <string name="header_map">Ubique el lugar de la denuncia</string>
     <string name="max_photos">Máximo fotos permitidas (20)</string>
     <string name="cedula">Cédula</string>
@@ -19,5 +19,6 @@
     <string name="error_longitud_comentarios">El comentario es muy corto </string>
     <string name="error_juridiccion_car">La ubicación de la queja no corresponde a ningún municipio de la jurisdicción CAR de Cundinamarca </string>
     <string name="verificando_ubicacion">Verificando ubicación </string>
+    <string name="buscar_lugar">Buscar lugar </string>
 
 </resources>

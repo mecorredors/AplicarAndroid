@@ -1,13 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/background"
+    tools:context="car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            >
+
+            <LinearLayout android:id="@+id/btnBuscar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="center"
+                android:layout_marginRight="24dp"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:src="@drawable/ic_search_white_24dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_10"
+                    android:text="@string/buscar_lugar"/>
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
     android:id="@+id/lyDenuncia"
-    tools:context="car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity">
+    android:layout_marginTop="?attr/actionBarSize"
+    >
 
 
 
@@ -15,7 +62,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="45">
+        android:layout_weight="50">
       <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
@@ -66,7 +113,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="55" >
+        android:layout_weight="50" >
 
 
         <LinearLayout android:id="@+id/lyInicial"
@@ -126,13 +173,13 @@
             android:stretchMode="columnWidth"
             tools:listitem="@layout/item_gallery"
             android:visibility="visible"
-            android:layout_marginBottom="@dimen/denuncia_margin_bottom_images"
+
             android:layout_marginTop="@dimen/margin_6dp"
             android:layout_marginLeft="@dimen/margin_6dp"
             android:layout_marginRight="@dimen/margin_6dp"
+            android:layout_marginBottom="50dp"
             >
         </GridView>
-
 
         <Button android:id="@+id/btnSiguiente"
             android:layout_width="match_parent"
@@ -144,6 +191,8 @@
             android:layout_marginLeft="@dimen/margin_10dp"
             android:layout_marginRight="@dimen/margin_10dp"
             />
+
     </FrameLayout>
 
 </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

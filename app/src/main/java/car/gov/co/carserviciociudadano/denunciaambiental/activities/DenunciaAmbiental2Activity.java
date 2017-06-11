@@ -19,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Validation;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
@@ -69,6 +72,7 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
     @BindView(R.id.lyRespuesta)    View lyRespuesta;
     @BindView(R.id.lblRespuesta)   TextView lblRespuesta;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     Denuncia mDenuncia;
     LugaresPresenter mLugaresPresenter;
     RadicarPQRPresener mRadicarPQRPresenter;
@@ -111,6 +115,11 @@ public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRad
         cargarDatos();
         obtenerDepartamentos();
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Denuncia Abiental 2");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.DENUNCIA_AMBIENTAL);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     @Override protected void onPause(){

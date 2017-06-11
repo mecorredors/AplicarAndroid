@@ -148,7 +148,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Reserva de parques"
+                    android:text="@string/title_activity_main_parques"
                     android:textColor="@color/secondaryText"
                     android:textSize="@dimen/text_size_16"
                     android:layout_marginLeft="@dimen/margin_16dp"/>

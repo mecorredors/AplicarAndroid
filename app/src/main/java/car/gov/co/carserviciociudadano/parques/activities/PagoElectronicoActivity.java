@@ -3,6 +3,7 @@ package car.gov.co.carserviciociudadano.parques.activities;
 import android.os.Bundle;
 
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 
 import android.graphics.Bitmap;
@@ -14,9 +15,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 public class PagoElectronicoActivity extends BaseActivity {
     private ProgressBar progress;
     WebView myWebView;
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,11 @@ public class PagoElectronicoActivity extends BaseActivity {
 
         myWebView.loadUrl("https://www.pagosvirtualesavvillas.com.co/personal/pagos/4363");
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Pago electronico");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     public class myWebClient extends WebViewClient

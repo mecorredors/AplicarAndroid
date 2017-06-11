@@ -32,6 +32,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,6 +81,7 @@ public class AbonoActivity extends BaseActivity {
     @BindView(R.id.inputLyObservaciones)  TextInputLayout mInputLyObservaciones;
     @BindView(R.id.inputLyValor)  TextInputLayout mInputLyValor;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     List<Banco> mLstBancos = new ArrayList<>();
     ArrayAdapter<Banco> adapterBancos;
 
@@ -119,6 +123,12 @@ public class AbonoActivity extends BaseActivity {
 
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE  },  MY_PERMISSION_READ_EXTERNAL_STORAGE );
         }
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Abono");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     @Override

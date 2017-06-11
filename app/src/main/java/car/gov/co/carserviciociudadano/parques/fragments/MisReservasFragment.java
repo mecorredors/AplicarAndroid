@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.parques.activities.DetalleReservaActivity;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 import car.gov.co.carserviciociudadano.parques.activities.UsuarioActivity;
@@ -44,6 +47,7 @@ public class MisReservasFragment extends BaseFragment {
     List<DetalleReserva> mLstDetalleReservas;
     private ProgressBar mProgressView;
     Usuario mUsuario;
+    private FirebaseAnalytics mFirebaseAnalytics;
     public MisReservasFragment() {
 
     }
@@ -83,6 +87,11 @@ public class MisReservasFragment extends BaseFragment {
 
         loadDetalleReservas();
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Mis reservas");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
         return view;
     }
 

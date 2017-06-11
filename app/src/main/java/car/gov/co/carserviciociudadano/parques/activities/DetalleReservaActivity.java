@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -45,6 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.adapter.AbonosAdapter;
@@ -88,7 +90,7 @@ public class DetalleReservaActivity extends BaseActivity {
     @BindView(R.id.btnPagoElectronico)    ImageButton mBtnPagoElectronico;
     @BindView(R.id.lblEnviarConsignacion)    TextView mLblEnviarConsignacion;
 
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     private DetalleReserva mDetalleReserva;
     ProgressDialog mProgressDialog;
     AbonosAdapter mAdaptador;
@@ -131,6 +133,12 @@ public class DetalleReservaActivity extends BaseActivity {
         loadParques();
         loadAbonos();
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mDetalleReserva.getNombreServicio()));
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle reserva");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
     }
     private void configurarControles(){

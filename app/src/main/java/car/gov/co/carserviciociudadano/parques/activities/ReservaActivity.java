@@ -15,6 +15,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.stacktips.view.CalendarListener;
 import com.stacktips.view.CustomCalendarView;
 import com.stacktips.view.DayDecorator;
@@ -83,7 +85,7 @@ public class ReservaActivity extends BaseActivity {
     @BindView(R.id.cheAceptoPoliticas)    CheckBox mCheAceptoPoliticas;
     @BindView(R.id.lyPoliticas)    LinearLayout mLyPoliticas;
 
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     List<Mantenimiento> mLstMatenimientos = new ArrayList<>();
     List<ServicioReserva> mLstEnReservas = new ArrayList<>();
     Map<String, String> mapParametros = new HashMap<>();
@@ -165,6 +167,11 @@ public class ReservaActivity extends BaseActivity {
             }
         });
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Reserva");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     @Override

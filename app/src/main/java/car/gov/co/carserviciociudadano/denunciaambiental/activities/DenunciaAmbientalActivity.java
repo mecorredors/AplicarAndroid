@@ -11,11 +11,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+
+import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +33,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 import java.util.ArrayList;
@@ -47,6 +58,7 @@ import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewElevatio
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewIdLugarXCoordenada;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.LugarXCoordendaPresenter;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import io.fabric.sdk.android.Fabric;
 
 public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback, IViewElevation, IViewIdLugarXCoordenada{
     @BindView(R.id.lyInicial)  LinearLayout lyInicial;
@@ -54,12 +66,14 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     @BindView(R.id.gridGallery)    GridView gridView;
     @BindView(R.id.btnSiguiente)   Button btnSiguiente;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     private GoogleMap mMap;
     LatLng miPosicion = new LatLng(0, 0);
     private static final String LOGTAG = "Denuncia ambiental";
     private static final int PETICION_PERMISO_LOCALIZACION = 101;
     private static final int PETICION_GALLERY = 102;
     private static final int PETICION_DENUCIA_PARTE_2 = 105;
+    private static final int PETICION_GOOGLE_PLACES = 106;
     GallerySelectedAdapter mAdapter;
    // private List<Foto> mFotos = new ArrayList<>();
     ElevationPresenter mElevationPresenter;
@@ -70,9 +84,14 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_denuncia_ambiental);
-        ButterKnife.bind(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
+
+        ButterKnife.bind(this);
+
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -85,7 +104,11 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         mElevationPresenter = new ElevationPresenter(this);
         mLugarXCoordenadaPresenter = new LugarXCoordendaPresenter(this);
 
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Denuncia Abiental 1");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.DENUNCIA_AMBIENTAL);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     @Override
@@ -131,8 +154,10 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
 
     private void moveCamara() {
       //  mMap.addMarker(new MarkerOptions().position(miPosicion).title(getResources().getString(R.string.ubicacion_denuncia)));
-        CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(miPosicion, 10);
-        mMap .moveCamera(camUpd1);
+       if(mMap != null) {
+           CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(miPosicion, 10);
+           mMap.moveCamera(camUpd1);
+       }
     }
 
 
@@ -169,6 +194,26 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         }
     }
 
+    @OnClick(R.id.btnBuscar) void onBuscar() {
+        try {
+            mDenuncia.setLatitude(miPosicion.latitude);
+            mDenuncia.setLongitude(miPosicion.longitude);
+            Intent intent = new  PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(this);
+            startActivityForResult(intent, PETICION_GOOGLE_PLACES);
+
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundleAnalitic = new Bundle();
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Buscar lugar places");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.DENUNCIA_AMBIENTAL);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+
+        } catch (GooglePlayServicesRepairableException e) {
+            mostrarMensaje(e.toString());
+        } catch (GooglePlayServicesNotAvailableException e) {
+            mostrarMensaje(e.toString());
+        }
+    }
+
     @OnClick(R.id.lyAgregarFotos) void onAgregarFotos() {
         openGalleryPhotos();
     }
@@ -180,7 +225,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK){
+        if (resultCode == RESULT_OK){
             if (requestCode == PETICION_GALLERY){
                 String[] all_path = data.getStringArrayExtra(GalleryActivity.ALL_PATH);
                 int[] all_ids = data.getIntArrayExtra(GalleryActivity.ALL_THUMB_IDS);
@@ -189,6 +234,22 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
                 setNumPhotosSelect();
             }else if (requestCode == PETICION_DENUCIA_PARTE_2){
                 finish();
+            }
+        }
+
+        if (requestCode ==   PETICION_GOOGLE_PLACES) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                miPosicion =  place.getLatLng(); //  new LatLng(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+                moveCamara();
+               mostrarMensaje(place.getName().toString());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                Crashlytics.logException(new Exception("DenunciaAmbientalActivity.onActivityResult Google Place Status: "+ status));
+                Log.i("google places", status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
             }
         }
     }

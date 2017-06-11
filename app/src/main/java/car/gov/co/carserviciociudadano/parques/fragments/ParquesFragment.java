@@ -14,12 +14,14 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.anupcowkur.reservoir.Reservoir;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 import car.gov.co.carserviciociudadano.parques.adapter.ParquesAdapter;
@@ -32,29 +34,18 @@ import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 
 public class ParquesFragment extends BaseFragment implements  IViewParque {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private RecyclerView mRecyclerView;
     ParquesAdapter mAdaptador;
     List<Parque> mLstParques;
     private ProgressBar mProgressView;
     public ParquesFragment() {
-        // Required empty public constructor
     }
 
 
     public static ParquesFragment newInstance() {
         ParquesFragment fragment = new ParquesFragment();
-       // Bundle args = new Bundle();
-       // args.putString(ARG_PARAM1, param1);
-     //   fragment.setArguments(args);
         return fragment;
     }
 
@@ -62,10 +53,7 @@ public class ParquesFragment extends BaseFragment implements  IViewParque {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-    }//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +73,12 @@ public class ParquesFragment extends BaseFragment implements  IViewParque {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mProgressView = (ProgressBar) view.findViewById(R.id.progressView);
         loadParques();
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Parques");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
 
         return view;
     }

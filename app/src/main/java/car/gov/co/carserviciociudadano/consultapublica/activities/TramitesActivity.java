@@ -9,11 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Tramites;
 import car.gov.co.carserviciociudadano.consultapublica.interfaces.ITramite;
@@ -38,6 +42,7 @@ public class TramitesActivity extends BaseActivity {
     @BindView(R.id.progressView)   ProgressBar progressView;
     @BindView(R.id.btnVerRespuestas)   Button btnVerRespuestas;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     Tramite mTramite ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,12 @@ public class TramitesActivity extends BaseActivity {
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
         lyTramite.setVisibility(View.GONE);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Tramites");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.CONSULTA_TRAMITE);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
     @Override
     public void onPause() {

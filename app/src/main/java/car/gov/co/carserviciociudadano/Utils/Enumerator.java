@@ -47,6 +47,15 @@ public class Enumerator {
 
     }
 
+    public static class ContentTypeAnalitic{
+        public static final String PRINCIPAL = "Principal";
+        public static final String PARQUES = "Parques";
+        public static final String DENUNCIA_AMBIENTAL = "Denuncia ambiental";
+        public static final String CONSULTA_EXPEDIENTE = "Consulta expediente";
+        public static final String CONSULTA_TRAMITE = "Consulta tramite";
+
+    }
+
     public static final int TIMEOUT_PUBLISH_IMAGES = 40000;
     public static final String NAME_DIRECTORY_IMAGES = "CAR-Servicio-Ciudadano";
 }

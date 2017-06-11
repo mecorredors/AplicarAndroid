@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class DetalleParqueActivity extends BaseActivity {
 
 //    private int mIdParque;
 //    private String mNombreParque;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     ImageView mImagen;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     AppBarLayout mApp_bar;
@@ -102,6 +104,12 @@ public class DetalleParqueActivity extends BaseActivity {
 
         nestedScrollView.getParent().requestChildFocus(nestedScrollView, nestedScrollView); // para subir el scroll
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mParque.getNombreParque()));
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle Parque");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
    public void onDestroy(){

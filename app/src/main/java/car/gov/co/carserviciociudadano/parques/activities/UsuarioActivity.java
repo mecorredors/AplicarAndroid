@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -23,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Validation;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.presenter.MunicipiosPresenter;
@@ -74,6 +77,7 @@ public class UsuarioActivity extends BaseActivity {
     @BindView(R.id.inputLyEmailRecuperar)    TextInputLayout mInputLyEmailRecuperar;
     @BindView(R.id.inputLyClave)    TextInputLayout mInputLyClave;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     Usuario mUsuario;
     List<Municipio> mLstMunicipios = new ArrayList<>();
     ArrayAdapter<Municipio> adapterMunicipios;
@@ -98,6 +102,12 @@ public class UsuarioActivity extends BaseActivity {
 
         init();
         loadMunicipios();
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Usuario");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     @Override

@@ -18,10 +18,13 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.fragments.MisReservasFragment;
@@ -43,11 +46,13 @@ public class MainParques extends BaseActivity {
     /**
      * The {@link ViewPager} that will host the section contents.
      */
+    private FirebaseAnalytics mFirebaseAnalytics;
     private ViewPager mViewPager;
     private Usuario mUsuario;
     MenuItem mMenuEditar;
     MenuItem mMenuCambiarContrasena;
     MenuItem mMenuCerrarSesion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,15 +86,11 @@ public class MainParques extends BaseActivity {
         tabReservas.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_hotel_black_24dp, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabReservas);
 
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Main Parques");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
     }
 

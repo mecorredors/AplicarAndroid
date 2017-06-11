@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Validation;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
@@ -26,7 +30,7 @@ public class CambiarContrasenaActivity extends BaseActivity {
     @BindView(R.id.txtConfirmarContrasena)  EditText mTxtConfirmarContrasena;
     @BindView(R.id.inputLyContrasenaActual)   TextInputLayout mInputLyContrasenaActual;
     @BindView(R.id.inputLyNuevaContrasena)  TextInputLayout mInputLyNuevaContrasena;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,12 @@ public class CambiarContrasenaActivity extends BaseActivity {
         ButterKnife.bind(this);
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Cambiar contrasena");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
     }
 
     @Override

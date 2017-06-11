@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
@@ -18,7 +21,7 @@ import car.gov.co.carserviciociudadano.parques.activities.MainParques;
 public class MainActivity extends BaseActivity {
 
     @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,11 @@ public class MainActivity extends BaseActivity {
 
       // Intent i = new Intent(this, ComoLLegarActivity.class);
        //startActivity(i);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Main");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PRINCIPAL);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){
