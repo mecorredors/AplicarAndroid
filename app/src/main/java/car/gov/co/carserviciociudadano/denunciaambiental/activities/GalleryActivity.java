@@ -231,23 +231,25 @@ public class GalleryActivity extends BaseActivity {
 
 
     private void  setResultPhotos(){
-        ArrayList<CustomGallery> selected = adapter.getSelected();
+        if (adapter != null) {
+            ArrayList<CustomGallery> selected = adapter.getSelected();
 
-        String[] allPath = new String[selected.size()];
-        int[] allThumbIds = new int[selected.size()];
+            String[] allPath = new String[selected.size()];
+            int[] allThumbIds = new int[selected.size()];
 
-        for (int i = 0; i < allPath.length; i++) {
-            allPath[i] = selected.get(i).sdcardPath;
-            allThumbIds[i]=selected.get(i).idBitmap;
+            for (int i = 0; i < allPath.length; i++) {
+                allPath[i] = selected.get(i).sdcardPath;
+                allThumbIds[i] = selected.get(i).idBitmap;
+            }
+
+            Intent data = new Intent();
+            data.putExtra(ALL_PATH, allPath);
+            data.putExtra(ALL_THUMB_IDS, allThumbIds);
+
+            setResult(RESULT_OK, data);
+
+            finish();
         }
-
-        Intent data = new Intent();
-        data.putExtra(ALL_PATH, allPath);
-        data.putExtra(ALL_THUMB_IDS, allThumbIds);
-
-        setResult(RESULT_OK, data);
-
-        finish();
     }
 
     View.OnClickListener mOkClickListener = new View.OnClickListener() {
