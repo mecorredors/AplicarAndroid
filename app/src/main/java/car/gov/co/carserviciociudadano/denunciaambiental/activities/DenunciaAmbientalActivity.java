@@ -1,6 +1,5 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,13 +12,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -50,7 +46,6 @@ import car.gov.co.carserviciociudadano.common.LocationBaseGoogleApiActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.adapter.GallerySelectedAdapter;
 import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Elevation;
 import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Lugares;
-import car.gov.co.carserviciociudadano.denunciaambiental.model.ArchivoAdjunto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.ElevationPresenter;
@@ -58,7 +53,7 @@ import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewElevatio
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewIdLugarXCoordenada;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.LugarXCoordendaPresenter;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import io.fabric.sdk.android.Fabric;
+
 
 public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback, IViewElevation, IViewIdLugarXCoordenada{
     @BindView(R.id.lyInicial)  LinearLayout lyInicial;
@@ -70,7 +65,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     private GoogleMap mMap;
     LatLng miPosicion = new LatLng(0, 0);
     private static final String LOGTAG = "Denuncia ambiental";
-    private static final int PETICION_PERMISO_LOCALIZACION = 101;
+    private static final int PETICION_PERMISO_LOCALIZACION_DENUNCIA = 111;
     private static final int PETICION_GALLERY = 102;
     private static final int PETICION_DENUCIA_PARTE_2 = 105;
     private static final int PETICION_GOOGLE_PLACES = 106;
@@ -125,7 +120,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    PETICION_PERMISO_LOCALIZACION);
+                    PETICION_PERMISO_LOCALIZACION_DENUNCIA);
 
         } else {
             mMap.setMyLocationEnabled(true);
@@ -155,7 +150,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     private void moveCamara() {
       //  mMap.addMarker(new MarkerOptions().position(miPosicion).title(getResources().getString(R.string.ubicacion_denuncia)));
        if(mMap != null) {
-           CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(miPosicion, 10);
+           CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(miPosicion, 13);
            mMap.moveCamera(camUpd1);
        }
     }
@@ -177,20 +172,22 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         }
     }
 
-
+    @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
         switch (requestCode) {
-            case PETICION_PERMISO_LOCALIZACION: {
+            case PETICION_PERMISO_LOCALIZACION_DENUNCIA: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED  ) {
                     try {
                         mMap.setMyLocationEnabled(true);
                     }catch (SecurityException ex){
                     }
                 } else {
-                    mostrarMensaje("Permiso denegado para obtener ubicación");
+                    mostrarMensaje("2 Permiso denegado para obtener ubicación");
                 }
                 return;
             }
+
         }
     }
 

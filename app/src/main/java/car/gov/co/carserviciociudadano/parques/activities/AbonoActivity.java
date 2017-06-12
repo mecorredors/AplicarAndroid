@@ -467,21 +467,24 @@ public class AbonoActivity extends BaseActivity {
     /* now extract ID from Uri path using getLastPathSegment() and then split with ":"
     then call get Uri to for Internal storage or External storage for media I have used getUri()
     */
+            String [] uriSplit = originalUri.getLastPathSegment().split(":");
+            if (uriSplit.length > 1) {
+                String id =  uriSplit[1];
+                final String[] imageColumns = {MediaStore.Images.Media.DATA};
+                final String imageOrderBy = null;
 
-            String id = originalUri.getLastPathSegment().split(":")[1];
-            final String[] imageColumns = {MediaStore.Images.Media.DATA };
-            final String imageOrderBy = null;
+                Uri uri = getUri();
+                // String selectedImagePath = "path";
 
-            Uri uri = getUri();
-            // String selectedImagePath = "path";
+                Cursor imageCursor = managedQuery(uri, imageColumns,
+                        MediaStore.Images.Media._ID + "=" + id, null, imageOrderBy);
 
-            Cursor imageCursor = managedQuery(uri, imageColumns,
-                    MediaStore.Images.Media._ID + "="+id, null, imageOrderBy);
-
-            if (imageCursor.moveToFirst()) {
-                mSelectedImagePath = imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                if (imageCursor.moveToFirst()) {
+                    mSelectedImagePath = imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                }
+            }else{
+                mostrarMensaje("No se pudo leer el archivo, seleccione otra imagen");
             }
-
 
             //  mTxtArchivo.setText(selectedImagePath);
 

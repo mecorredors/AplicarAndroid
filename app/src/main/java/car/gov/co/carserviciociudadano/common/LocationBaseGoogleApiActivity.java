@@ -186,6 +186,8 @@ public class LocationBaseGoogleApiActivity extends BaseActivity implements Googl
 
                 Log.e(LOGTAG, "Permiso denegado");
             }
+        }else{
+            super.onRequestPermissionsResult(requestCode,permissions,grantResults);
         }
     }
 
