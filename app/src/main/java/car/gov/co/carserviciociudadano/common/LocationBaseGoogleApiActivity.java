@@ -31,7 +31,7 @@ public class LocationBaseGoogleApiActivity extends BaseActivity implements Googl
         GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     private static final String LOGTAG = "android-localizacion";
-    private static final int PETICION_PERMISO_LOCALIZACION = 101;
+    protected static final int PETICION_PERMISO_LOCALIZACION = 101;
     private static final int PETICION_CONFIG_UBICACION = 201;
     private GoogleApiClient apiClient;
     private LocationRequest locRequest;
@@ -39,8 +39,6 @@ public class LocationBaseGoogleApiActivity extends BaseActivity implements Googl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
     }
 
@@ -119,8 +117,8 @@ public class LocationBaseGoogleApiActivity extends BaseActivity implements Googl
 
     private void startLocationUpdates() {
 
-        if (Build.VERSION.SDK_INT >= 23 && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= 23 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     PETICION_PERMISO_LOCALIZACION);
@@ -170,9 +168,10 @@ public class LocationBaseGoogleApiActivity extends BaseActivity implements Googl
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+      //  Log.e(LOGTAG, "Base permi result " + requestCode + " grant "+ ( grantResults.length >0? grantResults[0]: " nada" )  );
         if (requestCode == PETICION_PERMISO_LOCALIZACION) {
-            if (grantResults.length == 1
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 //Permiso concedido
                 @SuppressWarnings("MissingPermission")
@@ -183,11 +182,8 @@ public class LocationBaseGoogleApiActivity extends BaseActivity implements Googl
             } else {
                 //Permiso denegado:
                 //Deberíamos deshabilitar toda la funcionalidad relativa a la localización.
-
                 Log.e(LOGTAG, "Permiso denegado");
             }
-        }else{
-            super.onRequestPermissionsResult(requestCode,permissions,grantResults);
         }
     }
 

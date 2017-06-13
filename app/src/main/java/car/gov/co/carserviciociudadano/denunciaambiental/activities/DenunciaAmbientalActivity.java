@@ -65,7 +65,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
     private GoogleMap mMap;
     LatLng miPosicion = new LatLng(0, 0);
     private static final String LOGTAG = "Denuncia ambiental";
-    private static final int PETICION_PERMISO_LOCALIZACION_DENUNCIA = 111;
+   // private static final int PETICION_PERMISO_LOCALIZACION_DENUNCIA = 111;
     private static final int PETICION_GALLERY = 102;
     private static final int PETICION_DENUCIA_PARTE_2 = 105;
     private static final int PETICION_GOOGLE_PLACES = 106;
@@ -116,11 +116,11 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         startGoogleApiClient(); //
 
         if (Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    PETICION_PERMISO_LOCALIZACION_DENUNCIA);
+                    PETICION_PERMISO_LOCALIZACION);
 
         } else {
             mMap.setMyLocationEnabled(true);
@@ -166,7 +166,7 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         } else if (mDenuncia.getLongitude() != 0 && mDenuncia.getLongitude() != 0) {
             miPosicion = new LatLng(mDenuncia.getLatitude(),mDenuncia.getLongitude());
             moveCamara();
-
+            Log.i(LOGTAG, "Instance mDenuncia ya tiene lat y lon");
         }else{
             Log.e(LOGTAG, "Aun no hay ultima localizacion");
         }
@@ -174,16 +174,17 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+       // Log.e(LOGTAG, "Principal permi result " + requestCode + " grant "+ ( grantResults.length >0? grantResults[0]: " nada" ) );
         switch (requestCode) {
-            case PETICION_PERMISO_LOCALIZACION_DENUNCIA: {
+            case PETICION_PERMISO_LOCALIZACION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED  ) {
                     try {
                         mMap.setMyLocationEnabled(true);
                     }catch (SecurityException ex){
                     }
                 } else {
-                    mostrarMensaje("2 Permiso denegado para obtener ubicación");
+                    mostrarMensaje("Permiso denegado para obtener ubicación");
                 }
                 return;
             }
