@@ -45,8 +45,7 @@ public class ComoLLegarActivity extends LocationBaseGoogleApiActivity implements
 
     @BindView(R.id.lblDuracion)   TextView lblDuracion;
     @BindView(R.id.lblDistancia)  TextView lblDistancia;
-    @BindView(R.id.progressView)
-    ProgressBar progressView;
+    @BindView(R.id.progressView)  ProgressBar progressView;
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private Parque mParque;

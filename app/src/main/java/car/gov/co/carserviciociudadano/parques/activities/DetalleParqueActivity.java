@@ -2,6 +2,7 @@ package car.gov.co.carserviciociudadano.parques.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -22,7 +23,12 @@ import android.widget.TextView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
@@ -50,6 +56,14 @@ public class DetalleParqueActivity extends BaseActivity {
             .showImageOnLoading(R.color.gray)
             .showImageForEmptyUri(R.drawable.sin_foto)
             .showImageOnFail(R.drawable.sin_foto)
+            .build();
+
+    DisplayImageOptions optionsLogo = new DisplayImageOptions.Builder()
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .showImageOnLoading(R.mipmap.logo_car_pajaro)
+            .showImageForEmptyUri(R.mipmap.logo_car_pajaro)
+            .showImageOnFail(R.mipmap.logo_car_pajaro)
             .build();
 
 //    private int mIdParque;
@@ -81,6 +95,8 @@ public class DetalleParqueActivity extends BaseActivity {
         bar.setDisplayHomeAsUpEnabled(true);
 
         findViewsById();
+
+
 
         mParque = new Parque();
         mParque = (Parque) IntentHelper.getObjectForKey(Parques.TAG);
@@ -166,14 +182,30 @@ public class DetalleParqueActivity extends BaseActivity {
            if (count>0){
                mLblVerFotos.setText(count + " FOTOS");
                mLblArchivoObservaciones.setText(imagenPrincipal.getObservacionesArchivo());
+               AnimateFirstDisplayListener aniList = new AnimateFirstDisplayListener();
                if(logoParque!=null )
-                  ImageLoader.getInstance().displayImage(logoParque.getArchivoParque(), mImgLogoParque, options);
+                  ImageLoader.getInstance().displayImage(logoParque.getArchivoParque(), mImgLogoParque, optionsLogo,aniList);
            }
         }
         @Override
         public void onError(ErrorApi error) {
         }
     };
+
+    private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
+        static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            if (loadedImage != null) {
+                ImageView imageView = (ImageView) view;
+                boolean firstDisplay = !displayedImages.contains(imageUri);
+                if (firstDisplay) {
+                    FadeInBitmapDisplayer.animate(imageView, 750);
+                    displayedImages.add(imageUri);
+                }
+            }
+        }
+    }
 
     private void loadServiciosParque(){
         showProgress(mProgressView,true);
