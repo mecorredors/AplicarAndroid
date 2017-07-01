@@ -140,8 +140,8 @@ public class ComoLLegarActivity extends LocationBaseGoogleApiActivity implements
 
     @OnClick(R.id.btnComoLlegar)
     void onComoLLegar() {
-        // Uri gmmIntentUri = Uri.parse("google.navigation:q=Taronga+Zoo,+Sydney+Australia");
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=5.141814, -73.971206");
+        String url = "google.navigation:q="+ destinoLatLng.latitude+","+ destinoLatLng.longitude;
+        Uri gmmIntentUri = Uri.parse(url);
         //  Uri gmmIntentUri = Uri.parse("geo:0,0?q=5.141814, -73.971206(Represa del Neusa)");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
