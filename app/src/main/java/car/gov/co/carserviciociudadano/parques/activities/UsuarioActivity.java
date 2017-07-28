@@ -367,7 +367,6 @@ public class UsuarioActivity extends BaseActivity {
         }
         res = !Validation.IsEmpty(mTxtNombre,mInputLyNombre) && res;
         res = Validation.IsPhone(mTxtCelular,mInputlyCelular) && res;
-        res = Validation.IsPhone(mTxtTelefono,mInputlyTelefono) && res;
         res = !Validation.IsEmpty(mTxtDireccion, mInputLyDireccion) && res;
         res = !Validation.IsEmpty(mTxtDocumento, mInputLyDocumento) && res;
         res = !Validation.IsEmpty(mSpiMunicipio) && res;

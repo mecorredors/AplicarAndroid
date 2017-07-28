@@ -61,6 +61,7 @@
     <string name="acepto_politicas"> Acepto políticas de uso </string>
     <string name="error_fecha_mayor"> La fecha no puede ser mayor al día de hoy </string>
     <string name="editar_mis_datos">Editar mis datos  </string>
+    <string name="mensaje_cancelar_reserva">Reserva cancelada, por favor comunicarse con la oficina de servicio al ciudadano SAC, para reprogramar o realizar correspondiente reembolso  </string>
 
 
     <!-- consulta publica -->

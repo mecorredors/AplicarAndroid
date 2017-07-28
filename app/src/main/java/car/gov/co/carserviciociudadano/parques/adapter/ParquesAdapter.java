@@ -39,7 +39,7 @@ public class ParquesAdapter extends RecyclerView.Adapter<ParquesAdapter.PlaceSel
         private ImageView imagen;
         private FrameLayout lyNombre;
         private FrameLayout lyFooter;
-     //   private TextView lblDescripcion;
+        private TextView lblFooter;
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
@@ -57,7 +57,7 @@ public class ParquesAdapter extends RecyclerView.Adapter<ParquesAdapter.PlaceSel
             lblTitulo = (TextView)itemView.findViewById(R.id.lblTitulo);
             lyNombre = (FrameLayout) itemView.findViewById(R.id.lyNombre);
             lyFooter = (FrameLayout) itemView.findViewById(R.id.lyFooter);
-            //lblDescripcion = (TextView)itemView.findViewById(R.id.lblDescripcion);
+            lblFooter = (TextView)itemView.findViewById(R.id.lblFooter);
             imagen = (ImageView) itemView.findViewById(R.id.imagen);
 
         }
@@ -66,8 +66,12 @@ public class ParquesAdapter extends RecyclerView.Adapter<ParquesAdapter.PlaceSel
             lblTitulo.setText(p.getNombreParque());
             lyNombre.setBackgroundColor(p.getColor());
             lyFooter.setBackgroundColor(p.getColorFooter());
-          //  lblDescripcion.setText( p.getObservacionesParque());
             ImageLoader.getInstance().displayImage(p.getUrlArchivoParque(), imagen, options, aniList);
+
+            if (p.getIDParque() == 81 || p.getIDParque() == 83)  //embalce del neusa y hato
+                lblFooter.setText("RESERVAR");
+            else
+                lblFooter.setText("CONOCE");
         }
 
         private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {

@@ -42,6 +42,9 @@ public class FechaDialogo extends DialogFragment implements DatePickerDialog.OnD
         // Create a new instance of DatePickerDialog and return it
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, mYear, mMonth, mDay);
+        Calendar calendar = Calendar.getInstance();
+        //calendar.add(Calendar.DATE, 1);
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
 
         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener()
         {

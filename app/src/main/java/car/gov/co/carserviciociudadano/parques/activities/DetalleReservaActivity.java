@@ -491,7 +491,10 @@ public class DetalleReservaActivity extends BaseActivity {
                 mDetalleReserva.setEstadoReserva(3);
                 mDetalleReserva.setEstadoNombre("Anulada");
                 configurarControles();
-                mostrarMensaje("La reserva fue cancelada ",mActivity_detalle_reserva);
+                if (mLstAbonos.size() > 0)
+                    mostrarMensajeDialog(getString(R.string.mensaje_cancelar_reserva));
+                else
+                    mostrarMensaje("La reserva fue cancelada ",mActivity_detalle_reserva);
             }
 
             @Override

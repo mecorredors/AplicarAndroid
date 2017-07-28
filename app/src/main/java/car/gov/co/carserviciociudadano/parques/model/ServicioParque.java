@@ -7,7 +7,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.Streams;
 
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
+
+import car.gov.co.carserviciociudadano.Utils.Utils;
 
 /**
  * Created by Olger on 26/11/2016.
@@ -219,7 +223,10 @@ public class ServicioParque {
         return PrecioCar;
     }
     public String getPrecioCarConFormato(){
-        return "$"+PrecioCar + "";
+        return  Utils.formatoMoney(PrecioCar);
+    }
+    public String getPrecioConFormato(){
+        return  Utils.formatoMoney(PrecioServicio);
     }
 
     public void setPrecioCar(long precioCar) {

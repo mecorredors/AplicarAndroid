@@ -47,7 +47,7 @@ public class ServiciosParqueAdapter extends RecyclerView.Adapter<ServiciosParque
         public void bindParque(ServicioParque p) {
             lblTitulo.setText(p.getNombreServicio());
             lblDescripcion.setText(p.getDescripcionServicio());
-            lblPrecio.setText(p.getPrecioCarConFormato());
+            lblPrecio.setText(p.getPrecioConFormato());
         }
     }
 

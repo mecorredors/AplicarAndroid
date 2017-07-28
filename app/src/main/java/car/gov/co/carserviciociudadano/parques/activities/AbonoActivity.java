@@ -260,9 +260,11 @@ public class AbonoActivity extends BaseActivity {
             res = false;
         }
 
-        if ( mSelectedImagePath == null || mSelectedImagePath.isEmpty()){
+        if (!( mSelectedImagePath!= null && !mSelectedImagePath.isEmpty())){
+            res = false;
             mostrarMensajeDialog(getString(R.string.error_seleccionar_comprobante));
         }
+
 
         return res;
     }
