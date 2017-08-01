@@ -67,7 +67,7 @@ public class ReservaActivity extends BaseActivity {
     @BindView(R.id.lblNroNoches) TextView mLblNroNoches;
     @BindView(R.id.lblPrecio) TextView mLblPrecio;
     @BindView(R.id.lblSubTotal) TextView mLblSubtotal;
-    @BindView(R.id.lblImpuesto) TextView mLblImpuesto;
+    @BindView(R.id.lblPrecioCar) TextView mLblPrecioCar;
     @BindView(R.id.lblFechaDesde) TextView mLblFechaDesde;
     @BindView(R.id.lblFechaHasta) TextView mLblFechaHasta;
     @BindView(R.id.lyCanasta) View mLyCanasta;
@@ -409,23 +409,25 @@ public class ReservaActivity extends BaseActivity {
 
         //validar si es funcinario car
         long precio = 0;
-        if (mUsuario.isFuncionarioCar())
+        if (mUsuario.isFuncionarioCar()) {
             precio = mServicioParque.getPrecioCar();
-        else
+            mLblPrecio.setText("Precio: " + Utils.formatoMoney(mServicioParque.getPrecioServicio()));
+            mLblPrecioCar.setText("Con descuento: " + Utils.formatoMoney(mServicioParque.getPrecioCar()));
+        }
+        else {
             precio = mServicioParque.getPrecioServicio();
-
+            mLblPrecio.setText("Precio: " + Utils.formatoMoney(precio));
+            mLblPrecioCar.setText(" " );
+        }
 
         mLblServicio.setText(mServicioParque.getNombreServicio());
-        mLblPrecio.setText("Precio: " + Utils.formatoMoney(precio));
-        mLblImpuesto.setText("Impuesto: " + String.valueOf(mServicioParque.getImpuestoServicio() ));
+
         mLblFechaDesde.setText("Desde: " + Utils.toStringLargeFromDate(mServicioReserva.getFechaInicialReserva()));
         mLblFechaHasta.setText("Hasta: " + Utils.toStringLargeFromDate(mServicioReserva.getFechaFinalReserva()));
         mLblNroNoches.setText("Nro noches: " + String.valueOf(numDiasReserva));
 
         long subTotal = precio * numDiasReserva;
         mLblSubtotal.setText("Sub total: " + Utils.formatoMoney(subTotal));
-
-
 
         if (mUsuario.getIdUsuario() == 0 || ( mUsuario.getIdUsuario() > 0 && mUsuario.isFuncionarioCar() && !mUsuario.isLoginSIDCAR())){
             mLyDatosUsuario.setVisibility(View.VISIBLE);

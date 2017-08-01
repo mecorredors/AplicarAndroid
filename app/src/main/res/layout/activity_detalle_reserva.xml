@@ -126,34 +126,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/secondaryText"
             android:textSize="@dimen/text_size_13"
-            android:text="Impuesto "
-            />
-
-        <TextView android:id="@+id/lblImpuesto"
-            android:layout_width="0dp"
-            android:layout_weight="6"
-            android:layout_height="wrap_content"
-            android:textColor="@color/primaryText"
-            android:textSize="@dimen/text_size_13"
-            android:text="0"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="@style/lyDetalleReserva"
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="wrap_content"
-            android:textColor="@color/secondaryText"
-            android:textSize="@dimen/text_size_13"
             android:text="Desde "
             />
 

@@ -75,7 +75,6 @@ public class DetalleReservaActivity extends BaseActivity {
     @BindView(R.id.lblServicio)  TextView mLblServicio;
     @BindView(R.id.lblNroNoches)  TextView mLblNroNoches;
     @BindView(R.id.lblPrecio)  TextView mLblPrecio;
-    @BindView(R.id.lblImpuesto)  TextView mLblImpuesto;
     @BindView(R.id.lblFechaDesde)  TextView mLblFechaDesde;
     @BindView(R.id.lblFechaHasta)  TextView mLblFechaHasta;
     @BindView(R.id.lblNroReserva)  TextView mLblNroReserva;
@@ -115,7 +114,6 @@ public class DetalleReservaActivity extends BaseActivity {
         mLblFechaHasta.setText(Utils.toStringLargeFromDate(mDetalleReserva.getFechaFinalReserva()));
         mLblServicio.setText(mDetalleReserva.getNombreServicio());
         mLblNroNoches.setText(String.valueOf(mDetalleReserva.getCantidadReserva()));
-        mLblImpuesto.setText(String.valueOf(mDetalleReserva.getImpuestoReserva()));
         mLblPrecio.setText(Utils.formatoMoney(mDetalleReserva.getPrecioReserva()));
         mLblNroReserva.setText(String.valueOf(mDetalleReserva.getIDReserva()));
 
