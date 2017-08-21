@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -21,6 +22,7 @@ import car.gov.co.carserviciociudadano.parques.activities.MainParques;
 public class MainActivity extends BaseActivity {
 
     @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -44,6 +46,9 @@ public class MainActivity extends BaseActivity {
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Main");
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PRINCIPAL);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
+        String versionName = BuildConfig.VERSION_NAME;
+        txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
     }
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){

@@ -75,7 +75,8 @@ public class ArchivosParquePresenter {
             if(count>0 && imagenPrincipal != null){
                 lstImagenesParque.add(0,imagenPrincipal);
             }else if ( count > 0 && imagenPrincipal == null){
-                imagenPrincipal = lstImagenesParque.get(0); // se retorna la primer archivo como principal, solo para no retornar null
+                 imagenPrincipal = lstImagenesParque.get(0); // se retorna la primer archivo como principal, solo para no retornar null
+                 imagenPrincipal.setArchivoParque("");
             }
 
            viewArchivoParque.onSuccess(lstImagenesParque, imagenPrincipal, logoParque ,count);

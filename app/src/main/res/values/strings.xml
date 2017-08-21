@@ -117,5 +117,7 @@
     <string name="acceso_ubicacion">Esta opcón necesita acceso a tu ubicación. Activa los servicios de geolocalizacion (GPS)</string>
     <string name="configuracion">Configuración</string>
     <string name="cancelar">Cancelar</string>
+    <string name="copyright">Copyright CAR Cundinamarca 2017 | App Versión</string>
+    <string name="contactanos_a">Para dudas escríbanos a: soporteapps@car.gov.co</string>
 
 </resources>
