@@ -20,6 +20,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdate;
@@ -196,7 +197,11 @@ public class DenunciaAmbientalActivity extends LocationBaseGoogleApiActivity imp
         try {
             mDenuncia.setLatitude(miPosicion.latitude);
             mDenuncia.setLongitude(miPosicion.longitude);
-            Intent intent = new  PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(this);
+            AutocompleteFilter filter = new AutocompleteFilter.Builder()
+                    .setCountry("CO")
+                    .build();
+
+            Intent intent = new  PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(filter).build(this);
             startActivityForResult(intent, PETICION_GOOGLE_PLACES);
 
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
