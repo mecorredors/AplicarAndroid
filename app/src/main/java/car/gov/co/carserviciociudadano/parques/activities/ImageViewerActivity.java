@@ -57,6 +57,7 @@ public class ImageViewerActivity extends BaseActivity implements  IViewArchivoPa
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Image Viewer");
         bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Image Viewer");
         bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);

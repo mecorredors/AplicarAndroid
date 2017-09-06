@@ -96,36 +96,38 @@ public class DetalleParqueActivity extends BaseActivity {
 
         findViewsById();
 
-
-
         mParque = new Parque();
         mParque = (Parque) IntentHelper.getObjectForKey(Parques.TAG);
-        ImageLoader.getInstance().displayImage(mParque.getUrlArchivoParque(), mImagen, options);
+        if (mParque != null && mParque.getNombreParque() != null && mParque.getUrlArchivoParque() != null) {
+            ImageLoader.getInstance().displayImage(mParque.getUrlArchivoParque(), mImagen, options);
 
-        mCollapsingToolbarLayout.setTitle(mParque.getNombreParque());
-        mLblObservaciones.setText(mParque.getObservacionesParque());
+            mCollapsingToolbarLayout.setTitle(mParque.getNombreParque());
+            mLblObservaciones.setText(mParque.getObservacionesParque());
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLstServiciosParque = new ArrayList<>();
-        mAdaptador = new ServiciosParqueAdapter(mLstServiciosParque);
-        mAdaptador.setOnClickListener(onClickListener);
+            mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+            mRecyclerView.setHasFixedSize(true);
+            mLstServiciosParque = new ArrayList<>();
+            mAdaptador = new ServiciosParqueAdapter(mLstServiciosParque);
+            mAdaptador.setOnClickListener(onClickListener);
 
-        mRecyclerView.setAdapter(mAdaptador);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            mRecyclerView.setAdapter(mAdaptador);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        loadArchivosParque();
-        loadServiciosParque();
+            loadArchivosParque();
+            loadServiciosParque();
 
-        nestedScrollView.getParent().requestChildFocus(nestedScrollView, nestedScrollView); // para subir el scroll
+            nestedScrollView.getParent().requestChildFocus(nestedScrollView, nestedScrollView); // para subir el scroll
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mParque.getNombreParque()));
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle Parque");
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mParque.getNombreParque()));
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle Parque");
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        }else{
+            finish();
+        }
     }
 
    public void onDestroy(){

@@ -70,17 +70,21 @@ public class ComoLLegarActivity extends LocationBaseGoogleApiActivity implements
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
         mParque = (Parque) IntentHelper.getObjectForKey(Parques.TAG);
-        destinoLatLng = new LatLng(mParque.getLatitude(),mParque.getLongitude());
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        if (mParque != null) {
+            destinoLatLng = new LatLng(mParque.getLatitude(), mParque.getLongitude());
+            MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
 
-        mapFragment.getMapAsync(this);
+            mapFragment.getMapAsync(this);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mParque.getNombreParque()));
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Como llegar");
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Como llegar");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Como llegar");
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        }else{
+            finish();
+        }
     }
 
     @Override

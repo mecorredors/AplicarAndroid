@@ -44,6 +44,7 @@ public class PagoElectronicoActivity extends BaseActivity {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Pago electronico");
         bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Pago electronico");
         bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);

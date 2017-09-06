@@ -54,6 +54,7 @@ public class ExpedienteActivity extends BaseActivity {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Expediente");
         bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Expediente");
         bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.CONSULTA_EXPEDIENTE);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);

@@ -116,62 +116,66 @@ public class ReservaActivity extends BaseActivity {
 
         mParque = (Parque) IntentHelper.getObjectForKey(Parques.TAG);
         mServicioParque = (ServicioParque) IntentHelper.getObjectForKey(ServiciosParque.TAG);
-        mLblNombreParque.setText(mParque.getNombreParque() +" "+ mServicioParque.getNombreServicio());
-        loadCalendar();
-        loadDiasMantenimiento();
-        loadDiasEnReserva();
-        loadParametros();
 
-        mBtnPrereserva.setVisibility(View.GONE);
-        mLyCanasta.setVisibility(View.GONE);
-        mLyRespuestaOk.setVisibility(View.GONE);
+        if (mParque != null && mServicioParque != null) {
+            mLblNombreParque.setText(mParque.getNombreParque() + " " + mServicioParque.getNombreServicio());
+            loadCalendar();
+            loadDiasMantenimiento();
+            loadDiasEnReserva();
+            loadParametros();
 
-        mCalendarioFechaLlegada.setCalendarListener(new CalendarListener() {
-            @Override
-            public void onDateSelected(Date date) {
+            mBtnPrereserva.setVisibility(View.GONE);
+            mLyCanasta.setVisibility(View.GONE);
+            mLyRespuestaOk.setVisibility(View.GONE);
 
-                if (!Utils.isEqualsDate(date,mServicioReserva.getFechaInicialReserva()))  {
-                     mLyCanasta.setVisibility(View.GONE);
-                     mLyRespuestaOk.setVisibility(View.GONE);
-                    mServicioReserva.setFechaInicialReserva(date);
-                    mTxtFechaLlegada.setText(Utils.toStringFromDate(date));
-                    if (!mTxtFechaLlegada.getText().toString().isEmpty() && !mTxtFechaSalida.getText().toString().isEmpty())
-                        mBtnPrereserva.setVisibility(View.VISIBLE);
+            mCalendarioFechaLlegada.setCalendarListener(new CalendarListener() {
+                @Override
+                public void onDateSelected(Date date) {
+
+                    if (!Utils.isEqualsDate(date, mServicioReserva.getFechaInicialReserva())) {
+                        mLyCanasta.setVisibility(View.GONE);
+                        mLyRespuestaOk.setVisibility(View.GONE);
+                        mServicioReserva.setFechaInicialReserva(date);
+                        mTxtFechaLlegada.setText(Utils.toStringFromDate(date));
+                        if (!mTxtFechaLlegada.getText().toString().isEmpty() && !mTxtFechaSalida.getText().toString().isEmpty())
+                            mBtnPrereserva.setVisibility(View.VISIBLE);
+                    }
+                    mCalendarioFechaLlegada.setVisibility(View.GONE);
                 }
-                mCalendarioFechaLlegada.setVisibility(View.GONE);
-            }
 
-            @Override
-            public void onMonthChanged(Date date) {
+                @Override
+                public void onMonthChanged(Date date) {
 
-            }
-        });
-
-        mCalendarioFechaSalida.setCalendarListener(new CalendarListener() {
-            @Override
-            public void onDateSelected(Date date) {
-                if (!Utils.isEqualsDate(date,mServicioReserva.getFechaFinalReserva()))  {
-                    mLyCanasta.setVisibility(View.GONE);
-                    mLyRespuestaOk.setVisibility(View.GONE);
-                    mServicioReserva.setFechaFinalReserva(date);
-                    mTxtFechaSalida.setText(Utils.toStringFromDate(date));
-                    if (!mTxtFechaLlegada.getText().toString().isEmpty() && !mTxtFechaSalida.getText().toString().isEmpty())
-                        mBtnPrereserva.setVisibility(View.VISIBLE);
                 }
-                mCalendarioFechaSalida.setVisibility(View.GONE);
-            }
+            });
 
-            @Override
-            public void onMonthChanged(Date date) {
+            mCalendarioFechaSalida.setCalendarListener(new CalendarListener() {
+                @Override
+                public void onDateSelected(Date date) {
+                    if (!Utils.isEqualsDate(date, mServicioReserva.getFechaFinalReserva())) {
+                        mLyCanasta.setVisibility(View.GONE);
+                        mLyRespuestaOk.setVisibility(View.GONE);
+                        mServicioReserva.setFechaFinalReserva(date);
+                        mTxtFechaSalida.setText(Utils.toStringFromDate(date));
+                        if (!mTxtFechaLlegada.getText().toString().isEmpty() && !mTxtFechaSalida.getText().toString().isEmpty())
+                            mBtnPrereserva.setVisibility(View.VISIBLE);
+                    }
+                    mCalendarioFechaSalida.setVisibility(View.GONE);
+                }
 
-            }
-        });
+                @Override
+                public void onMonthChanged(Date date) {
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundleAnalitic = new Bundle();
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Reserva");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+                }
+            });
+
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundleAnalitic = new Bundle();
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Reserva");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Reserva");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        }
     }
 
     @Override
@@ -481,6 +485,12 @@ public class ReservaActivity extends BaseActivity {
             mLyRespuestaOk.setVisibility(View.VISIBLE);
             mLblRespuestaOk.setText(Html.fromHtml(reservaRealizadaHTML(servicioReserva.getIDReserva())));
             mLblNroCuenta.setText(mParque.getDetalleCuenta().trim());
+
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"Reserva realizada");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Reserva realizada");
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         }
 
         @Override
@@ -490,6 +500,11 @@ public class ReservaActivity extends BaseActivity {
                 llenarCanasta();
                 mBtnPrereserva.setVisibility(View.GONE);
 
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"Prereserva realizada");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Prereserva realizada");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             }else{
                 mostrarMensajeDialog(getString(R.string.reserva_no_disponible));
             }

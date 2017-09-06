@@ -89,6 +89,7 @@ public class MisReservasFragment extends BaseFragment {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
         Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Mis reservas");
         bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Mis reservas");
         bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
@@ -99,7 +100,11 @@ public class MisReservasFragment extends BaseFragment {
     public void onPause() {
         AppCar.VolleyQueue().cancelAll(DetalleReservas.TAG);
         super.onPause();
-
+    }
+    @Override
+    public void onDestroy() {
+        AppCar.VolleyQueue().cancelAll(DetalleReservas.TAG);
+        super.onDestroy();
     }
     private void loadDetalleReservas() {
 

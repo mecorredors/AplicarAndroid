@@ -104,40 +104,43 @@ public class DetalleReservaActivity extends BaseActivity {
         bar.setDisplayHomeAsUpEnabled(true);
 
         mDetalleReserva = (DetalleReserva) IntentHelper.getObjectForKey(DetalleReservas.TAG);
+        if (mDetalleReserva != null) {
+            mImageView.setVisibility(View.GONE);
+            mLblTitulo.setText(mDetalleReserva.getNombreParque());
+            mLblEstado.setText(mDetalleReserva.getEstadoNombre());
+            mLblFecha.setText(Utils.toStringLargeFromDate(mDetalleReserva.getFechaSistemaReserva()));
+            mLblTotal.setText(Utils.formatoMoney(mDetalleReserva.getTotalValorReserva()));
+            mLblFechaDesde.setText(Utils.toStringLargeFromDate(mDetalleReserva.getFechaInicialReserva()));
+            mLblFechaHasta.setText(Utils.toStringLargeFromDate(mDetalleReserva.getFechaFinalReserva()));
+            mLblServicio.setText(mDetalleReserva.getNombreServicio());
+            mLblNroNoches.setText(String.valueOf(mDetalleReserva.getCantidadReserva()));
+            mLblPrecio.setText(Utils.formatoMoney(mDetalleReserva.getPrecioReserva()));
+            mLblNroReserva.setText(String.valueOf(mDetalleReserva.getIDReserva()));
 
-        mImageView.setVisibility(View.GONE);
-        mLblTitulo.setText(mDetalleReserva.getNombreParque());
-        mLblEstado.setText(mDetalleReserva.getEstadoNombre());
-        mLblFecha.setText(Utils.toStringLargeFromDate(mDetalleReserva.getFechaSistemaReserva()));
-        mLblTotal.setText(Utils.formatoMoney(mDetalleReserva.getTotalValorReserva()));
-        mLblFechaDesde.setText(Utils.toStringLargeFromDate(mDetalleReserva.getFechaInicialReserva()));
-        mLblFechaHasta.setText(Utils.toStringLargeFromDate(mDetalleReserva.getFechaFinalReserva()));
-        mLblServicio.setText(mDetalleReserva.getNombreServicio());
-        mLblNroNoches.setText(String.valueOf(mDetalleReserva.getCantidadReserva()));
-        mLblPrecio.setText(Utils.formatoMoney(mDetalleReserva.getPrecioReserva()));
-        mLblNroReserva.setText(String.valueOf(mDetalleReserva.getIDReserva()));
+            configurarControles();
 
-        configurarControles();
+            mRecyclerView.setHasFixedSize(true);
 
-        mRecyclerView.setHasFixedSize(true);
+            mLstAbonos = new ArrayList<>();
+            mAdaptador = new AbonosAdapter(mLstAbonos);
 
-        mLstAbonos= new ArrayList<>();
-        mAdaptador = new AbonosAdapter(mLstAbonos);
+            mRecyclerView.setAdapter(mAdaptador);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mRecyclerView.setAdapter(mAdaptador);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            loadParques();
+            loadAbonos();
 
-        loadParques();
-        loadAbonos();
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mDetalleReserva.getNombreServicio()));
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle reserva");
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mDetalleReserva.getNombreServicio()));
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle reserva");
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-
+        }else{
+            finish();
+        }
     }
     private void configurarControles(){
         mLblEstado.setText(mDetalleReserva.getEstadoNombre());

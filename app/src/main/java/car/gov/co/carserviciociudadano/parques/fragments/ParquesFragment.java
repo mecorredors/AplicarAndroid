@@ -76,6 +76,7 @@ public class ParquesFragment extends BaseFragment implements  IViewParque {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
         Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Parques");
         bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Parques");
         bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
@@ -87,7 +88,11 @@ public class ParquesFragment extends BaseFragment implements  IViewParque {
     public void onPause() {
         AppCar.VolleyQueue().cancelAll(Parques.TAG);
         super.onPause();
-
+    }
+    @Override
+    public void onDestroy() {
+        AppCar.VolleyQueue().cancelAll(Parques.TAG);
+        super.onDestroy();
     }
     private void loadParques(){
         ParquePresenter parques = new ParquePresenter(this);
