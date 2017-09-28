@@ -26,7 +26,7 @@ import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 public class Utils {
 
    //public  static final String FORMATO_FECHA = "yyyy-MM-dd";
-   public  static final String FORMATO_FECHA = "dd-MM-yyyy";
+   public  static final String  FORMATO_FECHA = "dd-MM-yyyy";
     public  static long convertLong(String value){
         if (value == null ) return  0;
 

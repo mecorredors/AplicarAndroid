@@ -195,7 +195,7 @@ public class DetalleReservaActivity extends BaseActivity {
         @Override
         public void onSuccess(List<Parque> lstParques) {
             for(Parque item: lstParques){
-                if (item.getNombreParque().trim().equals(mDetalleReserva.getNombreParque().trim())){
+                if (item.getNombreParque().trim().equals(mDetalleReserva.getNombreParque().replace("PARQUE","").trim())){
                     mLblEnviarConsignacion.setText(item.getDetalleCuenta() + " " + getString(R.string.envie_consignacion_des));
                 }
             }
@@ -220,6 +220,8 @@ public class DetalleReservaActivity extends BaseActivity {
     @OnClick(R.id.btnEnviarConsignacion) void onEnviarConsignacion() {
         Intent i = new Intent(this,AbonoActivity.class);
         i.putExtra(DetalleReserva.ID_RESERVA,mDetalleReserva.getIDReserva());
+        i.putExtra(DetalleReserva.VALOR_TOTAL,mDetalleReserva.getTotalValorReserva());
+
         startActivityForResult(i,0);
     }
 

@@ -52,7 +52,24 @@
         <activity
             android:name=".parques.activities.MainParques"
             android:label="@string/title_activity_main_parques"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="parques"
+                    android:scheme="serviciociudadano" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="mis_reservas"
+                    android:scheme="serviciociudadano" />
+            </intent-filter>
+            </activity>
         <activity
             android:name=".parques.activities.DetalleParqueActivity"
             android:label="@string/title_activity_detalle_parque"

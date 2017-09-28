@@ -98,7 +98,7 @@ public class AbonoActivity extends BaseActivity {
     SubirArchivoAsincrona mSubirArchivoAsincrono;
 
     private long mIdReserva;
-
+    private long mValorTotal;
     private String mSelectedImagePath = "";
     private  Uri mOutputFileUri;
 
@@ -114,6 +114,7 @@ public class AbonoActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             mIdReserva = bundle.getLong(DetalleReserva.ID_RESERVA , 0);
+            mValorTotal = bundle.getLong(DetalleReserva.VALOR_TOTAL , 0);
         }
 
         loadBancos();
@@ -259,6 +260,12 @@ public class AbonoActivity extends BaseActivity {
         if (valor == 0) {
             mTxtValor.setError(AppCar.getContext().getResources().getString(R.string.error_campo_obligatorio));
             res = false;
+        }
+
+        if ( valor > mValorTotal) {
+            mostrarMensajeDialog(getString(R.string.error_valor_total_es_mayor));
+            res = false;
+            return res;
         }
 
         if (!( mSelectedImagePath!= null && !mSelectedImagePath.isEmpty())){

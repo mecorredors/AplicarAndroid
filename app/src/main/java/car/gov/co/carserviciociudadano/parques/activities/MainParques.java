@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
@@ -52,7 +54,7 @@ public class MainParques extends BaseActivity {
     MenuItem mMenuEditar;
     MenuItem mMenuCambiarContrasena;
     MenuItem mMenuCerrarSesion;
-
+    TabLayout tabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,7 @@ public class MainParques extends BaseActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         TextView tab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
@@ -85,6 +87,17 @@ public class MainParques extends BaseActivity {
         tabReservas.setText("MIS RESERVAS");
         tabReservas.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_hotel_black_24dp, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabReservas);
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String data = intent.getDataString();
+        if (Intent.ACTION_VIEW.equals(action) && data != null) {
+            String  sHost = intent.getData().getHost();
+            if (sHost.equals("mis_reservas")){
+                TabLayout.Tab tabMisReservas = tabLayout.getTabAt(1);
+                tabMisReservas.select();
+            }
+        }
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Bundle bundle = new Bundle();

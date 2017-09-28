@@ -32,6 +32,7 @@
     <string name="email_incorrecto">Ingrese un email valido</string>
     <string name="error_telefono">El teléfono o celular no es correcto</string>
     <string name="error_campo_obligatorio">El campo es obligatorio</string>
+    <string name="error_valor_total_es_mayor">El valor de la consignación no puede ser mayor al valor total de la reserva</string>
     <string name="error_contrasena">Ingrese una contraseña mínimo 4 caracteres</string>
     <string name="error_contrasena2">La contraseña no coincide con la anterior </string>
     <string name="cerrar_sesion">Cerrar sesión</string>
@@ -55,7 +56,7 @@
     <string name="error_seleccionar_comprobante">Seleccione la imagen del comprobante, o capture una foto del comprobante </string>
     <string name="login_funcionario_car">usted es un funcionario o contratista de la CAR, ingrese con las credenciales de SIDCAR para obtener descuento en la reserva </string>
     <string name="pago_electronico">Pago por transferencia electrónica </string>
-    <string name="pago_electronico_des">Para poder realizar el abono debes ingresa al siguiente link del banco Av Villas y selecciona en intención de pago la opción: 108 - APROVECHAMIENTO POR PARQUES </string>
+    <string name="pago_electronico_des">Para poder realizar el abono debe ingresar al siguiente link del banco Av Villas y selecciona en intención de pago la opción: 108 - APROVECHAMIENTO POR PARQUES </string>
     <string name="envie_consignacion_des"> y envie la consignación o el comprobante del pago electrónico </string>
     <string name="leer_politicas"> Leer políticas de uso </string>
     <string name="acepto_politicas"> Acepto políticas de uso </string>

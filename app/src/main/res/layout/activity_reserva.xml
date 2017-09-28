@@ -252,7 +252,7 @@
             android:theme="@style/ButtonAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="REALIZAR PRE-RESERVAR"
+            android:text="REALIZAR PRE-RESERVA"
             android:layout_marginTop="@dimen/margin_10dp"/>
 
         <LinearLayout android:id="@+id/lyDatosUsuario"
@@ -302,13 +302,23 @@
             android:lineSpacingMultiplier="1.2"
             />
 
+        <Button android:id="@+id/btnMisReservas"
+            android:theme="@style/ButtonAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="VER MIS RESERVAS"
+            android:layout_marginTop="@dimen/margin_16dp"/>
+
         <Button android:id="@+id/btnCerrar"
             android:theme="@style/ButtonBorderlessColored"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="CERRAR"
             android:layout_marginTop="@dimen/margin_16dp"/>
+
+
 
     </LinearLayout>
 

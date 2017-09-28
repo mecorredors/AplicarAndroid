@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -34,6 +35,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
@@ -79,6 +81,7 @@ public class ReservaActivity extends BaseActivity {
     @BindView(R.id.btnDatosUsuario) Button mBtnDatosUsuario;
     @BindView(R.id.btnReservar) Button mBtnReserva;
     @BindView(R.id.btnCerrar) Button mBtnCerrar;
+    @BindView(R.id.btnMisReservas) Button mBtnMisReservas;
     @BindView(R.id.lyRespuestaOk) View mLyRespuestaOk;
     @BindView(R.id.lblRespuestaOk) TextView mLblRespuestaOk;
     @BindView(R.id.lblNroCuenta) TextView mLblNroCuenta;
@@ -111,6 +114,7 @@ public class ReservaActivity extends BaseActivity {
         mBtnReserva.setOnClickListener(onClickListener);
         mBtnDatosUsuario.setOnClickListener(onClickListener);
         mLyPoliticas.setOnClickListener(onClickListener);
+        mBtnMisReservas.setOnClickListener(onClickListener);
 
         mUsuario = new Usuarios().leer();
 
@@ -333,6 +337,14 @@ public class ReservaActivity extends BaseActivity {
                 case R.id.btnCerrar:
                     finish();
                     break;
+                case R.id.btnMisReservas:
+
+                    Intent intent = new Intent (Intent.ACTION_VIEW);
+                    intent.setData (Uri.parse("serviciociudadano://mis_reservas"));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                    startActivity(intent);
+                    finish();
+                    break;
                 case R.id.btnReservar:
                     reservar();
                     break;
@@ -490,7 +502,8 @@ public class ReservaActivity extends BaseActivity {
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"Reserva realizada");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Reserva realizada");
             bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            if (BuildConfig.DEBUG == false)
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         }
 
         @Override
@@ -504,7 +517,8 @@ public class ReservaActivity extends BaseActivity {
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"Prereserva realizada");
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Prereserva realizada");
                 bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                if (BuildConfig.DEBUG == false)
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             }else{
                 mostrarMensajeDialog(getString(R.string.reserva_no_disponible));
             }
