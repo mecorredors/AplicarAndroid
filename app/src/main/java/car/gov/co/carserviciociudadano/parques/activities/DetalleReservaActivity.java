@@ -238,6 +238,10 @@ public class DetalleReservaActivity extends BaseActivity {
        generarTiquetePDF();
     }
 
+    @OnClick(R.id.btnAyudaPago) void onAyudaPag() {
+        Intent i = new Intent(this,AyudaPagoActivity.class);
+        startActivity(i);
+    }
     private void generarTiquetePDF(){
         Document doc=new Document();
        // String outpath= Environment.getExternalStorageDirectory()+"/ReservaParque_"+ mDetalleReserva.getIDReserva()+".pdf";

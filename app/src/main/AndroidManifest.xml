@@ -8,9 +8,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+
     <application
         android:name=".AppCar"
         android:allowBackup="true"
@@ -32,9 +34,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key_map" />
-
-
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="123dc7493b500f04a5dd89f863d1bc21b2fa57dd" />
@@ -55,21 +54,25 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="parques"
                     android:scheme="serviciociudadano" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="mis_reservas"
                     android:scheme="serviciociudadano" />
             </intent-filter>
-            </activity>
+        </activity>
         <activity
             android:name=".parques.activities.DetalleParqueActivity"
             android:label="@string/title_activity_detalle_parque"
@@ -114,17 +117,23 @@
             android:name=".parques.activities.CambiarContrasenaActivity"
             android:label="@string/title_cambiar_contrasena"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".parques.activities.ComoLLegarActivity"
-            android:label="@string/title_como_llegar"/>
+        <activity
+            android:name=".parques.activities.ComoLLegarActivity"
+            android:label="@string/title_como_llegar" />
         <activity android:name=".common.LocationBaseGoogleApiActivity" />
-        <activity android:name=".denunciaambiental.activities.DenunciaAmbientalActivity"
+        <activity
+            android:name=".denunciaambiental.activities.DenunciaAmbientalActivity"
             android:label="@string/title_denuncia_ambiental_activity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".denunciaambiental.activities.GalleryActivity"
-            android:label="@string/title_gallery"/>
-        <activity android:name=".denunciaambiental.activities.DenunciaAmbiental2Activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".denunciaambiental.activities.GalleryActivity"
+            android:label="@string/title_gallery" />
+        <activity
+            android:name=".denunciaambiental.activities.DenunciaAmbiental2Activity"
             android:label="@string/title_denuncia_ambiental_activity"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".parques.activities.AyudaPagoActivity"
+            android:label="@string/title_como_pagar"></activity>
     </application>
 
 </manifest>
