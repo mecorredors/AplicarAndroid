@@ -40,6 +40,7 @@ public class Utils {
     }
     public  static int convertInt(String value){
         if (value == null ) return  0;
+        if (value.trim().isEmpty()) return  0;
 
         int res = 0;
         try{

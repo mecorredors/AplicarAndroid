@@ -6,17 +6,17 @@ package car.gov.co.carserviciociudadano.Utils;
 
 public class Config {
 
-     public static String ServerParques = "https://parques.car.gov.co/";    //pruebas car
-    public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
-    public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
+   // public static String ServerParques = "https://parques.car.gov.co/";    //pruebas car
+   // public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
+    //public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
 
     //public static String ServerParques = "http://192.168.1.53/PARQUES/";    //pruebas car
     //public static String ServerSIDCAR = "http://192.168.1.53/SIDCARNET/";    //pruebas sidcar
     //public static String ServerSAE = "http://192.168.1.53/SAE/";    //pruebas sae
 
-   // public static String ServerParques = "http://192.168.0.13/parques/";    //LOCAL car
-   // public static String ServerSIDCAR = "http://192.168.0.13/SIDCAR/";    //LOCAL sidcar
-    //public static String ServerSAE = "http://192.168.0.13/SAE/";    //LOCAL sidcar
+    public static String ServerParques = "http://192.168.0.13/parques/";    //LOCAL car
+    public static String ServerSIDCAR = "http://192.168.0.13/SIDCAR/";    //LOCAL sidcar
+    public static String ServerSAE = "http://192.168.0.13/SAE/";    //LOCAL sidcar
 
 
     public static String API_PARQUES_PARQUES =  ServerParques + "api/parque/parques/";
@@ -51,5 +51,9 @@ public class Config {
 
     public static String API_SIDCAR_RADICARPQR =  ServerSIDCAR + "api/radicados/radicarpqr/";
     public static String API_SIDCAR_RADICARPQR_IMAGENES =  ServerSIDCAR + "api/radicados/publicarimagenestemporal/";
+
+    public static String API_BANKPROJECT_GET_PROJECT =  ServerSIDCAR + "api/bankproject/getproject/";
+    public static String API_BANKPROJECT_GET_DOCUMENTS =  ServerSIDCAR + "api/bankproject/getdocuments/";
+
 
 }

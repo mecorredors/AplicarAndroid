@@ -18,6 +18,7 @@
     <string name="title_expediente">Expediente </string>
     <string name="title_cambiar_contrasena">Cambiar contraseña </string>
     <string name="title_como_llegar">Cómo llegar </string>
+    <string name="title_bank_project">Proyecto de Cofinanciación </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -121,5 +122,10 @@
     <string name="copyright">Copyright CAR Cundinamarca 2017 | App Versión</string>
     <string name="contactanos_a">Para dudas escríbanos a: soporteapps@car.gov.co</string>
     <string name="ayuda_pago">¿Cómo pagar? ver ayuda</string>
+    <string name="codigo_proyecto">Código del proyecto </string>
+    <string name="codigo">Código </string>
+    <string name="titulo">Título </string>
+    <string name="descripcion">Descripción </string>
+    <string name="no_hay_proyecto_cofinanciacion">No se encontró ningún pryecto</string>
 
 </resources>

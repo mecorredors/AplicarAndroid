@@ -134,6 +134,10 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".parques.activities.AyudaPagoActivity"
             android:label="@string/title_como_pagar"></activity>
+        <activity
+            android:name=".consultapublica.activities.BankProjectActivity"
+            android:label="@string/title_bank_project"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>
