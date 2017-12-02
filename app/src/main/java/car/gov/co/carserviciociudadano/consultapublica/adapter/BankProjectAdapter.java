@@ -34,8 +34,10 @@ public class BankProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private TextView lblDescripcion;
         private TextView lblTema;
         private TextView lblRadicadoSidCar;
+        private TextView lblFechaRegistro;
         private TextView lblEstadoActual;
         private TextView lblFechaEstadoActual;
+
 
 
         public ProjectItemViewHolder(View itemView) {
@@ -46,8 +48,10 @@ public class BankProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             lblDescripcion = (TextView) itemView.findViewById(R.id.lblDescripcion);
             lblTema = (TextView) itemView.findViewById(R.id.lblTema);
             lblRadicadoSidCar = (TextView) itemView.findViewById(R.id.lblRadicadoSidCar);
+            lblFechaRegistro = (TextView) itemView.findViewById(R.id.lblFechaRegistro);
             lblEstadoActual = (TextView) itemView.findViewById(R.id.lblEstadoActual);
             lblFechaEstadoActual = (TextView) itemView.findViewById(R.id.lblFechaEstadoActual);
+
 
 
         }
@@ -57,8 +61,9 @@ public class BankProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             lblNombre.setText(item.getName());
             lblDescripcion.setText(item.getDescription() );
             lblTema.setText(item.getTopicName());
-            lblEstadoActual.setText(item.getStatusName());
             lblRadicadoSidCar.setText(item.getSidcarNumber());
+            lblFechaRegistro.setText( Utils.toStringLargeFromDate(item.getRegistrationDate()));
+            lblEstadoActual.setText(item.getStatusName());
             lblFechaEstadoActual.setText( Utils.toStringLargeFromDate(item.getStatusDate()));
         }
     }

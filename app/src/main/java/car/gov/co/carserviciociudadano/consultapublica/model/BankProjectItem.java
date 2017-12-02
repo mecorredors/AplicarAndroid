@@ -23,6 +23,7 @@ public class BankProjectItem {
     private String StatusName;
     private String SidcarNumber;
     private Date StatusDate;
+    private Date RegistrationDate;
     private Double AmountCAR;
     private Double AmountMunicipality;
     private Double AmountOther;
@@ -93,6 +94,14 @@ public class BankProjectItem {
         StatusDate = statusDate;
     }
 
+    public Date getRegistrationDate() {
+        return RegistrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        RegistrationDate = registrationDate;
+    }
+
     public Double getAmountCAR() {
         return AmountCAR;
     }
@@ -150,6 +159,7 @@ public class BankProjectItem {
                 this.StatusName = element.StatusName;
                 this.SidcarNumber = element.SidcarNumber;
                 this.StatusDate = element.StatusDate;
+                this.RegistrationDate = element.RegistrationDate;
                 this.AmountCAR = element.AmountCAR;
                 this.AmountMunicipality = element.AmountMunicipality;
                 this.AmountOther = element.AmountOther;
