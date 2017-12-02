@@ -45,6 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.FechaDialogo;
@@ -125,12 +126,14 @@ public class AbonoActivity extends BaseActivity {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE  },  MY_PERMISSION_READ_EXTERNAL_STORAGE );
         }
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundleAnalitic = new Bundle();
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Abono");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Abono");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        if (BuildConfig.DEBUG == false) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundleAnalitic = new Bundle();
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Abono");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Abono");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        }
     }
 
     @Override

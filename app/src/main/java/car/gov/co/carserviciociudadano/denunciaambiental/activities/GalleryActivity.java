@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.activities;
 
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -112,12 +113,14 @@ public class GalleryActivity extends BaseActivity {
             init();
         }
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundleAnalitic = new Bundle();
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Gallery denuncia");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Gallery denuncia");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.DENUNCIA_AMBIENTAL);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        if (BuildConfig.DEBUG == false) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundleAnalitic = new Bundle();
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Gallery denuncia");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Gallery denuncia");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.DENUNCIA_AMBIENTAL);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        }
     }
 
     @Override

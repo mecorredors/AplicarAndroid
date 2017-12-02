@@ -19,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
@@ -59,12 +60,14 @@ public class BuscarExpedienteActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundleAnalitic = new Bundle();
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Buscar expediente");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Buscar expediente");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.CONSULTA_EXPEDIENTE);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        if (BuildConfig.DEBUG == false) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundleAnalitic = new Bundle();
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Buscar expediente");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Buscar expediente");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.CONSULTA_EXPEDIENTE);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        }
     }
 
     @Override

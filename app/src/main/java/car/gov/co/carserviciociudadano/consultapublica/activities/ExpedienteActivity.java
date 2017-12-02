@@ -13,6 +13,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.consultapublica.fragments.DocumentosExpedienteFragment;
@@ -52,12 +54,14 @@ public class ExpedienteActivity extends BaseActivity {
             mostrarMensaje(" IDExpediente es 0 ");
         }
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundleAnalitic = new Bundle();
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Expediente");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Expediente");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.CONSULTA_EXPEDIENTE);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        if (BuildConfig.DEBUG == false) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundleAnalitic = new Bundle();
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Expediente");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Expediente");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.CONSULTA_EXPEDIENTE);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

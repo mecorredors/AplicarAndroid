@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
@@ -53,12 +54,14 @@ public class TramitesActivity extends BaseActivity {
         bar.setDisplayHomeAsUpEnabled(true);
         lyTramite.setVisibility(View.GONE);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundleAnalitic = new Bundle();
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Tramites");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Tramites");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.CONSULTA_TRAMITE);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        if (BuildConfig.DEBUG == false) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            Bundle bundleAnalitic = new Bundle();
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Tramites");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Tramites");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.CONSULTA_TRAMITE);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        }
     }
     @Override
     public void onPause() {

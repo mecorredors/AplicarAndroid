@@ -45,6 +45,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
@@ -131,12 +132,14 @@ public class DetalleReservaActivity extends BaseActivity {
             loadParques();
             loadAbonos();
 
-            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-            Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mDetalleReserva.getNombreServicio()));
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle reserva");
-            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            if (BuildConfig.DEBUG == false) {
+                mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mDetalleReserva.getNombreServicio()));
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle reserva");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            }
 
         }else{
             finish();

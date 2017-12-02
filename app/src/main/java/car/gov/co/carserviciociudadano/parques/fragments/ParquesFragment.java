@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity;
@@ -74,12 +75,14 @@ public class ParquesFragment extends BaseFragment implements  IViewParque {
         mProgressView = (ProgressBar) view.findViewById(R.id.progressView);
         loadParques();
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
-        Bundle bundleAnalitic = new Bundle();
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Parques");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Parques");
-        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        if (BuildConfig.DEBUG == false) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+            Bundle bundleAnalitic = new Bundle();
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Parques");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Parques");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+        }
 
         return view;
     }

@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
@@ -119,12 +120,14 @@ public class DetalleParqueActivity extends BaseActivity {
 
             nestedScrollView.getParent().requestChildFocus(nestedScrollView, nestedScrollView); // para subir el scroll
 
-            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-            Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mParque.getNombreParque()));
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle Parque");
-            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            if (BuildConfig.DEBUG == false) {
+                mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(mParque.getNombreParque()));
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Detalle Parque");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.PARQUES);
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            }
         }else{
             finish();
         }
