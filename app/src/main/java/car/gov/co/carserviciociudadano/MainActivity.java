@@ -18,10 +18,15 @@ import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedien
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity;
+import car.gov.co.carserviciociudadano.openweather.interfaces.IViewOpenWeather;
+import car.gov.co.carserviciociudadano.openweather.model.CurrentWeather;
+import car.gov.co.carserviciociudadano.openweather.model.Forecast;
+import car.gov.co.carserviciociudadano.openweather.presenter.OpenWeatherPresenter;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IViewOpenWeather {
 
     @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
@@ -55,6 +60,13 @@ public class MainActivity extends BaseActivity {
         }
         String versionName = BuildConfig.VERSION_NAME;
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
+
+
+        OpenWeatherPresenter openWeatherPresenter = new OpenWeatherPresenter(this);
+        openWeatherPresenter.currentWeather(4.631516, -74.088935);
+        openWeatherPresenter.forecast5Day3Hour(4.631516, -74.088935);
+        openWeatherPresenter.forecast16Daily(4.631516, -74.088935);
+
     }
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){
@@ -78,5 +90,24 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.lyMenuProyectosConfinacion) void proyectoConfinacion(){
         Intent i = new Intent(this, BankProjectActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void onError(ErrorApi error) {
+        Log.d("erro current weather", error.toString());
+    }
+
+    @Override
+    public void onSuccessCurrentWeather(CurrentWeather currentWeather) {
+        Log.d("weather", currentWeather.toJSONObject().toString());
+    }
+    @Override
+    public void onSuccessForecast5Day3Hour(Forecast forecast) {
+        Log.d("forecast", forecast.toJSONObject().toString());
+    }
+
+    @Override
+    public void onSuccessForecast16Daily(Forecast forecast) {
+        Log.d("forecast16", forecast.toJSONObject().toString());
     }
 }

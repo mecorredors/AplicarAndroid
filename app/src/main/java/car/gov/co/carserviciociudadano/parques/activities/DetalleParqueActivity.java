@@ -14,6 +14,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,8 +34,14 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
+import car.gov.co.carserviciociudadano.openweather.interfaces.IViewOpenWeather;
+import car.gov.co.carserviciociudadano.openweather.model.CurrentWeather;
+import car.gov.co.carserviciociudadano.openweather.model.Forecast;
+import car.gov.co.carserviciociudadano.openweather.presenter.OpenWeatherPresenter;
 import car.gov.co.carserviciociudadano.parques.adapter.ServiciosParqueAdapter;
 import car.gov.co.carserviciociudadano.parques.presenter.ArchivosParquePresenter;
 import car.gov.co.carserviciociudadano.parques.presenter.ServiciosParquesPresenter;
@@ -47,8 +54,9 @@ import car.gov.co.carserviciociudadano.parques.model.ArchivoParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
+import okhttp3.internal.Util;
 
-public class DetalleParqueActivity extends BaseActivity {
+public class DetalleParqueActivity extends BaseActivity  {
 
 
     DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -65,6 +73,14 @@ public class DetalleParqueActivity extends BaseActivity {
             .showImageOnLoading(R.mipmap.logo_car_pajaro)
             .showImageForEmptyUri(R.mipmap.logo_car_pajaro)
             .showImageOnFail(R.mipmap.logo_car_pajaro)
+            .build();
+
+    DisplayImageOptions optionsIcoWeather = new DisplayImageOptions.Builder()
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .showImageOnLoading(R.color.white)
+            .showImageForEmptyUri(R.color.white)
+            .showImageOnFail(R.color.white)
             .build();
 
 //    private int mIdParque;
@@ -86,6 +102,8 @@ public class DetalleParqueActivity extends BaseActivity {
     Button mBtnMapasDelParque;
     ImageView mImgLogoParque;
     NestedScrollView nestedScrollView;
+    ImageView mIcoWeather;
+    TextView mLblWeather;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +137,10 @@ public class DetalleParqueActivity extends BaseActivity {
             loadServiciosParque();
 
             nestedScrollView.getParent().requestChildFocus(nestedScrollView, nestedScrollView); // para subir el scroll
+
+            OpenWeatherPresenter openWeatherPresenter = new OpenWeatherPresenter(iViewOpenWeather);
+           // openWeatherPresenter.currentWeather(mParque.getLatitude(), mParque.getLongitude());
+            openWeatherPresenter.currentWeather(4.644520, -74.117088);
 
             if (BuildConfig.DEBUG == false) {
                 mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -169,6 +191,8 @@ public class DetalleParqueActivity extends BaseActivity {
         mLblVerFotos.setOnClickListener(onClickListener);
         mImagen.setOnClickListener(onClickListener);
         mImgLogoParque.setOnClickListener(onClickListener);
+        mLblWeather = (TextView) findViewById(R.id.lblWeather);
+        mIcoWeather = (ImageView) findViewById(R.id.icoWeather);
 
         mBtnComoLlegar = (Button) findViewById(R.id.btnComoLlegar);
         mBtnComoLlegar.setOnClickListener(onClickListener);
@@ -243,6 +267,35 @@ public class DetalleParqueActivity extends BaseActivity {
                         })
                         .show();
             }
+        }
+    };
+
+    IViewOpenWeather iViewOpenWeather = new IViewOpenWeather() {
+        @Override
+        public void onSuccessCurrentWeather(CurrentWeather currentWeather) {
+            if (currentWeather != null) {
+                mLblWeather.setText(String.valueOf(currentWeather.main.temp) + getResources().getString(R.string.grados));
+                if (currentWeather.weather != null && currentWeather.weather.size() > 0) {
+                    String urlIcon = Config.OpenWeatherIcon + currentWeather.weather.get(0).icon + ".png";
+                    Log.d("urlicon", urlIcon);
+                    ImageLoader.getInstance().displayImage(urlIcon, mIcoWeather, optionsIcoWeather);
+                }
+            }
+        }
+
+        @Override
+        public void onSuccessForecast16Daily(Forecast forecast) {
+
+        }
+
+        @Override
+        public void onSuccessForecast5Day3Hour(Forecast forecast) {
+
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+
         }
     };
 

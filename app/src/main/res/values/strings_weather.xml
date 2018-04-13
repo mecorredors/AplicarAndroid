@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="w2">Tormenta</string>
+    <string name="w200">Tormenta con lluvia ligera</string>
+    <string name="w201">Tormenta con lluvia</string>
+    <string name="w202">Tormenta con fuertes lluvias</string>
+    <string name="w210">Tormentas eléctricas</string>
+    <string name="w211">Tormenta</string>
+    <string name="w212">Tormentas fuertes</string>
+    <string name="w221">Tempestad de truenos </string>
+    <string name="w230">Tormentas con ligera llovizna</string>
+    <string name="w231">Tormenta con llovizna</string>
+    <string name="w232">Tormenta con fuerte llovizna</string>
+
+    <string name="w3">Llovizna</string>
+    <string name="w300">Llovizna de intensidad ligera</string>
+    <string name="w301">Llovizna</string>
+    <string name="w302">Llovizna intensa</string>
+    <string name="w310">Llovizna ligera </string>
+    <string name="w311">Llovizna</string>
+    <string name="w312">Lluvia de fuerte intensidad</string>
+    <string name="w313">Lluvia y llovizna</string>
+    <string name="w314">Lluvia fuerte y llovizna</string>
+    <string name="w321">Llovizna </string>
+
+    <string name="w5">Lluvia </string>
+    <string name="w500">Lluvia ligera </string>
+    <string name="w501">Lluvia moderada </string>
+    <string name="w502">Lluvia intensa </string>
+    <string name="w503">Lluvia muy fuerte </string>
+    <string name="w504">Lluvia extrema </string>
+    <string name="w511">Lluvia helada </string>
+    <string name="w520">Lluvia ligera </string>
+    <string name="w521">Aguacero </string>
+    <string name="w522">Lluvia intensa </string>
+    <string name="w531">Lluvia</string>
+
+    <string name="w6">Nieve</string>
+    <string name="w600">Nieve ligera</string>
+    <string name="w601">Nieve</string>
+    <string name="w602">Nieve pesada</string>
+    <string name="w611">Agua y nieve</string>
+    <string name="w612">Agua y nieve</string>
+    <string name="w615">Lluvia ligera y nieve</string>
+    <string name="w616">Lluvia y nieve</string>
+    <string name="w620">Nieve ligera</string>
+    <string name="w621">Nieve</string>
+    <string name="w622">Fuerte lluvia de nieve</string>
+
+    <string name="w701">Niebla</string>
+    <string name="w711">Humo</string>
+    <string name="w721">Neblina</string>
+    <string name="w731">Arena, remolinos de polvo</string>
+    <string name="w741">Niebla</string>
+    <string name="w751">Arena</string>
+    <string name="w761"> Polvo</string>
+    <string name="w762">Cenizas volcánicas</string>
+    <string name="w771"> Tempestad</string>
+    <string name="w781"> Tornado</string>
+
+    <string name="w800">Cielo despejado</string>
+    <string name="w80">Nubes</string>
+    <string name="w801">Pocas nubes</string>
+    <string name="w802">Nubes dispersas</string>
+    <string name="w803">Nubes rotas</string>
+    <string name="w804">Nublada</string>
+
+    <string name="w90"> Extremo</string>
+    <string name="w900"> Tornado</string>
+    <string name="w901"> Tormenta tropical</string>
+    <string name="w902"> Huracán</string>
+    <string name="w903">Frío</string>
+    <string name="w904">Caliente</string>
+    <string name="w905">Ventoso</string>
+    <string name="w906">Granizo</string>
+
+    <string name="w9"> Adicional</string>
+    <string name="w951"> Calma</string>
+    <string name="w952"> Brisa ligera</string>
+    <string name="w953"> Suave brisa</string>
+    <string name="w954"> Brisa moderada</string>
+    <string name="w955"> Brisa fresca</string>
+    <string name="w956"> Fuerte brisa</string>
+    <string name="w957">Vientos fuertes, cerca de vendaval</string>
+    <string name="w958"> Vendaval</string>
+    <string name="w959">Fuerte vendaval</string>
+    <string name="w960">Tormenta</string>
+    <string name="w961">Tormenta violenta</string>
+    <string name="w962">Huracán</string>
+
+</resources>

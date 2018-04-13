@@ -1,5 +1,7 @@
 <resources>
     <string name="api_key_map">AIzaSyANX_3o4ILDTiUEB0_t5CF5LscEiw5Ie5M</string>
+    <string name="api_key_open_weather">4142eb8a00ddd867f9ece825e15804d0</string>
+
     <string name="app_name">APLICAR</string>
     <string name="title_main_activity">CAR A MI SERVICIO</string>
     <string name="title_activity_main_parques">Su reserva eco turística</string>
@@ -64,6 +66,7 @@
     <string name="error_fecha_mayor"> La fecha no puede ser mayor al día de hoy </string>
     <string name="editar_mis_datos">Editar mis datos  </string>
     <string name="mensaje_cancelar_reserva">Reserva cancelada, por favor comunicarse con la oficina de servicio al ciudadano SAC, para reprogramar o realizar correspondiente reembolso  </string>
+    <string name="grados">°C</string>
 
 
     <!-- consulta publica -->

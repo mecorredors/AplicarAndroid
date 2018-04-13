@@ -10,6 +10,8 @@ public class Config {
     public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
     public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
 
+    public static String OpenWeatherIcon = "http://openweathermap.org/img/w/";    //icono openweathermap
+
     //public static String ServerParques = "http://192.168.1.53/PARQUES/";    //pruebas car
     //public static String ServerSIDCAR = "http://192.168.1.53/SIDCARNET/";    //pruebas sidcar
     //public static String ServerSAE = "http://192.168.1.53/SAE/";    //pruebas sae

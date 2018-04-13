@@ -86,7 +86,11 @@ public class ErrorApi {
         Message = ex.toString();
         Log.e("Errror ",ex.toString());
     }
-
+    public ErrorApi(JsonSyntaxException ex){
+        StatusCode = 0;
+        Message = ex.toString();
+        Log.e("Errror ",ex.toString());
+    }
     public void setMessageJson(String message){
 
         try {

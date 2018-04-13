@@ -74,14 +74,44 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             
-            
-            <ImageView android:id="@+id/imgLogoParque"
-                android:layout_width="@dimen/parques_foto_width"
-                android:layout_height="@dimen/parques_foto_height"
-                android:src="@mipmap/logo_car_pajaro"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/margin_4dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+                      <ImageView android:id="@+id/imgLogoParque"
+                        android:layout_width="@dimen/parques_foto_width"
+                        android:layout_height="@dimen/parques_foto_height"
+                        android:src="@mipmap/logo_car_pajaro"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/margin_4dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                        <TextView android:id="@+id/lblWeather"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="32sp"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:text="3"/>
+                         <ImageView android:id="@+id/icoWeather"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_marginLeft="@dimen/margin_6dp"/>
 
+                </LinearLayout>
+            </LinearLayout>
             <TextView
                 android:id="@+id/lblObservaciones"
                 android:layout_width="match_parent"
