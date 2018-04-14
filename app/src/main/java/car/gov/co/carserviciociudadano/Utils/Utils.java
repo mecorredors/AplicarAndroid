@@ -55,6 +55,10 @@ public class Utils {
         return new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
     }
 
+    public  static String getFechaActualCorta(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    }
+
     public static   int dimenDpi(int dimen){
         float scale = AppCar.getContext().getResources().getDisplayMetrics().density;
         int dpAsPixels = (int) (dimen * scale + 0.5f);
@@ -254,5 +258,45 @@ public class Utils {
     public static long getTimeInMillis(){
         Calendar calendar = Calendar.getInstance();
         return calendar.getTimeInMillis();
+    }
+
+    public static String getHour(long millis){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(millis);
+
+        try {
+            String _24HourTime = calendar.get(Calendar.HOUR_OF_DAY) + ":"+ calendar.get(Calendar.MINUTE);
+            SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh a");
+            Date _24HourDt = _24HourSDF.parse(_24HourTime);
+           // System.out.println(_24HourDt);
+           return _12HourSDF.format(_24HourDt);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return calendar.get(Calendar.HOUR_OF_DAY) + ":"+ calendar.get(Calendar.MINUTE);
+        }
+    }
+
+    public static String getDayOfWeek(Calendar c){
+        String weekDay = "";
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
+        if (Calendar.MONDAY == dayOfWeek) {
+            weekDay = "Lunes";
+        } else if (Calendar.TUESDAY == dayOfWeek) {
+            weekDay = "Martes";
+        } else if (Calendar.WEDNESDAY == dayOfWeek) {
+            weekDay = "Miercoles";
+        } else if (Calendar.THURSDAY == dayOfWeek) {
+            weekDay = "Jueves";
+        } else if (Calendar.FRIDAY == dayOfWeek) {
+            weekDay = "Viernes";
+        } else if (Calendar.SATURDAY == dayOfWeek) {
+            weekDay = "Sabado";
+        } else if (Calendar.SUNDAY == dayOfWeek) {
+            weekDay = "Domingo";
+        }
+        return  weekDay;
     }
 }

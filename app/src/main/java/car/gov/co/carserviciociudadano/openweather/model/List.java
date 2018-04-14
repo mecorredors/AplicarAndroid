@@ -5,7 +5,7 @@ package car.gov.co.carserviciociudadano.openweather.model;
  */
 
 public class List {
-    public int dt;
+    public long dt;
     public Main main;
     public java.util.List<Weather> weather;
     public Clouds clouds;

@@ -18,15 +18,20 @@ import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedien
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity;
+import car.gov.co.carserviciociudadano.openweather.WeatherActivity;
 import car.gov.co.carserviciociudadano.openweather.interfaces.IViewOpenWeather;
+import car.gov.co.carserviciociudadano.openweather.model.ConditionCodes;
 import car.gov.co.carserviciociudadano.openweather.model.CurrentWeather;
 import car.gov.co.carserviciociudadano.openweather.model.Forecast;
 import car.gov.co.carserviciociudadano.openweather.presenter.OpenWeatherPresenter;
+import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 
-public class MainActivity extends BaseActivity implements IViewOpenWeather {
+public class MainActivity extends BaseActivity  {
 
     @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
@@ -62,10 +67,16 @@ public class MainActivity extends BaseActivity implements IViewOpenWeather {
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
 
 
-        OpenWeatherPresenter openWeatherPresenter = new OpenWeatherPresenter(this);
-        openWeatherPresenter.currentWeather(4.631516, -74.088935);
-        openWeatherPresenter.forecast5Day3Hour(4.631516, -74.088935);
-        openWeatherPresenter.forecast16Daily(4.631516, -74.088935);
+        Parque parque = new Parque();
+        parque.setNombreParque("Embase del neusa");
+        parque.setLatitude(4.631516);
+        parque.setLongitude(-74.088935);
+
+        IntentHelper.getInstance().addObjectForKey(parque, Parques.TAG);
+        Intent i = new Intent(this, WeatherActivity.class);
+
+        startActivity(i);
+
 
     }
 
@@ -92,22 +103,4 @@ public class MainActivity extends BaseActivity implements IViewOpenWeather {
         startActivity(i);
     }
 
-    @Override
-    public void onError(ErrorApi error) {
-        Log.d("erro current weather", error.toString());
-    }
-
-    @Override
-    public void onSuccessCurrentWeather(CurrentWeather currentWeather) {
-        Log.d("weather", currentWeather.toJSONObject().toString());
-    }
-    @Override
-    public void onSuccessForecast5Day3Hour(Forecast forecast) {
-        Log.d("forecast", forecast.toJSONObject().toString());
-    }
-
-    @Override
-    public void onSuccessForecast16Daily(Forecast forecast) {
-        Log.d("forecast16", forecast.toJSONObject().toString());
-    }
 }

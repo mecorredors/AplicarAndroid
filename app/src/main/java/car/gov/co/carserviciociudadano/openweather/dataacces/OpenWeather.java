@@ -67,7 +67,7 @@ public class OpenWeather {
 
     public void forecast(double latitude, double longitude, final boolean day5Hour3, final IOpenWeather iOpenWeather )
     {
-        String url = "http://api.openweathermap.org/data/2.5/forecast?lat="+ latitude  +"&lon="+ longitude+"&units=metric&cnt=10&appid="+ AppCar.getContext().getResources().getString(R.string.api_key_open_weather);
+        String url = "http://api.openweathermap.org/data/2.5/forecast/daily?lat="+ latitude  +"&lon="+ longitude+"&units=metric&cnt=10&appid="+ AppCar.getContext().getResources().getString(R.string.api_key_open_weather);
         if (day5Hour3) {
             url = "http://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&units=metric&appid=" + AppCar.getContext().getResources().getString(R.string.api_key_open_weather);
         }

@@ -37,4 +37,5 @@ public class CurrentWeather {
         }
         return jsonObject;
     }
+
 }

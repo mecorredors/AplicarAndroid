@@ -67,6 +67,9 @@
     <string name="editar_mis_datos">Editar mis datos  </string>
     <string name="mensaje_cancelar_reserva">Reserva cancelada, por favor comunicarse con la oficina de servicio al ciudadano SAC, para reprogramar o realizar correspondiente reembolso  </string>
     <string name="grados">°C</string>
+    <string name="porciento">%</string>
+    <string name="unidad_viento">m/s</string>
+    <string name="manana">Mañana</string>
 
 
     <!-- consulta publica -->

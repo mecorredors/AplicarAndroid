@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import butterknife.ButterKnife;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
@@ -39,6 +41,7 @@ import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.openweather.interfaces.IViewOpenWeather;
+import car.gov.co.carserviciociudadano.openweather.model.ConditionCodes;
 import car.gov.co.carserviciociudadano.openweather.model.CurrentWeather;
 import car.gov.co.carserviciociudadano.openweather.model.Forecast;
 import car.gov.co.carserviciociudadano.openweather.presenter.OpenWeatherPresenter;
@@ -104,6 +107,8 @@ public class DetalleParqueActivity extends BaseActivity  {
     NestedScrollView nestedScrollView;
     ImageView mIcoWeather;
     TextView mLblWeather;
+    TextView mLblWeatherCondition;
+    ConditionCodes conditionCodes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,9 +143,10 @@ public class DetalleParqueActivity extends BaseActivity  {
 
             nestedScrollView.getParent().requestChildFocus(nestedScrollView, nestedScrollView); // para subir el scroll
 
+            conditionCodes = new ConditionCodes();
             OpenWeatherPresenter openWeatherPresenter = new OpenWeatherPresenter(iViewOpenWeather);
-           // openWeatherPresenter.currentWeather(mParque.getLatitude(), mParque.getLongitude());
-            openWeatherPresenter.currentWeather(4.644520, -74.117088);
+            openWeatherPresenter.currentWeather(mParque.getLatitude(), mParque.getLongitude());
+           //openWeatherPresenter.currentWeather(4.644520, -74.117088);
 
             if (BuildConfig.DEBUG == false) {
                 mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -192,7 +198,9 @@ public class DetalleParqueActivity extends BaseActivity  {
         mImagen.setOnClickListener(onClickListener);
         mImgLogoParque.setOnClickListener(onClickListener);
         mLblWeather = (TextView) findViewById(R.id.lblWeather);
+        mLblWeatherCondition = (TextView) findViewById(R.id.lblWeatherCondition);
         mIcoWeather = (ImageView) findViewById(R.id.icoWeather);
+
 
         mBtnComoLlegar = (Button) findViewById(R.id.btnComoLlegar);
         mBtnComoLlegar.setOnClickListener(onClickListener);
@@ -274,10 +282,11 @@ public class DetalleParqueActivity extends BaseActivity  {
         @Override
         public void onSuccessCurrentWeather(CurrentWeather currentWeather) {
             if (currentWeather != null) {
-                mLblWeather.setText(String.valueOf(currentWeather.main.temp) + getResources().getString(R.string.grados));
+                mLblWeather.setText(String.valueOf(currentWeather.main.getTempRound()) + " " + getResources().getString(R.string.grados));
+
                 if (currentWeather.weather != null && currentWeather.weather.size() > 0) {
+                    mLblWeatherCondition.setText(conditionCodes.getName(currentWeather.weather.get(0).id));
                     String urlIcon = Config.OpenWeatherIcon + currentWeather.weather.get(0).icon + ".png";
-                    Log.d("urlicon", urlIcon);
                     ImageLoader.getInstance().displayImage(urlIcon, mIcoWeather, optionsIcoWeather);
                 }
             }

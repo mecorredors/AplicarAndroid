@@ -27,6 +27,7 @@ public class OpenWeatherPresenter implements IOpenWeather {
     }
 
     public void forecast16Daily(double latitude, double longitude){
+        // //se necesita pagar licencia para esta opcion
         new OpenWeather().forecast(latitude, longitude,false, this);
     }
 
