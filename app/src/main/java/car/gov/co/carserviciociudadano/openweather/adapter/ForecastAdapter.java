@@ -42,6 +42,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.PlaceS
         private TextView lblHumedad;
         private TextView lblViento;
         private ImageView icoWeather;
+        private ImageView icoNextPage;
 
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -63,6 +64,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.PlaceS
             lblHumedad = (TextView) itemView.findViewById(R.id.lblHumedad);
             lblViento = (TextView) itemView.findViewById(R.id.lblViento);
             icoWeather = (ImageView) itemView.findViewById(R.id.icoWeather);
+            icoNextPage = (ImageView) itemView.findViewById(R.id.icoNextPage);
 
         }
 
@@ -75,7 +77,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.PlaceS
             lblViento.setText(p.windSpeed);
             String urlIcon = Config.OpenWeatherIcon + p.icon + ".png";
             ImageLoader.getInstance().displayImage(urlIcon, icoWeather, options);
-
+            icoNextPage.setVisibility(p.iconNextPage ? View.VISIBLE : View.GONE);
         }
 
         private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {

@@ -15,6 +15,8 @@ public class Forecast {
     public int cnt;
     public java.util.List<List> list;
     public City city;
+    public static final String TAG = "tag_forecast";
+    public static final String TAG_DAY = "tag_day_forecast";
 
 
     public JSONObject toJSONObject(){

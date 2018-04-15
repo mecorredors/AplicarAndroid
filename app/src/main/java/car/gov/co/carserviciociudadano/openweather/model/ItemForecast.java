@@ -2,6 +2,8 @@ package car.gov.co.carserviciociudadano.openweather.model;
 
 import android.content.Intent;
 
+import java.util.Calendar;
+
 /**
  * Created by INTEL on 14/04/2018.
  */
@@ -15,5 +17,7 @@ public class ItemForecast {
     public String condition;
     public String humidity;
     public  String windSpeed;
+    public Calendar fechaCalendar;
+    public boolean iconNextPage = true;
 
 }

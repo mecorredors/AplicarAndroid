@@ -18,16 +18,10 @@ import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedien
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity;
-import car.gov.co.carserviciociudadano.openweather.WeatherActivity;
-import car.gov.co.carserviciociudadano.openweather.interfaces.IViewOpenWeather;
-import car.gov.co.carserviciociudadano.openweather.model.ConditionCodes;
-import car.gov.co.carserviciociudadano.openweather.model.CurrentWeather;
-import car.gov.co.carserviciociudadano.openweather.model.Forecast;
-import car.gov.co.carserviciociudadano.openweather.presenter.OpenWeatherPresenter;
+import car.gov.co.carserviciociudadano.openweather.activities.WeatherActivity;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
-import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 
@@ -44,8 +38,6 @@ public class MainActivity extends BaseActivity  {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         mCollapsingToolbarLayout.setTitle(" ");
         mCollapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
@@ -65,18 +57,6 @@ public class MainActivity extends BaseActivity  {
         }
         String versionName = BuildConfig.VERSION_NAME;
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
-
-
-        Parque parque = new Parque();
-        parque.setNombreParque("Embase del neusa");
-        parque.setLatitude(4.631516);
-        parque.setLongitude(-74.088935);
-
-        IntentHelper.getInstance().addObjectForKey(parque, Parques.TAG);
-        Intent i = new Intent(this, WeatherActivity.class);
-
-        startActivity(i);
-
 
     }
 

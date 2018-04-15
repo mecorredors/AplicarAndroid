@@ -1,5 +1,6 @@
-package car.gov.co.carserviciociudadano.openweather;
+package car.gov.co.carserviciociudadano.openweather.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -7,9 +8,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -34,9 +37,12 @@ import car.gov.co.carserviciociudadano.openweather.model.ItemForecast;
 import car.gov.co.carserviciociudadano.openweather.model.List;
 import car.gov.co.carserviciociudadano.openweather.presenter.OpenWeatherPresenter;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
+import car.gov.co.carserviciociudadano.parques.activities.ReservaActivity;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
+import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
+import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
 
 
 public class WeatherActivity extends BaseActivity implements IViewOpenWeather, View.OnClickListener {
@@ -50,6 +56,7 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
     @BindView(R.id.lblMin)  TextView lblMin;
     @BindView(R.id.lblFecha)  TextView lblFecha;
     @BindView(R.id.icoWeather) ImageView icoWeather;
+    @BindView(R.id.progressView)  ProgressBar progressView;
 
     @BindView(R.id.ly1)   View ly1;
     @BindView(R.id.ly2)   View ly2;
@@ -131,12 +138,14 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
     }
 
     private void loadWeather(){
+        progressView.setVisibility(View.VISIBLE);
         openWeatherPresenter.currentWeather(mParque.getLatitude(), mParque.getLongitude());
         openWeatherPresenter.forecast5Day3Hour(mParque.getLatitude(), mParque.getLongitude());
     }
 
     @Override
     public void onError(ErrorApi error) {
+        progressView.setVisibility(View.GONE);
         Snackbar.make(lyWeather, error.getMessage(), Snackbar.LENGTH_LONG)
                 //.setActionTextColor(Color.CYAN)
                 .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
@@ -151,6 +160,7 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
 
     @Override
     public void onSuccessCurrentWeather(CurrentWeather currentWeather) {
+        progressView.setVisibility(View.GONE);
         if (currentWeather != null) {
             lblWeather.setText(String.valueOf(currentWeather.main.getTempRound()) + " " + getResources().getString(R.string.grados));
             lblMax.setText(String.valueOf(currentWeather.main.getTempMaxRound()) + " " + getResources().getString(R.string.grados));
@@ -187,6 +197,7 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
                 for (List item : forecast.list){
                     Calendar c = Calendar.getInstance();
                     c.setTimeInMillis(item.dt * 1000);
+                    Log.d("txthora", item.dt_txt);
                     if (c.get(Calendar.HOUR_OF_DAY) == 12){
                         ItemForecast itemForecast = new ItemForecast();
                         itemForecast.icon = item.weather.get(0).icon;
@@ -194,8 +205,8 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
                         itemForecast.temp = item.main.getTempRound() + " " + getResources().getString(R.string.grados);
                         itemForecast.humidity = item.main.humidity + " " + getResources().getString(R.string.porciento);
                         itemForecast.windSpeed = item.wind.speed + " " + getResources().getString(R.string.unidad_viento);
-                        itemForecast.fecha = Utils.getDayOfWeek(c);
-
+                        itemForecast.fecha = Utils.getDayOfWeek(c) + " 12 p.m" ;
+                        itemForecast.fechaCalendar = c;
                         mLstItemForecast.add(itemForecast);
                     }
                 }
@@ -215,11 +226,16 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
         Calendar c1 = Calendar.getInstance();
         c1.setTimeInMillis(timeMillis);
 
-        if (!CalendarUtils.isToday(c1)){
+        Calendar c2 = Calendar.getInstance();
+
+
+        if (c1.get(Calendar.DAY_OF_MONTH) != c2.get(Calendar.DAY_OF_MONTH)){
             day = getResources().getString(R.string.manana);
         }
 
         String hora = Utils.getHour(timeMillis);
+
+
 
         switch (index){
             case 0:
@@ -257,6 +273,13 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
 
     @Override
     public void onClick(View view) {
+        int position = mRecyclerView.getChildAdapterPosition(view);
+        ItemForecast itemForecast = mLstItemForecast.get(position);
 
+        Intent i = new Intent(getApplicationContext(), WeatherHourDayActivity.class);
+        IntentHelper.addObjectForKey(mParque, Parques.TAG);
+        IntentHelper.addObjectForKey(itemForecast.fechaCalendar, WeatherHourDayActivity.TAG_FECHA);
+
+        startActivity(i);
     }
 }

@@ -22,7 +22,7 @@ android:background="@color/background">
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_13"
         android:textColor="@color/primaryText"
-        android:text="12 -3"
+        android:text=""
         android:gravity="left"
         android:textStyle="bold"
         />
@@ -40,7 +40,7 @@ android:background="@color/background">
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:text="3"/>
+            android:text=""/>
         <ImageView android:id="@+id/icoWeather"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -112,6 +112,17 @@ android:background="@color/background">
             android:textColor="@color/primaryText"
             />
     </LinearLayout>
-
+</LinearLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_6dp"
+        android:layout_gravity="center_vertical|end"
+        android:src="@drawable/ic_chevron_right_24dp"
+        android:id="@+id/icoNextPage"
+        />
 </LinearLayout>
 </LinearLayout>

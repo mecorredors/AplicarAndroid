@@ -139,7 +139,8 @@
             android:name=".consultapublica.activities.BankProjectActivity"
             android:label="@string/title_bank_project"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".openweather.WeatherActivity"></activity>
+        <activity android:name=".openweather.activities.WeatherActivity"></activity>
+        <activity android:name=".openweather.activities.WeatherHourDayActivity"></activity>
     </application>
 
 </manifest>

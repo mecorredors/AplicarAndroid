@@ -40,6 +40,7 @@ import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
+import car.gov.co.carserviciociudadano.openweather.activities.WeatherActivity;
 import car.gov.co.carserviciociudadano.openweather.interfaces.IViewOpenWeather;
 import car.gov.co.carserviciociudadano.openweather.model.ConditionCodes;
 import car.gov.co.carserviciociudadano.openweather.model.CurrentWeather;
@@ -108,7 +109,9 @@ public class DetalleParqueActivity extends BaseActivity  {
     ImageView mIcoWeather;
     TextView mLblWeather;
     TextView mLblWeatherCondition;
+    View mLyWeather;
     ConditionCodes conditionCodes;
+    OpenWeatherPresenter openWeatherPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,9 +147,8 @@ public class DetalleParqueActivity extends BaseActivity  {
             nestedScrollView.getParent().requestChildFocus(nestedScrollView, nestedScrollView); // para subir el scroll
 
             conditionCodes = new ConditionCodes();
-            OpenWeatherPresenter openWeatherPresenter = new OpenWeatherPresenter(iViewOpenWeather);
+            openWeatherPresenter = new OpenWeatherPresenter(iViewOpenWeather);
             openWeatherPresenter.currentWeather(mParque.getLatitude(), mParque.getLongitude());
-           //openWeatherPresenter.currentWeather(4.644520, -74.117088);
 
             if (BuildConfig.DEBUG == false) {
                 mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -200,8 +202,9 @@ public class DetalleParqueActivity extends BaseActivity  {
         mLblWeather = (TextView) findViewById(R.id.lblWeather);
         mLblWeatherCondition = (TextView) findViewById(R.id.lblWeatherCondition);
         mIcoWeather = (ImageView) findViewById(R.id.icoWeather);
-
-
+        mLyWeather =  findViewById(R.id.lyWeather);
+        mLyWeather.setVisibility(View.GONE);
+        mLyWeather.setOnClickListener(onClickListener);
         mBtnComoLlegar = (Button) findViewById(R.id.btnComoLlegar);
         mBtnComoLlegar.setOnClickListener(onClickListener);
         mBtnMapasDelParque = (Button) findViewById(R.id.btnMapasDelParque);
@@ -281,6 +284,7 @@ public class DetalleParqueActivity extends BaseActivity  {
     IViewOpenWeather iViewOpenWeather = new IViewOpenWeather() {
         @Override
         public void onSuccessCurrentWeather(CurrentWeather currentWeather) {
+            mLyWeather.setVisibility(View.VISIBLE);
             if (currentWeather != null) {
                 mLblWeather.setText(String.valueOf(currentWeather.main.getTempRound()) + " " + getResources().getString(R.string.grados));
 
@@ -304,6 +308,18 @@ public class DetalleParqueActivity extends BaseActivity  {
 
         @Override
         public void onError(ErrorApi error) {
+            mLyWeather.setVisibility(View.GONE);
+
+            Snackbar.make(mRecyclerView, "Error pronostico de tiempo", Snackbar.LENGTH_LONG)
+                    //.setActionTextColor(Color.CYAN)
+                    .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
+                    .setAction("REINTENTAR", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            openWeatherPresenter.currentWeather(mParque.getLatitude(), mParque.getLongitude());
+                        }
+                    })
+                    .show();
 
         }
     };
@@ -327,6 +343,11 @@ public class DetalleParqueActivity extends BaseActivity  {
                 j.putExtra(Parque.ID_PARQUE,mParque.getIDParque());
                 j.putExtra(Enumerator.TipoArchivoParque.TAG, Enumerator.TipoArchivoParque.MAP_PHOTO);
                 startActivity(j);
+
+            }else if (id == R.id.lyWeather){
+                IntentHelper.getInstance().addObjectForKey(mParque, Parques.TAG);
+                Intent i = new Intent(getApplicationContext(), WeatherActivity.class);
+                startActivity(i);
 
             }else {
                 int position = mRecyclerView.getChildAdapterPosition(v);
