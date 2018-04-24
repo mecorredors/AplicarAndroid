@@ -35,6 +35,16 @@
                  android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
                />
+            <TextView android:id="@+id/lblAyuda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ayuda"
+                android:textSize="@dimen/text_size_13"
+                android:textColor="@color/lightPrimaryColor"
+                android:layout_gravity="right|bottom"
+                android:layout_marginRight="@dimen/margin_10dp"
+                android:layout_marginBottom="@dimen/margin_12dp"
+                android:clickable="true"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

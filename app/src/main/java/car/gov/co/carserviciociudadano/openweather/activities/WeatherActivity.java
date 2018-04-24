@@ -52,8 +52,6 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
     @BindView(R.id.lblWeatherCondition)  TextView lblWeatherCondition;
     @BindView(R.id.lblHumedad)  TextView lblHumedad;
     @BindView(R.id.lblViento)  TextView lblViento;
-    @BindView(R.id.lblMax)  TextView lblMax;
-    @BindView(R.id.lblMin)  TextView lblMin;
     @BindView(R.id.lblFecha)  TextView lblFecha;
     @BindView(R.id.icoWeather) ImageView icoWeather;
     @BindView(R.id.progressView)  ProgressBar progressView;
@@ -163,8 +161,6 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
         progressView.setVisibility(View.GONE);
         if (currentWeather != null) {
             lblWeather.setText(String.valueOf(currentWeather.main.getTempRound()) + " " + getResources().getString(R.string.grados));
-            lblMax.setText(String.valueOf(currentWeather.main.getTempMaxRound()) + " " + getResources().getString(R.string.grados));
-            lblMin.setText(String.valueOf(currentWeather.main.getTempMinRound()) + " " + getResources().getString(R.string.grados));
             lblHumedad.setText(String.valueOf(currentWeather.main.humidity) + " " + getResources().getString(R.string.porciento));
             lblViento.setText(String.valueOf(currentWeather.wind.speed) + " " + getResources().getString(R.string.unidad_viento));
 
@@ -197,8 +193,7 @@ public class WeatherActivity extends BaseActivity implements IViewOpenWeather, V
                 for (List item : forecast.list){
                     Calendar c = Calendar.getInstance();
                     c.setTimeInMillis(item.dt * 1000);
-                    Log.d("txthora", item.dt_txt);
-                    if (c.get(Calendar.HOUR_OF_DAY) == 12){
+                    if (c.get(Calendar.HOUR_OF_DAY) == 12 || c.get(Calendar.HOUR_OF_DAY) == 11  || c.get(Calendar.HOUR_OF_DAY) == 10 ){
                         ItemForecast itemForecast = new ItemForecast();
                         itemForecast.icon = item.weather.get(0).icon;
                         itemForecast.condition = conditionCodes.getName(item.weather.get(0).id);

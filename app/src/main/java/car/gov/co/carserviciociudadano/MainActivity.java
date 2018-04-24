@@ -1,6 +1,8 @@
 package car.gov.co.carserviciociudadano;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
@@ -81,6 +83,16 @@ public class MainActivity extends BaseActivity  {
     @OnClick(R.id.lyMenuProyectosConfinacion) void proyectoConfinacion(){
         Intent i = new Intent(this, BankProjectActivity.class);
         startActivity(i);
+    }
+
+    @OnClick(R.id.lblAyuda) void ayuda(){
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:QiTHBaKsTb8"));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=QiTHBaKsTb8"));
+        try {
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            startActivity(webIntent);
+        }
     }
 
 }

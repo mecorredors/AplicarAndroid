@@ -130,51 +130,6 @@
                 />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-           >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_12"
-                android:textColor="@color/primaryText"
-                android:text="Máximo"
-                android:paddingTop="@dimen/margin_4dp"
-                />
-            <TextView android:id="@+id/lblMax"
-                android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_12"
-                android:textColor="@color/primaryText"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-           >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_12"
-                android:textColor="@color/primaryText"
-                android:text="Mínimo"
-                android:paddingTop="@dimen/margin_4dp"
-                />
-            <TextView android:id="@+id/lblMin"
-                android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_12"
-                android:textColor="@color/primaryText"
-                />
-        </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
