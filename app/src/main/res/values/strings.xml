@@ -21,6 +21,7 @@
     <string name="title_cambiar_contrasena">Cambiar contraseña </string>
     <string name="title_como_llegar">Cómo llegar </string>
     <string name="title_bank_project">Proyecto de Cofinanciación </string>
+    <string name="title_bicicar">BiciCAR </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>

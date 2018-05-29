@@ -13,7 +13,7 @@
         <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
         <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
         <item name="spinnerDropDownItemStyle">@style/AppTheme.Dialog</item>
-        <item name="textColorError">@color/design_textinput_error_color_light</item>
+        <item name="textColorError">@color/black</item>
     </style>
 
 
