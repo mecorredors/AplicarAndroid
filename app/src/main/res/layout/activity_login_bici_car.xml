@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".bicicar.activities.LoginBiciCarActivity"
+    android:gravity="center_vertical">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inputLayoutNumeroID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp">
+
+        <EditText
+            android:id="@+id/txtNumeroID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Numero ID"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions|textEmailAddress"
+            android:maxLines="1"
+            android:textSize="@dimen/text_size_14"
+            android:textColor="@color/secondaryText"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inputLyClave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp">
+
+        <EditText
+            android:id="@+id/txtClave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/contrasena"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textSize="@dimen/text_size_14"
+            android:textColor="@color/secondaryText"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button android:id="@+id/btnLogin"
+        android:theme="@style/ButtonAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="INGRESAR"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"/>
+
+    <Button android:id="@+id/btnOlvidateContrasena"
+        android:theme="@style/ButtonBorderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/olvidaste_contrasena"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"/>
+
+</LinearLayout>

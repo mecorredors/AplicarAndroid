@@ -107,6 +107,17 @@ public class Utils {
         return pass;
     }
 
+    public static String getAuthorizationBICICAR(){
+        String pass="";
+        try {
+            String autorization = Security.mAutorizationBICICAR;
+            pass=Security.Decrypt("ApiSidCarKey", autorization);
+        }catch(Exception ex){
+
+        }
+        return pass;
+    }
+
     public static boolean isEqualsDate(Date fecha1, Date fecha2){
        if (fecha1 != null && fecha2 != null) {
            Calendar calendar1 = Calendar.getInstance();

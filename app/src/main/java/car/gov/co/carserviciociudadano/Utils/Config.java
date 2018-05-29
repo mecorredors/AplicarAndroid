@@ -16,9 +16,10 @@ public class Config {
     //public static String ServerSIDCAR = "http://192.168.1.53/SIDCARNET/";    //pruebas sidcar
     //public static String ServerSAE = "http://192.168.1.53/SAE/";    //pruebas sae
 
-   // public static String ServerParques = "http://192.168.0.13/parques/";    //LOCAL car
-   // public static String ServerSIDCAR = "http://192.168.0.13/SIDCAR/";    //LOCAL sidcar
-  //  public static String ServerSAE = "http://192.168.0.13/SAE/";    //LOCAL sidcar
+   // public static String ServerParques = "http://192.168.0.11/parques/";    //LOCAL car
+   // public static String ServerSIDCAR = "http://192.168.0.11/SIDCAR/";    //LOCAL sidcar
+    //  public static String ServerSAE = "http://192.168.0.11/SAE/";    //LOCAL sidcar
+      public static String ServerBICICAR = "http://192.168.0.11:51476/";    //LOCAL sidcar
 
 
     public static String API_PARQUES_PARQUES =  ServerParques + "api/parque/parques/";
@@ -58,4 +59,5 @@ public class Config {
     public static String API_BANKPROJECT_GET_DOCUMENTS =  ServerSIDCAR + "api/bankproject/getdocuments/";
 
 
+    public static String API_BICICAR_LOGIN =  ServerBICICAR + "api/beneficiarios/login/";
 }

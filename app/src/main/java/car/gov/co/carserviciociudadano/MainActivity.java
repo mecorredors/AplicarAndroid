@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.bicicar.activities.LoginBiciCarActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BankProjectActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
@@ -93,6 +94,11 @@ public class MainActivity extends BaseActivity  {
         } catch (ActivityNotFoundException ex) {
             startActivity(webIntent);
         }
+    }
+
+    @OnClick(R.id.lyMenuBicicar) void bicicar(){
+        Intent i = new Intent(this, LoginBiciCarActivity.class);
+        startActivity(i);
     }
 
 }
