@@ -7,6 +7,9 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
+import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
+import car.gov.co.carserviciociudadano.parques.model.Usuario;
+
 public class Beneficiario {
 
     public int IDBeneficiario;
@@ -36,6 +39,9 @@ public class Beneficiario {
     public String UsuarioModificacion;
     public Date FechaModificacion;
 
+
+    public static final String BICICAR_USUARIO = "bicicar_usuario";
+
     @Override public String toString(){
         Gson gson = new Gson();
         JSONObject jsonObject;
@@ -47,4 +53,12 @@ public class Beneficiario {
         }
         return jsonObject.toString();
     }
+
+    public  void guardar(){
+        PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.WRITE, PreferencesApp.BICIAR_NAME);
+        preferencesApp.putString(BICICAR_USUARIO, toString());
+        preferencesApp.commit();
+    }
+
+
 }

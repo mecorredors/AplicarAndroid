@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -33,7 +34,7 @@ public class MainActivity extends BaseActivity  {
     @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
     private FirebaseAnalytics mFirebaseAnalytics;
-
+    public static final int REQUEST_CODE_BICICAR_LOGIN = 202;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +99,17 @@ public class MainActivity extends BaseActivity  {
 
     @OnClick(R.id.lyMenuBicicar) void bicicar(){
         Intent i = new Intent(this, LoginBiciCarActivity.class);
-        startActivity(i);
+        startActivityForResult(i, REQUEST_CODE_BICICAR_LOGIN);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == REQUEST_CODE_BICICAR_LOGIN){
+            if (resultCode == Activity.RESULT_OK){
+                mostrarMensajeDialog("login ok");
+            }
+        }
+
+    }
 }

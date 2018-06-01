@@ -19,7 +19,7 @@ public class Config {
    // public static String ServerParques = "http://192.168.0.11/parques/";    //LOCAL car
    // public static String ServerSIDCAR = "http://192.168.0.11/SIDCAR/";    //LOCAL sidcar
     //  public static String ServerSAE = "http://192.168.0.11/SAE/";    //LOCAL sidcar
-      public static String ServerBICICAR = "http://192.168.0.11:51476/";    //LOCAL sidcar
+      public static String ServerBICICAR = "http://192.168.0.11/BICICAR/";    //LOCAL sidcar
 
 
     public static String API_PARQUES_PARQUES =  ServerParques + "api/parque/parques/";

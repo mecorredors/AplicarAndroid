@@ -16,6 +16,8 @@ public class PreferencesApp {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private final static String DEFAULT_NAME = "PREFERENCES-APP-CIU";
+    public final static String BICIAR_NAME = "PREFERENCES-BICICAR";
+
     public final static int READ = 0;
     public final static int WRITE = 1;
 

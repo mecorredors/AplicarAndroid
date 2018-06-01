@@ -69,11 +69,11 @@ public class ErrorApi {
                 this.Message=vError.getMessage();
             }
         }else{
-            this.StatusCode=500;
-            this.Message="Servicio no disponible";
+           this.StatusCode=500;
+           this.Message="Servicio no disponible";
         }
 
-        if (this.StatusCode == 404) this.Message = AppCar.getContext().getString(R.string.error_404);
+        if (this.StatusCode == 404 && this.Message.isEmpty()) this.Message = AppCar.getContext().getString(R.string.error_404);
         if (this.StatusCode == 405) this.Message = AppCar.getContext().getString(R.string.error_405);
 
     }

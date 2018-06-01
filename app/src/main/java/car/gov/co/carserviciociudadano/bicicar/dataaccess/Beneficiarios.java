@@ -3,21 +3,27 @@ package car.gov.co.carserviciociudadano.bicicar.dataaccess;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.IBeneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.parques.model.Usuario;
 
 public class Beneficiarios {
     public static final String TAG ="Beneficiarios";
@@ -27,13 +33,13 @@ public class Beneficiarios {
         String url = Config.API_BICICAR_LOGIN + "?numeroID=" + numeroID +"&claveApp=" + claveApp;
         url = url.replace(" ", "%20");
 
-        JsonArrayRequest objRequest = new JsonArrayRequest( url,
-                new Response.Listener<JSONArray>(){
+        JsonObjectRequest objRequest = new JsonObjectRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONObject>(){
                     @Override
-                    public void onResponse(JSONArray response)
+                    public void onResponse(JSONObject response)
                     {
                         try {
-                            iBeneficiario.onSuccess(getItemFromJson(response.toString()));
+                            iBeneficiario.onSuccess(Beneficiarios.getItemFromJson(response.toString()));
                         }catch (JsonSyntaxException ex){
                             iBeneficiario.onError(new ErrorApi(ex));
                         }
@@ -66,12 +72,21 @@ public class Beneficiarios {
     }
 
 
-    public  Beneficiario getItemFromJson(String json) throws JsonSyntaxException{
+    public static Beneficiario getItemFromJson(String json) throws JsonSyntaxException{
             GsonBuilder builder = new GsonBuilder();
             builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             Gson gson = builder.create();
 
             Beneficiario element = gson.fromJson(json, Beneficiario.class);
             return  element;
+    }
+
+    public static Beneficiario readBeneficio(){
+        PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.READ, PreferencesApp.BICIAR_NAME);
+        String json = preferencesApp.getString(Beneficiario.BICICAR_USUARIO, null);
+        if (json != null){
+            return getItemFromJson(json);
+        }
+        return  null;
     }
 }

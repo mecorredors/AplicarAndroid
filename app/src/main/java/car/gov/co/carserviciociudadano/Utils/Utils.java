@@ -310,4 +310,25 @@ public class Utils {
         }
         return  weekDay;
     }
+
+    public static String toStringSQLLite(java.util.Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
+    public static Date convertToDateSQLLite(String dateString){
+        //   SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date convertedDate = new Date();
+        try {
+
+            convertedDate = dateFormat.parse(dateString);
+
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return convertedDate;
+    }
 }
