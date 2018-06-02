@@ -3,6 +3,7 @@ package car.gov.co.carserviciociudadano.common;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
  * Created by Olger on 21/09/2016.
  */
 public class BaseActivity extends AppCompatActivity {
-
+    ProgressDialog mProgressDialog;
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -97,5 +98,16 @@ public class BaseActivity extends AppCompatActivity {
     protected void ocultarTeclado(View view){
         InputMethodManager imm = (InputMethodManager) getSystemService(AppCar.getContext().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    protected void mostrarProgressDialog(String mensaje){
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setMessage(mensaje);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+    }
+    protected void ocultarProgressDialog(){
+        if (mProgressDialog != null) mProgressDialog.dismiss();
     }
 }

@@ -136,4 +136,8 @@
     <string name="descripcion">Descripción </string>
     <string name="no_hay_proyecto_cofinanciacion">No se encontró ningún pryecto</string>
 
+
+    <!-- bicicar -->
+    <string name="escanearCodigo">Escanear código QR </string>
+
 </resources>

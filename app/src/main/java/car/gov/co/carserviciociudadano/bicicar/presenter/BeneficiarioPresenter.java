@@ -16,12 +16,26 @@ public class BeneficiarioPresenter {
         new Beneficiarios().login(numeroId, claveApp, new IBeneficiario() {
             @Override
             public void onSuccess(Beneficiario beneficiario) {
-                iViewBeneficiario.onSuccessLogin(beneficiario);
+                iViewBeneficiario.onSuccess(beneficiario);
             }
 
             @Override
             public void onError(ErrorApi error) {
-                iViewBeneficiario.onErrorLogin(error);
+                iViewBeneficiario.onError(error);
+            }
+        });
+    }
+
+    public  void obtenerItem(String serial, String rin){
+        new Beneficiarios().obtenerItem(serial, rin, new IBeneficiario() {
+            @Override
+            public void onSuccess(Beneficiario beneficiario) {
+                iViewBeneficiario.onSuccess(beneficiario);
+            }
+
+            @Override
+            public void onError(ErrorApi error) {
+                iViewBeneficiario.onError(error);
             }
         });
     }

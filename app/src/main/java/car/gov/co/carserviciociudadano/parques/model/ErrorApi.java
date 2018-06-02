@@ -78,6 +78,10 @@ public class ErrorApi {
 
     }
 
+    public ErrorApi(int statusCode, String message){
+        this.StatusCode = statusCode;
+        this.Message = message;
+    }
     public ErrorApi(){
        setMessage("");
     }

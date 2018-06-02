@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".bicicar.activities.RegistrarActividadActivity">
+
+    <Button android:id="@+id/btnEscanearCodigo"
+        android:theme="@style/ButtonAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/escanearCodigo"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+    <LinearLayout android:id="@+id/lyDatosQR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnEscanearCodigo"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/margin_16dp">
+            <TextView android:id="@+id/lblSerial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Serial"
+                />
+            <TextView android:id="@+id/lblRin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rind"
+                android:layout_marginTop="@dimen/margin_4dp"
+                />
+
+        <TextView android:id="@+id/lblNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginTop="@dimen/margin_4dp"
+            />
+            <Button android:id="@+id/btnAgregar"
+                android:theme="@style/ButtonAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Agregar"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_gravity="left"
+                />
+    </LinearLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_below="@+id/lyDatosQR"
+        android:layout_above="@+id/btnPublicar"
+        />
+    <Button android:id="@+id/btnPublicar"
+        android:theme="@style/ButtonAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Publicar"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

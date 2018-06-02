@@ -60,4 +60,6 @@ public class Config {
 
 
     public static String API_BICICAR_LOGIN =  ServerBICICAR + "api/beneficiarios/login/";
+    public static String API_BICICAR_OBTENER_ITEM =  ServerBICICAR + "api/beneficiarios/obtenerItem/";
+    public static String API_BICICAR_LOG_TRAYECTO =  ServerBICICAR + "api/beneficiarios/logTrayecto/";
 }

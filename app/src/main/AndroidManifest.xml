@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -141,7 +142,9 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".openweather.activities.WeatherActivity" />
         <activity android:name=".openweather.activities.WeatherHourDayActivity" />
-        <activity android:name=".bicicar.activities.LoginBiciCarActivity"></activity>
+        <activity android:name=".bicicar.activities.LoginBiciCarActivity" />
+        <activity android:name=".bicicar.activities.RegistrarActividadActivity" />
+        <activity android:name=".bicicar.activities.EscanearQRActivity"></activity>
     </application>
 
 </manifest>

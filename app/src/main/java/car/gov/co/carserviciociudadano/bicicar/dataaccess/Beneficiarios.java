@@ -1,6 +1,8 @@
 package car.gov.co.carserviciociudadano.bicicar.dataaccess;
 
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -12,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -57,7 +60,50 @@ public class Beneficiarios {
             public Map<String, String> getHeaders() throws AuthFailureError {
 
                 Map<String, String> headerMap = new HashMap<>();
-                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationSIDCAR());
+                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationBICICAR());
+                return headerMap;
+            }
+        };
+
+        objRequest.setTag(TAG);
+        objRequest.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        20000,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppCar.VolleyQueue().add(objRequest);
+    }
+
+    public void obtenerItem(String serial, String rin , final IBeneficiario iBeneficiario)
+    {
+        String url = Config.API_BICICAR_OBTENER_ITEM + "?serial=" + serial +"&rin=" + rin;
+        url = url.replace(" ", "%20");
+
+        JsonObjectRequest objRequest = new JsonObjectRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        try {
+                            iBeneficiario.onSuccess(Beneficiarios.getItemFromJson(response.toString()));
+                        }catch (JsonSyntaxException ex){
+                            iBeneficiario.onError(new ErrorApi(ex));
+                        }
+                    }
+                },	new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                iBeneficiario.onError(new ErrorApi(error));
+            }
+        }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationBICICAR());
                 return headerMap;
             }
         };
@@ -85,7 +131,14 @@ public class Beneficiarios {
         PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.READ, PreferencesApp.BICIAR_NAME);
         String json = preferencesApp.getString(Beneficiario.BICICAR_USUARIO, null);
         if (json != null){
-            return getItemFromJson(json);
+            Log.d("json", json);
+            try {
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                Beneficiario element = gson.fromJson(json, Beneficiario.class);
+                return element;
+            }catch (JsonSyntaxException ex) {
+            }
         }
         return  null;
     }

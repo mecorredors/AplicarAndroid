@@ -64,7 +64,7 @@ public class DbHelper extends SQLiteOpenHelper {
             try {
                 copyDataBase();
             } catch (IOException e) {
-                throw new Error("Error copiando Base de Datos");
+                throw new Error("Error copiando Base de Datos " + e.toString());
             }
         }
     }

@@ -60,15 +60,14 @@ public class LoginBiciCarActivity extends BaseActivity implements IViewBeneficia
     }
 
     @Override
-    public void onSuccessLogin(Beneficiario beneficiario) {
-        mostrarMensajeDialog("login correcto "+ beneficiario.Nombres + " " + beneficiario.Apellidos);
+    public void onSuccess(Beneficiario beneficiario) {
         beneficiario.guardar();
         setResult(Activity.RESULT_OK);
         super.onBackPressed();
     }
 
     @Override
-    public void onErrorLogin(ErrorApi errorApi) {
+    public void onError(ErrorApi errorApi) {
         mostrarMensajeDialog(errorApi.getMessage());
     }
 }

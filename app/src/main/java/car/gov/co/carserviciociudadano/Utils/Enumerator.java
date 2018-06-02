@@ -57,6 +57,13 @@ public class Enumerator {
 
     }
 
+    public  static class BicicarLogTrayecto{
+        public static final int PENDIENTE_PUBLICAR = 1;
+        public static final int PUBLICADO = 0;
+        public static final int ERROR = 2;
+
+    }
+
     public static final int TIMEOUT_PUBLISH_IMAGES = 40000;
     public static final String NAME_DIRECTORY_IMAGES = "CAR-Servicio-Ciudadano";
 }

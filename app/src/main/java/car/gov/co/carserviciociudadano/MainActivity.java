@@ -3,9 +3,13 @@ package car.gov.co.carserviciociudadano;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
@@ -17,6 +21,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.bicicar.activities.LoginBiciCarActivity;
+import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
+import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BankProjectActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
@@ -35,6 +42,9 @@ public class MainActivity extends BaseActivity  {
     @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
     private FirebaseAnalytics mFirebaseAnalytics;
     public static final int REQUEST_CODE_BICICAR_LOGIN = 202;
+
+    Beneficiario beneficiario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +71,7 @@ public class MainActivity extends BaseActivity  {
         }
         String versionName = BuildConfig.VERSION_NAME;
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
+
 
     }
 
@@ -98,18 +109,27 @@ public class MainActivity extends BaseActivity  {
     }
 
     @OnClick(R.id.lyMenuBicicar) void bicicar(){
-        Intent i = new Intent(this, LoginBiciCarActivity.class);
-        startActivityForResult(i, REQUEST_CODE_BICICAR_LOGIN);
+        beneficiario = Beneficiarios.readBeneficio();
+        if (beneficiario == null){
+            Intent i = new Intent(this, LoginBiciCarActivity.class);
+            startActivityForResult(i, REQUEST_CODE_BICICAR_LOGIN);
+        }else{
+            Intent i = new Intent(this, RegistrarActividadActivity.class);
+            startActivity(i);
+        }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == REQUEST_CODE_BICICAR_LOGIN){
+        if (requestCode == REQUEST_CODE_BICICAR_LOGIN){
             if (resultCode == Activity.RESULT_OK){
-                mostrarMensajeDialog("login ok");
+                Intent i = new Intent(this, RegistrarActividadActivity.class);
+                startActivity(i);
             }
         }
-
     }
+
+
 }
