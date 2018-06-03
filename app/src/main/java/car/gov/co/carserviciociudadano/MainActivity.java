@@ -19,6 +19,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.Utils.ConfigActivity;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.bicicar.activities.LoginBiciCarActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
@@ -57,8 +58,7 @@ public class MainActivity extends BaseActivity  {
         mCollapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
-      // Intent i = new Intent(this, ComoLLegarActivity.class);
-       //startActivity(i);
+
         if (BuildConfig.DEBUG == false) {
             Log.d("DEBUG", "FALSE");
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -73,6 +73,8 @@ public class MainActivity extends BaseActivity  {
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
 
 
+        Intent i = new Intent(this, ConfigActivity.class);
+        startActivity(i);
     }
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){

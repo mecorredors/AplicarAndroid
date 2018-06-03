@@ -22,6 +22,7 @@
     <string name="title_como_llegar">Cómo llegar </string>
     <string name="title_bank_project">Proyecto de Cofinanciación </string>
     <string name="title_bicicar">BiciCAR </string>
+    <string name="title_escaner">Escanear QR </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -140,5 +141,9 @@
     <!-- bicicar -->
     <string name="escanearCodigo">Escanear código QR </string>
     <string name="tiempo">Tiempo Min (Opcional) </string>
+    <string name="seguro_cerrar_sesion">Seguro desea cerrar sesión </string>
+    <string name="huella_ambiental">Huella ambiental </string>
+
+
 
 </resources>

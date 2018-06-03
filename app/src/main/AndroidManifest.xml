@@ -142,9 +142,14 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".openweather.activities.WeatherActivity" />
         <activity android:name=".openweather.activities.WeatherHourDayActivity" />
-        <activity android:name=".bicicar.activities.LoginBiciCarActivity" />
+        <activity
+            android:name=".bicicar.activities.LoginBiciCarActivity"
+            android:label="@string/title_bicicar" />
         <activity android:name=".bicicar.activities.RegistrarActividadActivity" />
-        <activity android:name=".bicicar.activities.EscanearQRActivity"></activity>
+        <activity
+            android:name=".bicicar.activities.EscanearQRActivity"
+            android:label="@string/title_escaner" />
+        <activity android:name=".Utils.ConfigActivity"></activity>
     </application>
 
 </manifest>

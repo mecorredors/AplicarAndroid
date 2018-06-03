@@ -34,6 +34,15 @@ android {
         }
     }
 
+    productFlavors {
+        production {
+            flavorDimensions "default"
+        }
+        develop {
+            flavorDimensions "default"
+        }
+    }
+
 }
 
 repositories {

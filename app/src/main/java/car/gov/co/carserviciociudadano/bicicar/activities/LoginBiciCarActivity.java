@@ -2,6 +2,7 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 import android.app.Activity;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -30,6 +31,8 @@ public class LoginBiciCarActivity extends BaseActivity implements IViewBeneficia
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_bici_car);
         ButterKnife.bind(this);
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
         beneficiarioPresenter = new BeneficiarioPresenter(this);
 
     }

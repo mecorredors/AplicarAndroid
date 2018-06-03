@@ -16,6 +16,7 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.Utils.Server;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.consultapublica.model.RadicadosDigitalesRespuesta;
 import car.gov.co.carserviciociudadano.parques.activities.ReservaActivity;
@@ -65,7 +66,7 @@ public class DocumentosRespuestaAdapter extends RecyclerView.Adapter<DocumentosR
                 @Override
                 public void onClick(View v) {
                     try {
-                        String url = Config.ServerSIDCAR + "Modulos/Buzon/PDFRadicado.aspx?ID="+  item.getIDRadicadoDigital()+"&public=user&origin=app";
+                        String url = Server.ServerSIDCAR + "Modulos/Buzon/PDFRadicado.aspx?ID="+  item.getIDRadicadoDigital()+"&public=user&origin=app";
 
                         Intent j = new Intent(AppCar.getContext(),WebViewActivity.class);
                         j.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -2,6 +2,7 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -9,10 +10,13 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.adapter.LogTrayectoAdapter;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
@@ -38,7 +43,11 @@ import car.gov.co.carserviciociudadano.bicicar.presenter.IViewBeneficiario;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
+import car.gov.co.carserviciociudadano.parques.activities.CambiarContrasenaActivity;
+import car.gov.co.carserviciociudadano.parques.activities.UsuarioActivity;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.parques.model.Usuario;
 import okhttp3.internal.Util;
 
 
@@ -57,6 +66,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.txtDistanciaKM) EditText txtDistanciaKM;
     @BindView(R.id.txtTiempo) EditText txtTiempo;
     @BindView(R.id.inputLyDistanciaKM) TextInputLayout inputLyDistanciaKM;
+    @BindView(R.id.lyRegistrarMiRecorrido) View lyRegistrarMiRecorrido;
 
 
     LogTrayectoAdapter mAdaptador;
@@ -70,9 +80,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         ButterKnife.bind(this);
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setTitle("BiciCAR " + mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
+        bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
 
         lyDatosQR.setVisibility(View.GONE);
+        lyRegistrarMiRecorrido.setVisibility(View.GONE);
 
         recyclerView.setHasFixedSize(true);
         mAdaptador = new LogTrayectoAdapter(mLstLogTrayectos);
@@ -85,7 +96,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP){
             btnEscanearCodigo.setVisibility(View.GONE);
-
+            lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
         }
     }
 
@@ -97,6 +108,49 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_bicicar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.item_cerrar_sesion ) {
+            cerrarSesion();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void cerrarSesion(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(R.string.seguro_cerrar_sesion);
+
+        builder.setPositiveButton(R.string.cerrar_sesion, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.WRITE, PreferencesApp.BICIAR_NAME);
+                preferencesApp.putString(Beneficiario.BICICAR_USUARIO, null);
+                preferencesApp.commit();
+                RegistrarActividadActivity.super.onBackPressed();
+
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+
+        builder.show();
     }
 
     @OnClick(R.id.btnAgregar) void onAgregar(){

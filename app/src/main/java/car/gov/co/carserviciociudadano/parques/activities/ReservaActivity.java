@@ -39,6 +39,7 @@ import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.Server;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Mantenimientos;
@@ -352,7 +353,7 @@ public class ReservaActivity extends BaseActivity {
                     break;
                 case R.id.lyPoliticas:
                     Intent j = new Intent(ReservaActivity.this,WebViewActivity.class);
-                    String url = Config.ServerParques + "PaginaWeb/terminos.aspx?IDParque="+ mParque.getIDParque();
+                    String url = Server.ServerParques + "PaginaWeb/terminos.aspx?IDParque="+ mParque.getIDParque();
                     j.putExtra(WebViewActivity.URL,url);
                     j.putExtra(WebViewActivity.TITULO,getString(R.string.title_terminos));
                     startActivity(j);
