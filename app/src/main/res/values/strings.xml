@@ -139,5 +139,6 @@
 
     <!-- bicicar -->
     <string name="escanearCodigo">Escanear código QR </string>
+    <string name="tiempo">Tiempo Min (Opcional) </string>
 
 </resources>

@@ -50,7 +50,18 @@ public class Utils {
         }
         return res;
     }
+    public  static float convertFloat(String value){
+        if (value == null ) return  0;
+        if (value.trim().isEmpty()) return  0;
 
+        float res = 0;
+        try{
+            res = Float.parseFloat(value);
+        }catch (NumberFormatException e){
+
+        }
+        return res;
+    }
     public  static String getFechaActual(){
         return new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
     }

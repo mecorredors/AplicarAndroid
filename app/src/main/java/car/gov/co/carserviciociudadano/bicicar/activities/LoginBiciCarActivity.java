@@ -55,12 +55,14 @@ public class LoginBiciCarActivity extends BaseActivity implements IViewBeneficia
 
     private void login() {
         if (validarLogin()){
+            mostrarProgressDialog("Ingresando ...");
             beneficiarioPresenter.login(txtNumeroID.getText().toString(), txtClave.getText().toString());
         }
     }
 
     @Override
     public void onSuccess(Beneficiario beneficiario) {
+        ocultarProgressDialog();
         beneficiario.guardar();
         setResult(Activity.RESULT_OK);
         super.onBackPressed();
@@ -68,6 +70,7 @@ public class LoginBiciCarActivity extends BaseActivity implements IViewBeneficia
 
     @Override
     public void onError(ErrorApi errorApi) {
+        ocultarProgressDialog();
         mostrarMensajeDialog(errorApi.getMessage());
     }
 }

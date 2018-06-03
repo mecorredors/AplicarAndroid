@@ -16,11 +16,16 @@
         android:layout_gravity="center_horizontal"
         />
 
+    <LinearLayout android:id="@+id/lyFormulario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnEscanearCodigo"
+        android:orientation="vertical"
+       >
 
     <LinearLayout android:id="@+id/lyDatosQR"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnEscanearCodigo"
         android:orientation="vertical"
         android:layout_marginLeft="@dimen/margin_16dp">
             <TextView android:id="@+id/lblSerial"
@@ -51,7 +56,83 @@
                 />
     </LinearLayout>
 
+    <LinearLayout android:id="@+id/lyRegistrarMiRecorrido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
+        <TextView android:id="@+id/lblTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Registrar mi recorrido"
+            android:layout_marginTop="@dimen/margin_4dp"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/colorAccent"
+            android:background="@color/blue50"
+            android:paddingLeft="@dimen/margin_16dp"
+            android:gravity="center_vertical"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputLyDistanciaKM"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp">
+            <EditText
+                android:id="@+id/txtDistanciaKM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Distancia en Kms"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/secondaryText"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputLyTiempo"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp">
+            <EditText
+                android:id="@+id/txtTiempo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/tiempo"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/secondaryText"
+                />
+        </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <Button android:id="@+id/btnAgregarMiRecorrido"
+            android:theme="@style/ButtonAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_gravity="left"
+            />
+
+    </LinearLayout>
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/recycler_view"
@@ -59,7 +140,7 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_below="@+id/lyDatosQR"
+        android:layout_below="@+id/lyFormulario"
         android:layout_above="@+id/btnPublicar"
         />
     <Button android:id="@+id/btnPublicar"

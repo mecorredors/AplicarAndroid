@@ -16,18 +16,17 @@ public class LogTrayectoPresenter {
         this.iViewLogTrayecto = iViewLogTrayecto;
     }
 
-    public void publicar(final int idBeneficioRegistro){
+    public void publicar(){
 
         List<LogTrayecto> logTrayectoList = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR);
         if (logTrayectoList.size() > 0) {
             LogTrayecto logTrayecto = logTrayectoList.get(0);
-            logTrayecto.IDBeneficiarioRegistro = idBeneficioRegistro;
             new LogTrayectos().publicar(logTrayecto , new ILogTrayecto() {
                 @Override
                 public void onSuccessLogTrayecto(LogTrayecto logTrayecto) {
                     logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PUBLICADO;
                    if ( new LogTrayectos().Update(logTrayecto))
-                        publicar(idBeneficioRegistro);
+                        publicar();
                    else
                        iViewLogTrayecto.onErrorLogTrayecto(new ErrorApi(0,"Error al guardar datos localmente"));
                 }

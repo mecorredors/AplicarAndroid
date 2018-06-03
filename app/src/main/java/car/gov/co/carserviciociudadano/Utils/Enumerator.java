@@ -64,6 +64,14 @@ public class Enumerator {
 
     }
 
+    public static class BicicarPerfil{
+        public static final int BENEFICIARIO = 1;
+        public static final int LIDER_GRUPO = 2;
+        public static final int PEDAGOGO = 3;
+        public static final int BENEFICIARIO_APP = 4;
+
+    }
+
     public static final int TIMEOUT_PUBLISH_IMAGES = 40000;
     public static final String NAME_DIRECTORY_IMAGES = "CAR-Servicio-Ciudadano";
 }

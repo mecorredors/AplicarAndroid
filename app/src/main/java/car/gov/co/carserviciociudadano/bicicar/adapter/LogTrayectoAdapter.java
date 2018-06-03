@@ -47,7 +47,14 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
             }else {
                 lyItemLogTrayecto.setCardElevation(0);
                 lyItemLogTrayecto.setCardBackgroundColor(AppCar.getContext().getResources().getColor(R.color.background));
+
+              if (a.Serial != null)
                 lblSerial.setText(a.Serial + " Rin: " + a.TamanioRin);
+              else
+                  lblSerial.setText("Distancia Km: " + a.DistanciaKM );
+              if (a.DuracionMinutos > 0)
+                  lblSerial.setText(lblSerial.getText() +" Tiempo: " + a.DuracionMinutos);
+
                 if (a.Nombre != null && !a.Nombre.isEmpty()) {
                     lblNombre.setVisibility(View.VISIBLE);
                     lblNombre.setText(a.Nombre);

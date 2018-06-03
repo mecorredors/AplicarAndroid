@@ -38,6 +38,10 @@ public class Beneficiario {
     public String UsuarioCreacion;
     public String UsuarioModificacion;
     public Date FechaModificacion;
+    public int IDBicicleta;
+    public int Serial;
+    public int Rin;
+
 
 
     public static final String BICICAR_USUARIO = "bicicar_usuario";

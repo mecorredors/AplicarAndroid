@@ -49,7 +49,10 @@ public class LogTrayectos {
                 "[" + LogTrayecto.DURACION_MINUTOS + "]",
                 "[" + LogTrayecto.FECHA + "]",
                 "[" + LogTrayecto.ESTADO + "]",
-                "[" + LogTrayecto.NOMBRE + "]"
+                "[" + LogTrayecto.NOMBRE + "]",
+                "[" + LogTrayecto.ID_BENEFICIARIO + "]",
+                "[" + LogTrayecto.ID_BENEFICIARIO_REGISTRO + "]",
+                "[" + LogTrayecto.ID_BICICLETA + "]"
         };
     }
     public boolean Insert(LogTrayecto element) {
@@ -63,6 +66,9 @@ public class LogTrayectos {
         cv.put(LogTrayecto.FECHA, Utils.toStringSQLLite(element.Fecha));
         cv.put(LogTrayecto.ESTADO, element.Estado);
         cv.put(LogTrayecto.NOMBRE, element.Nombre);
+        cv.put(LogTrayecto.ID_BENEFICIARIO, element.IDBeneficiario);
+        cv.put(LogTrayecto.ID_BENEFICIARIO_REGISTRO, element.IDBeneficiarioRegistro);
+        cv.put(LogTrayecto.ID_BICICLETA, element.IDBicicleta);
 
         long rowid = 0;
 
@@ -100,6 +106,9 @@ public class LogTrayectos {
         cv.put(LogTrayecto.FECHA, Utils.toStringSQLLite(element.Fecha));
         cv.put(LogTrayecto.ESTADO, element.Estado);
         cv.put(LogTrayecto.NOMBRE, element.Nombre);
+        cv.put(LogTrayecto.ID_BENEFICIARIO, element.IDBeneficiario);
+        cv.put(LogTrayecto.ID_BENEFICIARIO_REGISTRO, element.IDBeneficiarioRegistro);
+        cv.put(LogTrayecto.ID_BICICLETA, element.IDBicicleta);
 
         long rowid = 0;
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import okhttp3.internal.Util;
 
 
 public class RegistrarActividadActivity extends BaseActivity implements IViewBeneficiario, IViewLogTrayecto {
@@ -50,11 +53,16 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.lyDatosQR) View lyDatosQR;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.btnPublicar) Button btnPublicar;
+    @BindView(R.id.btnEscanearCodigo) Button btnEscanearCodigo;
+    @BindView(R.id.txtDistanciaKM) EditText txtDistanciaKM;
+    @BindView(R.id.txtTiempo) EditText txtTiempo;
+    @BindView(R.id.inputLyDistanciaKM) TextInputLayout inputLyDistanciaKM;
 
 
     LogTrayectoAdapter mAdaptador;
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
-
+    Beneficiario mBeneficiario = null;
+    Beneficiario mBeneficiarioLogin = Beneficiarios.readBeneficio();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +70,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         ButterKnife.bind(this);
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle("BiciCAR " + mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
+
         lyDatosQR.setVisibility(View.GONE);
 
         recyclerView.setHasFixedSize(true);
@@ -72,6 +82,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         obtenerItemsActividad();
+
+        if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP){
+            btnEscanearCodigo.setVisibility(View.GONE);
+
+        }
     }
 
     @Override
@@ -86,21 +101,56 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     @OnClick(R.id.btnAgregar) void onAgregar(){
 
-        LogTrayecto actividad = new LogTrayecto();
-        actividad.Serial = lblSerial.getText().toString();
-        actividad.TamanioRin = lblRin.getText().toString();
+        LogTrayecto logTrayecto = new LogTrayecto();
+        logTrayecto.Serial = lblSerial.getText().toString();
+        logTrayecto.TamanioRin = lblRin.getText().toString();
         if (!lblNombre.getText().toString().isEmpty())
-            actividad.Nombre = lblNombre.getText().toString();
-        actividad.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
-        Calendar ca = Calendar.getInstance();
-        ca.add(Calendar.DAY_OF_MONTH, -1);
-        actividad.Fecha = ca.getTime();//Calendar.getInstance().getTime();
-        if (new LogTrayectos().Insert(actividad)) {
+            logTrayecto.Nombre = lblNombre.getText().toString();
+        logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
+        //Calendar ca = Calendar.getInstance();
+        //ca.add(Calendar.DAY_OF_MONTH, -1);
+        logTrayecto.Fecha = Calendar.getInstance().getTime();
+
+        if (mBeneficiario != null){
+            logTrayecto.IDBeneficiario = mBeneficiario.IDBeneficiario;
+            logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
+            logTrayecto.IDBicicleta = mBeneficiario.IDBicicleta;
+        }
+
+        if (new LogTrayectos().Insert(logTrayecto)) {
             lyDatosQR.setVisibility(View.GONE);
 
             obtenerItemsActividad();
         }
+    }
+    @OnClick(R.id.btnAgregarMiRecorrido) void onAgregarMiRecorrido(){
+        LogTrayecto logTrayecto = new LogTrayecto();
 
+
+        logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
+        //Calendar ca = Calendar.getInstance();
+        //ca.add(Calendar.DAY_OF_MONTH, -1);
+        logTrayecto.Fecha = Calendar.getInstance().getTime();
+
+        inputLyDistanciaKM.setError("");
+
+        if (Utils.convertFloat(txtDistanciaKM.getText().toString()) == 0){
+            inputLyDistanciaKM.setError("Ingrese un valor");
+            return;
+        }
+
+        logTrayecto.DistanciaKM = Utils.convertFloat(txtDistanciaKM.getText().toString());
+        logTrayecto.DuracionMinutos = Utils.convertFloat(txtTiempo.getText().toString());
+
+        logTrayecto.IDBeneficiario = mBeneficiarioLogin.IDBeneficiario;
+        logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
+
+        if (new LogTrayectos().Insert(logTrayecto)) {
+            ocultarTeclado(inputLyDistanciaKM);
+            txtDistanciaKM.setText("");
+            txtTiempo.setText("");
+            obtenerItemsActividad();
+        }
     }
 
     private  void obtenerItemsActividad(){
@@ -147,8 +197,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @OnClick(R.id.btnPublicar) void onPublicar(){
         mostrarProgressDialog("Publicando ...");
         LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(this);
-        Beneficiario beneficiario = Beneficiarios.readBeneficio();
-        logTrayectoPresenter.publicar(beneficiario.IDBeneficiario);
+        logTrayectoPresenter.publicar();
     }
 
     private void abrirEscaner(){
@@ -217,9 +266,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             lblNombre.setVisibility(View.GONE);
             if (Utils.isOnline(this)) {
                 mostrarProgressDialog("Consultando");
+                mBeneficiario = null;
                 BeneficiarioPresenter beneficiarioPresenter = new BeneficiarioPresenter(this);
                 beneficiarioPresenter.obtenerItem(lblSerial.getText().toString(), lblRin.getText().toString());
             }
+
         }catch (IndexOutOfBoundsException ex){
             mostrarMensajeDialog("Error al leer:" + datosEscaner );
         }
@@ -228,8 +279,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @Override
     public void onSuccess(Beneficiario beneficiario) {
         ocultarProgressDialog();
+        mBeneficiario = beneficiario;
         lblNombre.setVisibility(View.VISIBLE);
         lblNombre.setText(beneficiario.Nombres + " " + beneficiario.Apellidos);
+
     }
 
     @Override

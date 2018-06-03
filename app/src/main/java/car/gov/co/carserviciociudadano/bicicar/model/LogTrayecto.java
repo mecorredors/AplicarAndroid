@@ -22,6 +22,9 @@ public class LogTrayecto {
     public String Nombre;
     public String Label;
     public int IDBeneficiarioRegistro;
+    public int IDBicicleta;
+    public int IDBeneficiario;
+
 
     public static final String ID = "id";
     public static final String SERIAL = "Serial";
@@ -31,6 +34,9 @@ public class LogTrayecto {
     public static final String FECHA = "Fecha";
     public static final String ESTADO = "Estado";
     public static final String NOMBRE = "Nombre";
+    public static final String ID_BENEFICIARIO = "IDBeneficiario";
+    public static final String ID_BENEFICIARIO_REGISTRO = "IDBeneficiarioRegistro";
+    public static final String ID_BICICLETA = "IDBicicleta";
 
     public static final String TABLE_NAME = "LogTrayectos";
 
@@ -46,6 +52,9 @@ public class LogTrayecto {
         if(c.getColumnIndex(FECHA)>=0) this.Fecha = Utils.convertToDateSQLLite(c.getString(c.getColumnIndex(FECHA)));
         if(c.getColumnIndex(ESTADO)>=0) this.Estado = c.getInt(c.getColumnIndex(ESTADO));
         if(c.getColumnIndex(NOMBRE)>=0) this.Nombre = c.getString(c.getColumnIndex(NOMBRE));
+        if(c.getColumnIndex(ID_BENEFICIARIO)>=0) this.IDBeneficiario = c.getInt(c.getColumnIndex(ID_BENEFICIARIO));
+        if(c.getColumnIndex(ID_BENEFICIARIO_REGISTRO)>=0) this.IDBeneficiarioRegistro = c.getInt(c.getColumnIndex(ID_BENEFICIARIO_REGISTRO));
+        if(c.getColumnIndex(ID_BICICLETA)>=0) this.IDBicicleta = c.getInt(c.getColumnIndex(ID_BICICLETA));
     }
 
     @Override public String toString(){
