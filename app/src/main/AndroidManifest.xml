@@ -150,6 +150,8 @@
             android:name=".bicicar.activities.EscanearQRActivity"
             android:label="@string/title_escaner" />
         <activity android:name=".Utils.ConfigActivity"></activity>
+        <!-- Add the service created in services package !-->
+        <service android:name=".bicicar.services.LocationMonitoringService" />
     </application>
 
 </manifest>

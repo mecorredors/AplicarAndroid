@@ -143,6 +143,10 @@
     <string name="tiempo">Tiempo Min (Opcional) </string>
     <string name="seguro_cerrar_sesion">Seguro desea cerrar sesión </string>
     <string name="huella_ambiental">Huella ambiental </string>
+    <string name="permiso_ubicacion">Por favor conceda permiso de ubicación para comenzar el servicio </string>
+    <string name="permiso_ubicacion_denegado">No has otorgado permiso de ubicación. Entonces el servicio no puede ser iniciado </string>
+    <string name="channel"> BiciCAR</string>
+    <string name="channel_description"> Notificaciones BiciCAR</string>
 
 
 

@@ -1,14 +1,24 @@
 package car.gov.co.carserviciociudadano.bicicar.activities;
 
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,14 +31,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
@@ -42,13 +54,10 @@ import car.gov.co.carserviciociudadano.bicicar.presenter.BeneficiarioPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewBeneficiario;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
+import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
-import car.gov.co.carserviciociudadano.parques.activities.CambiarContrasenaActivity;
-import car.gov.co.carserviciociudadano.parques.activities.UsuarioActivity;
-import car.gov.co.carserviciociudadano.parques.dataaccess.Usuarios;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Usuario;
-import okhttp3.internal.Util;
+
 
 
 public class RegistrarActividadActivity extends BaseActivity implements IViewBeneficiario, IViewLogTrayecto {
@@ -67,7 +76,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.txtTiempo) EditText txtTiempo;
     @BindView(R.id.inputLyDistanciaKM) TextInputLayout inputLyDistanciaKM;
     @BindView(R.id.lyRegistrarMiRecorrido) View lyRegistrarMiRecorrido;
-
+    @BindView(R.id.lblDuracion) TextView lblDuracion;
+    @BindView(R.id.btnIniciar) Button btnIniciar;
+    @BindView(R.id.btnDetener) Button btnDetener;
+    @BindView(R.id.btnAgregarMiRecorrido) Button btnAgregarMiRecorrido;
 
     LogTrayectoAdapter mAdaptador;
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
@@ -84,6 +96,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         lyDatosQR.setVisibility(View.GONE);
         lyRegistrarMiRecorrido.setVisibility(View.GONE);
+        btnDetener.setVisibility(View.GONE);
+        lblDuracion.setVisibility(View.GONE);
 
         recyclerView.setHasFixedSize(true);
         mAdaptador = new LogTrayectoAdapter(mLstLogTrayectos);
@@ -98,6 +112,34 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             btnEscanearCodigo.setVisibility(View.GONE);
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
         }
+
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        int minutos = intent.getIntExtra(LocationMonitoringService.EXTRA_MINUTOS,0);
+                        int segundos = intent.getIntExtra(LocationMonitoringService.EXTRA_SEGUNDOS, 0);
+                        float distancia = intent.getFloatExtra(LocationMonitoringService.EXTRA_DISTANCIA, 0);
+                        float tiempo = intent.getFloatExtra(LocationMonitoringService.EXTRA_TIEMPO_MINUTOS, 0);
+
+                        if (distancia > 0)
+                            txtDistanciaKM.setText(String.valueOf(Utils.round(2,(distancia/1000))));
+                        if (tiempo > 0)
+                            txtTiempo.setText(String.valueOf(tiempo));
+
+
+                        lblDuracion.setText(String.format("%d:%02d", minutos, segundos));
+
+                        btnDetener.setVisibility(View.VISIBLE);
+                        btnIniciar.setVisibility(View.GONE);
+                        btnAgregarMiRecorrido.setVisibility(View.GONE);
+                        lblDuracion.setVisibility(View.VISIBLE);
+
+                    }
+                }, new IntentFilter(LocationMonitoringService.ACTION_LOCATION_BROADCAST)
+        );
+
     }
 
     @Override
@@ -205,6 +247,23 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             txtTiempo.setText("");
             obtenerItemsActividad();
         }
+        lblDuracion.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.btnIniciar) void onIniciar(){
+        startStep1();
+    }
+    @OnClick(R.id.btnDetener) void onDetener(){
+        stopService(new Intent(this, LocationMonitoringService.class));
+        mAlreadyStartedService = false;
+
+        NotificationManager notificationManager = (NotificationManager) AppCar.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+
+        btnAgregarMiRecorrido.setVisibility(View.VISIBLE);
+        btnIniciar.setVisibility(View.VISIBLE);
+        btnDetener.setVisibility(View.GONE);
+
     }
 
     private  void obtenerItemsActividad(){
@@ -275,7 +334,52 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                     mostrarMensaje("Se necesita permiso de camara para registrar actividad");
                 }
                 return;
+
+            case REQUEST_PERMISSIONS_REQUEST_CODE:
+
+                if (grantResults.length <= 0) {
+                    // If img_user interaction was interrupted, the permission request is cancelled and you
+                    // receive empty arrays.
+                    Log.i(TAG, "User interaction was cancelled.");
+                } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Log.i(TAG, "Permission granted, updates requested, starting location updates");
+                    startStep3();
+
+                } else {
+                    // Permission denied.
+
+                    // Notify the img_user via a SnackBar that they have rejected a core permission for the
+                    // app, which makes the Activity useless. In a real app, core permissions would
+                    // typically be best requested during a welcome-screen flow.
+
+                    // Additionally, it is important to remember that a permission might have been
+                    // rejected without asking the img_user for permission (device policy or "Never ask
+                    // again" prompts). Therefore, a img_user interface affordance is typically implemented
+                    // when permissions are denied. Otherwise, your app could appear unresponsive to
+                    // touches or interactions which have required permissions.
+                    showSnackbar(R.string.permiso_ubicacion_denegado,
+                            R.string.configuracion, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    // Build intent that displays the App settings screen.
+                                    Intent intent = new Intent();
+                                    intent.setAction(
+                                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package",
+                                            BuildConfig.APPLICATION_ID, null);
+                                    intent.setData(uri);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
+                            });
+                }
+                break;
+
+
         }
+
+
     }
 
     @Override
@@ -361,4 +465,208 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         obtenerItemsActividad();
         mostrarMensajeDialog(errorApi.getMessage());
     }
+
+
+
+
+    /////////////
+
+    private static final String TAG = RegistrarActividadActivity.class.getSimpleName();
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+    private boolean mAlreadyStartedService = false;
+
+    /**
+     * Step 1: Check Google Play services
+     */
+    private void startStep1() {
+
+        //Check whether this user has installed Google play service which is being used by Location updates.
+        if (isGooglePlayServicesAvailable()) {
+
+            //Passing null to indicate that it is executing for the first time.
+            startStep2(null);
+
+        } else {
+            mostrarMensaje("Play services no disponible");
+        }
+    }
+
+
+    /**
+     * Step 2: Check & Prompt Internet connection
+     */
+    private Boolean startStep2(DialogInterface dialog) {
+       /* ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (activeNetworkInfo == null || !activeNetworkInfo.isConnected()) {
+            promptInternetConnect();
+            return false;
+        }
+
+
+        if (dialog != null) {
+            dialog.dismiss();
+        }*/
+
+        //Yes there is active internet connection. Next check Location is granted by user or not.
+
+        if (checkPermissions()) { //Yes permissions are granted by the user. Go to the next step.
+            startStep3();
+        } else {  //No user has not granted the permissions yet. Request now.
+            requestPermissions();
+        }
+        return true;
+    }
+
+    /**
+     * Show A Dialog with button to refresh the internet state.
+     */
+    private void promptInternetConnect() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrarActividadActivity.this);
+        builder.setTitle("Verificar conección");
+        builder.setMessage("Verificar conección");
+
+        String positiveText = "Reintentar";
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //Block the Application Execution until user grants the permissions
+                        if (startStep2(dialog)) {
+
+                            //Now make sure about location permission.
+                            if (checkPermissions()) {
+
+                                //Step 2: Start the Location Monitor Service
+                                //Everything is there to start the service.
+                                startStep3();
+                            } else if (!checkPermissions()) {
+                                requestPermissions();
+                            }
+
+                        }
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    /**
+     * Step 3: Start the Location Monitor Service
+     */
+    private void startStep3() {
+
+        //And it will be keep running until you close the entire application from task manager.
+        //This method will executed only once.
+
+        if (!mAlreadyStartedService ) {
+
+            txtDistanciaKM.setText("");
+            lblDuracion.setVisibility(View.VISIBLE);
+            btnIniciar.setVisibility(View.GONE);
+            btnAgregarMiRecorrido.setVisibility(View.GONE);
+            btnDetener.setVisibility(View.VISIBLE);
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
+
+            //Start location sharing service to app server.........
+            Intent intent = new Intent(this, LocationMonitoringService.class);
+            startService(intent);
+
+            mAlreadyStartedService = true;
+            //Ends................................................
+        }
+    }
+
+    /**
+     * Return the availability of GooglePlayServices
+     */
+    public boolean isGooglePlayServicesAvailable() {
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int status = googleApiAvailability.isGooglePlayServicesAvailable(this);
+        if (status != ConnectionResult.SUCCESS) {
+            if (googleApiAvailability.isUserResolvableError(status)) {
+                googleApiAvailability.getErrorDialog(this, status, 2404).show();
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Return the current state of the permissions needed.
+     */
+    private boolean checkPermissions() {
+        int permissionState1 = ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+        int permissionState2 = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        return permissionState1 == PackageManager.PERMISSION_GRANTED && permissionState2 == PackageManager.PERMISSION_GRANTED;
+
+    }
+
+    /**
+     * Start permissions requests.
+     */
+    private void requestPermissions() {
+
+        boolean shouldProvideRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+        boolean shouldProvideRationale2 =
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION);
+
+
+        // Provide an additional rationale to the img_user. This would happen if the img_user denied the
+        // request previously, but didn't check the "Don't ask again" checkbox.
+        if (shouldProvideRationale || shouldProvideRationale2) {
+            Log.i(TAG, "Displaying permission rationale to provide additional context.");
+            showSnackbar(R.string.permiso_ubicacion,
+                    android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Request permission
+                            ActivityCompat.requestPermissions(RegistrarActividadActivity.this,
+                                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                                    REQUEST_PERMISSIONS_REQUEST_CODE);
+                        }
+                    });
+        } else {
+            Log.i(TAG, "Requesting permission");
+            // Request permission. It's possible this can be auto answered if device policy
+            // sets the permission in a given state or the img_user denied the permission
+            // previously and checked "Never ask again".
+            ActivityCompat.requestPermissions(RegistrarActividadActivity.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+
+    /**
+     * Shows a {@link Snackbar}.
+     *
+     * @param mainTextStringId The id for the string resource for the Snackbar text.
+     * @param actionStringId   The text of the action item.
+     * @param listener         The listener associated with the Snackbar action.
+     */
+    private void showSnackbar(final int mainTextStringId, final int actionStringId,
+                              View.OnClickListener listener) {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(mainTextStringId),
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(actionStringId), listener).show();
+    }
+
+
 }

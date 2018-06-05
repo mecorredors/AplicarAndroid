@@ -8,6 +8,7 @@ import android.util.Log;
 import com.anupcowkur.reservoir.Reservoir;
 import com.stacktips.view.utils.CalendarUtils;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -341,5 +342,13 @@ public class Utils {
             e.printStackTrace();
         }
         return convertedDate;
+    }
+
+    public static float round(int numDecimales, float d ) {
+        if (d == 0) return  0;
+
+        BigDecimal bd = new BigDecimal(Double.toString(d));
+        bd = bd.setScale(numDecimales, BigDecimal.ROUND_HALF_EVEN);
+        return bd.floatValue();
     }
 }
