@@ -302,10 +302,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
     @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
-       // abrirEscaner();
+        abrirEscaner();
 
-        String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
-        obtenerDatos(datos);
+       // String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
+       // obtenerDatos(datos);
     }
     @OnClick(R.id.btnPublicar) void onPublicar(){
         mostrarProgressDialog("Publicando ...");
