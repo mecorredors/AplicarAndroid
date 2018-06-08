@@ -24,6 +24,7 @@ public class LogTrayecto {
     public int IDBeneficiarioRegistro;
     public int IDBicicleta;
     public int IDBeneficiario;
+    public String Polyline;
 
 
     public static final String ID = "id";
@@ -37,6 +38,7 @@ public class LogTrayecto {
     public static final String ID_BENEFICIARIO = "IDBeneficiario";
     public static final String ID_BENEFICIARIO_REGISTRO = "IDBeneficiarioRegistro";
     public static final String ID_BICICLETA = "IDBicicleta";
+    public static final String POLYINE = "Polyline";
 
     public static final String TABLE_NAME = "LogTrayectos";
 
@@ -55,6 +57,8 @@ public class LogTrayecto {
         if(c.getColumnIndex(ID_BENEFICIARIO)>=0) this.IDBeneficiario = c.getInt(c.getColumnIndex(ID_BENEFICIARIO));
         if(c.getColumnIndex(ID_BENEFICIARIO_REGISTRO)>=0) this.IDBeneficiarioRegistro = c.getInt(c.getColumnIndex(ID_BENEFICIARIO_REGISTRO));
         if(c.getColumnIndex(ID_BICICLETA)>=0) this.IDBicicleta = c.getInt(c.getColumnIndex(ID_BICICLETA));
+        if(c.getColumnIndex(POLYINE)>=0) this.Polyline = c.getString(c.getColumnIndex(POLYINE));
+
     }
 
     @Override public String toString(){

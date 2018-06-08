@@ -33,6 +33,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.PolyUtil;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -60,7 +63,7 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
 
-public class RegistrarActividadActivity extends BaseActivity implements IViewBeneficiario, IViewLogTrayecto {
+public class RegistrarActividadActivity extends BaseActivity implements IViewBeneficiario, IViewLogTrayecto, LogTrayectoAdapter.LogTrayectoListener {
 
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private static final int REQUEST_CODE_SCANNER = 2;
@@ -85,6 +88,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
     Beneficiario mBeneficiario = null;
     Beneficiario mBeneficiarioLogin = Beneficiarios.readBeneficio();
+    String polyline = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +105,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         recyclerView.setHasFixedSize(true);
         mAdaptador = new LogTrayectoAdapter(mLstLogTrayectos);
-       // mAdaptador.setOnClickListener(onClickListener);
+        mAdaptador.setLogTrayectoListener(this);
         recyclerView.setAdapter(mAdaptador);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -213,13 +217,18 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             logTrayecto.IDBicicleta = mBeneficiario.IDBicicleta;
         }
 
+
+
         if (new LogTrayectos().Insert(logTrayecto)) {
             lyDatosQR.setVisibility(View.GONE);
 
             obtenerItemsActividad();
+
         }
     }
     @OnClick(R.id.btnAgregarMiRecorrido) void onAgregarMiRecorrido(){
+
+
         LogTrayecto logTrayecto = new LogTrayecto();
 
 
@@ -240,18 +249,52 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         logTrayecto.IDBeneficiario = mBeneficiarioLogin.IDBeneficiario;
         logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
-
+        logTrayecto.Polyline = polyline;
         if (new LogTrayectos().Insert(logTrayecto)) {
             ocultarTeclado(inputLyDistanciaKM);
             txtDistanciaKM.setText("");
             txtTiempo.setText("");
             obtenerItemsActividad();
+            polyline = "";
         }
         lblDuracion.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.btnIniciar) void onIniciar(){
         startStep1();
+
+
+/*
+polyline = "";
+        List<LatLng> latLngs = new ArrayList<>();
+        latLngs.add(new LatLng( 4.710007, -74.103150));
+       // polyline += PolyUtil.encode(latLngs);
+        //latLngs.clear();
+        latLngs.add(new LatLng( 4.709450, -74.103160));
+      //  polyline += PolyUtil.encode(latLngs);
+       // latLngs.clear();
+        latLngs.add(new LatLng(   4.708749, -74.104241));
+       //   polyline += PolyUtil.encode(latLngs);
+       // latLngs.clear();
+        latLngs.add(new LatLng(  4.706429, -74.107556));
+        // polyline += PolyUtil.encode(latLngs);
+        //latLngs.clear();
+        latLngs.add(new LatLng(  4.705915, -74.106945));
+          polyline = PolyUtil.encode(latLngs);
+
+
+
+        Intent i = new Intent(this, RutaMapaActivity.class);
+        i.putExtra(LogTrayecto.POLYINE , polyline);
+        startActivity(i);
+
+*/
+
+
+
+
+
+
     }
     @OnClick(R.id.btnDetener) void onDetener(){
         stopService(new Intent(this, LocationMonitoringService.class));
@@ -263,6 +306,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         btnAgregarMiRecorrido.setVisibility(View.VISIBLE);
         btnIniciar.setVisibility(View.VISIBLE);
         btnDetener.setVisibility(View.GONE);
+        polyline = PreferencesApp.getDefault(PreferencesApp.READ).getString(LocationMonitoringService.EXTRA_POLYLINE,"");
 
     }
 
@@ -572,7 +616,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             btnDetener.setVisibility(View.VISIBLE);
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
-
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putString(LocationMonitoringService.EXTRA_POLYLINE , "").commit();
+            polyline = "";
             //Start location sharing service to app server.........
             Intent intent = new Intent(this, LocationMonitoringService.class);
             startService(intent);
@@ -669,4 +714,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
 
+    @Override
+    public void onVerRuta(int position, View view) {
+        LogTrayecto logTrayecto = mLstLogTrayectos.get(position);
+        Intent i = new Intent(this, RutaMapaActivity.class);
+        i.putExtra(LogTrayecto.POLYINE , logTrayecto.Polyline);
+        startActivity(i);
+    }
 }

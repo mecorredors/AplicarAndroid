@@ -24,9 +24,13 @@ import android.support.v4.content.LocalBroadcastManager;
         import com.google.android.gms.location.LocationListener;
         import com.google.android.gms.location.LocationRequest;
         import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.PolyUtil;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
@@ -53,12 +57,15 @@ public class LocationMonitoringService extends Service implements
     public static final String EXTRA_DISTANCIA = "extra_distancia";
     public static final String EXTRA_TIEMPO_MINUTOS = "extra_tiempo_minutos";
     public static final String EXTRA_START_TIME = "extra_start_time";
+    public static final String EXTRA_POLYLINE = "extra_start_polilyne";
 
     float distancia = 0;
 
     Location locationPreview;
     long startTime = 0;
     private Handler _handler;
+    String polyline;
+    List<LatLng> latLngs = new ArrayList<>();
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -75,7 +82,7 @@ public class LocationMonitoringService extends Service implements
 
         mLocationRequest.setInterval(15000);
         mLocationRequest.setFastestInterval(15000);
-
+        latLngs.clear();
 
         int priority = LocationRequest.PRIORITY_HIGH_ACCURACY; //by default
         //PRIORITY_BALANCED_POWER_ACCURACY, PRIORITY_LOW_POWER, PRIORITY_NO_POWER are the other priority modes
@@ -178,16 +185,27 @@ public class LocationMonitoringService extends Service implements
             if (recorrido > 12){
                 distancia += recorrido;
                 locationPreview = location;
+                addPolyline(locationPreview);
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(EXTRA_DISTANCIA , distancia).commit();
             }
 
         }
 
-        if (locationPreview == null)
+        if (locationPreview == null) {
             locationPreview = location;
+            addPolyline(locationPreview);
+
+        }
 
     }
 
+    private void addPolyline(Location location){
+
+        latLngs.add(new LatLng(location.getLatitude(), location.getLatitude()));
+
+        polyline = PolyUtil.encode(latLngs);
+        PreferencesApp.getDefault(PreferencesApp.WRITE).putString(EXTRA_POLYLINE , polyline).commit();
+    }
 
 
     private void sendMessageToUI( float distancia, float tiempoMinutos, int minutos, int segundos) {

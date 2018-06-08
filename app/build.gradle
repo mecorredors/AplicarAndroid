@@ -101,5 +101,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'me.dm7.barcodescanner:zxing:1.9.8'
+    compile 'com.google.maps.android:android-maps-utils:0.5+'
 }
 apply plugin: 'com.google.gms.google-services'

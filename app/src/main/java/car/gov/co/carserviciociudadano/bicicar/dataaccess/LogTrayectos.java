@@ -52,7 +52,10 @@ public class LogTrayectos {
                 "[" + LogTrayecto.NOMBRE + "]",
                 "[" + LogTrayecto.ID_BENEFICIARIO + "]",
                 "[" + LogTrayecto.ID_BENEFICIARIO_REGISTRO + "]",
-                "[" + LogTrayecto.ID_BICICLETA + "]"
+                "[" + LogTrayecto.ID_BICICLETA + "]",
+                "[" + LogTrayecto.POLYINE + "]"
+
+
         };
     }
     public boolean Insert(LogTrayecto element) {
@@ -69,6 +72,7 @@ public class LogTrayectos {
         cv.put(LogTrayecto.ID_BENEFICIARIO, element.IDBeneficiario);
         cv.put(LogTrayecto.ID_BENEFICIARIO_REGISTRO, element.IDBeneficiarioRegistro);
         cv.put(LogTrayecto.ID_BICICLETA, element.IDBicicleta);
+        cv.put(LogTrayecto.POLYINE, element.Polyline);
 
         long rowid = 0;
 
@@ -109,7 +113,8 @@ public class LogTrayectos {
         cv.put(LogTrayecto.ID_BENEFICIARIO, element.IDBeneficiario);
         cv.put(LogTrayecto.ID_BENEFICIARIO_REGISTRO, element.IDBeneficiarioRegistro);
         cv.put(LogTrayecto.ID_BICICLETA, element.IDBicicleta);
-
+        cv.put(LogTrayecto.POLYINE, element.Polyline);
+        
         long rowid = 0;
 
         SQLiteDatabase db = _dbHelper.getWritableDatabase();

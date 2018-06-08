@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,25 +21,31 @@ import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
 public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.PlaceSelectorViewHolder>  implements View.OnClickListener {
     private View.OnClickListener listener;
     private List<LogTrayecto> datos;
-
+    static   LogTrayectoListener logTrayectoListener;
+    public void setLogTrayectoListener(LogTrayectoListener logTrayectoListener){
+        this.logTrayectoListener = logTrayectoListener;
+    }
     public static class PlaceSelectorViewHolder
-            extends RecyclerView.ViewHolder {
+            extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         private TextView lblSerial;
         private TextView lblNombre;
         private CardView lyItemLogTrayecto;
+        private Button btnVerRuta;
 
         public PlaceSelectorViewHolder(View itemView) {
             super(itemView);
             lblSerial = itemView.findViewById(R.id.lblSerial);
             lblNombre = itemView.findViewById(R.id.lblNombre);
             lyItemLogTrayecto = itemView.findViewById(R.id.lyItemLogTrayecto);
-
+            btnVerRuta = itemView.findViewById(R.id.btnVerRuta);
+            btnVerRuta.setOnClickListener(this);
         }
 
-        public void bindParque(LogTrayecto a) {
+        public void bind(LogTrayecto a) {
 
+            btnVerRuta.setVisibility(View.GONE);
             if (a.Label != null && !a.Label.isEmpty()){
                 lblSerial.setText(a.Label);
                 lblNombre.setVisibility(View.GONE);
@@ -61,9 +68,18 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
                 } else {
                     lblNombre.setVisibility(View.GONE);
                 }
+
+                if (a.Polyline != null && !a.Polyline.isEmpty()){
+                    btnVerRuta.setVisibility(View.VISIBLE);
+                }
+
             }
         }
 
+        @Override
+        public void onClick(View view) {
+            logTrayectoListener.onVerRuta(getAdapterPosition(), view);
+        }
     }
 
     public LogTrayectoAdapter(List<LogTrayecto> datos) {
@@ -86,7 +102,7 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
     @Override
     public void onBindViewHolder(PlaceSelectorViewHolder viewHolder, int pos) {
         LogTrayecto item = datos.get(pos);
-        viewHolder.bindParque(item);
+        viewHolder.bind(item);
     }
 
     @Override
@@ -102,6 +118,10 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
     public void onClick(View view) {
         if(listener != null)
             listener.onClick(view);
+    }
+
+    public interface LogTrayectoListener{
+        void onVerRuta(int position, View view);
     }
 }
 
