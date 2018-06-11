@@ -33,6 +33,12 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
         private TextView lblNombre;
         private CardView lyItemLogTrayecto;
         private Button btnVerRuta;
+        private View lyTitulo;
+        private View lyItem;
+        private TextView lblTitulo;
+        private TextView lblTotal;
+        private TextView lblDistancia;
+        private TextView lblDuracion;
 
         public PlaceSelectorViewHolder(View itemView) {
             super(itemView);
@@ -40,6 +46,12 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
             lblNombre = itemView.findViewById(R.id.lblNombre);
             lyItemLogTrayecto = itemView.findViewById(R.id.lyItemLogTrayecto);
             btnVerRuta = itemView.findViewById(R.id.btnVerRuta);
+            lyTitulo = itemView.findViewById(R.id.lyTitulo);
+            lyItem = itemView.findViewById(R.id.lyItem);
+            lblTitulo = itemView.findViewById(R.id.lblTitulo);
+            lblTotal = itemView.findViewById(R.id.lblTotal);
+            lblDistancia = itemView.findViewById(R.id.lblDistancia);
+            lblDuracion = itemView.findViewById(R.id.lblDuracion);
             btnVerRuta.setOnClickListener(this);
         }
 
@@ -47,20 +59,40 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
 
             btnVerRuta.setVisibility(View.GONE);
             if (a.Label != null && !a.Label.isEmpty()){
-                lblSerial.setText(a.Label);
+                lyItem.setVisibility(View.GONE);
+                lyTitulo.setVisibility(View.VISIBLE);
+                lblTitulo.setText(a.Label);
+                lblTotal.setText(a.TotalItems > 0 ? "Total hoy: " + String.valueOf(a.TotalItems) : "");
                 lblNombre.setVisibility(View.GONE);
                 lyItemLogTrayecto.setCardElevation(1);
                 lyItemLogTrayecto.setCardBackgroundColor(AppCar.getContext().getResources().getColor(R.color.blue60));
             }else {
+                lyItem.setVisibility(View.VISIBLE);
+                lyTitulo.setVisibility(View.GONE);
                 lyItemLogTrayecto.setCardElevation(0);
                 lyItemLogTrayecto.setCardBackgroundColor(AppCar.getContext().getResources().getColor(R.color.background));
 
-              if (a.Serial != null)
-                lblSerial.setText(a.Serial + " Rin: " + a.TamanioRin);
-              else
-                  lblSerial.setText("Distancia Km: " + a.DistanciaKM );
-              if (a.DuracionMinutos > 0)
-                  lblSerial.setText(lblSerial.getText() +" Tiempo: " + a.DuracionMinutos);
+              if (a.Serial != null) {
+                  lblSerial.setText(a.Serial + " Rin: " + a.TamanioRin);
+                  lblSerial.setVisibility(View.VISIBLE);
+              }
+              else {
+                  lblSerial.setVisibility(View.GONE);
+              }
+
+              if (a.DuracionMinutos > 0) {
+                  lblDuracion.setVisibility(View.VISIBLE);
+                  lblDuracion.setText(a.DuracionMinutos + " Min.");
+              }else{
+                  lblDuracion.setVisibility(View.GONE);
+              }
+
+                if (a.DuracionMinutos > 0) {
+                    lblDistancia.setVisibility(View.VISIBLE);
+                    lblDistancia.setText(a.DistanciaKM + " km.");
+                }else{
+                    lblDistancia.setVisibility(View.GONE);
+                }
 
                 if (a.Nombre != null && !a.Nombre.isEmpty()) {
                     lblNombre.setVisibility(View.VISIBLE);
@@ -69,7 +101,7 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
                     lblNombre.setVisibility(View.GONE);
                 }
 
-                if (a.Polyline != null && !a.Polyline.isEmpty()){
+                if (a.Ruta != null && !a.Ruta.isEmpty()){
                     btnVerRuta.setVisibility(View.VISIBLE);
                 }
 

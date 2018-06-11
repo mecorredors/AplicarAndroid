@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".bicicar.activities.RegistrarActividadActivity">
+    tools:context=".bicicar.activities.RegistrarActividadActivity"
+    android:id="@+id/lyContenedor">
 
     <Button android:id="@+id/btnEscanearCodigo"
         android:theme="@style/ButtonAccent"
@@ -109,7 +110,7 @@
                 android:layout_gravity="center_vertical"/>
         </FrameLayout>
 
-        <LinearLayout
+        <LinearLayout android:id="@+id/lyIngresarRecorrido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -125,7 +126,7 @@
                 android:id="@+id/txtDistanciaKM"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Distancia en Kms"
+                android:hint="Distancia en Km"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
@@ -195,16 +196,67 @@
             />
         </LinearLayout>
 
-        <TextView android:id="@+id/lblDuracion"
+        <LinearLayout android:id="@+id/lyInfoRecorrido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00:00"
-            android:layout_marginTop="@dimen/margin_4dp"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:textColor="@color/primaryText"
-            android:textSize="32sp"
-            android:layout_gravity="center_horizontal"
-            />
+            android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                   >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DISTANCIA KM"
+                        android:layout_marginTop="@dimen/margin_4dp"
+                        android:textColor="@color/secondaryText"
+                        android:textSize="@dimen/text_size_12"
+                        />
+
+                    <TextView android:id="@+id/lblDistancia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:layout_marginTop="@dimen/margin_4dp"
+                        android:textColor="@color/primaryText"
+                        android:textSize="36sp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/margin_16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/duracion"
+                        android:layout_marginTop="@dimen/margin_4dp"
+                        android:textColor="@color/secondaryText"
+                        android:textSize="@dimen/text_size_12"
+                        />
+
+                    <TextView android:id="@+id/lblDuracion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:layout_marginTop="@dimen/margin_4dp"
+                        android:textColor="@color/primaryText"
+                        android:textSize="36sp"
+                        android:layout_gravity="center_horizontal"
+                        />
+                </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
     </LinearLayout>

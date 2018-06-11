@@ -29,7 +29,7 @@ import car.gov.co.carserviciociudadano.parques.activities.ComoLLegarActivity;
 public class RutaMapaActivity extends BaseActivity implements OnMapReadyCallback {
 
     private GoogleMap mapa;
-    String polyline;
+    String ruta;
     private int colorRuta = 0xFF1976D2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class RutaMapaActivity extends BaseActivity implements OnMapReadyCallback
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
-            polyline = bundle.getString(LogTrayecto.POLYINE, "");
+            ruta = bundle.getString(LogTrayecto.RUTA, "");
 
         }
 
@@ -59,17 +59,20 @@ public class RutaMapaActivity extends BaseActivity implements OnMapReadyCallback
 
     private void dibujarRuta() {
 
-        ArrayList<LatLng> directionPositionList = (ArrayList<LatLng>) PolyUtil.decode(polyline);
+        ArrayList<LatLng> directionPositionList = (ArrayList<LatLng>) PolyUtil.decode(ruta);
         PolylineOptions polylineOptions = DirectionConverter.createPolyline(RutaMapaActivity.this, directionPositionList, 6, colorRuta);
         mapa.addPolyline(polylineOptions);
 
+
         if (directionPositionList.size() > 0){
-            CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(directionPositionList.get(0), 14);
+            CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(directionPositionList.get(0), 16);
             mapa.addMarker(new MarkerOptions().position(directionPositionList.get(0)).title("Inicio").icon(BitmapDescriptorFactory.fromResource(R.mipmap.bike)));
 
             mapa.addMarker(new MarkerOptions().position(directionPositionList.get(directionPositionList.size() - 1)).title("Destino").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ok_circle)));
 
             mapa.moveCamera(camUpd1);
+
+
         }
     }
 }

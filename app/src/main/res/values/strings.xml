@@ -23,6 +23,7 @@
     <string name="title_bank_project">Proyecto de Cofinanciación </string>
     <string name="title_bicicar">BiciCAR </string>
     <string name="title_escaner">Escanear QR </string>
+    <string name="title_historial_trayectos">Historial trayectos </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -143,10 +144,12 @@
     <string name="tiempo">Tiempo Min (Opcional) </string>
     <string name="seguro_cerrar_sesion">Seguro desea cerrar sesión </string>
     <string name="huella_ambiental">Huella ambiental </string>
+    <string name="historial_trayectos">Historial trayectos </string>
     <string name="permiso_ubicacion">Por favor conceda permiso de ubicación para comenzar el servicio </string>
     <string name="permiso_ubicacion_denegado">No has otorgado permiso de ubicación. Entonces el servicio no puede ser iniciado </string>
     <string name="channel"> BiciCAR</string>
     <string name="channel_description"> Notificaciones BiciCAR</string>
+    <string name="duracion"> DURACIÓN</string>
 
 
 </resources>

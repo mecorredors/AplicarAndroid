@@ -24,6 +24,7 @@ import java.util.Map;
 
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.ILogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
@@ -53,8 +54,15 @@ public class LogTrayectos {
                 "[" + LogTrayecto.ID_BENEFICIARIO + "]",
                 "[" + LogTrayecto.ID_BENEFICIARIO_REGISTRO + "]",
                 "[" + LogTrayecto.ID_BICICLETA + "]",
-                "[" + LogTrayecto.POLYINE + "]"
-
+                "[" + LogTrayecto.RUTA + "]",
+                "[" + LogTrayecto.LATITUDE_PUNTO_A + "]",
+                "[" + LogTrayecto.LONGITUDE_PUNTO_A + "]",
+                "[" + LogTrayecto.LATITUDE_PUNTO_B + "]",
+                "[" + LogTrayecto.LONGITUDE_PUNTO_B + "]",
+                "[" + LogTrayecto.NORTE_PUNTO_A + "]",
+                "[" + LogTrayecto.ESTE_PUNTO_A + "]",
+                "[" + LogTrayecto.NORTE_PUNTO_B + "]",
+                "[" + LogTrayecto.ESTE_PUNTO_B + "]"
 
         };
     }
@@ -72,7 +80,15 @@ public class LogTrayectos {
         cv.put(LogTrayecto.ID_BENEFICIARIO, element.IDBeneficiario);
         cv.put(LogTrayecto.ID_BENEFICIARIO_REGISTRO, element.IDBeneficiarioRegistro);
         cv.put(LogTrayecto.ID_BICICLETA, element.IDBicicleta);
-        cv.put(LogTrayecto.POLYINE, element.Polyline);
+        cv.put(LogTrayecto.RUTA, element.Ruta);
+        cv.put(LogTrayecto.LATITUDE_PUNTO_A, element.LatitudePuntoA);
+        cv.put(LogTrayecto.LONGITUDE_PUNTO_A, element.LongitudePuntoA);
+        cv.put(LogTrayecto.LATITUDE_PUNTO_B, element.LatitudePuntoB);
+        cv.put(LogTrayecto.LONGITUDE_PUNTO_B, element.LongitudePuntoB);
+        cv.put(LogTrayecto.NORTE_PUNTO_A, element.NortePuntoA);
+        cv.put(LogTrayecto.ESTE_PUNTO_A, element.EstePuntoA);
+        cv.put(LogTrayecto.NORTE_PUNTO_B, element.NortePuntoB);
+        cv.put(LogTrayecto.ESTE_PUNTO_B, element.EstePuntoB);
 
         long rowid = 0;
 
@@ -113,7 +129,7 @@ public class LogTrayectos {
         cv.put(LogTrayecto.ID_BENEFICIARIO, element.IDBeneficiario);
         cv.put(LogTrayecto.ID_BENEFICIARIO_REGISTRO, element.IDBeneficiarioRegistro);
         cv.put(LogTrayecto.ID_BICICLETA, element.IDBicicleta);
-        cv.put(LogTrayecto.POLYINE, element.Polyline);
+       // cv.put(LogTrayecto.RUTA, element.Ruta);
         
         long rowid = 0;
 
@@ -154,8 +170,13 @@ public class LogTrayectos {
 
 
             try {
+
                 String where = LogTrayecto.ESTADO + "=?";
                 String[] selectionArgs = {String.valueOf(estado)};
+                if (estado == Enumerator.BicicarLogTrayecto.TODOS) {
+                    where = null;
+                    selectionArgs = null;
+                }
                 Cursor c = db.query(LogTrayecto.TABLE_NAME, projectionDefault(), where, selectionArgs, null, null, "[" + LogTrayecto.ID + "] DESC");
 
                 if (c.moveToFirst()) {

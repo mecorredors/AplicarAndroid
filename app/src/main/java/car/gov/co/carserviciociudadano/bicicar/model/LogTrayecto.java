@@ -24,8 +24,16 @@ public class LogTrayecto {
     public int IDBeneficiarioRegistro;
     public int IDBicicleta;
     public int IDBeneficiario;
-    public String Polyline;
-
+    public double LatitudePuntoA;
+    public double LongitudePuntoA;
+    public double NortePuntoA;
+    public double EstePuntoA;
+    public double LatitudePuntoB;
+    public double LongitudePuntoB;
+    public double NortePuntoB;
+    public double EstePuntoB;
+    public String Ruta;
+    public int TotalItems;
 
     public static final String ID = "id";
     public static final String SERIAL = "Serial";
@@ -38,7 +46,15 @@ public class LogTrayecto {
     public static final String ID_BENEFICIARIO = "IDBeneficiario";
     public static final String ID_BENEFICIARIO_REGISTRO = "IDBeneficiarioRegistro";
     public static final String ID_BICICLETA = "IDBicicleta";
-    public static final String POLYINE = "Polyline";
+    public static final String RUTA = "Ruta";
+    public static final String LATITUDE_PUNTO_A = "LatitudePuntoA";
+    public static final String LONGITUDE_PUNTO_A= "LongitudePuntoA";
+    public static final String LATITUDE_PUNTO_B = "LatitudePuntoB";
+    public static final String LONGITUDE_PUNTO_B = "LongitudePuntoA";
+    public static final String ESTE_PUNTO_A = "EstePuntoA";
+    public static final String NORTE_PUNTO_A = "NortePuntoA";
+    public static final String ESTE_PUNTO_B = "EstePuntoB";
+    public static final String NORTE_PUNTO_B = "NortePuntoB";
 
     public static final String TABLE_NAME = "LogTrayectos";
 
@@ -57,8 +73,15 @@ public class LogTrayecto {
         if(c.getColumnIndex(ID_BENEFICIARIO)>=0) this.IDBeneficiario = c.getInt(c.getColumnIndex(ID_BENEFICIARIO));
         if(c.getColumnIndex(ID_BENEFICIARIO_REGISTRO)>=0) this.IDBeneficiarioRegistro = c.getInt(c.getColumnIndex(ID_BENEFICIARIO_REGISTRO));
         if(c.getColumnIndex(ID_BICICLETA)>=0) this.IDBicicleta = c.getInt(c.getColumnIndex(ID_BICICLETA));
-        if(c.getColumnIndex(POLYINE)>=0) this.Polyline = c.getString(c.getColumnIndex(POLYINE));
-
+        if(c.getColumnIndex(RUTA)>=0) this.Ruta = c.getString(c.getColumnIndex(RUTA));
+        if(c.getColumnIndex(LATITUDE_PUNTO_A)>=0) this.LatitudePuntoA = c.getDouble(c.getColumnIndex(LATITUDE_PUNTO_A));
+        if(c.getColumnIndex(LONGITUDE_PUNTO_A)>=0) this.LongitudePuntoA = c.getDouble(c.getColumnIndex(LONGITUDE_PUNTO_A));
+        if(c.getColumnIndex(LATITUDE_PUNTO_B)>=0) this.LatitudePuntoB = c.getDouble(c.getColumnIndex(LATITUDE_PUNTO_B));
+        if(c.getColumnIndex(LONGITUDE_PUNTO_B)>=0) this.LongitudePuntoB = c.getDouble(c.getColumnIndex(LONGITUDE_PUNTO_B));
+        if(c.getColumnIndex(NORTE_PUNTO_A)>=0) this.NortePuntoA = c.getDouble(c.getColumnIndex(NORTE_PUNTO_A));
+        if(c.getColumnIndex(ESTE_PUNTO_A)>=0) this.EstePuntoA = c.getDouble(c.getColumnIndex(ESTE_PUNTO_A));
+        if(c.getColumnIndex(NORTE_PUNTO_B)>=0) this.NortePuntoB = c.getDouble(c.getColumnIndex(NORTE_PUNTO_B));
+        if(c.getColumnIndex(ESTE_PUNTO_B)>=0) this.EstePuntoB = c.getDouble(c.getColumnIndex(ESTE_PUNTO_B));
     }
 
     @Override public String toString(){
