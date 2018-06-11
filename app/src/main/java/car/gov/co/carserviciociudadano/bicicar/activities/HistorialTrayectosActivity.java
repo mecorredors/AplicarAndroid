@@ -2,7 +2,6 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -86,6 +85,8 @@ public class HistorialTrayectosActivity extends BaseActivity implements LogTraye
         LogTrayecto logTrayecto = mLstLogTrayectos.get(position);
         Intent i = new Intent(this, RutaMapaActivity.class);
         i.putExtra(LogTrayecto.RUTA , logTrayecto.Ruta);
+        i.putExtra(LogTrayecto.DURACION_MINUTOS, logTrayecto.DuracionMinutos);
+        i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKM);
         startActivity(i);
     }
 }

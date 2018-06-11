@@ -58,11 +58,8 @@ public class LocationMonitoringService extends Service implements
     public static final String EXTRA_DISTANCIA = "extra_distancia";
     public static final String EXTRA_TIEMPO_MINUTOS = "extra_tiempo_minutos";
     public static final String EXTRA_START_TIME = "extra_start_time";
-    public static final String EXTRA_POLYLINE = "extra_start_polilyne";
-    public static final String EXTRA_LATITUDE_PUNTO_A = "extra_latitude_punto_a";
-    public static final String EXTRA_LONGITUDE_PUNTO_A = "extra_longitude_punto_a";
-    public static final String EXTRA_LATITUDE_PUNTO_B = "extra_latitude_punto_b";
-    public static final String EXTRA_LONGITUDE_PUNTO_B = "extra_longitude_punto_b";
+    public static final String EXTRA_RUTA = "extra_start_ruta";
+
     float distancia = 0;
 
     Location locationPreview;
@@ -72,15 +69,13 @@ public class LocationMonitoringService extends Service implements
     private Handler _handler;
     List<LatLng> latLngs = new ArrayList<>();
 
-    LogTrayecto logTrayecto = null;
-
 
     int numRequest = 0;
     final static int MAX_REQUEST = 3;
     final static int INTERVAL = 1500;
     final static int FASTEST_INTERVAL = 1200;
-    final static int SMALLEST_DISPLACEMENT = 3;
-    final static int MIN_DISTANCE = 3;
+    final static int SMALLEST_DISPLACEMENT = 2;
+    final static int MIN_DISTANCE = 2;
 
 
     @Override
@@ -91,6 +86,12 @@ public class LocationMonitoringService extends Service implements
         startTime = PreferencesApp.getDefault(PreferencesApp.READ).getLong(EXTRA_START_TIME , System.currentTimeMillis() );
         distancia = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(EXTRA_DISTANCIA , 0);
 
+        String ruta = PreferencesApp.getDefault(PreferencesApp.READ).getString(EXTRA_RUTA);
+        latLngs.clear();
+        if (ruta != null && ! ruta.isEmpty()){
+            latLngs.addAll(PolyUtil.decode(ruta));
+        }
+
         mLocationClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -100,9 +101,8 @@ public class LocationMonitoringService extends Service implements
         mLocationRequest.setInterval(INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
         mLocationRequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
-        latLngs.clear();
+
         numRequest = 0;
-        logTrayecto = new LogTrayecto();
 
         int priority = LocationRequest.PRIORITY_HIGH_ACCURACY; //by default
         //PRIORITY_BALANCED_POWER_ACCURACY, PRIORITY_LOW_POWER, PRIORITY_NO_POWER are the other priority modes
@@ -188,8 +188,6 @@ public class LocationMonitoringService extends Service implements
 
         if (locationPreview == null) {
             locationPreview = location;
-            logTrayecto.LatitudePuntoA = locationPreview.getLatitude();
-            logTrayecto.LongitudePuntoA = locationPreview.getLongitude();
         }
 
         if (locationBest == null) {
@@ -201,8 +199,6 @@ public class LocationMonitoringService extends Service implements
             if (isBetterLocation(locationBest, location)){
                 locationBest = location;
             }
-            logTrayecto.LatitudePuntoB = locationBest.getLatitude();
-            logTrayecto.LongitudePuntoB = locationBest.getLongitude();
         }
 
         if (locationPreview != null && locationBest != null && numRequest > MAX_REQUEST){
@@ -212,9 +208,9 @@ public class LocationMonitoringService extends Service implements
                 distancia += recorrido;
                 locationPreview = locationBest;
                 if (latLngs.size() == 0)
-                    addPolyline(locationPreview);
+                    addPuntoRuta(locationPreview);
 
-                addPolyline(locationBest);
+                addPuntoRuta(locationBest);
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(EXTRA_DISTANCIA , distancia).commit();
             }
 
@@ -225,13 +221,10 @@ public class LocationMonitoringService extends Service implements
 
     }
 
-    private void addPolyline(Location location){
-
+    private void addPuntoRuta(Location location){
         latLngs.add(new LatLng(location.getLatitude(), location.getLongitude()));
-
-        logTrayecto.Ruta = PolyUtil.encode(latLngs);
-
-        //PreferencesApp.getDefault(PreferencesApp.WRITE).putString(EXTRA_POLYLINE , polyline).commit();
+        String ruta = PolyUtil.encode(latLngs);
+        PreferencesApp.getDefault(PreferencesApp.WRITE).putString(EXTRA_RUTA , ruta).commit();
     }
 
 
@@ -244,11 +237,6 @@ public class LocationMonitoringService extends Service implements
         intent.putExtra(EXTRA_SEGUNDOS, segundos);
         intent.putExtra(EXTRA_DISTANCIA, distancia);
         intent.putExtra(EXTRA_TIEMPO_MINUTOS, tiempoMinutos);
-        intent.putExtra(EXTRA_POLYLINE, logTrayecto.Ruta);
-        intent.putExtra(EXTRA_LATITUDE_PUNTO_A, logTrayecto.LatitudePuntoA);
-        intent.putExtra(EXTRA_LONGITUDE_PUNTO_A, logTrayecto.LongitudePuntoA);
-        intent.putExtra(EXTRA_LATITUDE_PUNTO_B, logTrayecto.LatitudePuntoB);
-        intent.putExtra(EXTRA_LONGITUDE_PUNTO_B, logTrayecto.LongitudePuntoB);
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 

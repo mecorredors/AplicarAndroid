@@ -155,7 +155,8 @@
         <!-- Add the service created in services package ! -->
         <service android:name=".bicicar.services.LocationMonitoringService" />
 
-        <activity android:name=".bicicar.activities.RutaMapaActivity" />
+        <activity android:name=".bicicar.activities.RutaMapaActivity"
+            android:label="@string/title_bicicar"/>
         <activity android:name=".bicicar.activities.HistorialTrayectosActivity"
             android:label="@string/title_historial_trayectos"></activity>
     </application>

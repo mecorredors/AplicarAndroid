@@ -82,7 +82,10 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
 
               if (a.DuracionMinutos > 0) {
                   lblDuracion.setVisibility(View.VISIBLE);
-                  lblDuracion.setText(a.DuracionMinutos + " Min.");
+                  int segundos = (int) (a.DuracionMinutos * 60);
+                  int minutos = segundos / 60;
+                  segundos = segundos % 60;
+                  lblDuracion.setText(String.format("%d:%02d", minutos, segundos));
               }else{
                   lblDuracion.setVisibility(View.GONE);
               }

@@ -93,13 +93,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
     Beneficiario mBeneficiario = null;
     Beneficiario mBeneficiarioLogin = Beneficiarios.readBeneficio();
-    String polyline = "";
-   float distancia = 0;
+    String ruta = "";
+    float distancia = 0;
     float tiempo = 0;
-    double latitude_punto_a = 0;
-    double longitude_punto_a = 0;
-    double latitude_punto_b = 0;
-    double longitude_punto_b = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,11 +138,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                         int segundos = intent.getIntExtra(LocationMonitoringService.EXTRA_SEGUNDOS, 0);
                         distancia = intent.getFloatExtra(LocationMonitoringService.EXTRA_DISTANCIA, 0);
                         tiempo = intent.getFloatExtra(LocationMonitoringService.EXTRA_TIEMPO_MINUTOS, 0);
-                        polyline = intent.getStringExtra(LocationMonitoringService.EXTRA_POLYLINE);
-                        latitude_punto_a = intent.getDoubleExtra(LocationMonitoringService.EXTRA_LATITUDE_PUNTO_A, 0);
-                        longitude_punto_a = intent.getDoubleExtra(LocationMonitoringService.EXTRA_LONGITUDE_PUNTO_A, 0);
-                        latitude_punto_b = intent.getDoubleExtra(LocationMonitoringService.EXTRA_LATITUDE_PUNTO_B, 0);
-                        longitude_punto_b = intent.getDoubleExtra(LocationMonitoringService.EXTRA_LONGITUDE_PUNTO_B, 0);
 
                         lblDuracion.setText(String.format("%d:%02d", minutos, segundos));
                         lblDistancia.setText(String.valueOf(Utils.round(2,(distancia/1000))));
@@ -264,10 +256,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     }
 
-    private void agregarMiRecorrido(float distancia, float minutos, String polyline) {
-        agregarMiRecorrido(distancia, minutos, polyline,0,0,0,0);
+    private void agregarMiRecorrido(float distancia, float minutos, String ruta) {
+        agregarMiRecorrido(distancia, minutos, ruta,0,0,0,0);
     }
-    private void agregarMiRecorrido(float distancia, float minutos, String polyline, double latitudePuntoA, double longitudePuntoA, double latitudePuntoB, double longitudePuntoB){
+    private void agregarMiRecorrido(float distancia, float minutos, String ruta, double latitudePuntoA, double longitudePuntoA, double latitudePuntoB, double longitudePuntoB){
+
         if (distancia > 0) {
             LogTrayecto logTrayecto = new LogTrayecto();
 
@@ -279,7 +272,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
             logTrayecto.IDBeneficiario = mBeneficiarioLogin.IDBeneficiario;
             logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
-            logTrayecto.Ruta = polyline;
+            logTrayecto.Ruta = ruta;
             logTrayecto.LatitudePuntoA = latitudePuntoA;
             logTrayecto.LongitudePuntoA = longitudePuntoA;
             logTrayecto.LatitudePuntoB = latitudePuntoB;
@@ -299,12 +292,12 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 logTrayecto.EstePuntoB = sexaDecimalCoordinate.get_coorPlanaEsteFinal();
             }
 
-            if (new LogTrayectos().Insert(logTrayecto)) {
-                ocultarTeclado(inputLyDistanciaKM);
-
+            if ( new LogTrayectos().Insert(logTrayecto)) {
                 obtenerItemsActividad();
-
+                if (ruta != null && !ruta.isEmpty())
+                    verRutaMapa(logTrayecto);
             }
+
         }
 
         lyInfoRecorrido.setVisibility(View.GONE);
@@ -318,6 +311,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         btnIniciar.setVisibility(View.VISIBLE);
         btnDetener.setVisibility(View.GONE);
         ocultarTeclado(lyContenedor);
+        ocultarTeclado(inputLyDistanciaKM);
+
     }
 
     @OnClick(R.id.btnIniciar) void onIniciar(){
@@ -344,13 +339,29 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                ruta = PreferencesApp.getDefault(PreferencesApp.READ).getString(LocationMonitoringService.EXTRA_RUTA);
+
+                double latitude_punto_a = 0;
+                double longitude_punto_a = 0;
+                double latitude_punto_b = 0;
+                double longitude_punto_b = 0;
+                if (ruta != null && !ruta.isEmpty()) {
+                    List<LatLng> latLngs = PolyUtil.decode(ruta);
+                    if (latLngs.size() > 0){
+                        latitude_punto_a = latLngs.get(0).latitude;
+                        longitude_punto_a = latLngs.get(0).longitude;
+                        latitude_punto_b = latLngs.get(latLngs.size() - 1).latitude;
+                        longitude_punto_b = latLngs.get(latLngs.size() - 1).longitude;
+                    }
+                }
+
                 stopService(new Intent(RegistrarActividadActivity.this, LocationMonitoringService.class));
                 mAlreadyStartedService = false;
 
                 NotificationManager notificationManager = (NotificationManager) AppCar.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancelAll();
 
-                agregarMiRecorrido(Utils.round(2,(distancia/1000)), tiempo, polyline,latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
+                agregarMiRecorrido(Utils.round(2,(distancia/1000)), tiempo, ruta,latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
 
                 dialog.dismiss();
 
@@ -670,6 +681,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             btnDetener.setVisibility(View.VISIBLE);
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putString(LocationMonitoringService.EXTRA_RUTA , "").commit();
 
             Intent intent = new Intent(this, LocationMonitoringService.class);
             startService(intent);
@@ -769,8 +781,14 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @Override
     public void onVerRuta(int position, View view) {
         LogTrayecto logTrayecto = mLstLogTrayectos.get(position);
+        verRutaMapa(logTrayecto);
+
+    }
+    private void verRutaMapa(LogTrayecto logTrayecto){
         Intent i = new Intent(this, RutaMapaActivity.class);
         i.putExtra(LogTrayecto.RUTA , logTrayecto.Ruta);
+        i.putExtra(LogTrayecto.DURACION_MINUTOS, logTrayecto.DuracionMinutos);
+        i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKM);
         startActivity(i);
     }
 }
