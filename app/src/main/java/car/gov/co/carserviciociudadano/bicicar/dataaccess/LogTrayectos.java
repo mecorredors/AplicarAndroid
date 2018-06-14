@@ -72,7 +72,7 @@ public class LogTrayectos {
 
         cv.put(LogTrayecto.SERIAL, element.Serial);
         cv.put(LogTrayecto.RIN, element.TamanioRin);
-        cv.put(LogTrayecto.DISTANCIA_KM, element.DistanciaKM);
+        cv.put(LogTrayecto.DISTANCIA_KM, element.DistanciaKm);
         cv.put(LogTrayecto.DURACION_MINUTOS, element.DuracionMinutos);
         cv.put(LogTrayecto.FECHA, Utils.toStringSQLLite(element.Fecha));
         cv.put(LogTrayecto.ESTADO, element.Estado);
@@ -121,7 +121,7 @@ public class LogTrayectos {
 
         cv.put(LogTrayecto.SERIAL, element.Serial);
         cv.put(LogTrayecto.RIN, element.TamanioRin);
-        cv.put(LogTrayecto.DISTANCIA_KM, element.DistanciaKM);
+        cv.put(LogTrayecto.DISTANCIA_KM, element.DistanciaKm);
         cv.put(LogTrayecto.DURACION_MINUTOS, element.DuracionMinutos);
         cv.put(LogTrayecto.FECHA, Utils.toStringSQLLite(element.Fecha));
         cv.put(LogTrayecto.ESTADO, element.Estado);
@@ -159,6 +159,14 @@ public class LogTrayectos {
         String selection = LogTrayecto.ID + " = ? ";
         String[] selectionArgs = {String.valueOf(id)};
         int result = db.delete(LogTrayecto.TABLE_NAME, selection, selectionArgs);
+        return (result > 0);
+    }
+
+    public boolean DeleteAll() {
+        InitDbHelper();
+        SQLiteDatabase db = _dbHelper.getWritableDatabase();
+
+        int result = db.delete(LogTrayecto.TABLE_NAME, null, null);
         return (result > 0);
     }
 

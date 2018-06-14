@@ -86,7 +86,7 @@ public class HistorialTrayectosActivity extends BaseActivity implements LogTraye
         Intent i = new Intent(this, RutaMapaActivity.class);
         i.putExtra(LogTrayecto.RUTA , logTrayecto.Ruta);
         i.putExtra(LogTrayecto.DURACION_MINUTOS, logTrayecto.DuracionMinutos);
-        i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKM);
+        i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKm);
         startActivity(i);
     }
 }

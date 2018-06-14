@@ -15,7 +15,7 @@ public class LogTrayecto {
     public long IDLogTrayecto;
     public String Serial;
     public String TamanioRin;
-    public float DistanciaKM;
+    public float DistanciaKm;
     public float DuracionMinutos;
     public Date Fecha;
     public int Estado;
@@ -65,7 +65,7 @@ public class LogTrayecto {
         if(c.getColumnIndex(ID)>=0) this.IDLogTrayecto = c.getInt(c.getColumnIndex(ID));
         if(c.getColumnIndex(SERIAL)>=0) this.Serial = c.getString(c.getColumnIndex(SERIAL));
         if(c.getColumnIndex(RIN)>=0) this.TamanioRin = c.getString((c.getColumnIndex(RIN)));
-        if(c.getColumnIndex(DISTANCIA_KM)>=0) this.DistanciaKM = c.getFloat(c.getColumnIndex(DISTANCIA_KM));
+        if(c.getColumnIndex(DISTANCIA_KM)>=0) this.DistanciaKm = c.getFloat(c.getColumnIndex(DISTANCIA_KM));
         if(c.getColumnIndex(DURACION_MINUTOS)>=0) this.DuracionMinutos = c.getFloat(c.getColumnIndex(DURACION_MINUTOS));
         if(c.getColumnIndex(FECHA)>=0) this.Fecha = Utils.convertToDateSQLLite(c.getString(c.getColumnIndex(FECHA)));
         if(c.getColumnIndex(ESTADO)>=0) this.Estado = c.getInt(c.getColumnIndex(ESTADO));

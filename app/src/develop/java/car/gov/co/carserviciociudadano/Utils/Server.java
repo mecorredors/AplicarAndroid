@@ -11,6 +11,7 @@ public class Server {
     public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
 
     public static String ServerBICICAR = "http://192.168.0.11/BICICAR/";    //LOCAL sidcar
+   // public static String ServerBICICAR = "http://bicicar.car.gov.co/";    //LOCAL sidcar
 
 
     public static String ServerBICICAR(){

@@ -201,6 +201,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.WRITE, PreferencesApp.BICIAR_NAME);
                 preferencesApp.putString(Beneficiario.BICICAR_USUARIO, null);
                 preferencesApp.commit();
+
+                new LogTrayectos().DeleteAll();
                 RegistrarActividadActivity.super.onBackPressed();
 
             }
@@ -267,7 +269,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
             logTrayecto.Fecha = Calendar.getInstance().getTime();
 
-            logTrayecto.DistanciaKM = distancia;
+            logTrayecto.DistanciaKm = distancia;
             logTrayecto.DuracionMinutos = minutos;
 
             logTrayecto.IDBeneficiario = mBeneficiarioLogin.IDBeneficiario;
@@ -411,10 +413,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
     @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
-        abrirEscaner();
+      //  abrirEscaner();
 
-       // String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
-       // obtenerDatos(datos);
+        String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
+        obtenerDatos(datos);
     }
     @OnClick(R.id.btnPublicar) void onPublicar(){
         mostrarProgressDialog("Publicando ...");
@@ -788,7 +790,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         Intent i = new Intent(this, RutaMapaActivity.class);
         i.putExtra(LogTrayecto.RUTA , logTrayecto.Ruta);
         i.putExtra(LogTrayecto.DURACION_MINUTOS, logTrayecto.DuracionMinutos);
-        i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKM);
+        i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKm);
         startActivity(i);
     }
 }

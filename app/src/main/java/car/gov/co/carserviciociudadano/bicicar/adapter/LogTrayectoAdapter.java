@@ -90,9 +90,9 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
                   lblDuracion.setVisibility(View.GONE);
               }
 
-                if (a.DuracionMinutos > 0) {
+                if (a.DistanciaKm > 0) {
                     lblDistancia.setVisibility(View.VISIBLE);
-                    lblDistancia.setText(a.DistanciaKM + " km.");
+                    lblDistancia.setText(a.DistanciaKm + " km.");
                 }else{
                     lblDistancia.setVisibility(View.GONE);
                 }

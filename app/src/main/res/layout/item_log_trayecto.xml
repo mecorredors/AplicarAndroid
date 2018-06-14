@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="visible"
+        android:visibility="gone"
         >
             <LinearLayout
                 android:layout_width="0dp"
@@ -82,7 +82,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
 
             >
@@ -107,6 +107,7 @@
                     android:textSize="@dimen/text_size_16"
                     android:textColor="@color/primaryText"
                     android:layout_gravity="center_vertical|right"
+
                     />
 
                 <TextView android:id="@+id/lblDuracion"
@@ -117,7 +118,7 @@
                 android:textSize="@dimen/text_size_14"
                 android:textColor="@color/secondaryText"
                 android:layout_gravity="center_vertical|right"
-
+android:visibility="gone"
                 />
 
 
