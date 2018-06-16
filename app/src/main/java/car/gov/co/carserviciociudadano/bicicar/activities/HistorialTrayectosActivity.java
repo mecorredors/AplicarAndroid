@@ -17,7 +17,9 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.adapter.LogTrayectoAdapter;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.LogTrayectos;
+import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 
@@ -46,8 +48,9 @@ public class HistorialTrayectosActivity extends BaseActivity implements LogTraye
     }
 
     private  void obtenerItemsActividad(){
+       Beneficiario beneficiarioLogin  = Beneficiarios.readBeneficio();
         mLstLogTrayectos.clear();
-        List<LogTrayecto> items = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.TODOS);
+        List<LogTrayecto> items = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.TODOS , beneficiarioLogin.IDBeneficiario);
 
         Calendar fechaActual  = Calendar.getInstance();
         int day = 0;

@@ -40,7 +40,7 @@ public class WebViewActivity extends BaseActivity {
             myWebView.getSettings().setJavaScriptEnabled(true);
             myWebView.loadUrl( url );
         }else{
-            mostrarMensaje("NO se ha enviado el IDParque");
+            mostrarMensaje("NO se ha enviado el url");
             finish();
         }
     }

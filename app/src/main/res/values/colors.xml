@@ -26,4 +26,10 @@
 
     <color name="red">#F44336</color>
 
+
+    <color name="primaryBicicar">#09c6df</color>
+    <color name="primaryEndBicicar">#0bcce6</color>
+    <color name="primaryDarkBicicar">#0097A7</color>
+    <color name="accentBicicar">#09c6df</color>
+
 </resources>

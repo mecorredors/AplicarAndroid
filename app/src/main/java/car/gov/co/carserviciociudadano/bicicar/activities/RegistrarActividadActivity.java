@@ -92,7 +92,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     LogTrayectoAdapter mAdaptador;
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
     Beneficiario mBeneficiario = null;
-    Beneficiario mBeneficiarioLogin = Beneficiarios.readBeneficio();
+    Beneficiario mBeneficiarioLogin;
     String ruta = "";
     float distancia = 0;
     float tiempo = 0;
@@ -104,6 +104,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         setContentView(R.layout.activity_registrar_actividad);
         ButterKnife.bind(this);
         ActionBar bar = getSupportActionBar();
+        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
 
@@ -155,7 +156,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         );
 
 
-        List <LogTrayecto> log = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PUBLICADO);
+      //  List <LogTrayecto> log = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PUBLICADO , mBeneficiarioLogin.IDBeneficiario);
 
 
     }
@@ -202,7 +203,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 preferencesApp.putString(Beneficiario.BICICAR_USUARIO, null);
                 preferencesApp.commit();
 
-                new LogTrayectos().DeleteAll();
                 RegistrarActividadActivity.super.onBackPressed();
 
             }
@@ -231,11 +231,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         if (mBeneficiario != null){
             logTrayecto.IDBeneficiario = mBeneficiario.IDBeneficiario;
-            logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
+
             logTrayecto.IDBicicleta = mBeneficiario.IDBicicleta;
         }
-
-
+        if (mBeneficiarioLogin != null)
+            logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
 
         if (new LogTrayectos().Insert(logTrayecto)) {
             lyDatosQR.setVisibility(View.GONE);
@@ -378,7 +378,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     private  void obtenerItemsActividad(){
         mLstLogTrayectos.clear();
-        List<LogTrayecto> items = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR);
+        List<LogTrayecto> items = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR, mBeneficiarioLogin.IDBeneficiario);
 
         Calendar fechaActual  = Calendar.getInstance();
         int day = 0;
@@ -413,15 +413,15 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
     @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
-      //  abrirEscaner();
+        abrirEscaner();
 
-        String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
-        obtenerDatos(datos);
+      //  String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
+       // obtenerDatos(datos);
     }
     @OnClick(R.id.btnPublicar) void onPublicar(){
         mostrarProgressDialog("Publicando ...");
         LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(this);
-        logTrayectoPresenter.publicar();
+        logTrayectoPresenter.publicar(mBeneficiarioLogin.IDBeneficiario);
     }
 
     private void abrirEscaner(){

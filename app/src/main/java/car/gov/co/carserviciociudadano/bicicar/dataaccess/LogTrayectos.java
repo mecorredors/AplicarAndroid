@@ -170,7 +170,7 @@ public class LogTrayectos {
         return (result > 0);
     }
 
-    public List<LogTrayecto> List(int estado)
+    public List<LogTrayecto> List(int estado, int idBeneficiario)
     {   synchronized (this) {
             InitDbHelper();
             SQLiteDatabase db = _dbHelper.getReadableDatabase();
@@ -179,13 +179,16 @@ public class LogTrayectos {
 
             try {
 
-                String where = LogTrayecto.ESTADO + "=?";
-                String[] selectionArgs = {String.valueOf(estado)};
+                // String[] selectionArgs =  {String.valueOf(estado)};
+                String where = null;
+
                 if (estado == Enumerator.BicicarLogTrayecto.TODOS) {
-                    where = null;
-                    selectionArgs = null;
+                     where = LogTrayecto.ID_BENEFICIARIO_REGISTRO + "= " + idBeneficiario ;
+                }else{
+                     where = LogTrayecto.ESTADO + "="+ estado + " and " + LogTrayecto.ID_BENEFICIARIO_REGISTRO + "= " + idBeneficiario ;
                 }
-                Cursor c = db.query(LogTrayecto.TABLE_NAME, projectionDefault(), where, selectionArgs, null, null, "[" + LogTrayecto.ID + "] DESC");
+
+                Cursor c = db.query(LogTrayecto.TABLE_NAME, projectionDefault(), where, null, null, null, "[" + LogTrayecto.ID + "] DESC");
 
                 if (c.moveToFirst()) {
                     do {

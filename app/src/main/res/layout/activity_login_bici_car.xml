@@ -7,7 +7,7 @@
     android:background="@color/background"
     android:orientation="vertical"
     tools:context=".bicicar.activities.LoginBiciCarActivity"
-    android:layout_marginBottom="@dimen/margin_16dp"
+    android:paddingBottom="@dimen/margin_16dp"
     >
 
     <FrameLayout
@@ -20,7 +20,7 @@
         android:text="Ingresar a BiciCAR"
         android:layout_marginTop="@dimen/margin_4dp"
         android:textSize="@dimen/text_size_16"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/accentBicicar"
         android:background="@color/blue50"
         android:paddingLeft="70dp"
         android:gravity="center_vertical"
@@ -29,7 +29,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_directions_bike_blue_36dp"
+            android:src="@drawable/ic_directions_bike_blue_light_36dp"
             android:layout_marginLeft="16dp"
             android:layout_gravity="center_vertical"/>
     </FrameLayout>
@@ -79,16 +79,18 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button android:id="@+id/btnLogin"
-        android:theme="@style/ButtonAccent"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="INGRESAR"
+        android:textColor="@color/textLight"
+        android:background="@drawable/boton_bicicar"
         android:layout_marginTop="@dimen/margin_10dp"
         android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"/>
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_gravity="center_horizontal"/>
 
     <Button android:id="@+id/btnOlvidateContrasena"
-        android:theme="@style/ButtonBorderless"
+        android:theme="@style/ButtonBorderlessBicicar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/olvidaste_contrasena"

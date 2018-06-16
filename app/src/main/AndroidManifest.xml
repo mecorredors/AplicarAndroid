@@ -144,21 +144,35 @@
         <activity android:name=".openweather.activities.WeatherHourDayActivity" />
         <activity
             android:name=".bicicar.activities.LoginBiciCarActivity"
-            android:label="@string/title_bicicar" />
+            android:label="@string/title_bicicar"
+            android:theme="@style/AppThemeBicicar"/>
         <activity
             android:name=".bicicar.activities.RegistrarActividadActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/AppThemeBicicar"/>
         <activity
             android:name=".bicicar.activities.EscanearQRActivity"
-            android:label="@string/title_escaner" />
+            android:label="@string/title_escaner"
+            android:theme="@style/AppThemeBicicar"/>
         <activity android:name=".Utils.ConfigActivity" />
         <!-- Add the service created in services package ! -->
         <service android:name=".bicicar.services.LocationMonitoringService" />
 
-        <activity android:name=".bicicar.activities.RutaMapaActivity"
-            android:label="@string/title_bicicar"/>
-        <activity android:name=".bicicar.activities.HistorialTrayectosActivity"
-            android:label="@string/title_historial_trayectos"></activity>
+        <activity
+            android:name=".bicicar.activities.RutaMapaActivity"
+            android:label="@string/title_bicicar"
+            android:theme="@style/AppThemeBicicar"/>
+        <activity
+            android:name=".bicicar.activities.HistorialTrayectosActivity"
+            android:label="@string/title_historial_trayectos"
+            android:theme="@style/AppThemeBicicar"/>
+        <activity android:name=".bicicar.activities.MainBicicarActivity"
+            android:theme="@style/AppThemeBicicar.NoActionBar"></activity>
+
+        <activity
+            android:name=".bicicar.activities.WebViewBicicarActivity"
+            android:label="@string/title_bicicar"
+            android:theme="@style/AppThemeBicicar"/>
     </application>
 
 </manifest>

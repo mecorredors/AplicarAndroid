@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout android:id="@+id/lyMainBicicar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context="car.gov.co.carserviciociudadano.bicicar.activities.MainBicicarActivity"
+        android:background="@color/background"
+        android:orientation="vertical"
+        >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/background_bicicar_main">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="150dp"
+                        android:src="@mipmap/logo_bicicar"
+                        android:layout_marginTop="20dp"
+                        />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    card_view:cardUseCompatPadding="false"
+                    card_view:cardElevation="2dp"
+                    card_view:cardCornerRadius="2dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    card_view:cardBackgroundColor="@color/background"
+                    android:clickable="true"
+                    app:cardPreventCornerOverlap="false"
+                   android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="180dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical">
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Kg CO2"
+                                    android:textSize="18sp"/>
+                                <TextView android:id="@+id/lblKgCO2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/primaryBicicar"
+                                    android:textSize="20sp"
+                                    android:paddingTop="10dp"
+                                    android:textStyle="bold"
+                                    android:text="0"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Bicicletas"
+                                    android:textSize="18sp"/>
+                                <TextView android:id="@+id/lblBicicletas"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/primaryBicicar"
+                                    android:textSize="20sp"
+                                    android:paddingTop="10dp"
+                                    android:textStyle="bold"
+                                    android:text="0"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Kilometros"
+                                    android:textSize="18sp"/>
+                                <TextView android:id="@+id/lblKilometros"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/primaryBicicar"
+                                    android:textSize="20sp"
+                                    android:paddingTop="10dp"
+                                    android:textStyle="bold"
+                                    android:text="0"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <ProgressBar android:id="@+id/progressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:visibility="visible"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </FrameLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="@dimen/margin_16dp">
+
+        <LinearLayout android:id="@+id/lyRegistrarActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_directions_bike_blue_light_36dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registrar actividad"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/lyUnirmeaBicicar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_16dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_account_box_blue_light_36dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unirme a bicicar"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/lyHuellaAmbiental"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_16dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_equalizer_blue_light_36dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Huella ambiental"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+     <Button android:id="@+id/btnSigueme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ver sitio web"
+        android:textColor="#fff"
+        android:background="@drawable/boton_bicicar"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginTop="20dp"
+
+       />
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>
+
