@@ -11,6 +11,9 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -74,6 +77,11 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
     }
 
     @Override
+    public void onSuccessEstadisticaPersona(List<Estadistica> estadistica) {
+
+    }
+
+    @Override
     public void onErrorGranTotal(ErrorApi errorApi) {
         progressBar.setVisibility(View.GONE);
         Snackbar.make(lyMainBicicar, errorApi.getMessage(), Snackbar.LENGTH_INDEFINITE)
@@ -86,6 +94,11 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void onErrorEstadisticaPersona(ErrorApi error) {
+
     }
 
     @Override

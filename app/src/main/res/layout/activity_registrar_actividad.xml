@@ -166,7 +166,8 @@
             >
 
         <Button android:id="@+id/btnAgregarMiRecorrido"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Agregar"
             android:layout_marginTop="@dimen/margin_10dp"
@@ -177,7 +178,8 @@
             />
 
         <Button android:id="@+id/btnIniciar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Iniciar recorrido"
             android:layout_marginTop="@dimen/margin_10dp"
@@ -271,16 +273,41 @@
         android:scrollbars="vertical"
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_below="@+id/lyFormulario"
-        android:layout_above="@+id/btnPublicar"
+        android:layout_above="@+id/lyBotonPublicar"
         />
-    <Button android:id="@+id/btnPublicar"
-        android:theme="@style/ButtonAccentBicicar"
+
+    <LinearLayout android:id="@+id/lyBotonPublicar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Publicar"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_alignParentBottom="true"/>
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margin_6dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal">
+
+        <Button android:id="@+id/btnPublicar"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Publicar"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:background="@drawable/boton_bicicar"
+            android:textColor="@color/textLight"
+           />
+
+        <Button android:id="@+id/btnMisDatos"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Mis datos"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:background="@drawable/boton_bicicar"
+            android:textColor="@color/textLight"
+            android:drawableLeft="@drawable/ic_equalizer_white_24dp"
+            />
+    </LinearLayout>
 
 </RelativeLayout>

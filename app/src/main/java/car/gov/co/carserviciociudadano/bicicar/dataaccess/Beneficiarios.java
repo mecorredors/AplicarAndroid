@@ -76,7 +76,7 @@ public class Beneficiarios {
 
     public void obtenerItem(String serial, String rin , final IBeneficiario iBeneficiario)
     {
-        String url = Config.API_BICICAR_OBTENER_ITEM + "?serial=" + serial +"&rin=" + rin;
+        String url = Config.API_BICICAR_OBTENER_BENEFICIARIO + "?serial=" + serial +"&rin=" + rin;
         url = url.replace(" ", "%20");
 
         JsonObjectRequest objRequest = new JsonObjectRequest(Request.Method.GET, url,null,

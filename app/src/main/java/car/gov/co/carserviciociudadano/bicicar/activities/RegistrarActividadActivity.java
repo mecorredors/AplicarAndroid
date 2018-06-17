@@ -114,7 +114,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         lyInfoRecorrido.setVisibility(View.GONE);
         btnDetener.setVisibility(View.GONE);
 
-
         recyclerView.setHasFixedSize(true);
         mAdaptador = new LogTrayectoAdapter(mLstLogTrayectos);
         mAdaptador.setLogTrayectoListener(this);
@@ -129,7 +128,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
             lyIngresarRecorrido.setVisibility(View.VISIBLE);
         }
-
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 new BroadcastReceiver() {
@@ -154,10 +152,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                     }
                 }, new IntentFilter(LocationMonitoringService.ACTION_LOCATION_BROADCAST)
         );
-
-
-      //  List <LogTrayecto> log = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PUBLICADO , mBeneficiarioLogin.IDBeneficiario);
-
 
     }
 
@@ -258,65 +252,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     }
 
-    private void agregarMiRecorrido(float distancia, float minutos, String ruta) {
-        agregarMiRecorrido(distancia, minutos, ruta,0,0,0,0);
-    }
-    private void agregarMiRecorrido(float distancia, float minutos, String ruta, double latitudePuntoA, double longitudePuntoA, double latitudePuntoB, double longitudePuntoB){
-
-        if (distancia > 0) {
-            LogTrayecto logTrayecto = new LogTrayecto();
-
-            logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
-            logTrayecto.Fecha = Calendar.getInstance().getTime();
-
-            logTrayecto.DistanciaKm = distancia;
-            logTrayecto.DuracionMinutos = minutos;
-
-            logTrayecto.IDBeneficiario = mBeneficiarioLogin.IDBeneficiario;
-            logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
-            logTrayecto.Ruta = ruta;
-            logTrayecto.LatitudePuntoA = latitudePuntoA;
-            logTrayecto.LongitudePuntoA = longitudePuntoA;
-            logTrayecto.LatitudePuntoB = latitudePuntoB;
-            logTrayecto.LongitudePuntoB = longitudePuntoB;
-
-            if (latitudePuntoA != 0 && longitudePuntoA != 0){
-                SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(latitudePuntoA, longitudePuntoA);
-                sexaDecimalCoordinate.ConvertToFlatCoordinate();
-                logTrayecto.NortePuntoA = sexaDecimalCoordinate.get_coorPlanaNorteFinal();
-                logTrayecto.EstePuntoA = sexaDecimalCoordinate.get_coorPlanaEsteFinal();
-            }
-
-            if (latitudePuntoB != 0 && longitudePuntoB != 0){
-                SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(latitudePuntoB, longitudePuntoB);
-                sexaDecimalCoordinate.ConvertToFlatCoordinate();
-                logTrayecto.NortePuntoB = sexaDecimalCoordinate.get_coorPlanaNorteFinal();
-                logTrayecto.EstePuntoB = sexaDecimalCoordinate.get_coorPlanaEsteFinal();
-            }
-
-            if ( new LogTrayectos().Insert(logTrayecto)) {
-                obtenerItemsActividad();
-                if (ruta != null && !ruta.isEmpty())
-                    verRutaMapa(logTrayecto);
-            }
-
-        }
-
-        lyInfoRecorrido.setVisibility(View.GONE);
-        lyIngresarRecorrido.setVisibility(View.VISIBLE);
-
-        this.tiempo = 0;
-        this.distancia = 0;
-        txtDistanciaKM.setText("");
-        txtTiempo.setText("");
-        btnAgregarMiRecorrido.setVisibility(View.VISIBLE);
-        btnIniciar.setVisibility(View.VISIBLE);
-        btnDetener.setVisibility(View.GONE);
-        ocultarTeclado(lyContenedor);
-        ocultarTeclado(inputLyDistanciaKM);
+    @OnClick(R.id.btnMisDatos) void onMisDatos(){
+        Intent i = new Intent(this, EstadisticaPersonaActivity.class);
+        startActivity(i);
 
     }
-
     @OnClick(R.id.btnIniciar) void onIniciar(){
         startStep1();
 
@@ -376,6 +316,77 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     }
 
+    @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
+        abrirEscaner();
+
+        //  String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
+        // obtenerDatos(datos);
+    }
+    @OnClick(R.id.btnPublicar) void onPublicar(){
+        mostrarProgressDialog("Publicando ...");
+        LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(this);
+        logTrayectoPresenter.publicar(mBeneficiarioLogin.IDBeneficiario);
+    }
+
+    private void agregarMiRecorrido(float distancia, float minutos, String ruta) {
+        agregarMiRecorrido(distancia, minutos, ruta,0,0,0,0);
+    }
+    private void agregarMiRecorrido(float distancia, float minutos, String ruta, double latitudePuntoA, double longitudePuntoA, double latitudePuntoB, double longitudePuntoB){
+
+        if (distancia > 0) {
+            LogTrayecto logTrayecto = new LogTrayecto();
+
+            logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
+            logTrayecto.Fecha = Calendar.getInstance().getTime();
+
+            logTrayecto.DistanciaKm = distancia;
+            logTrayecto.DuracionMinutos = minutos;
+
+            logTrayecto.IDBeneficiario = mBeneficiarioLogin.IDBeneficiario;
+            logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
+            logTrayecto.Ruta = ruta;
+            logTrayecto.LatitudePuntoA = latitudePuntoA;
+            logTrayecto.LongitudePuntoA = longitudePuntoA;
+            logTrayecto.LatitudePuntoB = latitudePuntoB;
+            logTrayecto.LongitudePuntoB = longitudePuntoB;
+
+            if (latitudePuntoA != 0 && longitudePuntoA != 0){
+                SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(latitudePuntoA, longitudePuntoA);
+                sexaDecimalCoordinate.ConvertToFlatCoordinate();
+                logTrayecto.NortePuntoA = sexaDecimalCoordinate.get_coorPlanaNorteFinal();
+                logTrayecto.EstePuntoA = sexaDecimalCoordinate.get_coorPlanaEsteFinal();
+            }
+
+            if (latitudePuntoB != 0 && longitudePuntoB != 0){
+                SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(latitudePuntoB, longitudePuntoB);
+                sexaDecimalCoordinate.ConvertToFlatCoordinate();
+                logTrayecto.NortePuntoB = sexaDecimalCoordinate.get_coorPlanaNorteFinal();
+                logTrayecto.EstePuntoB = sexaDecimalCoordinate.get_coorPlanaEsteFinal();
+            }
+
+            if ( new LogTrayectos().Insert(logTrayecto)) {
+                obtenerItemsActividad();
+                if (ruta != null && !ruta.isEmpty())
+                    verRutaMapa(logTrayecto);
+            }
+
+        }
+
+        lyInfoRecorrido.setVisibility(View.GONE);
+        lyIngresarRecorrido.setVisibility(View.VISIBLE);
+
+        this.tiempo = 0;
+        this.distancia = 0;
+        txtDistanciaKM.setText("");
+        txtTiempo.setText("");
+        btnAgregarMiRecorrido.setVisibility(View.VISIBLE);
+        btnIniciar.setVisibility(View.VISIBLE);
+        btnDetener.setVisibility(View.GONE);
+        ocultarTeclado(lyContenedor);
+        ocultarTeclado(inputLyDistanciaKM);
+
+    }
+
     private  void obtenerItemsActividad(){
         mLstLogTrayectos.clear();
         List<LogTrayecto> items = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR, mBeneficiarioLogin.IDBeneficiario);
@@ -410,18 +421,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         btnPublicar.setVisibility(mLstLogTrayectos.size() == 0 ? View.GONE :View.VISIBLE);
         mAdaptador.notifyDataSetChanged();
 
-    }
-
-    @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
-        abrirEscaner();
-
-      //  String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
-       // obtenerDatos(datos);
-    }
-    @OnClick(R.id.btnPublicar) void onPublicar(){
-        mostrarProgressDialog("Publicando ...");
-        LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(this);
-        logTrayectoPresenter.publicar(mBeneficiarioLogin.IDBeneficiario);
     }
 
     private void abrirEscaner(){

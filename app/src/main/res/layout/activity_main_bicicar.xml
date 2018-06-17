@@ -114,7 +114,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Kilometros"
+                                    android:text="@string/kilometros"
                                     android:textSize="18sp"/>
                                 <TextView android:id="@+id/lblKilometros"
                                     android:layout_width="wrap_content"
@@ -155,13 +155,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_directions_bike_blue_light_36dp"/>
+                android:src="@drawable/ic_directions_bike_blue_light_36dp"
+                android:clickable="false"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Registrar actividad"
                 android:layout_marginLeft="20dp"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:clickable="false"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/lyUnirmeaBicicar"
@@ -173,13 +175,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_account_box_blue_light_36dp"/>
+                android:src="@drawable/ic_account_box_blue_light_36dp"
+                android:clickable="false"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Unirme a bicicar"
                 android:layout_marginLeft="20dp"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:clickable="false"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/lyHuellaAmbiental"
@@ -191,29 +195,30 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_equalizer_blue_light_36dp"/>
+                android:src="@drawable/ic_equalizer_blue_light_36dp"
+                android:clickable="false"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Huella ambiental"
                 android:layout_marginLeft="20dp"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:clickable="false"/>
         </LinearLayout>
 
     </LinearLayout>
 
 
-     <Button android:id="@+id/btnSigueme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ver sitio web"
-        android:textColor="#fff"
-        android:background="@drawable/boton_bicicar"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginTop="20dp"
-
-       />
-
+        <Button android:id="@+id/btnSigueme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver sitio web"
+            android:textColor="#fff"
+            android:background="@drawable/boton_bicicar"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="@dimen/margin_6dp"
+            android:layout_marginTop="24dp"
+            />
 
 
 

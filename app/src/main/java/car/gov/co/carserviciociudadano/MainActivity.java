@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.bicicar.activities.EstadisticaPersonaActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.MainBicicarActivity;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BankProjectActivity;
@@ -60,8 +61,8 @@ public class MainActivity extends BaseActivity  {
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
 
 
-      //  Intent i = new Intent(this, ConfigActivity.class);
-       // startActivity(i);
+       // Intent i = new Intent(this, EstadisticaPersonaActivity.class);
+        //startActivity(i);
     }
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){
