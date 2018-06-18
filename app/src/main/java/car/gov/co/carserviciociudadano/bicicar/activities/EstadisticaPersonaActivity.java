@@ -111,7 +111,7 @@ public class EstadisticaPersonaActivity extends BaseActivity implements IViewRep
     }
 
     @Override
-    public void onSuccessEstadisticaPersona(List<Estadistica> estadistica) {
+    public void onSuccessEstadistica(List<Estadistica> estadistica) {
         progressEstadistica.setVisibility(View.GONE);
         mLstEstadistica.clear();
         mLstEstadistica.addAll(estadistica);
@@ -124,9 +124,19 @@ public class EstadisticaPersonaActivity extends BaseActivity implements IViewRep
     }
 
     @Override
-    public void onErrorEstadisticaPersona(ErrorApi error) {
+    public void onErrorEstadistica(ErrorApi error) {
         progressEstadistica.setVisibility(View.GONE);
         mostrarError(error);
+
+    }
+
+    @Override
+    public void onSuccessEstadisticaMesual(List<Estadistica> estadistica) {
+
+    }
+
+    @Override
+    public void onSuccessEstadisticaAnual(List<Estadistica> estadistica) {
 
     }
 

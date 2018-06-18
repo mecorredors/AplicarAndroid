@@ -173,7 +173,11 @@
             android:name=".bicicar.activities.WebViewBicicarActivity"
             android:label="@string/title_bicicar"
             android:theme="@style/AppThemeBicicar" />
-        <activity android:name=".bicicar.activities.EstadisticaPersonaActivity"
+        <activity
+            android:name=".bicicar.activities.EstadisticaPersonaActivity"
+            android:theme="@style/AppThemeBicicar" />
+        <activity android:name=".bicicar.activities.HuellaAmbientalActivity"
+            android:label="@string/title_huella_ambiental"
             android:theme="@style/AppThemeBicicar"></activity>
     </application>
 

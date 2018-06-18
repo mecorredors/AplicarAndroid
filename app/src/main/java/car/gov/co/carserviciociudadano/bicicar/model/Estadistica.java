@@ -13,4 +13,7 @@ public class Estadistica extends ModelBase {
     public int Bicicletas;
     public float Kilometros;
     public String TipoTotal;
+    public String Mes;
+    public String IDSemana;
+
 }

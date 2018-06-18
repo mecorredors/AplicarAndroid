@@ -2,6 +2,7 @@ package car.gov.co.carserviciociudadano.Utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
 
@@ -12,12 +13,15 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 
 /**
@@ -350,5 +354,34 @@ public class Utils {
         BigDecimal bd = new BigDecimal(Double.toString(d));
         bd = bd.setScale(numDecimales, BigDecimal.ROUND_HALF_EVEN);
         return bd.floatValue();
+    }
+
+    public static List<Integer> listColores(){
+        ArrayList<Integer> colores = new ArrayList<>();
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.red500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.green500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.amber500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.blue500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.teal500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.pink500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.yellow500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.cyan500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.deepred500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.indigo500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.amber500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.deepred500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.bluelight500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.red500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.green500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.pink500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.blue500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.teal500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.yellow500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.cyan500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.deepred500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.indigo500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.deepred500));
+        colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.bluelight500));
+        return colores;
     }
 }

@@ -49,6 +49,7 @@ public class Config {
     public static String API_BICICAR_OBTENER_BENEFICIARIO =  Server.ServerBICICAR() + "api/beneficiarios/obtenerItem/";
     public static String API_BICICAR_LOG_TRAYECTO =  Server.ServerBICICAR() + "api/beneficiarios/logTrayecto/";
     public static String API_BICICAR_REPORTES_GRAN_TOTAL =  Server.ServerBICICAR() + "api/reportes/getgrantotal/";
+    public static String API_BICICAR_REPORTES_ESTADISTICA =  Server.ServerBICICAR() + "api/reportes/getestadistica/";
     public static String API_BICICAR_REPORTES_ESTADISTICA_PERSONA =  Server.ServerBICICAR() + "api/reportes/getestadisticapersona/";
     public static String API_BICICAR__OBTENER_BICICLETA =  Server.ServerBICICAR() + "api/beneficiarios/obtenerbicicleta/";
 }

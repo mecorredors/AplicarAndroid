@@ -40,7 +40,7 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
     @BindView(R.id.progressBar)   ProgressBar progressBar;
     ReportesPresenter reportesPresenter;
     public static final int REQUEST_CODE_BICICAR_LOGIN = 202;
-
+    Beneficiario mBeneficiario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +48,8 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
         ButterKnife.bind(this);
         reportesPresenter = new ReportesPresenter(this);
         getGranTotal();
+
+        mBeneficiario = Beneficiarios.readBeneficio();
 
     }
     private void getGranTotal(){
@@ -77,9 +79,10 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
     }
 
     @Override
-    public void onSuccessEstadisticaPersona(List<Estadistica> estadistica) {
+    public void onSuccessEstadistica(List<Estadistica> estadistica) {
 
     }
+
 
     @Override
     public void onErrorGranTotal(ErrorApi errorApi) {
@@ -97,8 +100,15 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
     }
 
     @Override
-    public void onErrorEstadisticaPersona(ErrorApi error) {
+    public void onErrorEstadistica(ErrorApi error) {
+    }
 
+    @Override
+    public void onSuccessEstadisticaMesual(List<Estadistica> estadistica) {
+    }
+
+    @Override
+    public void onSuccessEstadisticaAnual(List<Estadistica> estadistica) {
     }
 
     @Override
@@ -113,8 +123,8 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
     }
 
     @OnClick(R.id.lyRegistrarActividad) void onRegistrarActividad(){
-        Beneficiario beneficiario = Beneficiarios.readBeneficio();
-        if (beneficiario == null){
+
+        if (mBeneficiario == null){
             Intent i = new Intent(this, LoginBiciCarActivity.class);
             startActivityForResult(i, REQUEST_CODE_BICICAR_LOGIN);
         }else{
@@ -132,9 +142,7 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
     }
 
     @OnClick(R.id.lyHuellaAmbiental) void onHuellaAmbiental(){
-        Intent i = new Intent(this, WebViewBicicarActivity.class);
-        i.putExtra(WebViewActivity.URL, Server.ServerBICICAR() + "HuellaAmbiental");
-        i.putExtra(WebViewActivity.TITULO, "Huella ambiental");
+        Intent i = new Intent(this, HuellaAmbientalActivity.class);
         startActivity(i);
     }
 

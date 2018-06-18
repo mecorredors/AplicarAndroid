@@ -8,7 +8,10 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public interface IViewReportes {
     void onSuccessGranTotal(Estadistica estadistica);
-    void onSuccessEstadisticaPersona(List<Estadistica> estadistica);
+    void onSuccessEstadistica(List<Estadistica> estadistica);
     void onErrorGranTotal(ErrorApi errorApi);
-    void onErrorEstadisticaPersona(ErrorApi error);
+    void onErrorEstadistica(ErrorApi error);
+    void onSuccessEstadisticaMesual(List<Estadistica> estadistica);
+    void onSuccessEstadisticaAnual(List<Estadistica> estadistica);
+
 }

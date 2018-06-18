@@ -35,14 +35,66 @@ public class ReportesPresenter implements IReportes {
 
     }
 
+
+    public void getEstadisticaMensual(){
+
+        new Reportes().getEstadistica("MENSUAL", new IReportes() {
+            @Override
+            public void onSuccessGranTotal(Estadistica estadistica) {
+
+            }
+
+            @Override
+            public void onSuccessEstadistica(List<Estadistica> estadistica) {
+                iViewReportes.onSuccessEstadisticaMesual(estadistica);
+            }
+
+            @Override
+            public void onErrorGranTotal(ErrorApi error) {
+
+            }
+
+            @Override
+            public void onErrorEstadistica(ErrorApi error) {
+                iViewReportes.onErrorEstadistica(error);
+            }
+        });
+    }
+
+    public void getEstadisticaAnual(){
+
+        new Reportes().getEstadistica("ANUAL", new IReportes() {
+            @Override
+            public void onSuccessGranTotal(Estadistica estadistica) {
+
+            }
+
+            @Override
+            public void onSuccessEstadistica(List<Estadistica> estadistica) {
+                iViewReportes.onSuccessEstadisticaAnual(estadistica);
+            }
+
+            @Override
+            public void onErrorGranTotal(ErrorApi error) {
+
+            }
+
+            @Override
+            public void onErrorEstadistica(ErrorApi error) {
+                iViewReportes.onErrorEstadistica(error);
+            }
+        });
+
+    }
+
     @Override
     public void onSuccessGranTotal(Estadistica estadistica) {
         iViewReportes.onSuccessGranTotal(estadistica);
     }
 
     @Override
-    public void onSuccessEstadisticaPersona(List<Estadistica> estadistica) {
-        iViewReportes.onSuccessEstadisticaPersona(estadistica);
+    public void onSuccessEstadistica(List<Estadistica> estadistica) {
+        iViewReportes.onSuccessEstadistica(estadistica);
     }
 
     @Override
@@ -50,7 +102,7 @@ public class ReportesPresenter implements IReportes {
         iViewReportes.onErrorGranTotal(error);
     }
     @Override
-    public void onErrorEstadisticaPersona(ErrorApi error) {
-        iViewReportes.onErrorEstadisticaPersona(error);
+    public void onErrorEstadistica(ErrorApi error) {
+        iViewReportes.onErrorEstadistica(error);
     }
 }

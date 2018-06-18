@@ -31,6 +31,22 @@
     <color name="primaryEndBicicar">#0bcce6</color>
     <color name="primaryDarkBicicar">#0097A7</color>
     <color name="accentBicicar">#09c6df</color>
-    <color name="segmento">#A5D6A7</color>
+    <!-- <color name="segmento">#A5D6A7</color> -->
+    <color name="segmento">#4CAF50</color>
+
+
+    <color name="red500">#f44336</color>
+    <color name="pink500">#E91E63</color>
+    <color name="blue500">#2196F3</color>
+    <color name="teal500">#009688</color>
+    <color name="green500">#4CAF50</color>
+    <color name="yellow500">#FFEB3B</color>
+    <color name="amber500">#FFC107</color>
+    <color name="orange500">#FF9800</color>
+    <color name="cyan500">#00BCD4</color>
+    <color name="deepred500">#FF5722</color>
+    <color name="indigo500">#3F51B5</color>
+    <color name="bluelight500">#03A9F4</color>
+
 
 </resources>

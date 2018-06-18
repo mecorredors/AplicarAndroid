@@ -81,6 +81,49 @@ public class Reportes {
     }
 
 
+    public void getEstadistica(String opcion, final IReportes iReportes)
+    {
+        String url = Config.API_BICICAR_REPORTES_ESTADISTICA +"?opcion="+opcion;
+        url = url.replace(" ", "%20");
+
+        JsonArrayRequest objRequest = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+
+                            iReportes.onSuccessEstadistica(JSONArrayToList(response));
+                        } catch (JSONException ex) {
+                            iReportes.onErrorEstadistica(new ErrorApi(ex));
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                iReportes.onErrorEstadistica(new ErrorApi(error));
+            }
+        }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationBICICAR());
+                return headerMap;
+            }
+        };
+
+        objRequest.setTag(TAG);
+        objRequest.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        20000,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppCar.VolleyQueue().add(objRequest);
+    }
+
+
     public void getEstadisticaPersona(int idLiderGrupo, int idUsuario, final IReportes iReportes)
     {
         String url = Config.API_BICICAR_REPORTES_ESTADISTICA_PERSONA +"?idLiderGrupo="+idLiderGrupo +"&idUsuario="+idUsuario;
@@ -92,16 +135,16 @@ public class Reportes {
                     public void onResponse(JSONArray response) {
                         try {
 
-                            iReportes.onSuccessEstadisticaPersona(JSONArrayToList(response));
+                            iReportes.onSuccessEstadistica(JSONArrayToList(response));
                         } catch (JSONException ex) {
-                            iReportes.onErrorEstadisticaPersona(new ErrorApi(ex));
+                            iReportes.onErrorEstadistica(new ErrorApi(ex));
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                iReportes.onErrorEstadisticaPersona(new ErrorApi(error));
+                iReportes.onErrorEstadistica(new ErrorApi(error));
             }
         }
         ) {
