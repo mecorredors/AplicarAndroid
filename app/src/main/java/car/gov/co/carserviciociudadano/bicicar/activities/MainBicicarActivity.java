@@ -2,12 +2,14 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -87,16 +89,7 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
     @Override
     public void onErrorGranTotal(ErrorApi errorApi) {
         progressBar.setVisibility(View.GONE);
-        Snackbar.make(lyMainBicicar, errorApi.getMessage(), Snackbar.LENGTH_INDEFINITE)
-                //.setActionTextColor(Color.CYAN)
-                .setActionTextColor(ContextCompat.getColor(this, R.color.green) )
-                .setAction("REINTENTAR", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        getGranTotal();
-                    }
-                })
-                .show();
+        mostrarError(errorApi);
     }
 
     @Override
@@ -136,7 +129,7 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
 
     @OnClick(R.id.lyUnirmeaBicicar) void onUnivermeaBicicar(){
             Intent i = new Intent(this, WebViewBicicarActivity.class);
-            i.putExtra(WebViewActivity.URL, Server.ServerBICICAR() + "Modulos/Inscripcion/Registro");
+            i.putExtra(WebViewActivity.URL, Server.ServerBICICAR() + "WebSite/paginas/BiciUsuario");
             i.putExtra(WebViewActivity.TITULO, "Registro en BiciCAR");
             startActivity(i);
     }
@@ -150,5 +143,27 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Server.ServerBICICAR()));
         startActivity(browserIntent);
+    }
+
+    private void mostrarError(ErrorApi errorApi){
+        if (errorApi.getStatusCode() == 404)
+            return;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(errorApi.getMessage());
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getGranTotal();
+
+            }
+        });
+        builder.show();
     }
 }

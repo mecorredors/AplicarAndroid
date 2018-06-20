@@ -163,38 +163,33 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_16dp"
             >
 
         <Button android:id="@+id/btnAgregarMiRecorrido"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Agregar"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:layout_marginLeft="@dimen/margin_16dp"
             android:layout_gravity="left"
             android:background="@drawable/boton_bicicar"
             android:textColor="@color/textLight"
             />
 
         <Button android:id="@+id/btnIniciar"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Iniciar recorrido"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:layout_marginLeft="@dimen/margin_16dp"
             android:layout_gravity="left"
             android:background="@drawable/boton_bicicar"
             android:textColor="@color/textLight"
+            android:drawableLeft="@drawable/ic_play_arrow_white_24dp"
+            android:drawablePadding="@dimen/margin_4dp"
             />
 
         <Button android:id="@+id/btnDetener"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Detener"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:layout_marginLeft="@dimen/margin_16dp"
             android:layout_gravity="left"
             android:background="@drawable/boton_bicicar"
             android:textColor="@color/textLight"
@@ -229,7 +224,7 @@
                         android:layout_height="wrap_content"
                         android:text="0.00"
                         android:layout_marginTop="@dimen/margin_4dp"
-                        android:textColor="@color/primaryText"
+                        android:textColor="@color/primaryBicicar"
                         android:textSize="36sp"
                         />
 
@@ -256,7 +251,8 @@
                         android:layout_height="wrap_content"
                         android:text="00:00"
                         android:layout_marginTop="@dimen/margin_4dp"
-                        android:textColor="@color/primaryText"
+                        android:textColor="@color/primaryBicicar"
+                        android:textStyle=""
                         android:textSize="36sp"
                         android:layout_gravity="center_horizontal"
                         />

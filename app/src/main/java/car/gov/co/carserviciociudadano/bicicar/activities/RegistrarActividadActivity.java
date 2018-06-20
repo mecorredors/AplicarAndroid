@@ -113,6 +113,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         lyIngresarRecorrido.setVisibility(View.GONE);
         lyInfoRecorrido.setVisibility(View.GONE);
         btnDetener.setVisibility(View.GONE);
+        btnAgregarMiRecorrido.setVisibility(View.GONE);
 
         recyclerView.setHasFixedSize(true);
         mAdaptador = new LogTrayectoAdapter(mLstLogTrayectos);
@@ -126,7 +127,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP){
             btnEscanearCodigo.setVisibility(View.GONE);
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
-            lyIngresarRecorrido.setVisibility(View.VISIBLE);
+           // lyIngresarRecorrido.setVisibility(View.VISIBLE);
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
@@ -143,10 +144,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
                         btnDetener.setVisibility(View.VISIBLE);
                         btnIniciar.setVisibility(View.GONE);
-                        btnAgregarMiRecorrido.setVisibility(View.GONE);
+                       // btnAgregarMiRecorrido.setVisibility(View.GONE);
                         lblDuracion.setVisibility(View.VISIBLE);
 
-                        lyIngresarRecorrido.setVisibility(View.GONE);
+                       // lyIngresarRecorrido.setVisibility(View.GONE);
                         lyInfoRecorrido.setVisibility(View.VISIBLE);
 
                     }
@@ -373,13 +374,13 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         }
 
         lyInfoRecorrido.setVisibility(View.GONE);
-        lyIngresarRecorrido.setVisibility(View.VISIBLE);
+        //lyIngresarRecorrido.setVisibility(View.VISIBLE);
 
         this.tiempo = 0;
         this.distancia = 0;
         txtDistanciaKM.setText("");
         txtTiempo.setText("");
-        btnAgregarMiRecorrido.setVisibility(View.VISIBLE);
+        //btnAgregarMiRecorrido.setVisibility(View.VISIBLE);
         btnIniciar.setVisibility(View.VISIBLE);
         btnDetener.setVisibility(View.GONE);
         ocultarTeclado(lyContenedor);
@@ -678,7 +679,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             lyIngresarRecorrido.setVisibility(View.GONE);
             lyInfoRecorrido.setVisibility(View.VISIBLE);
             btnIniciar.setVisibility(View.GONE);
-            btnAgregarMiRecorrido.setVisibility(View.GONE);
+           // btnAgregarMiRecorrido.setVisibility(View.GONE);
             btnDetener.setVisibility(View.VISIBLE);
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
