@@ -18,8 +18,8 @@ android {
         applicationId "car.gov.co.carserviciociudadano"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 11
-        versionName "2.0.0"
+        versionCode 12
+        versionName "2.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
