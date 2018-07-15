@@ -61,6 +61,7 @@ public class LocationMonitoringService extends Service implements
     public static final String EXTRA_RUTA = "extra_start_ruta";
 
     float distancia = 0;
+    float precision = 0;
 
     Location locationPreview;
     Location locationBest;
@@ -185,6 +186,7 @@ public class LocationMonitoringService extends Service implements
 
         numRequest++;
 
+        precision = location.getAccuracy();
 
         if (locationPreview == null) {
             locationPreview = location;
@@ -240,7 +242,7 @@ public class LocationMonitoringService extends Service implements
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
-        showNotification("Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos );
+        showNotification("Pre: " + Utils.round(2, precision) + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos );
 
     }
 

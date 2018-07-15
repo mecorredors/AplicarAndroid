@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.denunciaambiental.activities;
 
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import android.Manifest;
@@ -33,6 +34,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
@@ -292,6 +294,7 @@ public class GalleryActivity extends BaseActivity {
             if(CreateFile()){
                 SaveGallerySelected=false;
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,outputFileUri );
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivityForResult(takePictureIntent, RESULT_CODE_PHOTO);
             }
         }
@@ -313,12 +316,20 @@ public class GalleryActivity extends BaseActivity {
         try {
             newfile.createNewFile();
         } catch (IOException e) {
+            Log.e("galleryActivity", e.toString());
             return false;
 
         }
 
         outputFileUri = Uri.fromFile(newfile);
-        _TempPath=outputFileUri.getPath();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            outputFileUri = FileProvider.getUriForFile(AppCar.getContext(), BuildConfig.APPLICATION_ID + ".provider",newfile);
+        else
+            outputFileUri = Uri.fromFile(newfile);
+
+       // _TempPath=outputFileUri.getPath();
+        _TempPath=file;
         return true;
     }
 
