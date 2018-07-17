@@ -8,9 +8,10 @@ import org.json.JSONObject;
 import java.util.Date;
 
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
+import car.gov.co.carserviciociudadano.common.ModelBase;
 import car.gov.co.carserviciociudadano.parques.model.Usuario;
 
-public class Beneficiario {
+public class Beneficiario extends ModelBase {
 
     public int IDBeneficiario;
     public String TipoNumeroID;
@@ -41,6 +42,7 @@ public class Beneficiario {
     public int IDBicicleta;
     public int Serial;
     public int Rin;
+    public String Email;
 
 
 

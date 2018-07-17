@@ -42,7 +42,7 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
     @BindView(R.id.progressBar)   ProgressBar progressBar;
     ReportesPresenter reportesPresenter;
     public static final int REQUEST_CODE_BICICAR_LOGIN = 202;
-    Beneficiario mBeneficiario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +51,6 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
         reportesPresenter = new ReportesPresenter(this);
         getGranTotal();
 
-        mBeneficiario = Beneficiarios.readBeneficio();
 
     }
     private void getGranTotal(){
@@ -117,7 +116,8 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
 
     @OnClick(R.id.lyRegistrarActividad) void onRegistrarActividad(){
 
-        if (mBeneficiario == null){
+        Beneficiario beneficiario = Beneficiarios.readBeneficio();
+        if (beneficiario == null){
             Intent i = new Intent(this, LoginBiciCarActivity.class);
             startActivityForResult(i, REQUEST_CODE_BICICAR_LOGIN);
         }else{

@@ -106,7 +106,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         ActionBar bar = getSupportActionBar();
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
+        if (mBeneficiarioLogin != null)
+            bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
 
         lyDatosQR.setVisibility(View.GONE);
         lyRegistrarMiRecorrido.setVisibility(View.GONE);
@@ -560,6 +561,16 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         if (errorApi.getStatusCode() == 404){
             mostrarMensajeDialog(errorApi.getMessage());
         }
+
+    }
+
+    @Override
+    public void onSuccessRecordarClave(String mensaje) {
+
+    }
+
+    @Override
+    public void onErrorRecordarClave(ErrorApi error) {
 
     }
 
