@@ -76,7 +76,7 @@ public class GalleryActivity extends BaseActivity {
     public static final int MAX_PHOTOS = 10;
 
     public  static final  int MY_PERMISSION_EXTERNAL_STORAGE = 11;
-   // public  final static int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
+    public  final static int MY_PERMISSIONS_CAMERA = 12;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -287,15 +287,25 @@ public class GalleryActivity extends BaseActivity {
 
 
     private void TakePhoto() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
 
-            if(CreateFile()){
-                SaveGallerySelected=false;
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,outputFileUri );
-                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivityForResult(takePictureIntent, RESULT_CODE_PHOTO);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_CAMERA);
+
+        } else {
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+
+                if (CreateFile()) {
+                    SaveGallerySelected = false;
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                    takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(takePictureIntent, RESULT_CODE_PHOTO);
+                }
             }
         }
     }
@@ -528,6 +538,14 @@ public class GalleryActivity extends BaseActivity {
                     init();
                 } else {
                     mostrarMensaje("Permiso denegado para guardar archivos");
+                }
+                return;
+            }
+            case MY_PERMISSIONS_CAMERA: {
+                if (grantResults.length > 0   && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    TakePhoto();
+                } else {
+                    mostrarMensaje("Permiso denegado para tomar fotos");
                 }
                 return;
             }
