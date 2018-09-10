@@ -33,5 +33,7 @@
     <dimen name="denuncia_gallery_photo">100dp</dimen>
     <dimen name="denuncia_height_description">70dp</dimen>
     <dimen name="denuncia_margin_bottom_images">50dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
 
 </resources>

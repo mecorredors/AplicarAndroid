@@ -11,20 +11,26 @@ import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import car.gov.co.carserviciociudadano.Utils.ConfigActivity;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
-import car.gov.co.carserviciociudadano.bicicar.activities.EstadisticaPersonaActivity;
-import car.gov.co.carserviciociudadano.bicicar.activities.HuellaAmbientalActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.MainBicicarActivity;
+
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BankProjectActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.petcar.activities.MainPETCARActivity;
+import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
+import car.gov.co.carserviciociudadano.petcar.presenter.ContenedorPresenter;
+import car.gov.co.carserviciociudadano.petcar.presenter.IViewContenedor;
 
 
 public class MainActivity extends BaseActivity  {
@@ -32,7 +38,6 @@ public class MainActivity extends BaseActivity  {
     @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
     private FirebaseAnalytics mFirebaseAnalytics;
-
 
 
 
@@ -62,9 +67,14 @@ public class MainActivity extends BaseActivity  {
         String versionName = BuildConfig.VERSION_NAME;
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
 
-        //Intent i = new Intent(this, ConfigActivity.class);
-        //startActivity(i);
+        Intent i = new Intent(this, MainPETCARActivity.class);
+        startActivity(i);
+
+
+
     }
+
+
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){
         Intent i = new Intent(this, DenunciaAmbientalActivity.class);
