@@ -2,9 +2,15 @@ package car.gov.co.carserviciociudadano.petcar.dataaccess;
 
 import android.util.Log;
 
+import com.anupcowkur.reservoir.Reservoir;
+
 import java.util.List;
 
+import car.gov.co.carserviciociudadano.BuildConfig;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.APIClient;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.interfaces.ApiContenedor;
 import car.gov.co.carserviciociudadano.petcar.interfaces.IContenedor;
@@ -28,8 +34,9 @@ public class Contenedores {
             public void onResponse(Call<List<Contenedor>> call, Response<List<Contenedor>> response) {
 
                 if (response.code() == 200) {
+
                     iContenedor.onSuccess(response.body());
-                }else{
+                } else {
                     iContenedor.onError(new ErrorApi(response));
                 }
 
@@ -42,7 +49,6 @@ public class Contenedores {
                 Log.d("item error", t.toString());
             }
         });
-
     }
 
     public  static void  getContenedores(final IContenedor iContenedor){

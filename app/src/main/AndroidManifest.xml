@@ -194,7 +194,10 @@
         <activity
             android:name=".petcar.activities.MainPETCARActivity"
             android:label="@string/title_activity_main_petcar"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".petcar.activities.MainPETCAR2Activity"
+            android:label="@string/title_activity_main_petcar2"></activity>
     </application>
 
 </manifest>

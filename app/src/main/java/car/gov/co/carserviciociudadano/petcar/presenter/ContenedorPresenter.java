@@ -1,7 +1,15 @@
 package car.gov.co.carserviciociudadano.petcar.presenter;
 
+import android.util.Log;
+
+import com.anupcowkur.reservoir.Reservoir;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import car.gov.co.carserviciociudadano.BuildConfig;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.dataaccess.Contenedores;
 import car.gov.co.carserviciociudadano.petcar.interfaces.IContenedor;
@@ -13,18 +21,59 @@ import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
 
 public class ContenedorPresenter implements IContenedor {
 
-
+    public static final String CONTENEDORES_CACHE = "contenedores_cache";
+    public List<Contenedor> mLstContenedores;
+    public String keycache = "";
     IViewContenedor iview;
     public  ContenedorPresenter(IViewContenedor iview){
         this.iview = iview;
+        keycache = CONTENEDORES_CACHE + BuildConfig.VERSION_CODE;
     }
 
     public void getContenedores(String idMunicipio){
-        Contenedores.getContenedores(idMunicipio, this);
+        ContenedorPresenter contenedorPresenter = getFromCache(keycache);
+
+        if (contenedorPresenter != null ){
+
+            List<Contenedor> lstContenedores = new ArrayList<>();
+            for (Contenedor item : contenedorPresenter.mLstContenedores){
+
+                if (item.IDMunicipio.equals(idMunicipio)){
+                    lstContenedores.add(item);
+                }
+            }
+            if (mLstContenedores.size() == 0)
+                iview.onError(new ErrorApi(404, "No hay contenedores en este municipio"));
+            else
+                iview.onSuccess(mLstContenedores);
+        }else {
+            Contenedores.getContenedores(idMunicipio, this);
+        }
+
     }
+
     public void getContenedores(){
-        Contenedores.getContenedores(this);
+
+        ContenedorPresenter contenedorPresenter = ContenedorPresenter.getFromCache(keycache);
+        if (contenedorPresenter != null ){
+            iview.onSuccess(contenedorPresenter.mLstContenedores);
+        }else {
+            Contenedores.getContenedores(this);
+        }
     }
+
+    public static ContenedorPresenter getFromCache(String keycache){
+        ContenedorPresenter  contenedorPresenter  = null;
+        if (Utils.existeCache(keycache)) {
+            try {
+                contenedorPresenter = Reservoir.get(keycache, ContenedorPresenter.class);
+            } catch (Exception ex) {
+                Log.e(CONTENEDORES_CACHE, ex.toString());
+            }
+        }
+        return contenedorPresenter;
+    }
+
 
     @Override
     public void onError(ErrorApi error) {
@@ -33,6 +82,12 @@ public class ContenedorPresenter implements IContenedor {
 
     @Override
     public void onSuccess(List<Contenedor> lstContenedores) {
+        try {
+            Reservoir.put(keycache, ContenedorPresenter.this,  Enumerator.CacheTimeInMilliSeconds.PETCAR);
+        } catch (Exception e) {
+            Log.e(CONTENEDORES_CACHE, " guardar cache " + e.toString());
+        }
+
         iview.onSuccess(lstContenedores);
     }
 }

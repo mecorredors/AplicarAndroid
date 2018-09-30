@@ -37,6 +37,8 @@ public class Contenedor implements ClusterItem {
     public Date FechaModificacion;
     @SerializedName("Icono")
     public String Icono;
+    @SerializedName("Municipio")
+    public String Municipio;
 
     @Override
     public LatLng getPosition() {

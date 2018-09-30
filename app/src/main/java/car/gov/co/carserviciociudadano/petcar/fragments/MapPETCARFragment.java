@@ -1,15 +1,24 @@
 package car.gov.co.carserviciociudadano.petcar.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,15 +27,32 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.parques.activities.ComoLLegarActivity;
+import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
+import car.gov.co.carserviciociudadano.parques.fragments.BaseFragment;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
 import car.gov.co.carserviciociudadano.petcar.presenter.ContenedorPresenter;
 import car.gov.co.carserviciociudadano.petcar.presenter.IViewContenedor;
@@ -39,7 +65,7 @@ import car.gov.co.carserviciociudadano.petcar.presenter.IViewContenedor;
  * Use the {@link MapPETCARFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapPETCARFragment extends Fragment implements OnMapReadyCallback, IViewContenedor {
+public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallback, IViewContenedor, ClusterManager.OnClusterClickListener<Contenedor>, ClusterManager.OnClusterInfoWindowClickListener<Contenedor>, ClusterManager.OnClusterItemClickListener<Contenedor>, ClusterManager.OnClusterItemInfoWindowClickListener<Contenedor>  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,19 +82,85 @@ public class MapPETCARFragment extends Fragment implements OnMapReadyCallback, I
     MapView mMapView;
     private ContenedorPresenter mContenedorPresenter;
     private ClusterManager<Contenedor> mClusterManager;
+    private static final LatLng initialPosition = new LatLng(4.758345, -74.156071);
+    @BindView(R.id.lyDetalle) View mLyDetalle;
+    @BindView(R.id.lblDireccion) TextView mLblDireccion;
+    @BindView(R.id.lblMunicipio) TextView mLblMunicipio;
+    @BindView(R.id.imgFoto) ImageView mImgFoto;
+    @BindView(R.id.imgClose) ImageButton mImgClose;
+
+    LatLng latLngSelected = new LatLng(0,0);
+
+    private class ContenedorRenderer extends DefaultClusterRenderer<Contenedor> {
+        private final IconGenerator mIconGenerator = new IconGenerator(getContext());
+        private final IconGenerator mClusterIconGenerator = new IconGenerator(getContext());
+        private final ImageView mImageView;
+       // private final ImageView mClusterImageView;
+       // private final int mDimension;
+
+        public ContenedorRenderer() {
+            super(getContext(), mMap, mClusterManager);
+
+           /* View multiProfile = getLayoutInflater().inflate(R.layout.multi_profile, null);
+            mClusterIconGenerator.setContentView(multiProfile);
+            mClusterImageView = (ImageView) multiProfile.findViewById(R.id.image);*/
+
+            mImageView = new ImageView(getContext());
+          //  mDimension = (int) getResources().getDimension(R.dimen.custom_profile_image);
+            //mImageView.setLayoutParams(new ViewGroup.LayoutParams(mDimension, mDimension));
+           // int padding = (int) getResources().getDimension(R.dimen.custom_profile_padding);
+           // mImageView.setPadding(padding, padding, padding, padding);
+            mIconGenerator.setContentView(mImageView);
+        }
+
+        @Override
+        protected void onBeforeClusterItemRendered(Contenedor contenedor, MarkerOptions markerOptions) {
+            // Draw a single person.
+            // Set the info window to show their name.
+           // Drawable drawable = getResources().getDrawable(R.mipmap.ic_icon_map_test);
+
+            mImageView.setImageResource(R.mipmap.ic_icon_map_test);
+            Bitmap icon = mIconGenerator.makeIcon();
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(contenedor.Direccion);
+        }
+
+        @Override
+        protected void onBeforeClusterRendered(Cluster<Contenedor> cluster, MarkerOptions markerOptions) {
+            // Draw multiple people.
+            // Note: this method runs on the UI thread. Don't spend too much time in here (like in this example).
+          /*  List<Drawable> profilePhotos = new ArrayList<Drawable>(Math.min(4, cluster.getSize()));
+            int width = mDimension;
+            int height = mDimension;
+
+            for (Person p : cluster.getItems()) {
+                // Draw 4 at most.
+                if (profilePhotos.size() == 4) break;
+                Drawable drawable = getResources().getDrawable(p.profilePhoto);
+                drawable.setBounds(0, 0, width, height);
+                profilePhotos.add(drawable);
+            }
+            MultiDrawable multiDrawable = new MultiDrawable(profilePhotos);
+            multiDrawable.setBounds(0, 0, width, height);
+
+            mClusterImageView.setImageDrawable(multiDrawable);
+            Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));*/
+          super.onBeforeClusterRendered(cluster, markerOptions);
+        }
+
+        @Override
+        protected boolean shouldRenderAsCluster(Cluster cluster) {
+            // Always render clusters.
+            return cluster.getSize() > 1;
+        }
+    }
+
+
     public MapPETCARFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MapPETCARFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static MapPETCARFragment newInstance(String param1, String param2) {
         MapPETCARFragment fragment = new MapPETCARFragment();
         Bundle args = new Bundle();
@@ -81,6 +173,7 @@ public class MapPETCARFragment extends Fragment implements OnMapReadyCallback, I
         MapPETCARFragment fragment = new MapPETCARFragment();
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,6 +192,7 @@ public class MapPETCARFragment extends Fragment implements OnMapReadyCallback, I
 
         try {
             rootView = inflater.inflate(R.layout.fragment_map_petcar, container, false);
+            ButterKnife.bind(this, rootView);
             MapsInitializer.initialize(this.getActivity());
             mMapView = (MapView) rootView.findViewById(R.id.map);
             mMapView.onCreate(savedInstanceState);
@@ -108,7 +202,22 @@ public class MapPETCARFragment extends Fragment implements OnMapReadyCallback, I
         catch (InflateException e){
             Log.e(TAG, "Inflate exception");
         }
+
+        mLyDetalle.setVisibility(View.GONE);
+
         return rootView;
+    }
+
+    public void obtenerContenedores(){
+
+        obtenerContenedores(null);
+    }
+    public void obtenerContenedores(String idMunicipio){
+        mostrarProgressDialog("Cargando");
+        if (idMunicipio == null)
+            mContenedorPresenter.getContenedores();
+        else
+            mContenedorPresenter.getContenedores(idMunicipio);
     }
 
     @Override
@@ -179,31 +288,128 @@ public class MapPETCARFragment extends Fragment implements OnMapReadyCallback, I
             return;
         }
         mMap = googleMap;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialPosition, 8));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         mClusterManager = new ClusterManager<>(getActivity(), mMap);
         mMap.setOnCameraIdleListener(mClusterManager);
 
-        mContenedorPresenter.getContenedores();
+        mClusterManager.setRenderer(new ContenedorRenderer());
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setOnInfoWindowClickListener(mClusterManager);
+        mClusterManager.setOnClusterClickListener(this);
+        mClusterManager.setOnClusterInfoWindowClickListener(this);
+        mClusterManager.setOnClusterItemClickListener(this);
+        mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+
+        obtenerContenedores();
     }
 
     @Override
     public void onError(ErrorApi error) {
-
+        ocultarProgressDialog();
+        mostrarError(error);
     }
 
     @Override
     public void onSuccess(List<Contenedor> lstContenedores) {
+        ocultarProgressDialog();
+        if (isAdded()) {
+            if (lstContenedores != null && lstContenedores.size() > 0) {
 
-       if (lstContenedores != null && lstContenedores.size() > 0) {
-           mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lstContenedores.get(0).Latitude, lstContenedores.get(0).Longitude), 8));
-           mClusterManager.clearItems();
-           mClusterManager.addItems(lstContenedores);
-       }
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lstContenedores.get(0).Latitude, lstContenedores.get(0).Longitude), 8));
+                mClusterManager.clearItems();
+                mClusterManager.addItems(lstContenedores);
+                mClusterManager.cluster();
+            }
+        }
+    }
+
+
+    @Override
+    public boolean onClusterClick(Cluster<Contenedor> cluster) {
+        LatLngBounds.Builder builder = LatLngBounds.builder();
+        for (ClusterItem item : cluster.getItems()) {
+            builder.include(item.getPosition());
+        }
+        final LatLngBounds bounds = builder.build();
+
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onClusterInfoWindowClick(Cluster<Contenedor> cluster) {
 
     }
 
+    @Override
+    public boolean onClusterItemClick(Contenedor contenedor) {
+
+        mLyDetalle.setVisibility(View.VISIBLE);
+        mLyDetalle.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_up));
+        mLblDireccion.setText(contenedor.Direccion);
+        mLblMunicipio.setText(contenedor.Municipio);
+        latLngSelected = new LatLng(contenedor.Latitude, contenedor.Longitude);
+        return false;
+    }
+
+    @Override
+    public void onClusterItemInfoWindowClick(Contenedor contenedor) {
+
+    }
+
+    private void mostrarError(ErrorApi errorApi){
+        if (errorApi.getStatusCode() == 404)
+            return;
+
+        if (isAdded()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(errorApi.getMessage());
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    obtenerContenedores();
+
+                }
+            });
+            builder.show();
+        }
+    }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void cerrarDetalle(){
+        mLyDetalle.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.imgClose) void onCerrarDetalle() {
+        cerrarDetalle();
+        mLyDetalle.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
+    }
+    @OnClick(R.id.btnComoLlegar) void onComoLLegar() {
+        Parque parque = new Parque();
+        parque.setNombreParque(mLblDireccion.getText().toString());
+        parque.setLatitude(latLngSelected.latitude);
+        parque.setLongitude(latLngSelected.longitude);
+
+        IntentHelper.addObjectForKey(parque, Parques.TAG);
+        Intent i = new Intent(getActivity(), ComoLLegarActivity.class);
+        startActivity(i);
+
     }
 }

@@ -3,6 +3,7 @@ package car.gov.co.carserviciociudadano.common;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import car.gov.co.carserviciociudadano.Utils.Server;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -26,7 +27,7 @@ public class APIClient {
        Gson gson = builder.create();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.17/aplicar/")
+                .baseUrl(Server.ServerAplicar)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();

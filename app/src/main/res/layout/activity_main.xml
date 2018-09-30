@@ -179,6 +179,80 @@
                 android:layout_marginTop="@dimen/margin_10dp"/>
 
 
+
+
+
+            <!-- menu consultas -->
+            <android.support.v7.widget.CardView  android:id="@+id/lyMenuConsultas"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardUseCompatPadding="false"
+                card_view:cardElevation="0dp"
+                card_view:cardCornerRadius="0dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardBackgroundColor="@color/background"
+                android:clickable="true"
+                app:cardPreventCornerOverlap="false">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:clickable="false">
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/menu_height"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_search_blue_36dp"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Consultas"
+                            android:textColor="@color/secondaryText"
+                            android:textSize="@dimen/text_size_16"
+                            android:layout_marginLeft="@dimen/margin_16dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chevron_right_24dp"
+                            />
+
+                    </LinearLayout>
+
+                <LinearLayout android:id="@+id/lyItemsConsultas"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/menu_height"
+                    android:orientation="horizontal">
+
+
+                </LinearLayout>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"
+                android:layout_marginTop="@dimen/margin_10dp"/>
+
+
+
+
+
             <!-- menu tramites -->
             <android.support.v7.widget.CardView  android:id="@+id/lyMenuTramites"
                 android:layout_gravity="center"
