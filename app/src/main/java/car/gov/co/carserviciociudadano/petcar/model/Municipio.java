@@ -7,6 +7,8 @@ package car.gov.co.carserviciociudadano.petcar.model;
 public class Municipio {
     public  String Nombre;
     public  String ID;
+    public  int Count;
+
 
     public Municipio(String id, String nommbre){
         this.ID = id;

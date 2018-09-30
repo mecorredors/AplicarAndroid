@@ -49,6 +49,11 @@ public class MunicipiosPresenter implements IContenedor {
                     lstMunicipios.add(new Municipio(item.IDMunicipio, item.Municipio));
 
             }
+
+            for(Municipio municipio: lstMunicipios) {
+                municipio.Count = countContenedores(lstContenedores, municipio.ID);
+            }
+
             iView.onSuccess(lstMunicipios);
         }else{
             iView.onError(new ErrorApi(404, "No hay municipios"));
@@ -66,5 +71,19 @@ public class MunicipiosPresenter implements IContenedor {
             }
         }
         return  null;
+    }
+
+    private int countContenedores(List<Contenedor> lstContenedores, String idMunicipio){
+
+        if (idMunicipio == null) return  0;
+        int count = 0;
+        if (lstContenedores != null && lstContenedores.size()> 0) {
+            for (Contenedor item : lstContenedores) {
+                if (item.IDMunicipio != null && item.IDMunicipio.equals(idMunicipio)){
+                    count++;
+                }
+            }
+        }
+        return  count;
     }
 }

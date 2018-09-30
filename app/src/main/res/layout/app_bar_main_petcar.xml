@@ -80,24 +80,24 @@
 
     </FrameLayout>
     <!-- <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
+        android:id="@menu_bar_petcartion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
         android:forceHasOverlappingRendering="true"
-        app:menu="@menu/navigation" /> -->
+        app:menu="@mmenu_bar_petcartion" /> -->
 
 
 
     <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
-        android:id="@+id/bnve"
+        android:id="@+id/menu_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/background"
-        app:itemIconTint="@color/bluelight500"
-        app:itemTextColor="@color/secondaryText"
-        app:menu="@menu/navigation" />
+        app:itemIconTint="@color/selector_item_primary_color"
+        app:itemTextColor="@color/selector_item_primary_color"
+        app:menu="@menu/menu_bar_petcar" />
 
 </LinearLayout>
 

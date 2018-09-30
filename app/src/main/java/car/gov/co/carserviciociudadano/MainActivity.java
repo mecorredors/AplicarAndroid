@@ -5,14 +5,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,18 +27,16 @@ import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedien
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
-import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.petcar.activities.MainPETCAR2Activity;
 import car.gov.co.carserviciociudadano.petcar.activities.MainPETCARActivity;
-import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
-import car.gov.co.carserviciociudadano.petcar.presenter.ContenedorPresenter;
-import car.gov.co.carserviciociudadano.petcar.presenter.IViewContenedor;
 
 
 public class MainActivity extends BaseActivity  {
 
     @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
+    @BindView(R.id.lyItemsConsultas) View lyItemsConsultas;
+    @BindView(R.id.lyMenuConsultas)  CardView lyMenuConsultas;
+
     private FirebaseAnalytics mFirebaseAnalytics;
 
 
@@ -68,10 +67,10 @@ public class MainActivity extends BaseActivity  {
         String versionName = BuildConfig.VERSION_NAME;
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
 
-        Intent i = new Intent(this, MainPETCARActivity.class);
-        startActivity(i);
+      //  Intent i = new Intent(this, MainPETCARActivity.class);
+       // startActivity(i);
 
-
+       lyItemsConsultas.setVisibility(View.GONE);
 
     }
 
@@ -87,17 +86,27 @@ public class MainActivity extends BaseActivity  {
         startActivity(i);
     }
 
-    @OnClick(R.id.lyMenuExpedientes) void expedientes(){
+    @OnClick(R.id.lyExpedientes) void expedientes(){
         Intent i = new Intent(this, BuscarExpedienteActivity.class);
         startActivity(i);
     }
-    @OnClick(R.id.lyMenuTramites) void tramites(){
+    @OnClick(R.id.lyTramites) void tramites(){
         Intent i = new Intent(this, TramitesActivity.class);
         startActivity(i);
     }
-    @OnClick(R.id.lyMenuProyectosConfinacion) void proyectoConfinacion(){
+    @OnClick(R.id.lyProyectosConfinacion) void proyectoConfinacion(){
         Intent i = new Intent(this, BankProjectActivity.class);
         startActivity(i);
+    }
+
+    @OnClick(R.id.lyMenuConsultas) void onMenuConsultas(){
+        if (lyItemsConsultas.getVisibility() == View.VISIBLE){
+            lyItemsConsultas.setVisibility(View.GONE);
+            lyItemsConsultas.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
+        }else{
+            lyItemsConsultas.setVisibility(View.VISIBLE);
+            lyItemsConsultas.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_up));
+        }
     }
 
     @OnClick(R.id.lblAyuda) void ayuda(){
@@ -113,6 +122,11 @@ public class MainActivity extends BaseActivity  {
     @OnClick(R.id.lyMenuBicicar) void bicicar(){
         Intent i = new Intent(this, MainBicicarActivity.class);
         startActivity(i);
+    }
+
+    @OnClick(R.id.lyMenuPETCAR) void petcar(){
+          Intent i = new Intent(this, MainPETCARActivity.class);
+         startActivity(i);
     }
 
 

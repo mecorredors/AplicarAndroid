@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.petcar.activities;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -47,6 +48,7 @@ public class MainPETCARActivity extends BaseActivity
     DrawerLayout drawer;
     @BindView(R.id.recyclerMunicipios) RecyclerView mRecyclerMunicipios;
     @BindView(R.id.lyMunicipios) View mLyMunicipios;
+    @BindView(R.id.menu_bar) BottomNavigationViewEx menu_bar;
 
     MunicipiosAdapter mAdaptador;
     List<Municipio> mLstMunicipios;
@@ -61,14 +63,10 @@ public class MainPETCARActivity extends BaseActivity
         ButterKnife.bind(this);
         drawer =  findViewById(R.id.drawer_layout);
 
-       /* BottomNavigationView navigation =  findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);*/
-
-        BottomNavigationViewEx bnve =  findViewById(R.id.bnve);
         //bnve.enableAnimation(false);
-      //  bnve.enableShiftingMode(false);
-        bnve.enableItemShiftingMode(false);
-        bnve.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        menu_bar.enableShiftingMode(false);
+        menu_bar.enableItemShiftingMode(false);
+        menu_bar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
        openMap();
 
@@ -137,8 +135,11 @@ public class MainPETCARActivity extends BaseActivity
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.item_mapa:
                     if (mLyMunicipios.getVisibility() == View.VISIBLE) {
                         mLyMunicipios.setVisibility(View.GONE);
                         mLyMunicipios.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
@@ -146,7 +147,7 @@ public class MainPETCARActivity extends BaseActivity
                     }else
                         openMap();
                     return true;
-                case R.id.navigation_municipio:
+                case R.id.item_municipio:
                     if (mLyMunicipios.getVisibility() == View.VISIBLE) {
                         mLyMunicipios.setVisibility(View.GONE);
                         mLyMunicipios.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
@@ -156,10 +157,10 @@ public class MainPETCARActivity extends BaseActivity
                     mMapPETCARFragment.cerrarDetalle();
 
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.item_guia:
                     mMapPETCARFragment.cerrarDetalle();
                     return true;
-                case R.id.navigation_more:
+                case R.id.item_mas:
                     mMapPETCARFragment.cerrarDetalle();
                     drawer.openDrawer(GravityCompat.START);
                     return true;
@@ -172,7 +173,7 @@ public class MainPETCARActivity extends BaseActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle menu_bar_petcar view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
