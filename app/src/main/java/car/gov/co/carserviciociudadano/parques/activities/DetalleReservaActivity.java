@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.FileUriExposedException;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -65,6 +67,7 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.parques.model.ServicioReserva;
 import car.gov.co.carserviciociudadano.parques.model.Usuario;
+import io.fabric.sdk.android.Fabric;
 
 public class DetalleReservaActivity extends BaseActivity {
 
@@ -445,6 +448,10 @@ public class DetalleReservaActivity extends BaseActivity {
                     startActivity(intent);
                 }catch (ActivityNotFoundException ex){
                     Log.d("OpenPDF", ex.toString());
+                    Crashlytics.logException(ex);
+                }catch (Exception ex){
+                    Log.d("OpenPDF", ex.toString());
+                    Crashlytics.logException(ex);
                 }
             }
         });

@@ -520,7 +520,7 @@ public class GalleryActivity extends BaseActivity {
         return false;
     }
 
-    @Override
+    /*@Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -528,7 +528,7 @@ public class GalleryActivity extends BaseActivity {
 
         if( _GalleryList!=null )
             outState.putSerializable(GALLERY_LIST,_GalleryList);
-    }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {

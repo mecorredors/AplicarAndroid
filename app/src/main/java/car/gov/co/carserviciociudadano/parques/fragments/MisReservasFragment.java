@@ -119,25 +119,29 @@ public class MisReservasFragment extends BaseFragment {
             detalleReservas.list(mUsuario.getLogin(), 0, new IDetalleReserva() {
                 @Override
                 public void onSuccess(List<DetalleReserva> lista) {
-                    showProgress(mProgressView, false);
-                    mLstDetalleReservas.clear();
-                    mLstDetalleReservas.addAll(lista);
-                    mAdaptador.notifyDataSetChanged();
-                    mLblHeader.setText(getString(R.string.header_mis_reservas));
-                    mBtnConsultar.setVisibility(View.GONE);
+                    if (isAdded()) {
+                        showProgress(mProgressView, false);
+                        mLstDetalleReservas.clear();
+                        mLstDetalleReservas.addAll(lista);
+                        mAdaptador.notifyDataSetChanged();
+                        mLblHeader.setText(getString(R.string.header_mis_reservas));
+                        mBtnConsultar.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override
                 public void onError(ErrorApi error) {
-                    showProgress(mProgressView, false);
-                    mBtnConsultar.setVisibility(View.VISIBLE);
-                    mBtnConsultar.setText("CONSULTAR");
-                    if (error.getStatusCode() == 404) {
-                        mLblHeader.setText(getString(R.string.header_sin_reservas));
-                        mLstDetalleReservas.clear();
-                        mAdaptador.notifyDataSetChanged();
-                    } else {
-                        mLblHeader.setText(error.getMessage());
+                    if (isAdded()) {
+                        showProgress(mProgressView, false);
+                        mBtnConsultar.setVisibility(View.VISIBLE);
+                        mBtnConsultar.setText("CONSULTAR");
+                        if (error.getStatusCode() == 404) {
+                            mLblHeader.setText(getString(R.string.header_sin_reservas));
+                            mLstDetalleReservas.clear();
+                            mAdaptador.notifyDataSetChanged();
+                        } else {
+                            mLblHeader.setText(error.getMessage());
+                        }
                     }
                 }
             });
