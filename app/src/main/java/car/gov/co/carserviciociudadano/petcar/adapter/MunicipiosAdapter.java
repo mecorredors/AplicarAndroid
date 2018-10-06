@@ -40,7 +40,8 @@ public class MunicipiosAdapter extends RecyclerView.Adapter<MunicipiosAdapter.Pl
         }
 
         public void bindMunicipio(Municipio item) {
-            lblNombre.setText(item.Nombre + " (" + item.Count + ")");
+            String count = item.Count > 0 ? " ("+ String.valueOf(item.Count) +")" : "";
+            lblNombre.setText(item.Nombre + count);
 
         }
 
