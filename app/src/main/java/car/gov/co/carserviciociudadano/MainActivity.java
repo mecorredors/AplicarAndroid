@@ -102,10 +102,8 @@ public class MainActivity extends BaseActivity  {
     @OnClick(R.id.lyMenuConsultas) void onMenuConsultas(){
         if (lyItemsConsultas.getVisibility() == View.VISIBLE){
             lyItemsConsultas.setVisibility(View.GONE);
-            lyItemsConsultas.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
         }else{
             lyItemsConsultas.setVisibility(View.VISIBLE);
-            lyItemsConsultas.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_up));
         }
     }
 

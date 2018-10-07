@@ -48,6 +48,7 @@ public class MainPETCARActivity extends BaseActivity
     DrawerLayout drawer;
     @BindView(R.id.recyclerMunicipios) RecyclerView mRecyclerMunicipios;
     @BindView(R.id.lyMunicipios) View mLyMunicipios;
+    @BindView(R.id.lyGuia) View mLyGuia;
     @BindView(R.id.menu_bar) BottomNavigationViewEx menu_bar;
 
     MunicipiosAdapter mAdaptador;
@@ -88,6 +89,7 @@ public class MainPETCARActivity extends BaseActivity
         mRecyclerMunicipios.setItemAnimator(new DefaultItemAnimator());
         municipiosPresenter = new MunicipiosPresenter(this);
         mLyMunicipios.setVisibility(View.GONE);
+        mLyGuia.setVisibility(View.GONE);
 
     }
 
@@ -144,10 +146,15 @@ public class MainPETCARActivity extends BaseActivity
                         mLyMunicipios.setVisibility(View.GONE);
                         mLyMunicipios.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
                         mMapPETCARFragment.cerrarDetalle();
+                    }else if (mLyGuia.getVisibility() == View.VISIBLE) {
+                        mLyGuia.setVisibility(View.GONE);
+                        mLyGuia.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
+                        mMapPETCARFragment.cerrarDetalle();
                     }else
                         openMap();
                     return true;
                 case R.id.item_municipio:
+                    mLyGuia.setVisibility(View.GONE);
                     if (mLyMunicipios.getVisibility() == View.VISIBLE) {
                         mLyMunicipios.setVisibility(View.GONE);
                         mLyMunicipios.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
@@ -159,8 +166,19 @@ public class MainPETCARActivity extends BaseActivity
                     return true;
                 case R.id.item_guia:
                     mMapPETCARFragment.cerrarDetalle();
+                    mLyMunicipios.setVisibility(View.GONE);
+                    if (mLyGuia.getVisibility() == View.VISIBLE) {
+                        mLyGuia.setVisibility(View.GONE);
+                        mLyGuia.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
+                    }else {
+                        mLyGuia.setVisibility(View.VISIBLE);
+                        mLyGuia.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_up));
+                    }
+
                     return true;
                 case R.id.item_mas:
+                    mLyGuia.setVisibility(View.GONE);
+                    mLyMunicipios.setVisibility(View.GONE);
                     mMapPETCARFragment.cerrarDetalle();
                     drawer.openDrawer(GravityCompat.START);
                     return true;
@@ -176,28 +194,19 @@ public class MainPETCARActivity extends BaseActivity
         // Handle menu_bar_petcar view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-            openMap();
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_enviar) {
+            mostrarMensaje("Enviar no implementado");
+        } else if (id == R.id.nav_usuario) {
+            mostrarMensaje("Login no implementado");
+        }else if (id == R.id.nav_co2) {
+            mostrarMensaje("co2 no implementado");
         }
-
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     private void openMap() {
-
 
         mMapPETCARFragment  =  MapPETCARFragment.newInstance();
         mMapPETCARFragment.setRetainInstance(true);
@@ -231,5 +240,9 @@ public class MainPETCARActivity extends BaseActivity
     @OnClick(R.id.imgClose) void onCerrarMunicipios() {
         mLyMunicipios.setVisibility(View.GONE);
         mLyMunicipios.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
+    }
+    @OnClick(R.id.imgClose2) void onCerrarGuia() {
+        mLyGuia.setVisibility(View.GONE);
+        mLyGuia.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
     }
 }

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/item_mapa"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_map_black_24dp"
         android:title="@string/title_mapa"
         app:showAsAction="always"
         android:checked="true"/>
@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/item_guia"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_library_books_black_24dp"
         android:title="@string/title_guia"
         app:showAsAction="always"/>
 

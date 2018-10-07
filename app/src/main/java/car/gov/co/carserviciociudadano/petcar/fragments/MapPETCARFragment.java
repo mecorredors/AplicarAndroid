@@ -45,6 +45,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.parques.activities.ComoLLegarActivity;
@@ -83,6 +84,8 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
     private ContenedorPresenter mContenedorPresenter;
     private ClusterManager<Contenedor> mClusterManager;
     private static final LatLng initialPosition = new LatLng(4.758345, -74.156071);
+
+    private Unbinder unbinder;
     @BindView(R.id.lyDetalle) View mLyDetalle;
     @BindView(R.id.lblDireccion) TextView mLblDireccion;
     @BindView(R.id.lblMunicipio) TextView mLblMunicipio;
@@ -119,7 +122,7 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
             // Set the info window to show their name.
            // Drawable drawable = getResources().getDrawable(R.mipmap.ic_icon_map_test);
 
-            mImageView.setImageResource(R.mipmap.ic_icon_map_test);
+            mImageView.setImageResource(R.mipmap.ic_map_petcar);
             Bitmap icon = mIconGenerator.makeIcon();
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(contenedor.Direccion);
         }
@@ -192,7 +195,7 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
 
         try {
             rootView = inflater.inflate(R.layout.fragment_map_petcar, container, false);
-            ButterKnife.bind(this, rootView);
+            unbinder = ButterKnife.bind(this, rootView);
             MapsInitializer.initialize(this.getActivity());
             mMapView = (MapView) rootView.findViewById(R.id.map);
             mMapView.onCreate(savedInstanceState);
@@ -256,6 +259,7 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -397,9 +401,10 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
         mLyDetalle.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.imgClose) void onCerrarDetalle() {
+    @OnClick(R.id.imgClose) void onCerrarDetalle(View view) {
         cerrarDetalle();
         mLyDetalle.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
+
     }
     @OnClick(R.id.btnComoLlegar) void onComoLLegar() {
         Parque parque = new Parque();
