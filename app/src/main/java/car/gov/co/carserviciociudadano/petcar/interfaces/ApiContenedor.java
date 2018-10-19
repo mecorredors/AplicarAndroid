@@ -12,9 +12,9 @@ import retrofit2.http.Query;
  */
 
 public interface ApiContenedor {
-    @GET("api/contenedores?")
+    @GET("api/contenedores/get?")
     Call<List<Contenedor>> getContenedores(@Query("id") String id);
 
-    @GET("api/contenedores")
+    @GET("api/contenedores/get")
     Call<List<Contenedor>> getContenedores();
 }

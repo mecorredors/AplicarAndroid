@@ -38,15 +38,15 @@ public class Contenedores {
 
     public  static void  getContenedores(String idMunicipio, final IContenedor iContenedor){
 
-        List<Contenedor> lstContenedores = getContenedoresFromJson();
+     /*   List<Contenedor> lstContenedores = getContenedoresFromJson();
         List<Contenedor> items = new ArrayList<>();
         for (Contenedor item : lstContenedores){
             if (item.IDMunicipio.equals(idMunicipio))
                 items.add(item);
         }
-        iContenedor.onSuccess(items);
+        iContenedor.onSuccess(items);*/
 
-       /* ApiContenedor apiContenedor = APIClient.getClient().create(ApiContenedor.class);
+        ApiContenedor apiContenedor = APIClient.getClient().create(ApiContenedor.class);
         Call<List<Contenedor>> call = apiContenedor.getContenedores(idMunicipio);
 
         call.enqueue(new Callback<List<Contenedor>>() {
@@ -68,14 +68,14 @@ public class Contenedores {
                 iContenedor.onError(new ErrorApi(t));
                 Log.d("item error", t.toString());
             }
-        });*/
+        });
     }
 
     public  static void  getContenedores(final IContenedor iContenedor){
 
-        iContenedor.onSuccess(getContenedoresFromJson());
+       // iContenedor.onSuccess(getContenedoresFromJson());
 
-        /*ApiContenedor apiContenedor = APIClient.getClient().create(ApiContenedor.class);
+        ApiContenedor apiContenedor = APIClient.getClient().create(ApiContenedor.class);
         Call<List<Contenedor>> call = apiContenedor.getContenedores();
 
         call.enqueue(new Callback<List<Contenedor>>() {
@@ -96,7 +96,7 @@ public class Contenedores {
                 iContenedor.onError(new ErrorApi(t));
                 Log.d("item error", t.toString());
             }
-        });*/
+        });
 
     }
 

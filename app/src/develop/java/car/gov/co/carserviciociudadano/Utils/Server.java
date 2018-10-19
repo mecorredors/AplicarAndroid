@@ -10,9 +10,9 @@ public class Server {
     public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
     public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
 
-    //public static String ServerBICICAR = "http://192.168.0.17/BICICAR/";    //LOCAL sidcar
-    public static String ServerBICICAR = "https://bicicar.car.gov.co/";    //LOCAL sidcar
-    public static String ServerAplicar = "http://192.168.0.19/aplicar/";
+    public static String ServerBICICAR = "http://192.168.0.19/BICICAR/";    //LOCAL sidcar
+   // public static String ServerBICICAR = "https://bicicar.car.gov.co/";    //LOCAL sidcar
+    public static String ServerAplicar = "http://192.168.0.19/BICICAR/";
 
     public static String ServerBICICAR(){
        // return PreferencesApp.getDefault(PreferencesApp.READ).getString("SERVER_BICICAR", ServerBICICAR);

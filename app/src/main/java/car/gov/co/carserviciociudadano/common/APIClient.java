@@ -3,7 +3,12 @@ package car.gov.co.carserviciociudadano.common;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+
 import car.gov.co.carserviciociudadano.Utils.Server;
+import car.gov.co.carserviciociudadano.Utils.Utils;
+import okhttp3.Headers;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -19,8 +24,27 @@ public class APIClient {
    public static Retrofit getClient() {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+
+       //Create a new Interceptor.
+        Interceptor headerAuthorizationInterceptor = new Interceptor() {
+           @Override
+           public okhttp3.Response intercept(Chain chain) throws IOException {
+               okhttp3.Request request = chain.request();
+               Headers headers = request.headers().newBuilder().add("Authorization", "Basic " + Utils.getAuthorizationBICICAR()).build();
+               request = request.newBuilder().headers(headers).build();
+               return chain.proceed(request);
+           }
+       };
+
+
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+      //  OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+       OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+       clientBuilder.addInterceptor(headerAuthorizationInterceptor);
+       clientBuilder.addInterceptor(interceptor);
+       OkHttpClient client = clientBuilder.build();
 
        GsonBuilder builder = new GsonBuilder();
        builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -31,8 +55,6 @@ public class APIClient {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();
-
-
 
         return retrofit;
     }
