@@ -68,6 +68,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private static final int REQUEST_CODE_SCANNER = 2;
+    private static final int REQUEST_CODE_BENEFICIARIOS = 3;
 
     @BindView(R.id.lblSerial) TextView lblSerial;
     @BindView(R.id.lblRin) TextView lblRin;
@@ -76,6 +77,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.btnPublicar) Button btnPublicar;
     @BindView(R.id.btnEscanearCodigo) Button btnEscanearCodigo;
+    @BindView(R.id.btnBeneficiarios) Button btnBeneficiarios;
     @BindView(R.id.txtDistanciaKM) EditText txtDistanciaKM;
     @BindView(R.id.txtTiempo) EditText txtTiempo;
     @BindView(R.id.inputLyDistanciaKM) TextInputLayout inputLyDistanciaKM;
@@ -96,6 +98,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     String ruta = "";
     float distancia = 0;
     float tiempo = 0;
+    private List<Beneficiario> lstBeneficiarios;
 
 
     @Override
@@ -105,6 +108,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         ButterKnife.bind(this);
         ActionBar bar = getSupportActionBar();
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
+        if (mBeneficiarioLogin == null) return;
         bar.setDisplayHomeAsUpEnabled(true);
         if (mBeneficiarioLogin != null)
             bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
@@ -127,8 +131,12 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP){
             btnEscanearCodigo.setVisibility(View.GONE);
+            btnBeneficiarios.setVisibility(View.GONE);
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
            // lyIngresarRecorrido.setVisibility(View.VISIBLE);
+        }else{
+            Intent i = new Intent(this, BeneficiariosActivity.class);
+            startActivityForResult(i, REQUEST_CODE_BENEFICIARIOS);
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
@@ -199,6 +207,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 preferencesApp.putString(Beneficiario.BICICAR_USUARIO, null);
                 preferencesApp.commit();
 
+                new Beneficiarios().DeleteAll();
+
                 RegistrarActividadActivity.super.onBackPressed();
 
             }
@@ -215,6 +225,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         builder.show();
     }
 
+    @OnClick(R.id.btnBeneficiarios) void onBeneficiarios(){
+        Intent i = new Intent(this, BeneficiariosActivity.class);
+        startActivityForResult(i, REQUEST_CODE_BENEFICIARIOS);
+    }
     @OnClick(R.id.btnAgregar) void onAgregar(){
 
         LogTrayecto logTrayecto = new LogTrayecto();
@@ -261,7 +275,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
     @OnClick(R.id.btnIniciar) void onIniciar(){
         startStep1();
-
 
     }
     @OnClick(R.id.btnDetener) void onDetener(){
@@ -321,7 +334,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
         abrirEscaner();
 
-        //  String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
+       //   String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
         // obtenerDatos(datos);
     }
     @OnClick(R.id.btnPublicar) void onPublicar(){
@@ -390,6 +403,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
     private  void obtenerItemsActividad(){
+
+        if (mBeneficiarioLogin == null) return;
+
         mLstLogTrayectos.clear();
         List<LogTrayecto> items = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR, mBeneficiarioLogin.IDBeneficiario);
 
@@ -491,7 +507,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         }
 
-
     }
 
     @Override
@@ -504,7 +519,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 Log.d("escaner", datosEscaner);
                 obtenerDatos(datosEscaner);
             }
-        }
+        }else if (requestCode == REQUEST_CODE_BENEFICIARIOS && resultCode == RESULT_OK){
+           obtenerItemsActividad();
+       }
     }
 
     private void obtenerDatos(String datosEscaner){
@@ -556,11 +573,21 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
     @Override
+    public void onSuccess(List<Beneficiario> lstBeneficiarios) {
+        this.lstBeneficiarios = lstBeneficiarios;
+    }
+
+    @Override
     public void onError(ErrorApi errorApi) {
         ocultarProgressDialog();
         if (errorApi.getStatusCode() == 404){
             mostrarMensajeDialog(errorApi.getMessage());
         }
+
+    }
+
+    @Override
+    public void onErrorListarItems(ErrorApi errorApi) {
 
     }
 

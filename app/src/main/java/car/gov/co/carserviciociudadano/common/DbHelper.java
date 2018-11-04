@@ -23,7 +23,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static String DATABASE_PATH;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "db_bicicar.db";
 
     private final Context context;
@@ -46,6 +46,8 @@ public class DbHelper extends SQLiteOpenHelper {
         } catch (IOException e) {
             throw new Error("Ha sido imposible crear la Base de Datos");
         }
+
+
     }
 
     /**
@@ -132,6 +134,16 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+       if(oldVersion < 4)
+        {
+            //Agregamos a la tabla Beneficiarios
+            try {
+                db.execSQL(TABLA_BENEFICIARIOS);
+            } catch (SQLiteException ex) {
+                Log.d("DbHelper.onUpgrade", ex.toString());
+            }
+        }
+
     }
 
     /**
@@ -177,5 +189,45 @@ public class DbHelper extends SQLiteOpenHelper {
 
         return columns;
     }
+
+
+    ////////NUEVAS TABLAS
+
+    static String TABLA_BENEFICIARIOS = "CREATE TABLE Beneficiarios (" +
+            "IDBeneficiario INTEGER PRIMARY KEY NOT NULL, " +
+            "TipoNumeroID  TEXT NOT NULL, " +
+            "NumeroID  TEXT NOT NULL, " +
+            "IDMunicipioVive   TEXT NOT NULL, " +
+            "IDVereda  TEXT, " +
+            "IDColegio INTEGER NOT NULL, " +
+            "IDEstado  INTEGER NOT NULL, " +
+            "IDPedagogo    INTEGER, " +
+            "Apellidos TEXT NOT NULL, " +
+            "Nombres   TEXT NOT NULL, " +
+            "FechaNacimiento   TEXT, " +
+            "Genero    TEXT NOT NULL, " +
+            "Curso TEXT NOT NULL, " +
+            "NombreAcudiente   TEXT, " +
+            "TelefonoContacto  TEXT, " +
+            "Estatura  REAL NOT NULL, " +
+            "Peso  REAL NOT NULL, " +
+            "RH    TEXT, " +
+            "IDFoto    TEXT, " +
+            "DistanciaKM   TEXT NOT NULL, " +
+            "IDPerfil  TEXT NOT NULL, " +
+            "ClaveApp  TEXT, " +
+            "Email TEXT, " +
+            "FechaEstado   TEXT, " +
+            "FechaCreacion TEXT, " +
+            "FechaModificacion TEXT, " +
+            "UsuarioModificacion   TEXT, " +
+            "Direccion TEXT, " +
+            "PersonaEmergencia TEXT, " +
+            "TelefonoEmergencia    TEXT, " +
+            "EPS    TEXT, " +
+            "IDBicicleta    INTEGER, " +
+            "LinkFoto    TEXT, " +
+            "DescPerfil   TEXT );";
+
 }
 

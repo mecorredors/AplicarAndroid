@@ -19,6 +19,7 @@ import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.bicicar.activities.EstadisticaPersonaActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.HuellaAmbientalActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.MainBicicarActivity;
+import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BankProjectActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
@@ -62,7 +63,9 @@ public class MainActivity extends BaseActivity  {
         String versionName = BuildConfig.VERSION_NAME;
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
 
-        //Intent i = new Intent(this, ConfigActivity.class);
+        //Intent i = new Intent(this, RegistrarActividadActivity.class);
+        //startActivity(i);
+       // Intent i = new Intent(this, ConfigActivity.class);
         //startActivity(i);
     }
 

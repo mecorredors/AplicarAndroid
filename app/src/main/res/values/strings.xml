@@ -25,6 +25,7 @@
     <string name="title_huella_ambiental">Huella ambiental</string>
     <string name="title_escaner">Escanear QR </string>
     <string name="title_historial_trayectos">Historial trayectos </string>
+    <string name="title_asistencia">Registrar asistencia </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -154,6 +155,6 @@
     <string name="kilometros"> Kilómetros</string>
     <string name="recordar_contrasena"> Recordar contraseña</string>
     <string name="descripcion_bicicar"> Propuesta educativa ambiental para mitigar los efectos del cambio climático en los municipios priorizados de la jurisdicción CAR</string>
-
+    <string name="titulo_registrar_asistencia"> Seleccione los estudiantes para registrar su asistencia</string>
 
 </resources>

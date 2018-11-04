@@ -9,6 +9,7 @@
     tools:context=".bicicar.activities.RegistrarActividadActivity"
     android:id="@+id/lyContenedor">
 
+
     <Button android:id="@+id/btnEscanearCodigo"
         android:theme="@style/ButtonAccentBicicar"
         android:layout_width="wrap_content"
@@ -19,30 +20,42 @@
         android:layout_gravity="center_horizontal"
         android:drawableLeft="@drawable/ic_linked_camera_white_24dp"
         android:drawablePadding="@dimen/margin_4dp"
+        android:visibility="gone"
+        />
+
+    <Button android:id="@+id/btnBeneficiarios"
+        android:theme="@style/ButtonAccentBicicar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registrar asistencia"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/ic_person_24dp"
+        android:drawablePadding="@dimen/margin_4dp"
         />
 
     <LinearLayout android:id="@+id/lyFormulario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnEscanearCodigo"
+        android:layout_below="@id/btnBeneficiarios"
         android:orientation="vertical"
        >
 
         <android.support.v7.widget.CardView
-            android:id="@+id/lyDatosQR"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            card_view:cardUseCompatPadding="false"
-            card_view:cardElevation="2dp"
-            card_view:cardCornerRadius="2dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            card_view:cardBackgroundColor="@color/background"
-            android:clickable="true"
-            app:cardPreventCornerOverlap="false"
-            android:layout_margin="@dimen/margin_10dp"
+        android:id="@+id/lyDatosQR"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardUseCompatPadding="false"
+        card_view:cardElevation="2dp"
+        card_view:cardCornerRadius="2dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardBackgroundColor="@color/background"
+        android:clickable="true"
+        app:cardPreventCornerOverlap="false"
+        android:layout_margin="@dimen/margin_10dp"
 
-            >
+        >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,6 +93,7 @@
                         />
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
     <LinearLayout android:id="@+id/lyRegistrarMiRecorrido"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -260,6 +274,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
