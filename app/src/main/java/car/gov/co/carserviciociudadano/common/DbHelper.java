@@ -23,7 +23,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static String DATABASE_PATH;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "db_bicicar.db";
 
     private final Context context;
@@ -134,7 +134,7 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-       if(oldVersion < 4)
+       if(oldVersion < 2)
         {
             //Agregamos a la tabla Beneficiarios
             try {
