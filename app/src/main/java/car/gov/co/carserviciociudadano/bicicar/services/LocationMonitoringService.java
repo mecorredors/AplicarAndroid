@@ -81,7 +81,7 @@ public class LocationMonitoringService extends Service implements
     final static int INTERVAL = 1400;
     final static int FASTEST_INTERVAL = 1200;
     final static int SMALLEST_DISPLACEMENT = 2;
-    final static int MIN_DISTANCE = 3;
+    final static int MIN_DISTANCE = 2;
 
     long tiempo_millins_en_pausa = 0;
 
