@@ -3,7 +3,9 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +19,7 @@ import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
@@ -60,6 +63,7 @@ import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
 import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
+import car.gov.co.carserviciociudadano.common.Notifications;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
@@ -87,6 +91,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.btnIniciar) Button btnIniciar;
     @BindView(R.id.btnDetener) Button btnDetener;
     @BindView(R.id.btnAgregarMiRecorrido) Button btnAgregarMiRecorrido;
+    @BindView(R.id.btnPausa) Button btnPausa;
     @BindView(R.id.lyInfoRecorrido) View lyInfoRecorrido;
     @BindView(R.id.lyIngresarRecorrido) View lyIngresarRecorrido;
     @BindView(R.id.lyContenedor) View lyContenedor;
@@ -97,7 +102,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     Beneficiario mBeneficiarioLogin;
     String ruta = "";
     float distancia = 0;
-    float tiempo = 0;
+    float tiempo_en_minutos = 0;
+    long tiempoMillis = 0;
+    int minutos = 0;
+    int segundos = 0;
+
     private List<Beneficiario> lstBeneficiarios;
 
 
@@ -118,6 +127,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         lyIngresarRecorrido.setVisibility(View.GONE);
         lyInfoRecorrido.setVisibility(View.GONE);
         btnDetener.setVisibility(View.GONE);
+        btnPausa.setVisibility(View.GONE);
         btnAgregarMiRecorrido.setVisibility(View.GONE);
 
         recyclerView.setHasFixedSize(true);
@@ -133,7 +143,14 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             btnEscanearCodigo.setVisibility(View.GONE);
             btnBeneficiarios.setVisibility(View.GONE);
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
-           // lyIngresarRecorrido.setVisibility(View.VISIBLE);
+            boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false);
+            btnPausa.setText(isInPause ? "Continuar" : "Pausa");
+            if (isInPause){
+                tiempoMillis = PreferencesApp.getDefault(PreferencesApp.READ).getLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE , (long) 0);
+                distancia = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE ,  0);
+                mostrarTiempoyDistancia();
+            }
+
         }else{
             Intent i = new Intent(this, BeneficiariosActivity.class);
             startActivityForResult(i, REQUEST_CODE_BENEFICIARIOS);
@@ -143,26 +160,29 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
-                        int minutos = intent.getIntExtra(LocationMonitoringService.EXTRA_MINUTOS,0);
-                        int segundos = intent.getIntExtra(LocationMonitoringService.EXTRA_SEGUNDOS, 0);
+
+                        tiempoMillis = intent.getLongExtra(LocationMonitoringService.EXTRA_TIEMPO_MILLIS,0) ;
                         distancia = intent.getFloatExtra(LocationMonitoringService.EXTRA_DISTANCIA, 0);
-                        tiempo = intent.getFloatExtra(LocationMonitoringService.EXTRA_TIEMPO_MINUTOS, 0);
-
-                        lblDuracion.setText(String.format("%d:%02d", minutos, segundos));
-                        lblDistancia.setText(String.valueOf(Utils.round(2,(distancia/1000))));
-
-                        btnDetener.setVisibility(View.VISIBLE);
-                        btnIniciar.setVisibility(View.GONE);
-                       // btnAgregarMiRecorrido.setVisibility(View.GONE);
-                        lblDuracion.setVisibility(View.VISIBLE);
-
-                       // lyIngresarRecorrido.setVisibility(View.GONE);
-                        lyInfoRecorrido.setVisibility(View.VISIBLE);
+                        mostrarTiempoyDistancia();
 
                     }
                 }, new IntentFilter(LocationMonitoringService.ACTION_LOCATION_BROADCAST)
         );
 
+    }
+    private void mostrarTiempoyDistancia(){
+        segundos = (int) (tiempoMillis / 1000);
+        minutos = segundos / 60;
+        segundos = segundos % 60;
+        tiempo_en_minutos = Utils.round (2, tiempoMillis / (float)60000.0);
+        lblDuracion.setText(String.format("%d:%02d", minutos, segundos));
+        lblDistancia.setText(String.valueOf(Utils.round(2,(distancia/1000))));
+
+        btnPausa.setVisibility(View.VISIBLE);
+        btnIniciar.setVisibility(View.GONE);
+        lblDuracion.setVisibility(View.VISIBLE);
+        lyInfoRecorrido.setVisibility(View.VISIBLE);
+        btnDetener.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -223,6 +243,26 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         });
 
         builder.show();
+    }
+
+    @OnClick(R.id.btnPausa)void onPausa() {
+
+        boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false);
+        if (isInPause){
+            continuar();
+        }else {
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, tiempoMillis).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, distancia).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, true).commit();
+
+            stopService(new Intent(RegistrarActividadActivity.this, LocationMonitoringService.class));
+            mAlreadyStartedService = false;
+            btnPausa.setText("Continuar");
+
+            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos );
+
+        }
+
     }
 
     @OnClick(R.id.btnBeneficiarios) void onBeneficiarios(){
@@ -318,7 +358,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 NotificationManager notificationManager = (NotificationManager) AppCar.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancelAll();
 
-                agregarMiRecorrido(Utils.round(2,(distancia/1000)), tiempo, ruta,latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
+                agregarMiRecorrido(Utils.round(2,(distancia/1000)), tiempo_en_minutos, ruta,latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
+
+                PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, 0).commit();
+                PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, 0).commit();
+                PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
 
                 dialog.dismiss();
 
@@ -390,13 +434,14 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         lyInfoRecorrido.setVisibility(View.GONE);
         //lyIngresarRecorrido.setVisibility(View.VISIBLE);
 
-        this.tiempo = 0;
+        this.tiempo_en_minutos = 0;
         this.distancia = 0;
         txtDistanciaKM.setText("");
         txtTiempo.setText("");
         //btnAgregarMiRecorrido.setVisibility(View.VISIBLE);
         btnIniciar.setVisibility(View.VISIBLE);
         btnDetener.setVisibility(View.GONE);
+        btnPausa.setVisibility(View.GONE);
         ocultarTeclado(lyContenedor);
         ocultarTeclado(inputLyDistanciaKM);
 
@@ -719,9 +764,39 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             btnIniciar.setVisibility(View.GONE);
            // btnAgregarMiRecorrido.setVisibility(View.GONE);
             btnDetener.setVisibility(View.VISIBLE);
+            btnPausa.setVisibility(View.VISIBLE);
+            btnPausa.setText("Pausa");
+
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putString(LocationMonitoringService.EXTRA_RUTA , "").commit();
+
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
+
+            Intent intent = new Intent(this, LocationMonitoringService.class);
+            startService(intent);
+
+            mAlreadyStartedService = true;
+
+        }
+    }
+
+    private void continuar(){
+        if (!mAlreadyStartedService ) {
+
+            lyIngresarRecorrido.setVisibility(View.GONE);
+            lyInfoRecorrido.setVisibility(View.VISIBLE);
+            btnIniciar.setVisibility(View.GONE);
+            // btnAgregarMiRecorrido.setVisibility(View.GONE);
+            btnDetener.setVisibility(View.VISIBLE);
+            btnPausa.setVisibility(View.VISIBLE);
+            btnPausa.setText("Pausa");
+
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
 
             Intent intent = new Intent(this, LocationMonitoringService.class);
             startService(intent);
@@ -831,4 +906,5 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKm);
         startActivity(i);
     }
+
 }

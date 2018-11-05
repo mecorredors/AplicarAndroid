@@ -207,7 +207,20 @@
             android:layout_gravity="left"
             android:background="@drawable/boton_bicicar"
             android:textColor="@color/textLight"
+            android:drawableLeft="@drawable/ic_stop_white_24dp"
+            android:drawablePadding="@dimen/margin_4dp"
             />
+            <Button android:id="@+id/btnPausa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pausa"
+                android:layout_gravity="left"
+                android:background="@drawable/boton_bicicar"
+                android:textColor="@color/textLight"
+                android:drawableLeft="@drawable/ic_pause_white_24dp"
+                android:drawablePadding="@dimen/margin_4dp"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/lyInfoRecorrido"
