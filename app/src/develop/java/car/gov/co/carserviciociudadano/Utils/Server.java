@@ -11,12 +11,13 @@ public class Server {
     public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
 
     public static String ServerBICICAR = "http://192.168.0.19/BICICAR/";    //LOCAL sidcar
+
    // public static String ServerBICICAR = "https://bicicar.car.gov.co/";    //produccion sidcar
 
 
     public static String ServerBICICAR(){
-       // return PreferencesApp.getDefault(PreferencesApp.READ).getString("SERVER_BICICAR", ServerBICICAR);
-        return ServerBICICAR;
+        return PreferencesApp.getDefault(PreferencesApp.READ).getString("SERVER_BICICAR", ServerBICICAR);
+       // return ServerBICICAR;
     }
 
     //public static String ServerParques = "http://192.168.1.53/PARQUES/";    //pruebas car
