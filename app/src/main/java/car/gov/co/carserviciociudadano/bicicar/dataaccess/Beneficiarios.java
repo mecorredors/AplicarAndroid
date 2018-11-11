@@ -363,9 +363,9 @@ public class Beneficiarios {
         AppCar.VolleyQueue().add(objRequest);
     }
 
-    public void listarItems(String curso, final IBeneficiario iBeneficiario)
+    public void listarItems(String curso, int idColegio, final IBeneficiario iBeneficiario)
     {
-        String url = Config.API_BICICAR_LISTAR_BENEFICIARIOS+"?curso=" + curso;
+        String url = Config.API_BICICAR_LISTAR_BENEFICIARIOS+"?curso=" + curso + "&idColegio=" + idColegio;
         url = url.replace(" ", "%20");
 
         JsonArrayRequest objRequest = new JsonArrayRequest(url,

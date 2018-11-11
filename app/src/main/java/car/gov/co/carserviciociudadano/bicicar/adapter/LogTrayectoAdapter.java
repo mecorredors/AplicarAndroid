@@ -33,6 +33,7 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
         private TextView lblNombre;
         private CardView lyItemLogTrayecto;
         private Button btnVerRuta;
+        private Button btnEliminar;
         private View lyTitulo;
         private View lyItem;
         private TextView lblTitulo;
@@ -46,6 +47,7 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
             lblNombre = itemView.findViewById(R.id.lblNombre);
             lyItemLogTrayecto = itemView.findViewById(R.id.lyItemLogTrayecto);
             btnVerRuta = itemView.findViewById(R.id.btnVerRuta);
+            btnEliminar = itemView.findViewById(R.id.btnEliminar);
             lyTitulo = itemView.findViewById(R.id.lyTitulo);
             lyItem = itemView.findViewById(R.id.lyItem);
             lblTitulo = itemView.findViewById(R.id.lblTitulo);
@@ -53,6 +55,7 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
             lblDistancia = itemView.findViewById(R.id.lblDistancia);
             lblDuracion = itemView.findViewById(R.id.lblDuracion);
             btnVerRuta.setOnClickListener(this);
+            btnEliminar.setOnClickListener(this);
         }
 
         public void bind(LogTrayecto a) {
@@ -113,7 +116,10 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
 
         @Override
         public void onClick(View view) {
-            logTrayectoListener.onVerRuta(getAdapterPosition(), view);
+            if (view.getId() == R.id.btnVerRuta)
+                logTrayectoListener.onVerRuta(getAdapterPosition(), view);
+            else  if (view.getId() == R.id.btnEliminar)
+                logTrayectoListener.onEliminar(getAdapterPosition(), view);
         }
     }
 
@@ -157,6 +163,8 @@ public class LogTrayectoAdapter extends RecyclerView.Adapter<LogTrayectoAdapter.
 
     public interface LogTrayectoListener{
         void onVerRuta(int position, View view);
+        void onEliminar(int position, View view);
+
     }
 }
 

@@ -10,34 +10,37 @@
     android:id="@+id/lyContenedor">
 
 
-    <Button android:id="@+id/btnEscanearCodigo"
-        android:theme="@style/ButtonAccentBicicar"
-        android:layout_width="wrap_content"
+    <LinearLayout android:id="@+id/lyBotonesAsistencia"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/escanearCodigo"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_gravity="center_horizontal"
-        android:drawableLeft="@drawable/ic_linked_camera_white_24dp"
-        android:drawablePadding="@dimen/margin_4dp"
-        android:visibility="gone"
-        />
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal">
 
-    <Button android:id="@+id/btnBeneficiarios"
-        android:theme="@style/ButtonAccentBicicar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrar asistencia"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_centerHorizontal="true"
-        android:drawableLeft="@drawable/ic_person_24dp"
-        android:drawablePadding="@dimen/margin_4dp"
-        />
 
+        <Button android:id="@+id/btnBeneficiarios"
+            android:theme="@style/ButtonAccentBicicar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reg. asistencia"
+            android:drawableLeft="@drawable/ic_person_24dp"
+            android:drawablePadding="@dimen/margin_4dp"
+
+            />
+        <Button android:id="@+id/btnEscanearCodigo"
+            android:theme="@style/ButtonAccentBicicar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/escanearCodigo"
+            android:drawableLeft="@drawable/ic_linked_camera_white_24dp"
+            android:drawablePadding="@dimen/margin_4dp"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            />
+    </LinearLayout>
     <LinearLayout android:id="@+id/lyFormulario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnBeneficiarios"
+        android:layout_below="@id/lyBotonesAsistencia"
         android:orientation="vertical"
        >
 

@@ -142,7 +142,7 @@
 
 
     <!-- bicicar -->
-    <string name="escanearCodigo">Escanear código QR </string>
+    <string name="escanearCodigo">Código QR </string>
     <string name="tiempo">Tiempo Min (Opcional) </string>
     <string name="seguro_cerrar_sesion">Seguro desea cerrar sesión </string>
     <string name="huella_ambiental">Huella ambiental </string>

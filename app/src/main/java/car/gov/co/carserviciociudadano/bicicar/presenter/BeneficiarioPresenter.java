@@ -29,10 +29,10 @@ public class BeneficiarioPresenter implements IBeneficiario {
     public  void obtenerItem(String serial, String rin){
         new Beneficiarios().obtenerItem(serial, rin, this);
     }
-    public  void listarItems(String curso){
+    public  void listarItems(String curso, int idColegio){
 
         if (Utils.isOnline(AppCar.getContext()))
-             new Beneficiarios().listarItems(curso, this);
+             new Beneficiarios().listarItems(curso, idColegio, this);
         else{
             listarItemsLocal();
         }

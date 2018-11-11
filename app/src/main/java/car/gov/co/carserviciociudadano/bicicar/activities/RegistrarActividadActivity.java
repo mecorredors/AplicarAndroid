@@ -73,6 +73,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private static final int REQUEST_CODE_SCANNER = 2;
     private static final int REQUEST_CODE_BENEFICIARIOS = 3;
+    private static final int REQUEST_MIS_DATOS = 4;
+    private static final int REQUEST_HISTORIAL_TRAYECTOS = 5;
 
     @BindView(R.id.lblSerial) TextView lblSerial;
     @BindView(R.id.lblRin) TextView lblRin;
@@ -95,6 +97,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.lyInfoRecorrido) View lyInfoRecorrido;
     @BindView(R.id.lyIngresarRecorrido) View lyIngresarRecorrido;
     @BindView(R.id.lyContenedor) View lyContenedor;
+    @BindView(R.id.lyBotonesAsistencia) View lyBonesAsistencia;
 
     LogTrayectoAdapter mAdaptador;
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
@@ -108,6 +111,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     int segundos = 0;
 
     private List<Beneficiario> lstBeneficiarios;
+    private int mPosition;
 
 
     @Override
@@ -140,8 +144,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         obtenerItemsActividad();
 
         if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP){
-            btnEscanearCodigo.setVisibility(View.GONE);
-            btnBeneficiarios.setVisibility(View.GONE);
+            lyBonesAsistencia.setVisibility(View.GONE);
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
             boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false);
             btnPausa.setText(isInPause ? "Continuar" : "Pausa");
@@ -188,6 +191,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @Override
     public void onResume() {
         super.onResume();
+        mAdaptador.setLogTrayectoListener(this);
     }
 
     @Override
@@ -209,7 +213,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             return true;
         }else if (id == R.id.item_historial ) {
             Intent i = new Intent(this, HistorialTrayectosActivity.class);
-            startActivity(i);
+            startActivityForResult(i, REQUEST_HISTORIAL_TRAYECTOS);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -310,7 +314,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     @OnClick(R.id.btnMisDatos) void onMisDatos(){
         Intent i = new Intent(this, EstadisticaPersonaActivity.class);
-        startActivity(i);
+        startActivityForResult(i, REQUEST_MIS_DATOS);
 
     }
     @OnClick(R.id.btnIniciar) void onIniciar(){
@@ -566,6 +570,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             }
         }else if (requestCode == REQUEST_CODE_BENEFICIARIOS && resultCode == RESULT_OK){
            obtenerItemsActividad();
+       }else if (requestCode == REQUEST_MIS_DATOS && resultCode == RESULT_OK){
+           obtenerItemsActividad();
+       }else if (requestCode == REQUEST_HISTORIAL_TRAYECTOS && resultCode == RESULT_OK){
+           obtenerItemsActividad();
        }
     }
 
@@ -740,7 +748,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                             } else if (!checkPermissions()) {
                                 requestPermissions();
                             }
-
                         }
                     }
                 });
@@ -899,12 +906,46 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         verRutaMapa(logTrayecto);
 
     }
+
+    @Override
+    public void onEliminar(int position, View view) {
+        eliminar(position);
+    }
+
     private void verRutaMapa(LogTrayecto logTrayecto){
         Intent i = new Intent(this, RutaMapaActivity.class);
         i.putExtra(LogTrayecto.RUTA , logTrayecto.Ruta);
         i.putExtra(LogTrayecto.DURACION_MINUTOS, logTrayecto.DuracionMinutos);
         i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKm);
         startActivity(i);
+    }
+
+    private  void eliminar(final int position){
+        mPosition = position;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrarActividadActivity.this);
+
+        builder.setMessage("¿Eliminar trayecto?");
+
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LogTrayecto logTrayecto = mLstLogTrayectos.get(mPosition);
+                new LogTrayectos().Delete(logTrayecto.IDLogTrayecto);
+                mLstLogTrayectos.remove(mPosition);
+                mAdaptador.notifyDataSetChanged();
+                dialog.dismiss();
+
+            }
+        });
+        builder.setNegativeButton("Cancelar",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
     }
 
 }

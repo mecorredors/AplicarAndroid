@@ -67,7 +67,7 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
 
     private  void obtenerBeneficiarios(){
         progressBar.setVisibility(View.VISIBLE);
-        beneficiarioPresenter.listarItems(mBeneficiarioLogin.Curso);
+        beneficiarioPresenter.listarItems(mBeneficiarioLogin.Curso, mBeneficiarioLogin.IDColegio);
     }
 
    /* @OnClick(R.id.btnEliminar) void onEliminar(){
@@ -78,24 +78,7 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
     }*/
 
     @OnClick(R.id.btnGuardarAsistencia) void onGuardarAsistencia(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(BeneficiariosActivity.this);
-        builder.setMessage("Seguro desea guardar la asitencia");
-        builder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                guardarAsistencia();
-
-            }
-        });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-
-            }
-        });
-        builder.show();
+        guardarAsistencia();
     }
 
     private  void guardarAsistencia(){
@@ -107,7 +90,6 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         Intent i = new Intent();
         this.setResult(RESULT_OK , i);
         finish();
-
     }
 
     private void activarBoton(){

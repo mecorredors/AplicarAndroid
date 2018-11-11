@@ -221,6 +221,10 @@ public class Utils {
        return  c.get(Calendar.DAY_OF_YEAR);
     }
 
+    public static String formatoNumbero(Object valor){
+        NumberFormat formatter = NumberFormat.getInstance(getLocale());
+        return formatter.format(valor);
+    }
 
     public static  String formatoMoney(double valor){
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -66,6 +67,24 @@ public class EstadisticaPersonaActivity extends BaseActivity implements IViewRep
         obtenerDatos();
     }
 
+    @Override
+    public void onBackPressed(){
+        setResult(RESULT_OK);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id== android.R.id.home){
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                getSupportFragmentManager().popBackStack();
+            else
+                this.onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void obtenerDatos(){
         progressEstadistica.setVisibility(View.VISIBLE);
         progressBicicleta.setVisibility(View.VISIBLE);
@@ -84,8 +103,8 @@ public class EstadisticaPersonaActivity extends BaseActivity implements IViewRep
         lblKilometros.setText("0");
         for (Estadistica item : mLstEstadistica){
             if (item.TipoTotal.equals(tipoTotal)){
-                lblHuellaAmbiental.setText(String.valueOf(Utils.round(2, item.KGCO2)));
-                lblKilometros.setText(String.valueOf(Utils.round(2, item.Kilometros)));
+                lblHuellaAmbiental.setText(Utils.formatoNumbero(Utils.round(0, item.KGCO2)));
+                lblKilometros.setText(Utils.formatoNumbero(Utils.round(0, item.Kilometros)));
                 return;
             }
         }
