@@ -56,15 +56,19 @@ public class EstadisticaPersonaActivity extends BaseActivity implements IViewRep
         ActionBar bar = getSupportActionBar();
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         bar.setDisplayHomeAsUpEnabled(true);
+        if (mBeneficiarioLogin != null) {
+            lblNombre.setText(mBeneficiarioLogin.Nombres.toUpperCase() + " " + mBeneficiarioLogin.Apellidos.toUpperCase());
+            lblSerial.setText(String.valueOf(mBeneficiarioLogin.Serial));
+            lblRin.setText(String.valueOf(mBeneficiarioLogin.Rin));
+            //lblSerial.setText(mBeneficiarioLogin.);
 
-        lblNombre.setText(mBeneficiarioLogin.Nombres.toUpperCase() + " " +mBeneficiarioLogin.Apellidos.toUpperCase());
-        lblSerial.setText(String.valueOf(mBeneficiarioLogin.Serial));
-        lblRin.setText(String.valueOf(mBeneficiarioLogin.Rin));
-        //lblSerial.setText(mBeneficiarioLogin.);
-
-        mReportesPresenter = new ReportesPresenter(this);
-        mBicicletaPresenter = new BicicletaPresenter(this);
-        obtenerDatos();
+            mReportesPresenter = new ReportesPresenter(this);
+            mBicicletaPresenter = new BicicletaPresenter(this);
+            obtenerDatos();
+        }else{
+            mostrarMensaje("Inicie sesión");
+            finish();
+        }
     }
 
     @Override

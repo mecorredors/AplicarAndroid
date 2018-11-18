@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity  {
 
         //Intent i = new Intent(this, RegistrarActividadActivity.class);
         //startActivity(i);
+
         Intent i = new Intent(this, ConfigActivity.class);
         startActivity(i);
     }

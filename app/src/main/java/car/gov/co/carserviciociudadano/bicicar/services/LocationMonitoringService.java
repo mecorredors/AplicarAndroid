@@ -78,8 +78,8 @@ public class LocationMonitoringService extends Service implements
 
     int numRequest = 0;
 
-    final static int INTERVAL = 1400;
-    final static int FASTEST_INTERVAL = 1200;
+    final static int INTERVAL = 1200;
+    final static int FASTEST_INTERVAL = 1000;
     final static int SMALLEST_DISPLACEMENT = 2;
     final static int MIN_DISTANCE = 2;
 
@@ -205,7 +205,13 @@ public class LocationMonitoringService extends Service implements
         }
 
         if (precision < 7) {
-            calcular_distancia = true;
+            if (isBetterLocation(locationBest, location)) {
+                locationBest = location;
+            }
+            if (numRequest > 1) {
+                calcular_distancia = true;
+            }
+
             Log.d("calculo", "precicion < 7");
         }else if (precision  >= 7 && precision < 10 ) {
             if (isBetterLocation(locationBest, location)) {
@@ -218,7 +224,7 @@ public class LocationMonitoringService extends Service implements
         }else if (precision  >= 10 && precision < 16 ) {
             if (isBetterLocation(locationBest, location)) {
                 locationBest = location;
-                calcular_distancia = true;
+               // calcular_distancia = true;
             }
             if (numRequest > 4) {
                 calcular_distancia = true;
@@ -228,7 +234,7 @@ public class LocationMonitoringService extends Service implements
         else if (precision  >= 16 && precision < 20 ) {
             if (isBetterLocation(locationBest, location)) {
                 locationBest = location;
-                calcular_distancia = true;
+              //  calcular_distancia = true;
             }
             if (numRequest > 8) {
                 calcular_distancia = true;
@@ -237,7 +243,7 @@ public class LocationMonitoringService extends Service implements
         }else if (precision  >= 20 ) {
             if (isBetterLocation(locationBest, location)) {
                 locationBest = location;
-                calcular_distancia = true;
+               // calcular_distancia = true;
             }
             if (numRequest > 16) {
                 calcular_distancia = true;

@@ -191,7 +191,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @Override
     public void onResume() {
         super.onResume();
-        mAdaptador.setLogTrayectoListener(this);
+        if (mAdaptador != null)
+            mAdaptador.setLogTrayectoListener(this);
     }
 
     @Override
