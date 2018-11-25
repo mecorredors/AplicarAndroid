@@ -16,7 +16,7 @@ android {
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "car.gov.co.carserviciociudadano"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 14
         versionName "2.0.3"

@@ -78,8 +78,8 @@ public class LocationMonitoringService extends Service implements
 
     int numRequest = 0;
 
-    final static int INTERVAL = 1200;
-    final static int FASTEST_INTERVAL = 1000;
+    final static int INTERVAL = 1000;
+    final static int FASTEST_INTERVAL = 700;
     final static int SMALLEST_DISPLACEMENT = 2;
     final static int MIN_DISTANCE = 2;
 
@@ -208,7 +208,7 @@ public class LocationMonitoringService extends Service implements
             if (isBetterLocation(locationBest, location)) {
                 locationBest = location;
             }
-            if (numRequest > 1) {
+            if (numRequest > 2) {
                 calcular_distancia = true;
             }
 
@@ -217,7 +217,7 @@ public class LocationMonitoringService extends Service implements
             if (isBetterLocation(locationBest, location)) {
                 locationBest = location;
             }
-            if (numRequest > 2) {
+            if (numRequest > 3) {
                 calcular_distancia = true;
             }
             Log.d("calculo", "precicion > 10");

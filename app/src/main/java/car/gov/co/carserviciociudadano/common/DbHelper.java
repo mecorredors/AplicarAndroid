@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -61,7 +62,12 @@ public class DbHelper extends SQLiteOpenHelper {
         else{
             //Llamando a este m�todo se crea la base de datos vac�a en la ruta por defecto del sistema
             //de nuestra aplicaci�n por lo que podremos sobreescribirla con nuestra base de datos.
-            this.getReadableDatabase();
+            try {
+                this.getReadableDatabase();
+                this.close();
+            }catch (Exception e){
+                Crashlytics.logException(e);
+            }
 
             try {
                 copyDataBase();
@@ -124,6 +130,12 @@ public class DbHelper extends SQLiteOpenHelper {
         myOutput.flush();
         myOutput.close();
         myInput.close();
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        db.disableWriteAheadLogging();
     }
 
     @Override
