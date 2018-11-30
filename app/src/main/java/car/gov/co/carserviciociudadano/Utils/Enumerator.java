@@ -70,6 +70,8 @@ public class Enumerator {
         public static final int LIDER_GRUPO = 2;
         public static final int PEDAGOGO = 3;
         public static final int BENEFICIARIO_APP = 4;
+        public static final int EVENTO = 5;
+
 
     }
 

@@ -5,7 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-        import android.content.Intent;
+import android.content.Context;
+import android.content.Intent;
         import android.content.pm.PackageManager;
         import android.location.Location;
 import android.os.Build;
@@ -32,11 +33,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
+import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
+import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
 import car.gov.co.carserviciociudadano.common.Notifications;
 
 
@@ -63,6 +69,10 @@ public class LocationMonitoringService extends Service implements
     public static final String EXTRA_TIEMPO_MILLIS_IN_PAUSE = "extra_tiempo_millis_in_pause";
     public static final String EXTRA_TIEMPO_MILLIS = "extra_tiempo_millis";
 
+    public static final String EXTRA_TIEMPO_EVENTO_09= "extra_tiempo_evento_09";
+    public static final String EXTRA_DISTANCIA_EVENTO_09= "extra_distancia_evento_09";
+
+
 
     float distancia = 0;
     float distancia_en_pausa = 0;
@@ -85,13 +95,19 @@ public class LocationMonitoringService extends Service implements
 
     long tiempo_millins_en_pausa = 0;
 
+    long tiempo_evento_09 = 0;
+    float distancia_evento_09 = 0;
+    Beneficiario  mBeneficiarioLogin;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         startTime = PreferencesApp.getDefault(PreferencesApp.READ).getLong(EXTRA_START_TIME , System.currentTimeMillis() );
         distancia = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(EXTRA_DISTANCIA , 0);
         tiempo_millins_en_pausa = PreferencesApp.getDefault(PreferencesApp.READ).getLong(EXTRA_TIEMPO_MILLIS_IN_PAUSE , (long) 0);
         distancia_en_pausa = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(EXTRA_DISTANCIA_IN_PAUSE ,  0);
+        distancia_evento_09 = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(EXTRA_DISTANCIA_EVENTO_09 ,  0);
+        tiempo_evento_09 = PreferencesApp.getDefault(PreferencesApp.READ).getLong(EXTRA_TIEMPO_EVENTO_09 , (long) 0);
 
         String ruta = PreferencesApp.getDefault(PreferencesApp.READ).getString(EXTRA_RUTA);
         latLngs.clear();
@@ -140,13 +156,36 @@ public class LocationMonitoringService extends Service implements
     private void tick() {
 
         long tiempo_millis = System.currentTimeMillis() - startTime;
-        tiempo_millis = tiempo_millis + tiempo_millins_en_pausa;
-        float total_distancia = distancia + distancia_en_pausa;
+        tiempo_millis = tiempo_millis + tiempo_millins_en_pausa + tiempo_evento_09;
+        float total_distancia = distancia + distancia_en_pausa + distancia_evento_09;
        /* int seconds = (int) (millis / 1000);
         int minutes = seconds / 60;
         seconds = seconds % 60;
         float tiempo_minutos = Utils.round (2, millis / (float)60000.0);*/
         sendMessageToUI(total_distancia , tiempo_millis);
+    }
+
+    private void sendMessageToUI( float distancia, long tiempoMillis) {
+
+       // float totalDistancia = distancia + distancia_evento_09;
+        //long totalTiempoMillis = tiempoMillis + tiempo_evento_09;
+
+        Log.d(TAG, "Sending info..." + distancia);
+
+
+        int segundos = (int) (distancia / 1000);
+        int minutos = segundos / 60;
+        segundos = segundos % 60;
+        //float tiempoMinutos = Utils.round (2, tiempoMillis / (float)60000.0);
+
+        Intent intent = new Intent(ACTION_LOCATION_BROADCAST);
+        intent.putExtra(EXTRA_DISTANCIA, distancia);
+        intent.putExtra(EXTRA_TIEMPO_MILLIS, tiempoMillis);
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+        Notifications.showNotification(" Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos + "  Pre: " + Utils.round(2, precision));
+
     }
 
     @Override
@@ -262,6 +301,11 @@ public class LocationMonitoringService extends Service implements
 
                 addPuntoRuta(locationBest);
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(EXTRA_DISTANCIA , distancia).commit();
+
+                if (distancia >= 1000  && mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){// para evento 09
+                    guardarTrayectoEvento09();
+                }
+
             }
 
             locationBest = null;
@@ -274,27 +318,6 @@ public class LocationMonitoringService extends Service implements
         latLngs.add(new LatLng(location.getLatitude(), location.getLongitude()));
         String ruta = PolyUtil.encode(latLngs);
         PreferencesApp.getDefault(PreferencesApp.WRITE).putString(EXTRA_RUTA , ruta).commit();
-    }
-
-
-    private void sendMessageToUI( float distancia, long tiempoMillis) {
-
-        Log.d(TAG, "Sending info..." + distancia);
-
-
-        int segundos = (int) (tiempoMillis / 1000);
-        int minutos = segundos / 60;
-        segundos = segundos % 60;
-        //float tiempoMinutos = Utils.round (2, tiempoMillis / (float)60000.0);
-
-        Intent intent = new Intent(ACTION_LOCATION_BROADCAST);
-        intent.putExtra(EXTRA_DISTANCIA, distancia);
-        intent.putExtra(EXTRA_TIEMPO_MILLIS, tiempoMillis);
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-
-        Notifications.showNotification(" Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos + "  Pre: " + Utils.round(2, precision));
-
     }
 
     @Override
@@ -340,5 +363,43 @@ public class LocationMonitoringService extends Service implements
         }
 
         return false;
+    }
+
+    private void guardarTrayectoEvento09(){
+        String ruta = PreferencesApp.getDefault(PreferencesApp.READ).getString(LocationMonitoringService.EXTRA_RUTA);
+
+        double latitude_punto_a = 0;
+        double longitude_punto_a = 0;
+        double latitude_punto_b = 0;
+        double longitude_punto_b = 0;
+       // if (ruta != null && !ruta.isEmpty()) {
+          //  List<LatLng> latLngs = PolyUtil.decode(ruta);
+            if (latLngs.size() > 0){
+                latitude_punto_a = latLngs.get(0).latitude;
+                longitude_punto_a = latLngs.get(0).longitude;
+                latitude_punto_b = latLngs.get(latLngs.size() - 1).latitude;
+                longitude_punto_b = latLngs.get(latLngs.size() - 1).longitude;
+            }
+       // }
+        long tiempoMillis = System.currentTimeMillis() - startTime;
+        float tiempoEnMinutos = Utils.round (2, tiempoMillis / (float)60000.0);
+        LogTrayectoPresenter.agregarMiRecorrido(Utils.round(2,(distancia/1000)), tiempoEnMinutos, ruta,latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
+
+        tiempo_evento_09 = tiempo_evento_09 + tiempoMillis;
+        distancia_evento_09 = distancia_evento_09 + distancia;
+
+        startTime = System.currentTimeMillis();
+        PreferencesApp preferencesApp = new PreferencesApp(PreferencesApp.WRITE);
+        preferencesApp.putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0);
+        preferencesApp.putLong(LocationMonitoringService.EXTRA_START_TIME , startTime);
+        preferencesApp.putString(LocationMonitoringService.EXTRA_RUTA , "");
+        preferencesApp.putLong(LocationMonitoringService.EXTRA_TIEMPO_EVENTO_09, tiempo_evento_09);
+        preferencesApp.putFloat(LocationMonitoringService.EXTRA_DISTANCIA_EVENTO_09, distancia_evento_09);
+        preferencesApp.commit();
+        distancia = 0;
+        latLngs.clear();
+        numRequest = 0;
+
+
     }
 }

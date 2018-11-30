@@ -143,7 +143,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         obtenerItemsActividad();
 
-        if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP){
+        if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
             lyBonesAsistencia.setVisibility(View.GONE);
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
             boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false);
@@ -152,6 +152,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 tiempoMillis = PreferencesApp.getDefault(PreferencesApp.READ).getLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE , (long) 0);
                 distancia = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE ,  0);
                 mostrarTiempoyDistancia();
+            }
+
+            if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+                btnPausa.setVisibility(View.GONE);
             }
 
         }else{
@@ -186,6 +190,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         lblDuracion.setVisibility(View.VISIBLE);
         lyInfoRecorrido.setVisibility(View.VISIBLE);
         btnDetener.setVisibility(View.VISIBLE);
+
+        if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+            btnPausa.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -398,43 +406,14 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     private void agregarMiRecorrido(float distancia, float minutos, String ruta, double latitudePuntoA, double longitudePuntoA, double latitudePuntoB, double longitudePuntoB){
 
         if (distancia > 0) {
-            LogTrayecto logTrayecto = new LogTrayecto();
-
-            logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
-            logTrayecto.Fecha = Calendar.getInstance().getTime();
-
-            logTrayecto.DistanciaKm = distancia;
-            logTrayecto.DuracionMinutos = minutos;
-
-            logTrayecto.IDBeneficiario = mBeneficiarioLogin.IDBeneficiario;
-            logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
-            logTrayecto.Ruta = ruta;
-            logTrayecto.LatitudePuntoA = latitudePuntoA;
-            logTrayecto.LongitudePuntoA = longitudePuntoA;
-            logTrayecto.LatitudePuntoB = latitudePuntoB;
-            logTrayecto.LongitudePuntoB = longitudePuntoB;
-
-            if (latitudePuntoA != 0 && longitudePuntoA != 0){
-                SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(latitudePuntoA, longitudePuntoA);
-                sexaDecimalCoordinate.ConvertToFlatCoordinate();
-                logTrayecto.NortePuntoA = sexaDecimalCoordinate.get_coorPlanaNorteFinal();
-                logTrayecto.EstePuntoA = sexaDecimalCoordinate.get_coorPlanaEsteFinal();
-            }
-
-            if (latitudePuntoB != 0 && longitudePuntoB != 0){
-                SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(latitudePuntoB, longitudePuntoB);
-                sexaDecimalCoordinate.ConvertToFlatCoordinate();
-                logTrayecto.NortePuntoB = sexaDecimalCoordinate.get_coorPlanaNorteFinal();
-                logTrayecto.EstePuntoB = sexaDecimalCoordinate.get_coorPlanaEsteFinal();
-            }
-
-            if ( new LogTrayectos().Insert(logTrayecto)) {
+            LogTrayecto logTrayecto = LogTrayectoPresenter.agregarMiRecorrido(distancia, minutos, ruta, latitudePuntoA, longitudePuntoA, latitudePuntoB, longitudePuntoB);
+            if (logTrayecto != null) {
                 obtenerItemsActividad();
                 if (ruta != null && !ruta.isEmpty())
                     verRutaMapa(logTrayecto);
             }
-
         }
+
 
         lyInfoRecorrido.setVisibility(View.GONE);
         //lyIngresarRecorrido.setVisibility(View.VISIBLE);
@@ -770,9 +749,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             lyIngresarRecorrido.setVisibility(View.GONE);
             lyInfoRecorrido.setVisibility(View.VISIBLE);
             btnIniciar.setVisibility(View.GONE);
-           // btnAgregarMiRecorrido.setVisibility(View.GONE);
             btnDetener.setVisibility(View.VISIBLE);
-            btnPausa.setVisibility(View.VISIBLE);
+          //  btnPausa.setVisibility(View.VISIBLE);
             btnPausa.setText("Pausa");
 
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
@@ -782,6 +760,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
+
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_EVENTO_09, 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_EVENTO_09, 0).commit();
 
             Intent intent = new Intent(this, LocationMonitoringService.class);
             startService(intent);
