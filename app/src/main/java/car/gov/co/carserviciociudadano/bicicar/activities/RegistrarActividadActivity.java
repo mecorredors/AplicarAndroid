@@ -110,6 +110,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     int minutos = 0;
     int segundos = 0;
 
+    float distanciaEvento09 = 0;
+    long tiempoMillisEvento09 = 0;
+
     private List<Beneficiario> lstBeneficiarios;
     private int mPosition;
 
@@ -170,6 +173,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
                         tiempoMillis = intent.getLongExtra(LocationMonitoringService.EXTRA_TIEMPO_MILLIS,0) ;
                         distancia = intent.getFloatExtra(LocationMonitoringService.EXTRA_DISTANCIA, 0);
+                        tiempoMillisEvento09 = intent.getLongExtra(LocationMonitoringService.EXTRA_TIEMPO_EVENTO_09,0) ;
+                        distanciaEvento09 = intent.getFloatExtra(LocationMonitoringService.EXTRA_DISTANCIA_EVENTO_09, 0);
+
                         mostrarTiempoyDistancia();
 
                     }
@@ -371,7 +377,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 NotificationManager notificationManager = (NotificationManager) AppCar.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancelAll();
 
-                agregarMiRecorrido(Utils.round(2,(distancia/1000)), tiempo_en_minutos, ruta,latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
+                if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+                    tiempo_en_minutos = Utils.round (2, tiempoMillisEvento09 / (float)60000.0);
+                    distancia = distanciaEvento09;
+                }
+                agregarMiRecorrido(Utils.round(2, (distancia / 1000)), tiempo_en_minutos, ruta, latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
 
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, 0).commit();
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, 0).commit();

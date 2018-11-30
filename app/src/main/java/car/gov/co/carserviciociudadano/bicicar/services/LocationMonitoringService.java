@@ -42,8 +42,10 @@ import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActi
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
+import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
 import car.gov.co.carserviciociudadano.common.Notifications;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
 /**
@@ -155,17 +157,17 @@ public class LocationMonitoringService extends Service implements
 
     private void tick() {
 
-        long tiempo_millis = System.currentTimeMillis() - startTime;
-        tiempo_millis = tiempo_millis + tiempo_millins_en_pausa + tiempo_evento_09;
-        float total_distancia = distancia + distancia_en_pausa + distancia_evento_09;
+        long tiempoMillis = System.currentTimeMillis() - startTime;
+        long tiempoTotalmillis = tiempoMillis + tiempo_millins_en_pausa + tiempo_evento_09;
+        float totalDistancia = distancia + distancia_en_pausa + distancia_evento_09;
        /* int seconds = (int) (millis / 1000);
         int minutes = seconds / 60;
         seconds = seconds % 60;
         float tiempo_minutos = Utils.round (2, millis / (float)60000.0);*/
-        sendMessageToUI(total_distancia , tiempo_millis);
+        sendMessageToUI(totalDistancia , tiempoTotalmillis, distancia, tiempoMillis);
     }
 
-    private void sendMessageToUI( float distancia, long tiempoMillis) {
+    private void sendMessageToUI( float distancia, long tiempoMillis,float distanciaEvento09, long tiempoEvento09) {
 
        // float totalDistancia = distancia + distancia_evento_09;
         //long totalTiempoMillis = tiempoMillis + tiempo_evento_09;
@@ -181,6 +183,8 @@ public class LocationMonitoringService extends Service implements
         Intent intent = new Intent(ACTION_LOCATION_BROADCAST);
         intent.putExtra(EXTRA_DISTANCIA, distancia);
         intent.putExtra(EXTRA_TIEMPO_MILLIS, tiempoMillis);
+        intent.putExtra(EXTRA_DISTANCIA_EVENTO_09, distanciaEvento09);
+        intent.putExtra(EXTRA_TIEMPO_EVENTO_09, tiempoEvento09);
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
@@ -400,6 +404,28 @@ public class LocationMonitoringService extends Service implements
         latLngs.clear();
         numRequest = 0;
 
+        mIntentos = 0;
+        LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(iViewLogTrayecto);
+        logTrayectoPresenter.publicar(mBeneficiarioLogin.IDBeneficiario);
 
     }
+
+
+
+    int mIntentos = 0;
+    IViewLogTrayecto iViewLogTrayecto = new IViewLogTrayecto() {
+        @Override
+        public void onSuccessLogTrayecto() {
+            mIntentos = 0;
+        }
+
+        @Override
+        public void onErrorLogTrayecto(ErrorApi errorApi) {
+            if (mIntentos < 3) {
+                LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(iViewLogTrayecto);
+                logTrayectoPresenter.publicar(mBeneficiarioLogin.IDBeneficiario);
+                mIntentos ++;
+            }
+        }
+    };
 }
