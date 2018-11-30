@@ -122,7 +122,7 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
             // Set the info window to show their name.
            // Drawable drawable = getResources().getDrawable(R.mipmap.ic_icon_map_test);
 
-            mImageView.setImageResource(R.mipmap.ic_map_petcar);
+            mImageView.setImageResource(R.mipmap.ic_map_petcar_2);
             Bitmap icon = mIconGenerator.makeIcon();
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(contenedor.Direccion);
         }
