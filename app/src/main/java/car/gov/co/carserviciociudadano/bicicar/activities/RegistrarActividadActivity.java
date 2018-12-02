@@ -405,6 +405,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         // obtenerDatos(datos);
     }
     @OnClick(R.id.btnPublicar) void onPublicar(){
+        publicar();
+    }
+
+    private void publicar(){
         mostrarProgressDialog("Publicando ...");
         LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(this);
         logTrayectoPresenter.publicar(mBeneficiarioLogin.IDBeneficiario);
@@ -419,8 +423,12 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             LogTrayecto logTrayecto = LogTrayectoPresenter.agregarMiRecorrido(distancia, minutos, ruta, latitudePuntoA, longitudePuntoA, latitudePuntoB, longitudePuntoB);
             if (logTrayecto != null) {
                 obtenerItemsActividad();
-                if (ruta != null && !ruta.isEmpty())
-                    verRutaMapa(logTrayecto);
+                if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+                    publicar();
+                }else {
+                    if (ruta != null && !ruta.isEmpty())
+                        verRutaMapa(logTrayecto);
+                }
             }
         }
 

@@ -175,7 +175,7 @@ public class LocationMonitoringService extends Service implements
         Log.d(TAG, "Sending info..." + distancia);
 
 
-        int segundos = (int) (distancia / 1000);
+        int segundos = (int) (tiempoMillis / 1000);
         int minutos = segundos / 60;
         segundos = segundos % 60;
         //float tiempoMinutos = Utils.round (2, tiempoMillis / (float)60000.0);
