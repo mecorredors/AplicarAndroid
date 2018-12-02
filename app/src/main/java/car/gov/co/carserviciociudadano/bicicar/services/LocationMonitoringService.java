@@ -402,6 +402,7 @@ public class LocationMonitoringService extends Service implements
         preferencesApp.commit();
         distancia = 0;
         latLngs.clear();
+        latLngs.add(new LatLng(locationPreview.getLatitude(), locationPreview.getLongitude()));
         numRequest = 0;
 
         mIntentos = 0;
