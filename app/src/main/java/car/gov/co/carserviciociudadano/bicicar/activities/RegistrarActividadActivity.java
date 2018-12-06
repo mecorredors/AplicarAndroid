@@ -290,6 +290,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
     @OnClick(R.id.btnAgregar) void onAgregar(){
 
+        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
+
         LogTrayecto logTrayecto = new LogTrayecto();
         logTrayecto.Serial = lblSerial.getText().toString();
         logTrayecto.TamanioRin = lblRin.getText().toString();
@@ -354,7 +356,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         builder.setPositiveButton("Finalizar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                mBeneficiarioLogin  = Beneficiarios.readBeneficio();
                 ruta = PreferencesApp.getDefault(PreferencesApp.READ).getString(LocationMonitoringService.EXTRA_RUTA);
 
                 double latitude_punto_a = 0;
@@ -409,6 +411,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
     private void publicar(){
+        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         mostrarProgressDialog("Publicando ...");
         LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(this);
         logTrayectoPresenter.publicar(mBeneficiarioLogin.IDBeneficiario);
@@ -418,6 +421,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         agregarMiRecorrido(distancia, minutos, ruta,0,0,0,0);
     }
     private void agregarMiRecorrido(float distancia, float minutos, String ruta, double latitudePuntoA, double longitudePuntoA, double latitudePuntoB, double longitudePuntoB){
+
+        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
 
         if (distancia > 0) {
             LogTrayecto logTrayecto = LogTrayectoPresenter.agregarMiRecorrido(distancia, minutos, ruta, latitudePuntoA, longitudePuntoA, latitudePuntoB, longitudePuntoB);

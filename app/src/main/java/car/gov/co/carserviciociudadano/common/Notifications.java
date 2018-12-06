@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.common;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +12,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
+import car.gov.co.carserviciociudadano.bicicar.activities.SeguirRutaActivity;
 import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
 
 /**
@@ -19,12 +21,21 @@ import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringServic
 
 public  class Notifications {
 
-    public static void showNotification(String mensaje){
+    public static void showNotification(String mensaje ){
+        Intent intent = new Intent(AppCar.getContext(), RegistrarActividadActivity.class);
+        showNotification(mensaje, intent);
+    }
+    public static void showNotificationSeguirRuta(String mensaje ){
+        Intent intent = new Intent(AppCar.getContext(), SeguirRutaActivity.class);
+        showNotification(mensaje, intent);
+    }
+
+    public static void showNotification(String mensaje, Intent intent){
         // Create an explicit intent for an Activity in your app
 
         createNotificationChannel();
 
-        Intent intent = new Intent(AppCar.getContext(), RegistrarActividadActivity.class);
+       // Intent intent = new Intent(AppCar.getContext(), RegistrarActividadActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity( AppCar.getContext(), 0, intent, 0);
 

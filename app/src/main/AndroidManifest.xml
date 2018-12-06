@@ -168,6 +168,7 @@
         <activity android:name=".Utils.ConfigActivity" />
         <!-- Add the service created in services package ! -->
         <service android:name=".bicicar.services.LocationMonitoringService" />
+        <service android:name=".bicicar.services.SeguirRutaService" />
 
         <activity
             android:name=".bicicar.activities.RutaMapaActivity"
@@ -191,8 +192,13 @@
             android:name=".bicicar.activities.HuellaAmbientalActivity"
             android:label="@string/title_huella_ambiental"
             android:theme="@style/AppThemeBicicar" />
-        <activity android:name=".bicicar.activities.BeneficiariosActivity"
-            android:label="@string/title_asistencia"></activity>
+        <activity
+            android:name=".bicicar.activities.BeneficiariosActivity"
+            android:label="@string/title_asistencia" />
+        <activity
+            android:name=".bicicar.activities.SeguirRutaActivity"
+            android:label="@string/title_activity_seguir_ruta"
+            android:theme="@style/AppThemeBicicar"></activity>
     </application>
 
 </manifest>

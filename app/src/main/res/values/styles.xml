@@ -41,6 +41,7 @@
         <item name="android:textStyle">normal</item>
 
     </style>
+
     <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">@dimen/text_size_18</item>
         <item name="android:textColor">@color/textLight</item>
@@ -54,6 +55,7 @@
         <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:height">@dimen/button_height</item>
     </style>
+
     <style name="ButtonWhite" parent="Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/white</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
@@ -70,6 +72,7 @@
         <item name="android:buttonStyle">?android:attr/borderlessButtonStyle</item>
         <item name="android:height">@dimen/button_height</item>
     </style>
+
     <style name="ButtonBorderlessColored" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="colorButtonNormal">@color/white</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
@@ -122,8 +125,6 @@
     </style>
 
 
-
-
     <!-- teme bicicar -->
 
     <style name="AppThemeBicicar" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -166,6 +167,7 @@
         <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:height">@dimen/button_height</item>
     </style>
+
     <style name="ButtonWhiteBicicar" parent="Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/white</item>
         <item name="colorControlHighlight">@color/accentBicicar</item>
@@ -182,7 +184,6 @@
         <item name="android:buttonStyle">?android:attr/borderlessButtonStyle</item>
         <item name="android:height">@dimen/button_height</item>
     </style>
-
 
 
 </resources>

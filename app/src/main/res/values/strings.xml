@@ -156,5 +156,6 @@
     <string name="recordar_contrasena"> Recordar contraseña</string>
     <string name="descripcion_bicicar"> Propuesta educativa ambiental para mitigar los efectos del cambio climático en los municipios priorizados de la jurisdicción CAR</string>
     <string name="titulo_registrar_asistencia"> Seleccione los estudiantes para registrar su asistencia</string>
+    <string name="title_activity_seguir_ruta">Ruta BICICAR</string>
 
 </resources>
