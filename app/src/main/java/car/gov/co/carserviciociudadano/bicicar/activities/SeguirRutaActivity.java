@@ -494,14 +494,14 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
             }
 
            int km = i + 1;
-        /*   if (i < rutas.length -1 ){
+          if (i < rutas.length -1 ){
 
                  MarkerOptions mo = new MarkerOptions().position(directionPositionList.get(size-1)).title("Km: " + km).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_position_map)).visible(true);
                  Marker marker = mapa.addMarker(mo);
                  mo.anchor(0f, 0.5f);
                  marker.showInfoWindow();
 
-           }*/
+           }
            if (i == rutas.length -1 ){
                mapa.addMarker(new MarkerOptions().position(directionPositionList.get(size-1)).title("Fin recorrido Km: " + km).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_finish_map)));
            }
