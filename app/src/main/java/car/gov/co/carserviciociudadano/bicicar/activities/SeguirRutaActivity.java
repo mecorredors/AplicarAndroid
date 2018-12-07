@@ -51,6 +51,7 @@ import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
+import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
 import car.gov.co.carserviciociudadano.bicicar.services.SeguirRutaService;
 
 import car.gov.co.carserviciociudadano.common.BaseActivity;
@@ -90,6 +91,13 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
         btnPausa.setVisibility(View.GONE);
         btnDetener.setVisibility(View.GONE);
 
+        boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(SeguirRutaService.EXTRA_IN_PAUSE, false);
+        btnPausa.setText(isInPause ? "Continuar" : "Pausa");
+        if (isInPause){
+            tiempoMillis = PreferencesApp.getDefault(PreferencesApp.READ).getLong(SeguirRutaService.EXTRA_TIEMPO_MILLIS_IN_PAUSE , (long) 0);
+            distancia = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(SeguirRutaService.EXTRA_DISTANCIA_IN_PAUSE ,  0);
+            mostrarTiempoyDistancia();
+        }
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 new BroadcastReceiver() {
                     @Override
@@ -99,7 +107,6 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
                         distancia = intent.getFloatExtra(SeguirRutaService.EXTRA_DISTANCIA, 0);
                         latitude = intent.getDoubleExtra(SeguirRutaService.EXTRA_LATITUDE, 0);
                         longitude = intent.getDoubleExtra(SeguirRutaService.EXTRA_LONGITUDE, 0);
-
 
                         mostrarTiempoyDistancia();
 
