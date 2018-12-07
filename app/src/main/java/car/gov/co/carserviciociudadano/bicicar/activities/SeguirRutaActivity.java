@@ -75,6 +75,7 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
     double latitude;
     double longitude;
     Marker marker;
+    boolean primerMovimientoCamara = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +138,13 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
 
            marker = mapa.addMarker(new MarkerOptions().position(posicion).title("Mi Ubicación").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_initial_map)));
 
+            if (!primerMovimientoCamara){
+                if (mapa != null && latitude != 0){
+                    CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 16);
+                    mapa.moveCamera(camUpd1);
+                    primerMovimientoCamara = true;
+                }
+            }
         }
 
     }
