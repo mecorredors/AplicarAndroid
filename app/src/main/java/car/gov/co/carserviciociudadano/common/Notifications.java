@@ -14,6 +14,7 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.SeguirRutaActivity;
 import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
+import car.gov.co.carserviciociudadano.bicicar.services.SeguirRutaService;
 
 /**
  * Created by apple on 5/11/18.
@@ -23,14 +24,14 @@ public  class Notifications {
 
     public static void showNotification(String mensaje ){
         Intent intent = new Intent(AppCar.getContext(), RegistrarActividadActivity.class);
-        showNotification(mensaje, intent);
+        showNotification(mensaje, intent, LocationMonitoringService.NOTIFICATION_ID);
     }
     public static void showNotificationSeguirRuta(String mensaje ){
         Intent intent = new Intent(AppCar.getContext(), SeguirRutaActivity.class);
-        showNotification(mensaje, intent);
+        showNotification(mensaje, intent,SeguirRutaService.NOTIFICATION_ID);
     }
 
-    public static void showNotification(String mensaje, Intent intent){
+    public static void showNotification(String mensaje, Intent intent, int idNotification){
         // Create an explicit intent for an Activity in your app
 
         createNotificationChannel();
@@ -49,7 +50,7 @@ public  class Notifications {
                 .setAutoCancel(false);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(AppCar.getContext());
-        notificationManager.notify(LocationMonitoringService.NOTIFICATION_ID, mBuilder.build());
+        notificationManager.notify(idNotification, mBuilder.build());
     }
 
     public static  void createNotificationChannel() {

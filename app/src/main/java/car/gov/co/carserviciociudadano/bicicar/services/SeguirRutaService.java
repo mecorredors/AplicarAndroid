@@ -323,7 +323,7 @@ public class SeguirRutaService extends Service implements
     }
 
     public static final String CHANNEL_ID = "canal_bicicar";
-    public static final int NOTIFICATION_ID = 100;
+    public static final int NOTIFICATION_ID = 101;
 
 
     static final int TIME_DIFFERENCE_THRESHOLD = 1 * 60 * 1000;
