@@ -50,15 +50,15 @@ public class SeguirRutaService extends Service implements
 
     public static final String ACTION_LOCATION_BROADCAST = SeguirRutaService.class.getName() + "LocationBroadcast";
 
-    public static final String EXTRA_DISTANCIA = "extra_distancia";
-    public static final String EXTRA_START_TIME = "extra_start_time";
-    public static final String EXTRA_RUTA = "extra_start_ruta";
-    public static final String EXTRA_DISTANCIA_IN_PAUSE = "extra_distancia_pause";
-    public static final String EXTRA_IN_PAUSE = "extra_in_pause";
-    public static final String EXTRA_TIEMPO_MILLIS_IN_PAUSE = "extra_tiempo_millis_in_pause";
-    public static final String EXTRA_TIEMPO_MILLIS = "extra_tiempo_millis";
-    public static final String EXTRA_LATITUDE = "extra_latitude";
-    public static final String EXTRA_LONGITUDE = "extra_longitude";
+    public static final String EXTRA_DISTANCIA = "extra_distancia_2";
+    public static final String EXTRA_START_TIME = "extra_start_time_2";
+    public static final String EXTRA_RUTA = "extra_start_ruta_2";
+    public static final String EXTRA_DISTANCIA_IN_PAUSE = "extra_distancia_pause_2";
+    public static final String EXTRA_IN_PAUSE = "extra_in_pause_2";
+    public static final String EXTRA_TIEMPO_MILLIS_IN_PAUSE = "extra_tiempo_millis_in_pause_2";
+    public static final String EXTRA_TIEMPO_MILLIS = "extra_tiempo_millis_2";
+    public static final String EXTRA_LATITUDE = "extra_latitude_2";
+    public static final String EXTRA_LONGITUDE = "extra_longitude_2";
 
     float distancia = 0;
     float distancia_en_pausa = 0;
