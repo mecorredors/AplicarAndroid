@@ -163,7 +163,7 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
             mAlreadyStartedService = false;
             btnPausa.setText("Continuar");
 
-            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos );
+            Notifications.showNotificationSeguirRuta("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos );
 
         }
 
