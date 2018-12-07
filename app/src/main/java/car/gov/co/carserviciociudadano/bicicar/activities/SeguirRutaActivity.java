@@ -107,6 +107,14 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
         );
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mapa != null && latitude != 0){
+            CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 16);
+            mapa.moveCamera(camUpd1);
+        }
+    }
     private void mostrarTiempoyDistancia(){
         segundos = (int) (tiempoMillis / 1000);
         minutos = segundos / 60;
@@ -471,13 +479,18 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
         mapa.getUiSettings().setZoomControlsEnabled(true);
         dibujarRuta();
 
+        if (latitude != 0 && longitude != 0){
+            CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 16);
+            mapa.moveCamera(camUpd1);
+        }
+
     }
 
     private void dibujarRuta() {
 
        // String rutas [] = {"caw[`bhcM??L?DCLAHDF@N?LGRCFFD?LP","a}v[pbhcMHLFJFHBDHHJTFLDDDDJPNNFL","uyv[dghcM?DIDGLGHUXABOJCBOJGBQGOKIE","_~v[lihcMGCOICAMIEIGMKOIAEEMSKMCAGKDK","saw[fehcMHOJIHODQ?CBM" };
 
-        String rutas [] = {"w`f[v`acM???^FFPDtA\\PF\\DN?f@B|APRBJJPPNH^TXNRJLFHBNFd@NNFFBhDvAl@BD@rAV`@DTD`@Nl@NCHIVhEf@f@BD?v@VVHfAFx@FB@j@R","erd[lracMrAFDB`A`@JHf@Rh@LdAt@^?|ET`@EZ\\f@CFC|DWh@JT@H@TDN@V@l@HB@qD`AEBiA|AYP}ExB{@NGFGD[P","cdd[pcbcMg@`@KJYPODGBOJmKdHa@XEBaA~@s@d@y@`@_Ap@s@TEDCFQJSJo@XWPYTg@`@UJ]Rk@Z[V_@TYP]R[V_@Ts@d@c@Tk@^mDdC","ove[dhccMQJ[PMHUN]PIDWNEBu@b@a@Ts@h@yItFWPKFOLSNm@`@IDe@T_@T[Tg@V_@Tg@Z]NcAn@OJo@Zk@Xi@^e@XgAn@GDq@^m@Zk@Tu@b@","ofg[vhdcMGBC@ULKJQNSLm@\\c@Vw@h@WLg@X_@To@Z_@Tc@X{@z@EDa@p@q@vA{@bCEh@AFC\\Mh@IZGVOl@CFIZC\\[dACDGRI\\K\\M\\Mn@CZ?CIPU`@[DC?MHKNEFSd@S`ACFK\\M`@","eeh[zuecMO`@Qd@[~@GNa@n@]f@]b@a@b@k@f@i@ZuA|@IFk@\\k@Xy@d@e@Vo@Xo@`@m@\\g@V]T]Ta@V_@Ta@T]V_@Te@Tk@VmA~@e@NEDk@Xo@\\i@Xi@Ri@Xq@\\","eri[dyfcM[Nm@X{@d@y@b@ED_Af@OHc@TYNa@R[Re@V]R]T]Pa@R]Ra@Rs@\\]TWLq@\\YNe@Pa@Xk@Xk@^i@R}@j@OJc@Pc@RQHC?[@A@SBI?KCIYHQ@E@SAYKYOYY_@Ye@]c@Ua@{@kB","k_k[xcgcM_@]KSMQa@g@U_@S_@Ua@]c@c@_ASS_@q@OWk@o@Wg@i@u@MUi@u@K[g@q@]c@a@e@QKEKCAK?K?KBCB[PMBEAAOE_@EOk@cAAUCW?EMe@GKQ]IKGKACSa@IKCCKIGEa@WCCe@YIGCAUG[Km@U_@OMEUI]M","icl[z{ecMu@[[Iq@WKGg@[KGq@OWGOA[GGAo@SKEUGKEMEa@My@U{@WMECIGEQIG?GEcAa@OIWIe@Qu@OeAHo@Cs@Dm@JOBc@XAJEFEFQNIFEHJOHCNI@GEQEMEMKOIMAAKCKHKDIDQPDCPIJE"};
+       String rutas [] = {"w`f[v`acM???^FFPDtA\\PF\\DN?f@B|APRBJJPPNH^TXNRJLFHBNFd@NNFFBhDvAl@BD@rAV`@DTD`@Nl@NCHIVhEf@f@BD?v@VVHfAFx@FB@j@R","erd[lracMrAFDB`A`@JHf@Rh@LdAt@^?|ET`@EZ\\f@CFC|DWh@JT@H@TDN@V@l@HB@qD`AEBiA|AYP}ExB{@NGFGD[P","cdd[pcbcMg@`@KJYPODGBOJmKdHa@XEBaA~@s@d@y@`@_Ap@s@TEDCFQJSJo@XWPYTg@`@UJ]Rk@Z[V_@TYP]R[V_@Ts@d@c@Tk@^mDdC","ove[dhccMQJ[PMHUN]PIDWNEBu@b@a@Ts@h@yItFWPKFOLSNm@`@IDe@T_@T[Tg@V_@Tg@Z]NcAn@OJo@Zk@Xi@^e@XgAn@GDq@^m@Zk@Tu@b@","ofg[vhdcMGBC@ULKJQNSLm@\\c@Vw@h@WLg@X_@To@Z_@Tc@X{@z@EDa@p@q@vA{@bCEh@AFC\\Mh@IZGVOl@CFIZC\\[dACDGRI\\K\\M\\Mn@CZ?CIPU`@[DC?MHKNEFSd@S`ACFK\\M`@","eeh[zuecMO`@Qd@[~@GNa@n@]f@]b@a@b@k@f@i@ZuA|@IFk@\\k@Xy@d@e@Vo@Xo@`@m@\\g@V]T]Ta@V_@Ta@T]V_@Te@Tk@VmA~@e@NEDk@Xo@\\i@Xi@Ri@Xq@\\","eri[dyfcM[Nm@X{@d@y@b@ED_Af@OHc@TYNa@R[Re@V]R]T]Pa@R]Ra@Rs@\\]TWLq@\\YNe@Pa@Xk@Xk@^i@R}@j@OJc@Pc@RQHC?[@A@SBI?KCIYHQ@E@SAYKYOYY_@Ye@]c@Ua@{@kB","k_k[xcgcM_@]KSMQa@g@U_@S_@Ua@]c@c@_ASS_@q@OWk@o@Wg@i@u@MUi@u@K[g@q@]c@a@e@QKEKCAK?K?KBCB[PMBEAAOE_@EOk@cAAUCW?EMe@GKQ]IKGKACSa@IKCCKIGEa@WCCe@YIGCAUG[Km@U_@OMEUI]M","icl[z{ecMu@[[Iq@WKGg@[KGq@OWGOA[GGAo@SKEUGKEMEa@My@U{@WMECIGEQIG?GEcAa@OIWIe@Qu@OeAHo@Cs@Dm@JOBc@XAJEFEFQNIFEHJOHCNI@GEQEMEMKOIMAAKCKHKDIDQPDCPIJExAg@`@e@D[OQ}@_@iBs@mAa@"};
 
        int i = 0;
        for (String ruta : rutas) {
@@ -493,19 +506,19 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
 
             }
 
-           int km = i + 1;
-          if (i < rutas.length -1 ){
+            int km = i + 1;
+            if (i < rutas.length -1 ){
 
-                 MarkerOptions mo = new MarkerOptions().position(directionPositionList.get(size-1)).title("Km: " + km).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_position_map)).visible(true);
+                 MarkerOptions mo = new MarkerOptions().position(directionPositionList.get(size-1)).title("Km: " + km).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_position_map));
                  Marker marker = mapa.addMarker(mo);
                  mo.anchor(0f, 0.5f);
                  marker.showInfoWindow();
 
-           }
-           if (i == rutas.length -1 ){
-               mapa.addMarker(new MarkerOptions().position(directionPositionList.get(size-1)).title("Fin recorrido Km: " + km).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_finish_map)));
-           }
-           i++;
+            }
+            if (i == rutas.length -1 ){
+               mapa.addMarker(new MarkerOptions().position(directionPositionList.get(size-1)).title("Fin recorrido Km: " + km).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_finish_map)).visible(true)).showInfoWindow();
+            }
+            i++;
 
        }
     }
