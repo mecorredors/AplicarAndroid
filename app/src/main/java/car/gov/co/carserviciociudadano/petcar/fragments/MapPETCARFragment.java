@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -97,7 +98,7 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
     private class ContenedorRenderer extends DefaultClusterRenderer<Contenedor> {
         private final IconGenerator mIconGenerator = new IconGenerator(getContext());
         private final IconGenerator mClusterIconGenerator = new IconGenerator(getContext());
-        private final ImageView mImageView;
+       // private final ImageView mImageView;
        // private final ImageView mClusterImageView;
        // private final int mDimension;
 
@@ -108,12 +109,12 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
             mClusterIconGenerator.setContentView(multiProfile);
             mClusterImageView = (ImageView) multiProfile.findViewById(R.id.image);*/
 
-            mImageView = new ImageView(getContext());
+           // mImageView = new ImageView(getContext());
           //  mDimension = (int) getResources().getDimension(R.dimen.custom_profile_image);
             //mImageView.setLayoutParams(new ViewGroup.LayoutParams(mDimension, mDimension));
            // int padding = (int) getResources().getDimension(R.dimen.custom_profile_padding);
            // mImageView.setPadding(padding, padding, padding, padding);
-            mIconGenerator.setContentView(mImageView);
+           // mIconGenerator.setContentView(mImageView);
         }
 
         @Override
@@ -122,8 +123,12 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
             // Set the info window to show their name.
            // Drawable drawable = getResources().getDrawable(R.mipmap.ic_icon_map_test);
 
-            mImageView.setImageResource(R.mipmap.ic_map_petcar_2);
-            Bitmap icon = mIconGenerator.makeIcon();
+           // mImageView.setImageResource(R.mipmap.ic_map_petcar_2);
+           // Bitmap icon = mIconGenerator.makeIcon();
+
+            Drawable d =  getResources().getDrawable(R.mipmap.ic_map_petcar_2);
+            Bitmap icon = ((BitmapDrawable)d).getBitmap();
+
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(contenedor.Direccion);
         }
 
