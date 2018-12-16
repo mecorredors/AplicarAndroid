@@ -12,8 +12,8 @@ public class Server {
 
    // public static String ServerBICICAR = "http://192.168.0.19/BICICAR/";    //LOCAL sidcar
     public static String ServerBICICAR = "https://bicicar.car.gov.co/";    //LOCAL sidcar
-    public static String ServerAplicar = "http://192.168.0.19/BICICAR/";
-   // public static String ServerAplicar = "https://bicicar.car.gov.co/";
+    //public static String ServerAplicar = "http://192.168.0.19/BICICAR/";
+    public static String ServerAplicar = "https://bicicar.car.gov.co/";
 
     public static String ServerBICICAR(){
        // return PreferencesApp.getDefault(PreferencesApp.READ).getString("SERVER_BICICAR", ServerBICICAR);

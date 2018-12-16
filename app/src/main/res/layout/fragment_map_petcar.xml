@@ -98,7 +98,7 @@
                android:id="@+id/imgFoto"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
-               android:src="@mipmap/image_main"/>
+               android:src="@mipmap/petcar_contenedor"/>
 
        </LinearLayout>
 

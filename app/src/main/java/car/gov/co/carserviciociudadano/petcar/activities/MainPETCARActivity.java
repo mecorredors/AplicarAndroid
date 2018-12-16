@@ -109,12 +109,11 @@ public class MainPETCARActivity extends BaseActivity
         }
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_petcar, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -195,11 +194,11 @@ public class MainPETCARActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_enviar) {
-            mostrarMensaje("Enviar no implementado");
+            mostrarMensaje("Próximamente, en desarrollo");
         } else if (id == R.id.nav_usuario) {
-            mostrarMensaje("Login no implementado");
+            mostrarMensaje("Próximamente, en desarrollo");
         }else if (id == R.id.nav_co2) {
-            mostrarMensaje("co2 no implementado");
+            mostrarMensaje("Próximamente, en desarrollo");
         }
 
         drawer.closeDrawer(GravityCompat.START);
