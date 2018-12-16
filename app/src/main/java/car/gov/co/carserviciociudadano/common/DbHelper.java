@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -23,7 +24,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static String DATABASE_PATH;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "db_bicicar.db";
 
     private final Context context;
@@ -46,6 +47,8 @@ public class DbHelper extends SQLiteOpenHelper {
         } catch (IOException e) {
             throw new Error("Ha sido imposible crear la Base de Datos");
         }
+
+
     }
 
     /**
@@ -59,7 +62,12 @@ public class DbHelper extends SQLiteOpenHelper {
         else{
             //Llamando a este m�todo se crea la base de datos vac�a en la ruta por defecto del sistema
             //de nuestra aplicaci�n por lo que podremos sobreescribirla con nuestra base de datos.
-            this.getReadableDatabase();
+            try {
+                this.getReadableDatabase();
+                this.close();
+            }catch (Exception e){
+                Crashlytics.logException(e);
+            }
 
             try {
                 copyDataBase();
@@ -125,12 +133,28 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        db.disableWriteAheadLogging();
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase arg0) {
         // TODO Auto-generated method stub
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+       if(oldVersion < 4)
+        {
+            //Agregamos a la tabla Beneficiarios
+            try {
+                db.execSQL(TABLA_BENEFICIARIOS);
+            } catch (SQLiteException ex) {
+                Log.d("DbHelper.onUpgrade", ex.toString());
+            }
+        }
 
     }
 
@@ -177,5 +201,45 @@ public class DbHelper extends SQLiteOpenHelper {
 
         return columns;
     }
+
+
+    ////////NUEVAS TABLAS
+
+    static String TABLA_BENEFICIARIOS = "CREATE TABLE Beneficiarios (" +
+            "IDBeneficiario INTEGER PRIMARY KEY NOT NULL, " +
+            "TipoNumeroID  TEXT NOT NULL, " +
+            "NumeroID  TEXT NOT NULL, " +
+            "IDMunicipioVive   TEXT NOT NULL, " +
+            "IDVereda  TEXT, " +
+            "IDColegio INTEGER NOT NULL, " +
+            "IDEstado  INTEGER NOT NULL, " +
+            "IDPedagogo    INTEGER, " +
+            "Apellidos TEXT NOT NULL, " +
+            "Nombres   TEXT NOT NULL, " +
+            "FechaNacimiento   TEXT, " +
+            "Genero    TEXT NOT NULL, " +
+            "Curso TEXT NOT NULL, " +
+            "NombreAcudiente   TEXT, " +
+            "TelefonoContacto  TEXT, " +
+            "Estatura  REAL NOT NULL, " +
+            "Peso  REAL NOT NULL, " +
+            "RH    TEXT, " +
+            "IDFoto    TEXT, " +
+            "DistanciaKM   TEXT NOT NULL, " +
+            "IDPerfil  TEXT NOT NULL, " +
+            "ClaveApp  TEXT, " +
+            "Email TEXT, " +
+            "FechaEstado   TEXT, " +
+            "FechaCreacion TEXT, " +
+            "FechaModificacion TEXT, " +
+            "UsuarioModificacion   TEXT, " +
+            "Direccion TEXT, " +
+            "PersonaEmergencia TEXT, " +
+            "TelefonoEmergencia    TEXT, " +
+            "EPS    TEXT, " +
+            "IDBicicleta    INTEGER, " +
+            "LinkFoto    TEXT, " +
+            "DescPerfil   TEXT );";
+
 }
 

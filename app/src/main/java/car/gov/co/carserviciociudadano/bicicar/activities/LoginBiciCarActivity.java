@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -122,9 +124,19 @@ public class LoginBiciCarActivity extends BaseActivity implements IViewBeneficia
     }
 
     @Override
+    public void onSuccess(List<Beneficiario> lstBeneficiarios) {
+
+    }
+
+    @Override
     public void onError(ErrorApi errorApi) {
         ocultarProgressDialog();
         mostrarMensajeDialog(errorApi.getMessage());
+    }
+
+    @Override
+    public void onErrorListarItems(ErrorApi errorApi) {
+
     }
 
     @Override

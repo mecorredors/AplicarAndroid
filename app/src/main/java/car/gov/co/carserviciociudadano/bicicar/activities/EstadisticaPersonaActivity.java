@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -42,7 +43,6 @@ public class EstadisticaPersonaActivity extends BaseActivity implements IViewRep
     @BindView(R.id.rbuSemanal) RadioButton rbuSemanal;
     @BindView(R.id.rbuMensual) RadioButton rbuMensual;
     @BindView(R.id.rbuTotal) RadioButton rbuTotal;
-
     Beneficiario mBeneficiarioLogin;
     ReportesPresenter mReportesPresenter;
     BicicletaPresenter mBicicletaPresenter;
@@ -55,15 +55,37 @@ public class EstadisticaPersonaActivity extends BaseActivity implements IViewRep
         ActionBar bar = getSupportActionBar();
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         bar.setDisplayHomeAsUpEnabled(true);
+        if (mBeneficiarioLogin != null) {
+            lblNombre.setText(mBeneficiarioLogin.Nombres.toUpperCase() + " " + mBeneficiarioLogin.Apellidos.toUpperCase());
+            lblSerial.setText(String.valueOf(mBeneficiarioLogin.Serial));
+            lblRin.setText(String.valueOf(mBeneficiarioLogin.Rin));
+            //lblSerial.setText(mBeneficiarioLogin.);
 
-        lblNombre.setText(mBeneficiarioLogin.Nombres.toUpperCase() + " " +mBeneficiarioLogin.Apellidos.toUpperCase());
-        lblSerial.setText(String.valueOf(mBeneficiarioLogin.Serial));
-        lblRin.setText(String.valueOf(mBeneficiarioLogin.Rin));
-        //lblSerial.setText(mBeneficiarioLogin.);
+            mReportesPresenter = new ReportesPresenter(this);
+            mBicicletaPresenter = new BicicletaPresenter(this);
+            obtenerDatos();
+        }else{
+            mostrarMensaje("Inicie sesión");
+            finish();
+        }
+    }
 
-        mReportesPresenter = new ReportesPresenter(this);
-        mBicicletaPresenter = new BicicletaPresenter(this);
-        obtenerDatos();
+    @Override
+    public void onBackPressed(){
+        setResult(RESULT_OK);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id== android.R.id.home){
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                getSupportFragmentManager().popBackStack();
+            else
+                this.onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void obtenerDatos(){
@@ -84,8 +106,8 @@ public class EstadisticaPersonaActivity extends BaseActivity implements IViewRep
         lblKilometros.setText("0");
         for (Estadistica item : mLstEstadistica){
             if (item.TipoTotal.equals(tipoTotal)){
-                lblHuellaAmbiental.setText(String.valueOf(Utils.round(2, item.KGCO2)));
-                lblKilometros.setText(String.valueOf(Utils.round(2, item.Kilometros)));
+                lblHuellaAmbiental.setText(Utils.formatoNumbero(Utils.round(0, item.KGCO2)));
+                lblKilometros.setText(Utils.formatoNumbero(Utils.round(0, item.Kilometros)));
                 return;
             }
         }

@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.bicicar.activities.MainBicicarActivity;
+import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
 
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BankProjectActivity;

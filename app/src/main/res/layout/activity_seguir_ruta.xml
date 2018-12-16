@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context="car.gov.co.carserviciociudadano.bicicar.activities.SeguirRutaActivity"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_16dp"
+        >
+
+        <Button android:id="@+id/btnIniciar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iniciar recorrido"
+            android:layout_gravity="left"
+            android:background="@drawable/boton_bicicar"
+            android:textColor="@color/textLight"
+            android:drawableLeft="@drawable/ic_play_arrow_white_24dp"
+            android:drawablePadding="@dimen/margin_4dp"
+            />
+
+        <Button android:id="@+id/btnDetener"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detener"
+            android:layout_gravity="left"
+            android:background="@drawable/boton_bicicar"
+            android:textColor="@color/textLight"
+            android:drawableLeft="@drawable/ic_stop_white_24dp"
+            android:drawablePadding="@dimen/margin_4dp"
+            />
+        <Button android:id="@+id/btnPausa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pausa"
+            android:layout_gravity="left"
+            android:background="@drawable/boton_bicicar"
+            android:textColor="@color/textLight"
+            android:drawableLeft="@drawable/ic_pause_white_24dp"
+            android:drawablePadding="@dimen/margin_4dp"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/lyInfoRecorrido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DISTANCIA KM"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/text_size_12"
+                />
+
+            <TextView android:id="@+id/lblDistancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.00"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:textColor="@color/primaryBicicar"
+                android:textSize="36sp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin_16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/duracion"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/text_size_12"
+                />
+
+            <TextView android:id="@+id/lblDuracion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:textColor="@color/primaryBicicar"
+                android:textStyle=""
+                android:textSize="36sp"
+                android:layout_gravity="center_horizontal"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

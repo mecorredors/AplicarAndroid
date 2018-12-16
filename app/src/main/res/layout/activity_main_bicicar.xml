@@ -23,13 +23,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:gravity="center_horizontal"
-                    android:background="@drawable/background_bicicar_main">
-                    <ImageView
+                    android:background="@drawable/background_bicicar_main"
+                    android:orientation="vertical">
+                   <!-- <ImageView android:id="@+id/imgLogo"
                         android:layout_width="wrap_content"
                         android:layout_height="150dp"
                         android:src="@mipmap/logo_bicicar"
                         android:layout_marginTop="20dp"
+                        /> -->
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_18"
+                        android:textColor="@color/white"
+                        android:text="RODADA BICICAR"
+                        android:layout_marginTop="@dimen/margin_12dp"/>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/margin_10dp">
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/imgLogo"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:src="@mipmap/ruta1"
+                        app:civ_border_color="#fff"
+                        app:civ_border_width="2dp"
                         />
+
+                    <Button android:id="@+id/btnVerRecorrido"
+                        android:theme="@style/ButtonBorderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ver recorrido"
+                        android:layout_marginLeft="@dimen/margin_6dp"
+                       android:layout_marginTop="@dimen/margin_16dp"
+                        android:textColor="@color/textLight"
+                        android:drawableLeft="@drawable/ic_directions_bike_white_44dp"
+                        />
+                    </LinearLayout>
 
                 </LinearLayout>
 

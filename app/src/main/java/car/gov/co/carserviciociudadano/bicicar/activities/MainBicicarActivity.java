@@ -73,9 +73,9 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
     public void onSuccessGranTotal(Estadistica estadistica) {
         progressBar.setVisibility(View.GONE);
         if (estadistica != null){
-            lblKgCO2.setText(String.valueOf(Utils.round(2, estadistica.KGCO2)));
-            lblBicicletas.setText(String.valueOf(Utils.round(2,estadistica.Bicicletas)));
-            lblKilometros.setText(String.valueOf(Utils.round(2,estadistica.Kilometros)));
+            lblKgCO2.setText(Utils.formatoNumbero(Utils.round(0, estadistica.KGCO2)));
+            lblBicicletas.setText(Utils.formatoNumbero(Utils.round(0,estadistica.Bicicletas)));
+            lblKilometros.setText(Utils.formatoNumbero(Utils.round(0,estadistica.Kilometros)));
         }
     }
 
@@ -113,6 +113,12 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
             }
         }
     }
+
+    @OnClick({R.id.imgLogo, R.id.btnVerRecorrido}) void onImgLogo(){
+        Intent i = new Intent(this, SeguirRutaActivity.class);
+        startActivity(i);
+    }
+
 
     @OnClick(R.id.lyRegistrarActividad) void onRegistrarActividad(){
 

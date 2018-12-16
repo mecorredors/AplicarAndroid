@@ -84,9 +84,9 @@ public class RutaMapaActivity extends BaseActivity implements OnMapReadyCallback
 
         if (directionPositionList.size() > 0){
             CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(directionPositionList.get(0), 16);
-            mapa.addMarker(new MarkerOptions().position(directionPositionList.get(0)).title("Inicio").icon(BitmapDescriptorFactory.fromResource(R.mipmap.bike)));
+            mapa.addMarker(new MarkerOptions().position(directionPositionList.get(0)).title("Inicio").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_initial_map)));
 
-            mapa.addMarker(new MarkerOptions().position(directionPositionList.get(directionPositionList.size() - 1)).title("Destino").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ok_circle)));
+            mapa.addMarker(new MarkerOptions().position(directionPositionList.get(directionPositionList.size() - 1)).title("Destino").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_finish_map)));
 
             mapa.moveCamera(camUpd1);
 

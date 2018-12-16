@@ -3,7 +3,9 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +19,7 @@ import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
@@ -60,6 +63,7 @@ import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
 import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
+import car.gov.co.carserviciociudadano.common.Notifications;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
@@ -68,6 +72,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private static final int REQUEST_CODE_SCANNER = 2;
+    private static final int REQUEST_CODE_BENEFICIARIOS = 3;
+    private static final int REQUEST_MIS_DATOS = 4;
+    private static final int REQUEST_HISTORIAL_TRAYECTOS = 5;
 
     @BindView(R.id.lblSerial) TextView lblSerial;
     @BindView(R.id.lblRin) TextView lblRin;
@@ -76,6 +83,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.btnPublicar) Button btnPublicar;
     @BindView(R.id.btnEscanearCodigo) Button btnEscanearCodigo;
+    @BindView(R.id.btnBeneficiarios) Button btnBeneficiarios;
     @BindView(R.id.txtDistanciaKM) EditText txtDistanciaKM;
     @BindView(R.id.txtTiempo) EditText txtTiempo;
     @BindView(R.id.inputLyDistanciaKM) TextInputLayout inputLyDistanciaKM;
@@ -85,9 +93,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.btnIniciar) Button btnIniciar;
     @BindView(R.id.btnDetener) Button btnDetener;
     @BindView(R.id.btnAgregarMiRecorrido) Button btnAgregarMiRecorrido;
+    @BindView(R.id.btnPausa) Button btnPausa;
     @BindView(R.id.lyInfoRecorrido) View lyInfoRecorrido;
     @BindView(R.id.lyIngresarRecorrido) View lyIngresarRecorrido;
     @BindView(R.id.lyContenedor) View lyContenedor;
+    @BindView(R.id.lyBotonesAsistencia) View lyBonesAsistencia;
 
     LogTrayectoAdapter mAdaptador;
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
@@ -95,7 +105,16 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     Beneficiario mBeneficiarioLogin;
     String ruta = "";
     float distancia = 0;
-    float tiempo = 0;
+    float tiempo_en_minutos = 0;
+    long tiempoMillis = 0;
+    int minutos = 0;
+    int segundos = 0;
+
+    float distanciaEvento09 = 0;
+    long tiempoMillisEvento09 = 0;
+
+    private List<Beneficiario> lstBeneficiarios;
+    private int mPosition;
 
 
     @Override
@@ -105,6 +124,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         ButterKnife.bind(this);
         ActionBar bar = getSupportActionBar();
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
+        if (mBeneficiarioLogin == null) return;
         bar.setDisplayHomeAsUpEnabled(true);
         if (mBeneficiarioLogin != null)
             bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
@@ -114,6 +134,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         lyIngresarRecorrido.setVisibility(View.GONE);
         lyInfoRecorrido.setVisibility(View.GONE);
         btnDetener.setVisibility(View.GONE);
+        btnPausa.setVisibility(View.GONE);
         btnAgregarMiRecorrido.setVisibility(View.GONE);
 
         recyclerView.setHasFixedSize(true);
@@ -125,41 +146,67 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         obtenerItemsActividad();
 
-        if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP){
-            btnEscanearCodigo.setVisibility(View.GONE);
+        if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+            lyBonesAsistencia.setVisibility(View.GONE);
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
-           // lyIngresarRecorrido.setVisibility(View.VISIBLE);
+            boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false);
+            btnPausa.setText(isInPause ? "Continuar" : "Pausa");
+            if (isInPause){
+                tiempoMillis = PreferencesApp.getDefault(PreferencesApp.READ).getLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE , (long) 0);
+                distancia = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE ,  0);
+                mostrarTiempoyDistancia();
+            }
+
+            if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+                btnPausa.setVisibility(View.GONE);
+            }
+
+        }else{
+            Intent i = new Intent(this, BeneficiariosActivity.class);
+            startActivityForResult(i, REQUEST_CODE_BENEFICIARIOS);
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
-                        int minutos = intent.getIntExtra(LocationMonitoringService.EXTRA_MINUTOS,0);
-                        int segundos = intent.getIntExtra(LocationMonitoringService.EXTRA_SEGUNDOS, 0);
+
+                        tiempoMillis = intent.getLongExtra(LocationMonitoringService.EXTRA_TIEMPO_MILLIS,0) ;
                         distancia = intent.getFloatExtra(LocationMonitoringService.EXTRA_DISTANCIA, 0);
-                        tiempo = intent.getFloatExtra(LocationMonitoringService.EXTRA_TIEMPO_MINUTOS, 0);
+                        tiempoMillisEvento09 = intent.getLongExtra(LocationMonitoringService.EXTRA_TIEMPO_EVENTO_09,0) ;
+                        distanciaEvento09 = intent.getFloatExtra(LocationMonitoringService.EXTRA_DISTANCIA_EVENTO_09, 0);
 
-                        lblDuracion.setText(String.format("%d:%02d", minutos, segundos));
-                        lblDistancia.setText(String.valueOf(Utils.round(2,(distancia/1000))));
-
-                        btnDetener.setVisibility(View.VISIBLE);
-                        btnIniciar.setVisibility(View.GONE);
-                       // btnAgregarMiRecorrido.setVisibility(View.GONE);
-                        lblDuracion.setVisibility(View.VISIBLE);
-
-                       // lyIngresarRecorrido.setVisibility(View.GONE);
-                        lyInfoRecorrido.setVisibility(View.VISIBLE);
+                        mostrarTiempoyDistancia();
 
                     }
                 }, new IntentFilter(LocationMonitoringService.ACTION_LOCATION_BROADCAST)
         );
 
     }
+    private void mostrarTiempoyDistancia(){
+        segundos = (int) (tiempoMillis / 1000);
+        minutos = segundos / 60;
+        segundos = segundos % 60;
+        tiempo_en_minutos = Utils.round (2, tiempoMillis / (float)60000.0);
+        lblDuracion.setText(String.format("%d:%02d", minutos, segundos));
+        lblDistancia.setText(String.valueOf(Utils.round(2,(distancia/1000))));
+
+        btnPausa.setVisibility(View.VISIBLE);
+        btnIniciar.setVisibility(View.GONE);
+        lblDuracion.setVisibility(View.VISIBLE);
+        lyInfoRecorrido.setVisibility(View.VISIBLE);
+        btnDetener.setVisibility(View.VISIBLE);
+
+        if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+            btnPausa.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (mAdaptador != null)
+            mAdaptador.setLogTrayectoListener(this);
     }
 
     @Override
@@ -181,7 +228,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             return true;
         }else if (id == R.id.item_historial ) {
             Intent i = new Intent(this, HistorialTrayectosActivity.class);
-            startActivity(i);
+            startActivityForResult(i, REQUEST_HISTORIAL_TRAYECTOS);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -199,6 +246,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 preferencesApp.putString(Beneficiario.BICICAR_USUARIO, null);
                 preferencesApp.commit();
 
+                new Beneficiarios().DeleteAll();
+
                 RegistrarActividadActivity.super.onBackPressed();
 
             }
@@ -215,7 +264,33 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         builder.show();
     }
 
+    @OnClick(R.id.btnPausa)void onPausa() {
+
+        boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false);
+        if (isInPause){
+            continuar();
+        }else {
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, tiempoMillis).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, distancia).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, true).commit();
+
+            stopService(new Intent(RegistrarActividadActivity.this, LocationMonitoringService.class));
+            mAlreadyStartedService = false;
+            btnPausa.setText("Continuar");
+
+            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos );
+
+        }
+
+    }
+
+    @OnClick(R.id.btnBeneficiarios) void onBeneficiarios(){
+        Intent i = new Intent(this, BeneficiariosActivity.class);
+        startActivityForResult(i, REQUEST_CODE_BENEFICIARIOS);
+    }
     @OnClick(R.id.btnAgregar) void onAgregar(){
+
+        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
 
         LogTrayecto logTrayecto = new LogTrayecto();
         logTrayecto.Serial = lblSerial.getText().toString();
@@ -256,12 +331,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     @OnClick(R.id.btnMisDatos) void onMisDatos(){
         Intent i = new Intent(this, EstadisticaPersonaActivity.class);
-        startActivity(i);
+        startActivityForResult(i, REQUEST_MIS_DATOS);
 
     }
     @OnClick(R.id.btnIniciar) void onIniciar(){
         startStep1();
-
 
     }
     @OnClick(R.id.btnDetener) void onDetener(){
@@ -282,7 +356,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         builder.setPositiveButton("Finalizar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                mBeneficiarioLogin  = Beneficiarios.readBeneficio();
                 ruta = PreferencesApp.getDefault(PreferencesApp.READ).getString(LocationMonitoringService.EXTRA_RUTA);
 
                 double latitude_punto_a = 0;
@@ -305,7 +379,15 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 NotificationManager notificationManager = (NotificationManager) AppCar.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancelAll();
 
-                agregarMiRecorrido(Utils.round(2,(distancia/1000)), tiempo, ruta,latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
+                if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+                    tiempo_en_minutos = Utils.round (2, tiempoMillisEvento09 / (float)60000.0);
+                    distancia = distanciaEvento09;
+                }
+                agregarMiRecorrido(Utils.round(2, (distancia / 1000)), tiempo_en_minutos, ruta, latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
+
+                PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, 0).commit();
+                PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, 0).commit();
+                PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
 
                 dialog.dismiss();
 
@@ -321,10 +403,15 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
         abrirEscaner();
 
-        //  String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
+       //   String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
         // obtenerDatos(datos);
     }
     @OnClick(R.id.btnPublicar) void onPublicar(){
+        publicar();
+    }
+
+    private void publicar(){
+        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         mostrarProgressDialog("Publicando ...");
         LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(this);
         logTrayectoPresenter.publicar(mBeneficiarioLogin.IDBeneficiario);
@@ -335,61 +422,42 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
     private void agregarMiRecorrido(float distancia, float minutos, String ruta, double latitudePuntoA, double longitudePuntoA, double latitudePuntoB, double longitudePuntoB){
 
+        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
+
         if (distancia > 0) {
-            LogTrayecto logTrayecto = new LogTrayecto();
-
-            logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
-            logTrayecto.Fecha = Calendar.getInstance().getTime();
-
-            logTrayecto.DistanciaKm = distancia;
-            logTrayecto.DuracionMinutos = minutos;
-
-            logTrayecto.IDBeneficiario = mBeneficiarioLogin.IDBeneficiario;
-            logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
-            logTrayecto.Ruta = ruta;
-            logTrayecto.LatitudePuntoA = latitudePuntoA;
-            logTrayecto.LongitudePuntoA = longitudePuntoA;
-            logTrayecto.LatitudePuntoB = latitudePuntoB;
-            logTrayecto.LongitudePuntoB = longitudePuntoB;
-
-            if (latitudePuntoA != 0 && longitudePuntoA != 0){
-                SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(latitudePuntoA, longitudePuntoA);
-                sexaDecimalCoordinate.ConvertToFlatCoordinate();
-                logTrayecto.NortePuntoA = sexaDecimalCoordinate.get_coorPlanaNorteFinal();
-                logTrayecto.EstePuntoA = sexaDecimalCoordinate.get_coorPlanaEsteFinal();
-            }
-
-            if (latitudePuntoB != 0 && longitudePuntoB != 0){
-                SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(latitudePuntoB, longitudePuntoB);
-                sexaDecimalCoordinate.ConvertToFlatCoordinate();
-                logTrayecto.NortePuntoB = sexaDecimalCoordinate.get_coorPlanaNorteFinal();
-                logTrayecto.EstePuntoB = sexaDecimalCoordinate.get_coorPlanaEsteFinal();
-            }
-
-            if ( new LogTrayectos().Insert(logTrayecto)) {
+            LogTrayecto logTrayecto = LogTrayectoPresenter.agregarMiRecorrido(distancia, minutos, ruta, latitudePuntoA, longitudePuntoA, latitudePuntoB, longitudePuntoB);
+            if (logTrayecto != null) {
                 obtenerItemsActividad();
-                if (ruta != null && !ruta.isEmpty())
-                    verRutaMapa(logTrayecto);
+                if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+                    publicar();
+                }else {
+                    if (ruta != null && !ruta.isEmpty())
+                        verRutaMapa(logTrayecto);
+                }
             }
-
         }
+
 
         lyInfoRecorrido.setVisibility(View.GONE);
         //lyIngresarRecorrido.setVisibility(View.VISIBLE);
 
-        this.tiempo = 0;
+        this.tiempo_en_minutos = 0;
         this.distancia = 0;
         txtDistanciaKM.setText("");
         txtTiempo.setText("");
         //btnAgregarMiRecorrido.setVisibility(View.VISIBLE);
         btnIniciar.setVisibility(View.VISIBLE);
         btnDetener.setVisibility(View.GONE);
+        btnPausa.setVisibility(View.GONE);
         ocultarTeclado(lyContenedor);
         ocultarTeclado(inputLyDistanciaKM);
 
     }
 
     private  void obtenerItemsActividad(){
+
+        if (mBeneficiarioLogin == null) return;
+
         mLstLogTrayectos.clear();
         List<LogTrayecto> items = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR, mBeneficiarioLogin.IDBeneficiario);
 
@@ -491,7 +559,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         }
 
-
     }
 
     @Override
@@ -504,7 +571,13 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 Log.d("escaner", datosEscaner);
                 obtenerDatos(datosEscaner);
             }
-        }
+        }else if (requestCode == REQUEST_CODE_BENEFICIARIOS && resultCode == RESULT_OK){
+           obtenerItemsActividad();
+       }else if (requestCode == REQUEST_MIS_DATOS && resultCode == RESULT_OK){
+           obtenerItemsActividad();
+       }else if (requestCode == REQUEST_HISTORIAL_TRAYECTOS && resultCode == RESULT_OK){
+           obtenerItemsActividad();
+       }
     }
 
     private void obtenerDatos(String datosEscaner){
@@ -556,11 +629,21 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
     @Override
+    public void onSuccess(List<Beneficiario> lstBeneficiarios) {
+        this.lstBeneficiarios = lstBeneficiarios;
+    }
+
+    @Override
     public void onError(ErrorApi errorApi) {
         ocultarProgressDialog();
         if (errorApi.getStatusCode() == 404){
             mostrarMensajeDialog(errorApi.getMessage());
         }
+
+    }
+
+    @Override
+    public void onErrorListarItems(ErrorApi errorApi) {
 
     }
 
@@ -668,7 +751,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                             } else if (!checkPermissions()) {
                                 requestPermissions();
                             }
-
                         }
                     }
                 });
@@ -690,11 +772,43 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             lyIngresarRecorrido.setVisibility(View.GONE);
             lyInfoRecorrido.setVisibility(View.VISIBLE);
             btnIniciar.setVisibility(View.GONE);
-           // btnAgregarMiRecorrido.setVisibility(View.GONE);
             btnDetener.setVisibility(View.VISIBLE);
+          //  btnPausa.setVisibility(View.VISIBLE);
+            btnPausa.setText("Pausa");
+
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putString(LocationMonitoringService.EXTRA_RUTA , "").commit();
+
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
+
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_EVENTO_09, 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_EVENTO_09, 0).commit();
+
+            Intent intent = new Intent(this, LocationMonitoringService.class);
+            startService(intent);
+
+            mAlreadyStartedService = true;
+
+        }
+    }
+
+    private void continuar(){
+        if (!mAlreadyStartedService ) {
+
+            lyIngresarRecorrido.setVisibility(View.GONE);
+            lyInfoRecorrido.setVisibility(View.VISIBLE);
+            btnIniciar.setVisibility(View.GONE);
+            // btnAgregarMiRecorrido.setVisibility(View.GONE);
+            btnDetener.setVisibility(View.VISIBLE);
+            btnPausa.setVisibility(View.VISIBLE);
+            btnPausa.setText("Pausa");
+
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
 
             Intent intent = new Intent(this, LocationMonitoringService.class);
             startService(intent);
@@ -797,6 +911,12 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         verRutaMapa(logTrayecto);
 
     }
+
+    @Override
+    public void onEliminar(int position, View view) {
+        eliminar(position);
+    }
+
     private void verRutaMapa(LogTrayecto logTrayecto){
         Intent i = new Intent(this, RutaMapaActivity.class);
         i.putExtra(LogTrayecto.RUTA , logTrayecto.Ruta);
@@ -804,4 +924,33 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKm);
         startActivity(i);
     }
+
+    private  void eliminar(final int position){
+        mPosition = position;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrarActividadActivity.this);
+
+        builder.setMessage("¿Eliminar trayecto?");
+
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LogTrayecto logTrayecto = mLstLogTrayectos.get(mPosition);
+                new LogTrayectos().Delete(logTrayecto.IDLogTrayecto);
+                mLstLogTrayectos.remove(mPosition);
+                mAdaptador.notifyDataSetChanged();
+                dialog.dismiss();
+
+            }
+        });
+        builder.setNegativeButton("Cancelar",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
+    }
+
 }

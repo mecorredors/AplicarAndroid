@@ -1,11 +1,14 @@
 package car.gov.co.carserviciociudadano.bicicar.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -25,8 +28,9 @@ import car.gov.co.carserviciociudadano.common.BaseActivity;
 
 public class HistorialTrayectosActivity extends BaseActivity implements LogTrayectoAdapter.LogTrayectoListener {
     @BindView(R.id.recycler_view)  RecyclerView recyclerView;
-    LogTrayectoAdapter mAdaptador;
+    LogTrayectoAdapter mAdaptadorHistorial;
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
+    private int mPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +42,30 @@ public class HistorialTrayectosActivity extends BaseActivity implements LogTraye
 
         obtenerItemsActividad();
         recyclerView.setHasFixedSize(true);
-        mAdaptador = new LogTrayectoAdapter(mLstLogTrayectos);
-        mAdaptador.setLogTrayectoListener(this);
-        recyclerView.setAdapter(mAdaptador);
+        mAdaptadorHistorial = new LogTrayectoAdapter(mLstLogTrayectos);
+        mAdaptadorHistorial.setLogTrayectoListener(this);
+        recyclerView.setAdapter(mAdaptadorHistorial);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+    }
 
+    @Override
+    public void onBackPressed(){
+        setResult(RESULT_OK);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id== android.R.id.home){
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                getSupportFragmentManager().popBackStack();
+            else
+                this.onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private  void obtenerItemsActividad(){
@@ -91,5 +112,36 @@ public class HistorialTrayectosActivity extends BaseActivity implements LogTraye
         i.putExtra(LogTrayecto.DURACION_MINUTOS, logTrayecto.DuracionMinutos);
         i.putExtra(LogTrayecto.DISTANCIA_KM, logTrayecto.DistanciaKm);
         startActivity(i);
+    }
+
+    @Override
+    public void onEliminar( int position, View view) {
+        
+        mPosition = position;
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(HistorialTrayectosActivity.this);
+
+        builder.setMessage("¿Eliminar trayecto?");
+
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LogTrayecto logTrayecto = mLstLogTrayectos.get(mPosition);
+                new LogTrayectos().Delete(logTrayecto.IDLogTrayecto);
+                mLstLogTrayectos.remove(mPosition);
+                mAdaptadorHistorial.notifyDataSetChanged();
+                dialog.dismiss();
+
+            }
+        });
+        builder.setNegativeButton("Cancelar",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
+
     }
 }
