@@ -43,7 +43,6 @@ public class EstadisticaPersonaActivity extends BaseActivity implements IViewRep
     @BindView(R.id.rbuSemanal) RadioButton rbuSemanal;
     @BindView(R.id.rbuMensual) RadioButton rbuMensual;
     @BindView(R.id.rbuTotal) RadioButton rbuTotal;
-
     Beneficiario mBeneficiarioLogin;
     ReportesPresenter mReportesPresenter;
     BicicletaPresenter mBicicletaPresenter;
