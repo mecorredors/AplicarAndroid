@@ -25,6 +25,7 @@ import car.gov.co.carserviciociudadano.consultapublica.activities.BankProjectAct
 import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity;
+import car.gov.co.carserviciociudadano.parques.activities.AbonoActivity;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
 
 
@@ -66,8 +67,8 @@ public class MainActivity extends BaseActivity  {
         //Intent i = new Intent(this, RegistrarActividadActivity.class);
         //startActivity(i);
 
-       // Intent i = new Intent(this, ConfigActivity.class);
-        //startActivity(i);
+        Intent i = new Intent(this, AbonoActivity.class);
+        startActivity(i);
     }
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){

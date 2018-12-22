@@ -10,9 +10,9 @@ public class Server {
     public static String ServerSIDCAR = "https://sidcar.car.gov.co/";    //produccion sidcar
     public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
 
-    public static String ServerBICICAR = "http://192.168.0.19/BICICAR/";    //LOCAL sidcar
+   // public static String ServerBICICAR = "http://192.168.0.19/BICICAR/";    //LOCAL sidcar
 
-   // public static String ServerBICICAR = "https://bicicar.car.gov.co/";    //produccion sidcar
+    public static String ServerBICICAR = "https://bicicar.car.gov.co/";    //produccion sidcar
 
 
     public static String ServerBICICAR(){

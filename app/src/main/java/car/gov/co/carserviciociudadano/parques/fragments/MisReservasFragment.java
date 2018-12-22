@@ -83,10 +83,7 @@ public class MisReservasFragment extends BaseFragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mProgressView = (ProgressBar) view.findViewById(R.id.progressView);
 
-        Usuarios usuarios = new Usuarios();
-        mUsuario = usuarios.leer();
 
-        loadDetalleReservas();
 
         if (BuildConfig.DEBUG == false) {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
@@ -97,6 +94,14 @@ public class MisReservasFragment extends BaseFragment {
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
         }
         return view;
+    }
+
+    @Override public void onStart(){
+        super.onStart();
+        Usuarios usuarios = new Usuarios();
+        mUsuario = usuarios.leer();
+
+        loadDetalleReservas();
     }
 
     @Override

@@ -20,6 +20,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
@@ -93,6 +94,8 @@ public class AbonoActivity extends BaseActivity {
 
     public  static final  int MY_PERMISSION_READ_EXTERNAL_STORAGE = 11;
     public  final static int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    public  final static int MY_PERMISSIONS_REQUEST_CAMERA = 12;
+
     Abono mAbono;
     ProgressDialog mProgressDialog;
 
@@ -406,14 +409,16 @@ public class AbonoActivity extends BaseActivity {
 
 
     private void tomarFoto() {
-        if (Build.VERSION.SDK_INT >= 23 &&
+        if (Build.VERSION.SDK_INT >= 23 && (
                 ContextCompat.checkSelfPermission(this,  android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this,  Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED)) {
+            /*if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-            }
+            } else {*/
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            //}
         }else {
 
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -454,8 +459,13 @@ public class AbonoActivity extends BaseActivity {
             return false;
         }
 
-        mOutputFileUri = Uri.fromFile(newfile);
-        mSelectedImagePath = mOutputFileUri.getPath();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            mOutputFileUri = FileProvider.getUriForFile(AppCar.getContext(), BuildConfig.APPLICATION_ID + ".provider",newfile);
+        else
+            mOutputFileUri = Uri.fromFile(newfile);
+
+       // mSelectedImagePath = mOutputFileUri.getPath();
+        mSelectedImagePath = file;
         return true;
     }
 

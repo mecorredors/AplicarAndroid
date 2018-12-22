@@ -331,8 +331,6 @@ public class GalleryActivity extends BaseActivity {
 
         }
 
-        outputFileUri = Uri.fromFile(newfile);
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             outputFileUri = FileProvider.getUriForFile(AppCar.getContext(), BuildConfig.APPLICATION_ID + ".provider",newfile);
         else
