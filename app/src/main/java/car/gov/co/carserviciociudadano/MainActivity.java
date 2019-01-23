@@ -67,8 +67,8 @@ public class MainActivity extends BaseActivity  {
         //Intent i = new Intent(this, RegistrarActividadActivity.class);
         //startActivity(i);
 
-        Intent i = new Intent(this, AbonoActivity.class);
-        startActivity(i);
+       // Intent i = new Intent(this, AbonoActivity.class);
+       // startActivity(i);
     }
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){
