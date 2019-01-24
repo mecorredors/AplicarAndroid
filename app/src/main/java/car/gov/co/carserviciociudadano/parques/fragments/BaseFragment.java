@@ -3,6 +3,7 @@ package car.gov.co.carserviciociudadano.parques.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,7 @@ import car.gov.co.carserviciociudadano.AppCar;
  */
 public class BaseFragment extends Fragment {
 
-
+    ProgressDialog mProgressDialog;
     public BaseFragment() {
         // Required empty public constructor
     }
@@ -46,5 +47,17 @@ public class BaseFragment extends Fragment {
     }
     protected void mostrarMensaje(String message){
         Toast.makeText( AppCar.getContext() , message ,Toast.LENGTH_SHORT).show();
+    }
+    protected void mostrarProgressDialog(String mensaje){
+        if (isAdded()) {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setMessage(mensaje);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+        }
+    }
+    protected void ocultarProgressDialog(){
+        if (mProgressDialog != null) mProgressDialog.dismiss();
     }
 }

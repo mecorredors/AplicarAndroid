@@ -10,6 +10,8 @@ public class Server {
     public static String ServerSAE = "https://sae.car.gov.co/";    //produccion sae
 
     public static String ServerBICICAR = "https://bicicar.car.gov.co/";
+    public static String ServerAplicar = "https://bicicar.car.gov.co/";
+
     public static String ServerBICICAR(){
         return  ServerBICICAR;
     }

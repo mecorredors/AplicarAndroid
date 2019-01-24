@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_enviar"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Enviar datos" />
+        <item
+            android:id="@+id/nav_co2"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Total CO2" />
+
+    </group>
+
+    <item android:title="Mi cuenta">
+        <menu>
+            <item
+                android:id="@+id/nav_usuario"
+                android:icon="@drawable/ic_person_24dp"
+                android:title="Iniciar sesión" />
+
+        </menu>
+    </item>
+
+</menu>

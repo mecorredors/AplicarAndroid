@@ -5,36 +5,42 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import car.gov.co.carserviciociudadano.Utils.ConfigActivity;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
-import car.gov.co.carserviciociudadano.bicicar.activities.EstadisticaPersonaActivity;
-import car.gov.co.carserviciociudadano.bicicar.activities.HuellaAmbientalActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.MainBicicarActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
+
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BankProjectActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity;
-import car.gov.co.carserviciociudadano.parques.activities.AbonoActivity;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
+import car.gov.co.carserviciociudadano.petcar.activities.MainPETCARActivity;
 
 
 public class MainActivity extends BaseActivity  {
 
     @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    @BindView(R.id.lyItemsConsultas) View lyItemsConsultas;
+    @BindView(R.id.lyMenuConsultas)  CardView lyMenuConsultas;
+    @BindView(R.id.lyMenuSuAporteAmbiental)  CardView lyMenuSuAporteAmbiental;
+    @BindView(R.id.lyItemsSuAporteAmbiental)  View lyItemsSuAporteAmbiental;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
 
@@ -64,12 +70,15 @@ public class MainActivity extends BaseActivity  {
         String versionName = BuildConfig.VERSION_NAME;
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
 
-        //Intent i = new Intent(this, RegistrarActividadActivity.class);
-        //startActivity(i);
-
-       // Intent i = new Intent(this, AbonoActivity.class);
+      //  Intent i = new Intent(this, MainPETCARActivity.class);
        // startActivity(i);
+
+        lyItemsConsultas.setVisibility(View.GONE);
+        lyItemsSuAporteAmbiental.setVisibility(View.GONE);
+
     }
+
+
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){
         Intent i = new Intent(this, DenunciaAmbientalActivity.class);
@@ -81,17 +90,33 @@ public class MainActivity extends BaseActivity  {
         startActivity(i);
     }
 
-    @OnClick(R.id.lyMenuExpedientes) void expedientes(){
+    @OnClick(R.id.lyExpedientes) void expedientes(){
         Intent i = new Intent(this, BuscarExpedienteActivity.class);
         startActivity(i);
     }
-    @OnClick(R.id.lyMenuTramites) void tramites(){
+    @OnClick(R.id.lyTramites) void tramites(){
         Intent i = new Intent(this, TramitesActivity.class);
         startActivity(i);
     }
-    @OnClick(R.id.lyMenuProyectosConfinacion) void proyectoConfinacion(){
+    @OnClick(R.id.lyProyectosConfinacion) void proyectoConfinacion(){
         Intent i = new Intent(this, BankProjectActivity.class);
         startActivity(i);
+    }
+
+    @OnClick(R.id.lyMenuConsultas) void onMenuConsultas(){
+        if (lyItemsConsultas.getVisibility() == View.VISIBLE){
+            lyItemsConsultas.setVisibility(View.GONE);
+        }else{
+            lyItemsConsultas.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @OnClick(R.id.lyMenuSuAporteAmbiental) void onMenuSuAporteAmbiental(){
+        if (lyItemsSuAporteAmbiental.getVisibility() == View.VISIBLE){
+            lyItemsSuAporteAmbiental.setVisibility(View.GONE);
+        }else{
+            lyItemsSuAporteAmbiental.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.lblAyuda) void ayuda(){
@@ -104,9 +129,14 @@ public class MainActivity extends BaseActivity  {
         }
     }
 
-    @OnClick(R.id.lyMenuBicicar) void bicicar(){
+    @OnClick(R.id.lyBiciCAR) void bicicar(){
         Intent i = new Intent(this, MainBicicarActivity.class);
         startActivity(i);
+    }
+
+    @OnClick(R.id.lyCicloReciclo) void cicloReciclo(){
+          Intent i = new Intent(this, MainPETCARActivity.class);
+         startActivity(i);
     }
 
 

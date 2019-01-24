@@ -172,15 +172,10 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor"
-                android:layout_marginTop="@dimen/margin_10dp"/>
 
 
-            <!-- menu tramites -->
-            <android.support.v7.widget.CardView  android:id="@+id/lyMenuTramites"
+            <!-- menu consultas -->
+            <android.support.v7.widget.CardView  android:id="@+id/lyMenuConsultas"
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -189,271 +184,297 @@
                 card_view:cardCornerRadius="0dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 card_view:cardBackgroundColor="@color/background"
-                android:clickable="true"
                 app:cardPreventCornerOverlap="false">
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/menu_height"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:clickable="false">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_tramite"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tramites"
-                        android:textColor="@color/secondaryText"
-                        android:textSize="@dimen/text_size_16"
-                        android:layout_marginLeft="@dimen/margin_16dp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_chevron_right_24dp"
-                        />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor"
-                android:layout_marginTop="@dimen/margin_10dp"/>
-
-
-
-            <!-- menu Expedientes -->
-            <android.support.v7.widget.CardView
-                android:id="@+id/lyMenuExpedientes"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardUseCompatPadding="false"
-                card_view:cardElevation="0dp"
-                card_view:cardCornerRadius="0dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                card_view:cardBackgroundColor="@color/background"
-                android:clickable="true"
-                app:cardPreventCornerOverlap="false"
-                >
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor"
+                    android:layout_marginTop="@dimen/margin_10dp"/>
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/menu_height"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:clickable="false">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_expediente"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/expedientes"
-                        android:textColor="@color/secondaryText"
-                        android:textSize="@dimen/text_size_16"
-                        android:layout_marginLeft="@dimen/margin_16dp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_chevron_right_24dp"
-                        />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor"
-                android:layout_marginTop="@dimen/margin_10dp"/>
-
-
-            <!-- menu proyectos -->
-            <android.support.v7.widget.CardView
-                android:id="@+id/lyMenuProyectosConfinacion"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardUseCompatPadding="false"
-                card_view:cardElevation="0dp"
-                card_view:cardCornerRadius="0dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                card_view:cardBackgroundColor="@color/background"
-                android:clickable="true"
-                app:cardPreventCornerOverlap="false"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/menu_height"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:clickable="false">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_bank_project_36dp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_bank_project"
-                        android:textColor="@color/secondaryText"
-                        android:textSize="@dimen/text_size_16"
-                        android:layout_marginLeft="@dimen/margin_16dp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_chevron_right_24dp"
-                        />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor"
-                android:layout_marginTop="@dimen/margin_10dp"/>
-
-
-
-            <!-- menu bicicar -->
-            <android.support.v7.widget.CardView
-                android:id="@+id/lyMenuBicicar"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardUseCompatPadding="false"
-                card_view:cardElevation="0dp"
-                card_view:cardCornerRadius="0dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                card_view:cardBackgroundColor="@color/background"
-                android:clickable="true"
-                app:cardPreventCornerOverlap="false"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/menu_height"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_16dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:clickable="false">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_bike_menu"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_bicicar"
-                        android:textColor="@color/secondaryText"
-                        android:textSize="@dimen/text_size_16"
-                        android:layout_marginLeft="@dimen/margin_16dp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_chevron_right_24dp"
-                        />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor"
-                android:layout_marginTop="@dimen/margin_10dp"/>
-
-
-
-
-              <!--  <LinearLayout android:id="@+id/lyMenuBicicar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical"
                     android:layout_marginLeft="@dimen/margin_16dp"
-                    android:layout_marginEnd="@dimen/margin_10dp"
                     android:layout_marginRight="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_16dp"
-
-                    >
-
+                    android:clickable="false">
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/menu_height"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@mipmap/bicicar"
-                            android:layout_marginTop="@dimen/margin_6dp"
-                            android:layout_marginLeft="@dimen/margin_16dp"/>
+                            android:src="@drawable/ic_search_blue_36dp"/>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="@string/title_bicicar"
+                            android:text="Consultas"
                             android:textColor="@color/secondaryText"
                             android:textSize="@dimen/text_size_16"
                             android:layout_marginLeft="@dimen/margin_16dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_more_vert_blue_24dp"
+                            />
+
                     </LinearLayout>
 
+                <LinearLayout android:id="@+id/lyItemsConsultas"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout android:id="@+id/lyTramites"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/menu_height"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="@dimen/margin_12dp"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_tramite"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tramites"
+                            android:textColor="@color/secondaryText"
+                            android:textSize="@dimen/text_size_16"
+                            android:layout_marginLeft="@dimen/margin_16dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chevron_right_24dp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/lyExpedientes"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/menu_height"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="@dimen/margin_6dp"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_expediente"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="@string/expedientes"
+                            android:textColor="@color/secondaryText"
+                            android:textSize="@dimen/text_size_16"
+                            android:layout_marginLeft="@dimen/margin_16dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chevron_right_24dp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/lyProyectosConfinacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/menu_height"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="@dimen/margin_6dp"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_bank_project_36dp"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_bank_project"
+                            android:textColor="@color/secondaryText"
+                            android:textSize="@dimen/text_size_16"
+                            android:layout_marginLeft="@dimen/margin_16dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chevron_right_24dp"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+
+            <!-- menu su aporte ambiental -->
+            <android.support.v7.widget.CardView  android:id="@+id/lyMenuSuAporteAmbiental"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardUseCompatPadding="false"
+                card_view:cardElevation="0dp"
+                card_view:cardCornerRadius="0dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardBackgroundColor="@color/background"
+                app:cardPreventCornerOverlap="false">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dividerColor"
+                    android:layout_marginTop="@dimen/margin_10dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:clickable="false">
                     <LinearLayout
+                        android:gravity="center_vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:textColor="@color/secondaryText"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_10"
-                        android:layout_marginLeft="@dimen/margin_10dp"
-                        android:text="@string/descripcion_bicicar"
-                        />
+                        android:layout_height="@dimen/menu_height"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_su_aporte"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Su aporte ambiental"
+                            android:textColor="@color/secondaryText"
+                            android:textSize="@dimen/text_size_16"
+                            android:layout_marginLeft="@dimen/margin_16dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_more_vert_blue_24dp"
+                            />
+
                     </LinearLayout>
 
-                </LinearLayout>-->
+                    <LinearLayout android:id="@+id/lyItemsSuAporteAmbiental"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
 
+                        <LinearLayout android:id="@+id/lyBiciCAR"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/menu_height"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginTop="@dimen/margin_6dp"
+                            android:clickable="true">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@mipmap/ic_bike_menu"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="@string/title_bicicar"
+                                android:textColor="@color/secondaryText"
+                                android:textSize="@dimen/text_size_16"
+                                android:layout_marginLeft="@dimen/margin_16dp"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_chevron_right_24dp"
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout android:id="@+id/lyCicloReciclo"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/menu_height"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginTop="@dimen/margin_12dp"
+                            android:clickable="true">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@mipmap/ico_petcar"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="Ciclo-Re-Ciclo"
+                                android:textColor="@color/secondaryText"
+                                android:textSize="@dimen/text_size_16"
+                                android:layout_marginLeft="@dimen/margin_16dp"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_chevron_right_24dp"
+                                />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
 
+                </LinearLayout>
 
+            </android.support.v7.widget.CardView>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"
+                android:layout_marginTop="@dimen/margin_10dp"/>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="bottom|center_horizontal"
+                android:layout_gravity="bottom"
                 android:paddingBottom="@dimen/margin_6dp"
-                android:layout_marginTop="@dimen/text_size_16"
+                android:layout_marginTop="70dp"
                 android:orientation="vertical">
 
 

@@ -2,6 +2,7 @@ package car.gov.co.carserviciociudadano.parques.model;
 
 import android.util.Log;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.json.JSONException;
@@ -12,6 +13,7 @@ import com.google.gson.JsonSyntaxException;
 
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import retrofit2.Response;
 
 /**
  * Created by Olger on 27/11/2016.
@@ -95,6 +97,26 @@ public class ErrorApi {
         Message = ex.toString();
         Log.e("Errror ",ex.toString());
     }
+    public ErrorApi(Throwable t){
+        this.StatusCode =  500;
+        this.Message = t.getMessage();
+    }
+
+    public ErrorApi(Response res){
+        this.Message = "Servicio no disponible";
+        if (res != null) {
+            this.StatusCode = res.code();
+            if (res.errorBody() != null){
+                try {
+                    this.Message = res.errorBody().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
     public void setMessageJson(String message){
 
         try {
@@ -113,5 +135,11 @@ public class ErrorApi {
             this.Message=message;
         }
 
+    }
+
+
+    @Override
+    public String toString() {
+        return "" + getMessage() + " " + getStatusCode();
     }
 }

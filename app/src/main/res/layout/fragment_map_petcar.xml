@@ -1,0 +1,116 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context="car.gov.co.carserviciociudadano.petcar.fragments.MapPETCARFragment">
+
+
+   <FrameLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+       <LinearLayout android:id="@+id/lyDetalle"
+           android:layout_width="match_parent"
+           android:layout_height="400dp"
+           android:orientation="vertical"
+           android:background="@drawable/background_gray_border"
+           android:layout_gravity="bottom"
+           android:layout_marginLeft="@dimen/margin_6dp"
+           android:layout_marginRight="@dimen/margin_6dp"
+           android:layout_marginBottom="@dimen/margin_4dp">
+            <LinearLayout android:gravity="right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_4dp"
+                android:layout_marginTop="@dimen/margin_4dp">
+                <ImageButton android:id="@+id/imgClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00ffffff"
+                    android:src="@drawable/ic_ico_close"/>
+            </LinearLayout>
+
+           <LinearLayout android:layout_marginLeft="@dimen/margin_16dp"
+               android:layout_marginRight="@dimen/margin_16dp"
+               android:layout_marginTop="@dimen/margin_6dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal">
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="4"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/text_size_16"
+                   android:textColor="@color/primaryText"
+                   android:text="Dirección"/>
+               <TextView android:id="@+id/lblDireccion"
+                   android:layout_width="0dp"
+                   android:layout_weight="4"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/text_size_16"
+                   android:textColor="@color/primaryText"
+                   android:text="centro"/>
+
+           </LinearLayout>
+
+           <LinearLayout android:layout_marginLeft="@dimen/margin_16dp"
+               android:layout_marginRight="@dimen/margin_16dp"
+               android:layout_marginTop="@dimen/margin_6dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal">
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="4"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/text_size_16"
+                   android:textColor="@color/primaryText"
+                   android:text="Municipio"/>
+               <TextView android:id="@+id/lblMunicipio"
+                   android:layout_width="0dp"
+                   android:layout_weight="4"
+                   android:textSize="@dimen/text_size_16"
+                   android:layout_height="wrap_content"
+                   android:textColor="@color/primaryText"
+                   android:text=""/>
+
+           </LinearLayout>
+
+           <LinearLayout android:layout_marginLeft="@dimen/margin_16dp"
+               android:layout_marginRight="@dimen/margin_16dp"
+               android:layout_marginTop="@dimen/margin_6dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal">
+
+               <Button android:id="@+id/btnComoLlegar"
+                   android:theme="@style/ButtonAccent"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/title_como_llegar"/>
+
+           </LinearLayout>
+
+           <ImageView  android:layout_marginLeft="@dimen/margin_16dp"
+               android:layout_marginRight="@dimen/margin_16dp"
+               android:layout_marginTop="@dimen/margin_6dp"
+               android:id="@+id/imgFoto"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:src="@mipmap/petcar_contenedor"/>
+
+       </LinearLayout>
+
+
+
+   </FrameLayout>
+</LinearLayout>

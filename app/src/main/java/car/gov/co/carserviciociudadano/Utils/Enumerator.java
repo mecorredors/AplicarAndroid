@@ -29,6 +29,7 @@ public class Enumerator {
         public static final int MUNICIPIOS = 300000;
         public static final int BANCOS = 300000;
         public static final int ARCHIVOS_PARQUE = 300000;
+        public static final int PETCAR = 300000;
     }
 
     public static class TipoArchivoParque{
