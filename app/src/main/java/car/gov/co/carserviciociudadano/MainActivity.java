@@ -37,6 +37,8 @@ public class MainActivity extends BaseActivity  {
     @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
     @BindView(R.id.lyItemsConsultas) View lyItemsConsultas;
     @BindView(R.id.lyMenuConsultas)  CardView lyMenuConsultas;
+    @BindView(R.id.lyMenuSuAporteAmbiental)  CardView lyMenuSuAporteAmbiental;
+    @BindView(R.id.lyItemsSuAporteAmbiental)  View lyItemsSuAporteAmbiental;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -71,7 +73,8 @@ public class MainActivity extends BaseActivity  {
       //  Intent i = new Intent(this, MainPETCARActivity.class);
        // startActivity(i);
 
-       lyItemsConsultas.setVisibility(View.GONE);
+        lyItemsConsultas.setVisibility(View.GONE);
+        lyItemsSuAporteAmbiental.setVisibility(View.GONE);
 
     }
 
@@ -108,6 +111,14 @@ public class MainActivity extends BaseActivity  {
         }
     }
 
+    @OnClick(R.id.lyMenuSuAporteAmbiental) void onMenuSuAporteAmbiental(){
+        if (lyItemsSuAporteAmbiental.getVisibility() == View.VISIBLE){
+            lyItemsSuAporteAmbiental.setVisibility(View.GONE);
+        }else{
+            lyItemsSuAporteAmbiental.setVisibility(View.VISIBLE);
+        }
+    }
+
     @OnClick(R.id.lblAyuda) void ayuda(){
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:QiTHBaKsTb8"));
         Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=QiTHBaKsTb8"));
@@ -118,12 +129,12 @@ public class MainActivity extends BaseActivity  {
         }
     }
 
-    @OnClick(R.id.lyMenuBicicar) void bicicar(){
+    @OnClick(R.id.lyBiciCAR) void bicicar(){
         Intent i = new Intent(this, MainBicicarActivity.class);
         startActivity(i);
     }
 
-    @OnClick(R.id.lyMenuPETCAR) void petcar(){
+    @OnClick(R.id.lyCicloReciclo) void cicloReciclo(){
           Intent i = new Intent(this, MainPETCARActivity.class);
          startActivity(i);
     }

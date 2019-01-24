@@ -48,11 +48,15 @@
                    android:layout_width="0dp"
                    android:layout_weight="4"
                    android:layout_height="wrap_content"
+                   android:textSize="@dimen/text_size_16"
+                   android:textColor="@color/primaryText"
                    android:text="Dirección"/>
                <TextView android:id="@+id/lblDireccion"
                    android:layout_width="0dp"
                    android:layout_weight="4"
                    android:layout_height="wrap_content"
+                   android:textSize="@dimen/text_size_16"
+                   android:textColor="@color/primaryText"
                    android:text="centro"/>
 
            </LinearLayout>
@@ -68,11 +72,15 @@
                    android:layout_width="0dp"
                    android:layout_weight="4"
                    android:layout_height="wrap_content"
+                   android:textSize="@dimen/text_size_16"
+                   android:textColor="@color/primaryText"
                    android:text="Municipio"/>
                <TextView android:id="@+id/lblMunicipio"
                    android:layout_width="0dp"
                    android:layout_weight="4"
+                   android:textSize="@dimen/text_size_16"
                    android:layout_height="wrap_content"
+                   android:textColor="@color/primaryText"
                    android:text=""/>
 
            </LinearLayout>
@@ -85,7 +93,7 @@
                android:orientation="horizontal">
 
                <Button android:id="@+id/btnComoLlegar"
-                   android:theme="@style/ButtonBorderless"
+                   android:theme="@style/ButtonAccent"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="@string/title_como_llegar"/>
