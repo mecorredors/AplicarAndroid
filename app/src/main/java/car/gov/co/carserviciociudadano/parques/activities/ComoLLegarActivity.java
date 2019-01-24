@@ -147,7 +147,7 @@ public class ComoLLegarActivity extends LocationBaseGoogleApiActivity implements
 
     @OnClick(R.id.btnComoLlegar)
     void onComoLLegar() {
-        String url = "google.menu_bar_petcar:q="+ destinoLatLng.latitude+","+ destinoLatLng.longitude;
+        String url = "google.navigation:q="+ destinoLatLng.latitude+","+ destinoLatLng.longitude;
         Uri gmmIntentUri = Uri.parse(url);
         //  Uri gmmIntentUri = Uri.parse("geo:0,0?q=5.141814, -73.971206(Represa del Neusa)");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
