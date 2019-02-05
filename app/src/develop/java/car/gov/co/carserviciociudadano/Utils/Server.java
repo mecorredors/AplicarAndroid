@@ -28,6 +28,4 @@ public class Server {
     // public static String ServerSIDCAR = "http://192.168.0.11/SIDCAR/";    //LOCAL sidcar
     //  public static String ServerSAE = "http://192.168.0.11/SAE/";    //LOCAL sidcar
 
-    // nuevo cambio
-    public static String varmaster = "nuevo server"
 }
