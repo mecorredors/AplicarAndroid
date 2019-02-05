@@ -54,5 +54,9 @@ public class Config {
     public static String API_BICICAR_REPORTES_ESTADISTICA_PERSONA =  Server.ServerBICICAR() + "api/reportes/getestadisticapersona/";
     public static String API_BICICAR__OBTENER_BICICLETA =  Server.ServerBICICAR() + "api/beneficiarios/obtenerbicicleta/";
     public static String API_BICICAR__RECORDAR_CLAVE =  Server.ServerBICICAR() + "api/beneficiarios/recordarclave/";
+    public static String API_BICICAR_OBTENER_RUTAS =  Server.ServerBICICAR() + "api/beneficiarios/obtenerRutas/";
+    public static String API_BICICAR_RUTA =  Server.ServerBICICAR() + "api/beneficiarios/ruta/";
+    public static String API_BICICAR_CATALOGO_OBTENER_NIVELES =  Server.ServerBICICAR() + "api/catalogos/obtenerNiveles/";
+
 
 }

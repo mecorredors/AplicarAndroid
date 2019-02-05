@@ -71,7 +71,7 @@ public class HistorialTrayectosActivity extends BaseActivity implements LogTraye
     private  void obtenerItemsActividad(){
        Beneficiario beneficiarioLogin  = Beneficiarios.readBeneficio();
         mLstLogTrayectos.clear();
-        List<LogTrayecto> items = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.TODOS , beneficiarioLogin.IDBeneficiario);
+        List<LogTrayecto> items = new LogTrayectos().List(Enumerator.Estado.TODOS , beneficiarioLogin.IDBeneficiario);
 
         Calendar fechaActual  = Calendar.getInstance();
         int day = 0;

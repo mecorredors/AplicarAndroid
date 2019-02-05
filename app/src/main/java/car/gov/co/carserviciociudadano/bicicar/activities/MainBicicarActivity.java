@@ -52,6 +52,10 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
         getGranTotal();
 
 
+        Intent i = new Intent(this, CrearRutaActivity.class);
+        startActivity(i);
+
+
     }
     private void getGranTotal(){
         progressBar.setVisibility(View.VISIBLE);

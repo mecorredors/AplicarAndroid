@@ -3,9 +3,7 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,8 +17,6 @@ import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -34,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
@@ -42,6 +39,7 @@ import com.google.maps.android.PolyUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -50,25 +48,28 @@ import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
-import car.gov.co.carserviciociudadano.Utils.SexaDecimalCoordinate;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.adapter.LogTrayectoAdapter;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.LogTrayectos;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Rutas;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
+import car.gov.co.carserviciociudadano.bicicar.model.Ruta;
 import car.gov.co.carserviciociudadano.bicicar.presenter.BeneficiarioPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewBeneficiario;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
+import car.gov.co.carserviciociudadano.bicicar.presenter.IViewNivel;
+import car.gov.co.carserviciociudadano.bicicar.presenter.IViewRutas;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
+import car.gov.co.carserviciociudadano.bicicar.presenter.RutasPresenter;
 import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.common.Notifications;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
-
-public class RegistrarActividadActivity extends BaseActivity implements IViewBeneficiario, IViewLogTrayecto, LogTrayectoAdapter.LogTrayectoListener {
+public class CrearRutaActivity extends BaseActivity implements  IViewLogTrayecto, IViewRutas, LogTrayectoAdapter.LogTrayectoListener {
 
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private static final int REQUEST_CODE_SCANNER = 2;
@@ -76,34 +77,28 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     private static final int REQUEST_MIS_DATOS = 4;
     private static final int REQUEST_HISTORIAL_TRAYECTOS = 5;
 
-    @BindView(R.id.lblSerial) TextView lblSerial;
-    @BindView(R.id.lblRin) TextView lblRin;
-    @BindView(R.id.lblNombre) TextView lblNombre;
-    @BindView(R.id.lyDatosQR) View lyDatosQR;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.btnPublicar) Button btnPublicar;
-    @BindView(R.id.btnEscanearCodigo) Button btnEscanearCodigo;
-    @BindView(R.id.btnBeneficiarios) Button btnBeneficiarios;
-    @BindView(R.id.txtDistanciaKM) EditText txtDistanciaKM;
-    @BindView(R.id.txtTiempo) EditText txtTiempo;
-    @BindView(R.id.inputLyDistanciaKM) TextInputLayout inputLyDistanciaKM;
     @BindView(R.id.lyRegistrarMiRecorrido) View lyRegistrarMiRecorrido;
     @BindView(R.id.lblDuracion) TextView lblDuracion;
     @BindView(R.id.lblDistancia) TextView lblDistancia;
     @BindView(R.id.btnIniciar) Button btnIniciar;
     @BindView(R.id.btnDetener) Button btnDetener;
-    @BindView(R.id.btnAgregarMiRecorrido) Button btnAgregarMiRecorrido;
     @BindView(R.id.btnPausa) Button btnPausa;
     @BindView(R.id.lyInfoRecorrido) View lyInfoRecorrido;
-    @BindView(R.id.lyIngresarRecorrido) View lyIngresarRecorrido;
     @BindView(R.id.lyContenedor) View lyContenedor;
-    @BindView(R.id.lyBotonesAsistencia) View lyBonesAsistencia;
 
+    @BindView(R.id.txtNombre) EditText txtNombre;
+    @BindView(R.id.txtDescripcion) EditText txtDescripcion;
+    @BindView(R.id.inputLyNombre) TextInputLayout inputLyNombre;
+
+    RutasPresenter rutasPresenter;
+    Ruta mRuta;
+    String ruta;
     LogTrayectoAdapter mAdaptador;
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
     Beneficiario mBeneficiario = null;
     Beneficiario mBeneficiarioLogin;
-    String ruta = "";
     float distancia = 0;
     float tiempo_en_minutos = 0;
     long tiempoMillis = 0;
@@ -115,12 +110,12 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     private List<Beneficiario> lstBeneficiarios;
     private int mPosition;
-
+    public static final float DISTANCIA_MINIMA = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registrar_actividad);
+        setContentView(R.layout.activity_crear_ruta);
         ButterKnife.bind(this);
         ActionBar bar = getSupportActionBar();
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
@@ -129,13 +124,19 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         if (mBeneficiarioLogin != null)
             bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
 
-        lyDatosQR.setVisibility(View.GONE);
+        rutasPresenter = new RutasPresenter(this);
+        List<Ruta> lstRutas = new Rutas().List(Enumerator.Estado.EDICION , mBeneficiarioLogin.IDBeneficiario);
+        if (lstRutas.size() > 0){
+            mRuta = lstRutas.get(0);
+            txtNombre.setText(mRuta.Nombre);
+            txtDescripcion.setText(mRuta.Descripcion);
+        }
+
+
         lyRegistrarMiRecorrido.setVisibility(View.GONE);
-        lyIngresarRecorrido.setVisibility(View.GONE);
         lyInfoRecorrido.setVisibility(View.GONE);
         btnDetener.setVisibility(View.GONE);
         btnPausa.setVisibility(View.GONE);
-        btnAgregarMiRecorrido.setVisibility(View.GONE);
 
         recyclerView.setHasFixedSize(true);
         mAdaptador = new LogTrayectoAdapter(mLstLogTrayectos);
@@ -144,10 +145,13 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+
+
+
         obtenerItemsActividad();
 
         if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
-            lyBonesAsistencia.setVisibility(View.GONE);
+
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
             boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false);
             btnPausa.setText(isInPause ? "Continuar" : "Pausa");
@@ -248,7 +252,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
                 new Beneficiarios().DeleteAll();
 
-                RegistrarActividadActivity.super.onBackPressed();
+                CrearRutaActivity.super.onBackPressed();
 
             }
         });
@@ -274,7 +278,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, distancia).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, true).commit();
 
-            stopService(new Intent(RegistrarActividadActivity.this, LocationMonitoringService.class));
+            stopService(new Intent(CrearRutaActivity.this, LocationMonitoringService.class));
             mAlreadyStartedService = false;
             btnPausa.setText("Continuar");
 
@@ -284,50 +288,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     }
 
-    @OnClick(R.id.btnBeneficiarios) void onBeneficiarios(){
-        Intent i = new Intent(this, BeneficiariosActivity.class);
-        startActivityForResult(i, REQUEST_CODE_BENEFICIARIOS);
-    }
-    @OnClick(R.id.btnAgregar) void onAgregar(){
-
-        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
-
-        LogTrayecto logTrayecto = new LogTrayecto();
-        logTrayecto.Serial = lblSerial.getText().toString();
-        logTrayecto.TamanioRin = lblRin.getText().toString();
-        if (!lblNombre.getText().toString().isEmpty())
-            logTrayecto.Nombre = lblNombre.getText().toString();
-        logTrayecto.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
-        logTrayecto.Fecha = Calendar.getInstance().getTime();
-
-        if (mBeneficiario != null){
-            logTrayecto.IDBeneficiario = mBeneficiario.IDBeneficiario;
-
-            logTrayecto.IDBicicleta = mBeneficiario.IDBicicleta;
-        }
-        if (mBeneficiarioLogin != null)
-            logTrayecto.IDBeneficiarioRegistro = mBeneficiarioLogin.IDBeneficiario;
-
-        if (new LogTrayectos().Insert(logTrayecto)) {
-            lyDatosQR.setVisibility(View.GONE);
-
-            obtenerItemsActividad();
-
-        }
-        ocultarTeclado(lyContenedor);
-    }
-    @OnClick(R.id.btnAgregarMiRecorrido) void onAgregarMiRecorrido(){
-
-        inputLyDistanciaKM.setError("");
-
-        if (Utils.convertFloat(txtDistanciaKM.getText().toString()) == 0){
-            inputLyDistanciaKM.setError("Ingrese un valor");
-            return;
-        }
-
-        agregarMiRecorrido(Utils.convertFloat(txtDistanciaKM.getText().toString()),Utils.convertFloat(txtTiempo.getText().toString()),"");
-
-    }
 
     @OnClick(R.id.btnMisDatos) void onMisDatos(){
         Intent i = new Intent(this, EstadisticaPersonaActivity.class);
@@ -335,6 +295,23 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     }
     @OnClick(R.id.btnIniciar) void onIniciar(){
+        if (txtNombre.getText().toString().trim().length() == 0){
+            inputLyNombre.setError("Ingrese un nombre para la ruta");
+            return;
+        }
+
+        if (mRuta == null) {
+            mRuta = new Ruta();
+        }
+
+        mRuta.Nombre = txtNombre.getText().toString();
+        mRuta.Descripcion = txtDescripcion.getText().toString();
+        mRuta.IDBeneficiario = mBeneficiarioLogin.IDBeneficiario;
+        mRuta.IDNivel = 2;
+        mRuta.Estado = Enumerator.Estado.EDICION;
+        rutasPresenter.guardarRuta(mRuta);
+
+
         startStep1();
 
     }
@@ -373,7 +350,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                     }
                 }
 
-                stopService(new Intent(RegistrarActividadActivity.this, LocationMonitoringService.class));
+                stopService(new Intent(CrearRutaActivity.this, LocationMonitoringService.class));
                 mAlreadyStartedService = false;
 
                 NotificationManager notificationManager = (NotificationManager) AppCar.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -383,8 +360,16 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                     tiempo_en_minutos = Utils.round (2, tiempoMillisEvento09 / (float)60000.0);
                     distancia = distanciaEvento09;
                 }
-                agregarMiRecorrido(Utils.round(2, (distancia / 1000)), tiempo_en_minutos, ruta, latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
 
+                if (distancia > DISTANCIA_MINIMA) {
+                    mRuta.RutaTrayecto = ruta;
+                    mRuta.DistanciaKM = (distancia / 1000);
+                    mRuta.DuracionMinutos = tiempo_en_minutos;
+                    mRuta.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
+                    rutasPresenter.guardarRuta(mRuta);
+                }else{
+                    mostrarMensaje("Distancia muy corta");
+                }
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, 0).commit();
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, 0).commit();
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
@@ -400,12 +385,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     }
 
-    @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
-        abrirEscaner();
 
-       //   String datos = "Fecha ingreso:43193 - Marca:CORLEONE - Estado:NUEVO/ Serial:JSY17092119 - Color:Verde BiciCAR - Tamaño Rin:24 - N° Ide CAR:00001 / Municipio:ANAPOIMA";
-        // obtenerDatos(datos);
-    }
     @OnClick(R.id.btnPublicar) void onPublicar(){
         publicar();
     }
@@ -439,18 +419,13 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
 
         lyInfoRecorrido.setVisibility(View.GONE);
-        //lyIngresarRecorrido.setVisibility(View.VISIBLE);
 
         this.tiempo_en_minutos = 0;
         this.distancia = 0;
-        txtDistanciaKM.setText("");
-        txtTiempo.setText("");
-        //btnAgregarMiRecorrido.setVisibility(View.VISIBLE);
         btnIniciar.setVisibility(View.VISIBLE);
         btnDetener.setVisibility(View.GONE);
         btnPausa.setVisibility(View.GONE);
         ocultarTeclado(lyContenedor);
-        ocultarTeclado(inputLyDistanciaKM);
 
     }
 
@@ -495,8 +470,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     private void abrirEscaner(){
         if (Build.VERSION.SDK_INT >= 23 &&
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA},
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     ZXING_CAMERA_PERMISSION);
         } else {
             Intent i = new Intent(this, EscanearQRActivity.class);
@@ -565,13 +540,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-       if (requestCode == REQUEST_CODE_SCANNER){
-            if (resultCode == Activity.RESULT_OK){
-                String datosEscaner = data.getStringExtra(EscanearQRActivity.ESCANER_DATOS);
-                Log.d("escaner", datosEscaner);
-                obtenerDatos(datosEscaner);
-            }
-        }else if (requestCode == REQUEST_CODE_BENEFICIARIOS && resultCode == RESULT_OK){
+      if (requestCode == REQUEST_CODE_BENEFICIARIOS && resultCode == RESULT_OK){
            obtenerItemsActividad();
        }else if (requestCode == REQUEST_MIS_DATOS && resultCode == RESULT_OK){
            obtenerItemsActividad();
@@ -580,82 +549,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
        }
     }
 
-    private void obtenerDatos(String datosEscaner){
-        try {
-            if (datosEscaner == null && datosEscaner.isEmpty())
-                mostrarMensajeDialog("No se encontraron datos");
 
-            lyDatosQR.setVisibility(View.VISIBLE);
-            int index = datosEscaner.indexOf("Serial");
-            if (index > 0) {
-                String serial = datosEscaner.substring(index);
-                index = serial.indexOf("-");
-                if (index > 0) {
-                    serial = serial.substring(0, index);
-                    lblSerial.setText(serial.replace("Serial", "").replace(":", "").trim());
-                }
-            }
-
-            index = datosEscaner.indexOf("Rin");
-            if (index > 0) {
-                String rin = datosEscaner.substring(index);
-                index = rin.indexOf("-");
-                if (index > 0) {
-                    rin = rin.substring(0, index);
-                    lblRin.setText(rin.replace("Rin", "").replace(":", "").trim());
-                }
-            }
-
-            lblNombre.setVisibility(View.GONE);
-            if (Utils.isOnline(this)) {
-                mostrarProgressDialog("Consultando");
-                mBeneficiario = null;
-                BeneficiarioPresenter beneficiarioPresenter = new BeneficiarioPresenter(this);
-                beneficiarioPresenter.obtenerItem(lblSerial.getText().toString(), lblRin.getText().toString());
-            }
-
-        }catch (IndexOutOfBoundsException ex){
-            mostrarMensajeDialog("Error al leer:" + datosEscaner );
-        }
-    }
-
-    @Override
-    public void onSuccess(Beneficiario beneficiario) {
-        ocultarProgressDialog();
-        mBeneficiario = beneficiario;
-        lblNombre.setVisibility(View.VISIBLE);
-        lblNombre.setText(beneficiario.Nombres + " " + beneficiario.Apellidos);
-
-    }
-
-    @Override
-    public void onSuccess(List<Beneficiario> lstBeneficiarios) {
-        this.lstBeneficiarios = lstBeneficiarios;
-    }
-
-    @Override
-    public void onError(ErrorApi errorApi) {
-        ocultarProgressDialog();
-        if (errorApi.getStatusCode() == 404){
-            mostrarMensajeDialog(errorApi.getMessage());
-        }
-
-    }
-
-    @Override
-    public void onErrorListarItems(ErrorApi errorApi) {
-
-    }
-
-    @Override
-    public void onSuccessRecordarClave(String mensaje) {
-
-    }
-
-    @Override
-    public void onErrorRecordarClave(ErrorApi error) {
-
-    }
 
     @Override
     public void onSuccessLogTrayecto() {
@@ -676,7 +570,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     /////////////
 
-    private static final String TAG = RegistrarActividadActivity.class.getSimpleName();
+    private static final String TAG = CrearRutaActivity.class.getSimpleName();
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private boolean mAlreadyStartedService = false;
 
@@ -729,7 +623,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
      * Show A Dialog with button to refresh the internet state.
      */
     private void promptInternetConnect() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrarActividadActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(CrearRutaActivity.this);
         builder.setTitle("Verificar conección");
         builder.setMessage("Verificar conección");
 
@@ -769,7 +663,6 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         if (!mAlreadyStartedService ) {
 
-            lyIngresarRecorrido.setVisibility(View.GONE);
             lyInfoRecorrido.setVisibility(View.VISIBLE);
             btnIniciar.setVisibility(View.GONE);
             btnDetener.setVisibility(View.VISIBLE);
@@ -798,10 +691,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     private void continuar(){
         if (!mAlreadyStartedService ) {
 
-            lyIngresarRecorrido.setVisibility(View.GONE);
             lyInfoRecorrido.setVisibility(View.VISIBLE);
             btnIniciar.setVisibility(View.GONE);
-            // btnAgregarMiRecorrido.setVisibility(View.GONE);
             btnDetener.setVisibility(View.VISIBLE);
             btnPausa.setVisibility(View.VISIBLE);
             btnPausa.setText("Pausa");
@@ -839,7 +730,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
      */
     private boolean checkPermissions() {
         int permissionState1 = ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION);
+                Manifest.permission.ACCESS_FINE_LOCATION);
 
         int permissionState2 = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -855,7 +746,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         boolean shouldProvideRationale =
                 ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION);
+                        Manifest.permission.ACCESS_FINE_LOCATION);
 
         boolean shouldProvideRationale2 =
                 ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -871,8 +762,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                         @Override
                         public void onClick(View view) {
                             // Request permission
-                            ActivityCompat.requestPermissions(RegistrarActividadActivity.this,
-                                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                            ActivityCompat.requestPermissions(CrearRutaActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                                     REQUEST_PERMISSIONS_REQUEST_CODE);
                         }
                     });
@@ -881,8 +772,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             // Request permission. It's possible this can be auto answered if device policy
             // sets the permission in a given state or the img_user denied the permission
             // previously and checked "Never ask again".
-            ActivityCompat.requestPermissions(RegistrarActividadActivity.this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+            ActivityCompat.requestPermissions(CrearRutaActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
     }
@@ -928,7 +819,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     private  void eliminar(final int position){
         mPosition = position;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrarActividadActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(CrearRutaActivity.this);
 
         builder.setMessage("¿Eliminar trayecto?");
 
@@ -953,4 +844,18 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         builder.show();
     }
 
+    @Override
+    public void onSuccess(List<Ruta> lstRutas) {
+
+    }
+
+    @Override
+    public void onSuccess(Ruta ruta) {
+
+    }
+
+    @Override
+    public void onError(ErrorApi errorApi) {
+
+    }
 }

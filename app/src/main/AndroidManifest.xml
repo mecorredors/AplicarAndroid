@@ -199,11 +199,14 @@
             android:name=".bicicar.activities.SeguirRutaActivity"
             android:label="@string/title_activity_seguir_ruta"
             android:theme="@style/AppThemeBicicar"></activity>
-            android:theme="@style/AppThemeBicicar" />
         <activity
             android:name=".petcar.activities.MainPETCARActivity"
             android:label="@string/title_activity_main_petcar"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".bicicar.activities.CrearRutaActivity"
+            android:theme="@style/AppThemeBicicar"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

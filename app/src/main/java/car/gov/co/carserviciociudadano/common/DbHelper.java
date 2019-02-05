@@ -24,7 +24,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static String DATABASE_PATH;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "db_bicicar.db";
 
     private final Context context;
@@ -155,6 +155,15 @@ public class DbHelper extends SQLiteOpenHelper {
                 Log.d("DbHelper.onUpgrade", ex.toString());
             }
         }
+        if(oldVersion < 5)
+        {
+            //Agregamos a la tabla Rutas
+            try {
+                db.execSQL(TABLA_RUTAS);
+            } catch (SQLiteException ex) {
+                Log.d("DbHelper.onUpgrade", ex.toString());
+            }
+        }
 
     }
 
@@ -240,6 +249,19 @@ public class DbHelper extends SQLiteOpenHelper {
             "IDBicicleta    INTEGER, " +
             "LinkFoto    TEXT, " +
             "DescPerfil   TEXT );";
+
+
+
+    static String TABLA_RUTAS = "CREATE TABLE Ruta (ID	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "IDBeneficiario	INTEGER NOT NULL, " +
+            "IDNivel	INTEGER NOT NULL, " +
+            "Nombre	TEXT NOT NULL, " +
+            "Descripcion	TEXT, " +
+            "DistanciaKM	REAL, " +
+            "DuracionMinutos	TEXT, " +
+            "RutaTrayecto	TEXT, " +
+            "Estado	INTEGER, " +
+            "IDRuta	INTEGER );";
 
 }
 

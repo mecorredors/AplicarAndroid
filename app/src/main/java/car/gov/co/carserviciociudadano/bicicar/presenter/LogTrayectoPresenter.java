@@ -24,13 +24,13 @@ public class LogTrayectoPresenter {
 
     public void publicar(final int idBeneficiario){
 
-        List<LogTrayecto> logTrayectoList = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR, idBeneficiario);
+        List<LogTrayecto> logTrayectoList = new LogTrayectos().List(Enumerator.Estado.PENDIENTE_PUBLICAR, idBeneficiario);
         if (logTrayectoList.size() > 0) {
             LogTrayecto logTrayecto = logTrayectoList.get(0);
             new LogTrayectos().publicar(logTrayecto , new ILogTrayecto() {
                 @Override
                 public void onSuccessLogTrayecto(LogTrayecto logTrayecto) {
-                    logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PUBLICADO;
+                    logTrayecto.Estado = Enumerator.Estado.PUBLICADO;
                    if ( new LogTrayectos().Update(logTrayecto))
                         publicar(idBeneficiario);
                    else
@@ -52,7 +52,7 @@ public class LogTrayectoPresenter {
         if (distancia > 0) {
             LogTrayecto logTrayecto = new LogTrayecto();
 
-            logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
+            logTrayecto.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
             logTrayecto.Fecha = Calendar.getInstance().getTime();
 
             logTrayecto.DistanciaKm = distancia;
