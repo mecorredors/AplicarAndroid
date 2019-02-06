@@ -21,11 +21,11 @@ public class NivelesPresenter implements INivel {
 
     @Override
     public void onSuccess(List<Nivel> lstNiveles) {
-        iViewNivel.onSuccess(lstNiveles);
+        iViewNivel.onSuccessNiveles(lstNiveles);
     }
 
     @Override
     public void onError(ErrorApi errorApi) {
-        iViewNivel.onError(errorApi);
+        iViewNivel.onErrorNivel(errorApi);
     }
 }

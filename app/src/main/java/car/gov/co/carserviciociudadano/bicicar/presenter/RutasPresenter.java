@@ -2,6 +2,7 @@ package car.gov.co.carserviciociudadano.bicicar.presenter;
 
 import java.util.List;
 
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Rutas;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.IRuta;
 import car.gov.co.carserviciociudadano.bicicar.model.Ruta;
@@ -16,6 +17,37 @@ public class RutasPresenter implements IRuta {
 
     public void  getRutas(int idBeneficiario){
         new Rutas().getRutas(idBeneficiario, this);
+    }
+
+
+    public void publicar(final int idBeneficiario){
+
+        List<Ruta> listRutas = new Rutas().List(Enumerator.Estado.PENDIENTE_PUBLICAR, idBeneficiario);
+        if (listRutas.size() > 0) {
+            Ruta ruta = listRutas.get(0);
+            new Rutas().publicar(ruta, new IRuta() {
+                @Override
+                public void onSuccess(List<Ruta> lstRutas) {
+
+                }
+
+                @Override
+                public void onSuccess(Ruta ruta) {
+                    ruta.Estado = Enumerator.Estado.PUBLICADO;
+                    if ( new Rutas().Update(ruta))
+                        publicar(idBeneficiario);
+                    else
+                        iViewRutas.onError(new ErrorApi(0,"Error al guardar datos localmente"));
+                }
+
+                @Override
+                public void onError(ErrorApi errorApi) {
+                    iViewRutas.onError(errorApi);
+                }
+            });
+        }else{
+            iViewRutas.onSuccess();
+        }
     }
 
     public  void publicarRutas(Ruta ruta){
@@ -37,7 +69,7 @@ public class RutasPresenter implements IRuta {
 
     @Override
     public void onSuccess(Ruta ruta) {
-        iViewRutas.onSuccess(ruta);
+
     }
 
     @Override

@@ -7,6 +7,6 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public interface IViewRutas {
     void onSuccess(List<Ruta> lstRutas);
-    void onSuccess(Ruta ruta);
+    void onSuccess();
     void onError(ErrorApi errorApi);
 }

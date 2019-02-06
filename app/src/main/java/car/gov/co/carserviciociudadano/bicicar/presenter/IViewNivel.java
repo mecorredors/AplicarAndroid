@@ -6,6 +6,6 @@ import car.gov.co.carserviciociudadano.bicicar.model.Nivel;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public interface IViewNivel {
-    void onSuccess(List<Nivel> lstNiveles);
-    void onError(ErrorApi errorApi);
+    void onSuccessNiveles(List<Nivel> lstNiveles);
+    void onErrorNivel(ErrorApi errorApi);
 }
