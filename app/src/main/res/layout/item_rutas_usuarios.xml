@@ -7,10 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardUseCompatPadding="false"
-    card_view:cardElevation="0dp"
-    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="2dp"
+    card_view:cardCornerRadius="2dp"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardBackgroundColor="@color/background"
+    android:layout_margin="@dimen/margin_16dp"
+    card_view:contentPaddingLeft="@dimen/margin_6dp"
     >
 
 
@@ -43,10 +45,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_16dp"
                 android:text="Nombre"
+                android:textSize="@dimen/text_size_18"
+                android:textStyle="bold"
+                android:textColor="@color/primaryText"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginTop="@dimen/margin_6dp"
+                />
+
+            <TextView android:id="@+id/lblDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="Descripcion"
                 android:textSize="@dimen/text_size_16"
                 android:textColor="@color/primaryText"
                 android:layout_gravity="center_vertical|right"
-
+                android:layout_marginTop="@dimen/margin_16dp"
                 />
 
                 <TextView android:id="@+id/lblDistancia"
@@ -57,39 +71,43 @@
                     android:textSize="@dimen/text_size_16"
                     android:textColor="@color/primaryText"
                     android:layout_gravity="center_vertical|right"
-
+                    android:layout_marginTop="@dimen/margin_6dp"
                     />
 
-                <TextView android:id="@+id/lblDuracion"
+
+
+            <TextView android:id="@+id/lblNivel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_16dp"
-                android:text="00:00"
-                android:textSize="@dimen/text_size_14"
-                android:textColor="@color/secondaryText"
+                android:text="Nivel"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/accentBicicar"
                 android:layout_gravity="center_vertical|right"
+                android:layout_marginTop="@dimen/margin_6dp"
                 />
 
 
-
-
-
+            <TextView android:id="@+id/lblNombreUsuarioCreacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="Nombre Usuiario"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/secondaryText"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginTop="@dimen/margin_16dp"
+                />
+            <TextView android:id="@+id/lblFechaCreacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="Nombre Usuiario"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/secondaryText"
+                android:layout_gravity="center_vertical|right"
+                />
         </LinearLayout>
-
-        <Button android:id="@+id/btnVerRuta"
-            android:theme="@style/ButtonBorderlessBicicar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_10"
-            android:text="Ver Ruta"/>
-        <Button android:id="@+id/btnEliminar"
-            android:theme="@style/ButtonBorderlessBicicar"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_10"
-            android:drawableLeft="@drawable/ic_delete_forever_blue_24dp"
-            android:text=""
-            android:layout_marginRight="@dimen/margin_10dp"/>
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

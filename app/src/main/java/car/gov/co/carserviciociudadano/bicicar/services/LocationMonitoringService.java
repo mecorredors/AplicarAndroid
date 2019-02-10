@@ -74,8 +74,8 @@ public class LocationMonitoringService extends Service implements
     public static final String EXTRA_TIEMPO_EVENTO_09= "extra_tiempo_evento_09";
     public static final String EXTRA_DISTANCIA_EVENTO_09= "extra_distancia_evento_09";
 
-
-
+    public static final String EXTRA_ACTIVIDAD = "extra_actividad";
+    String  actividad = RegistrarActividadActivity.class.getSimpleName();
     float distancia = 0;
     float distancia_en_pausa = 0;
     float precision = 0;
@@ -108,6 +108,7 @@ public class LocationMonitoringService extends Service implements
         distancia_en_pausa = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(EXTRA_DISTANCIA_IN_PAUSE ,  0);
         distancia_evento_09 = PreferencesApp.getDefault(PreferencesApp.READ).getFloat(EXTRA_DISTANCIA_EVENTO_09 ,  0);
         tiempo_evento_09 = PreferencesApp.getDefault(PreferencesApp.READ).getLong(EXTRA_TIEMPO_EVENTO_09 , (long) 0);
+        actividad = PreferencesApp.getDefault(PreferencesApp.READ).getString(EXTRA_ACTIVIDAD, RegistrarActividadActivity.class.getSimpleName());
 
         String ruta = PreferencesApp.getDefault(PreferencesApp.READ).getString(EXTRA_RUTA);
         latLngs.clear();
@@ -186,7 +187,7 @@ public class LocationMonitoringService extends Service implements
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
-        Notifications.showNotification(" Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos + "  Pre: " + Utils.round(2, precision));
+        Notifications.showNotification(" Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos + "  Pre: " + Utils.round(2, precision), actividad);
 
     }
 

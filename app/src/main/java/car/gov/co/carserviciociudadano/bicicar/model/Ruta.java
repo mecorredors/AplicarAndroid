@@ -21,8 +21,12 @@ public class Ruta extends ModelBase {
     public String UsuarioModificacion;
     public Date FechaCreacion;
     public Date UltimaModificacion;
-    public String NombreNivel;
     public int Estado;
+
+    // OTROS CAMPOS
+    public String NombreNivel;
+    public String NombreUsuarioCreacion;
+
 
     public static final String TABLE_NAME = "Ruta";
 

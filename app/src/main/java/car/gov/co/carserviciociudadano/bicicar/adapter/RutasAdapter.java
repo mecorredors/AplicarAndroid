@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.model.Ruta;
 
 /**
@@ -55,10 +56,7 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.PlaceSelecto
 
               if (a.DuracionMinutos > 0) {
                   lblDuracion.setVisibility(View.VISIBLE);
-                  int segundos = (int) (a.DuracionMinutos * 60);
-                  int minutos = segundos / 60;
-                  segundos = segundos % 60;
-                  lblDuracion.setText(String.format("%d:%02d", minutos, segundos));
+                  lblDuracion.setText(Utils.horasMinutosSegundos((int) (a.DuracionMinutos * 60)));
               }else{
                   lblDuracion.setVisibility(View.GONE);
               }
@@ -100,7 +98,7 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.PlaceSelecto
     @Override
     public PlaceSelectorViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_log_trayecto, viewGroup, false);
+                .inflate(R.layout.item_ruta, viewGroup, false);
 
         itemView.setOnClickListener(this);
         //android:background="?android:attr/selectableItemBackground"

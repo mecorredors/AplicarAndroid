@@ -27,6 +27,7 @@ import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Reportes;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.Estadistica;
+import car.gov.co.carserviciociudadano.bicicar.model.Ruta;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewReportes;
 import car.gov.co.carserviciociudadano.bicicar.presenter.ReportesPresenter;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
@@ -35,10 +36,13 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class MainBicicarActivity extends BaseActivity implements IViewReportes {
 
+    private static final int REQUEST_CODE_BICICAR_LOGIN_RUTAS = 203;
     @BindView(R.id.lblKgCO2) TextView lblKgCO2;
     @BindView(R.id.lblBicicletas) TextView lblBicicletas;
     @BindView(R.id.lblKilometros) TextView lblKilometros;
     @BindView(R.id.lyMainBicicar) View lyMainBicicar;
+    @BindView(R.id.lyMisDatos) View lyMisDatos;
+    @BindView(R.id.lyUnirmeaBicicar) View lyUnirmeaBicicar;
     @BindView(R.id.progressBar)   ProgressBar progressBar;
     ReportesPresenter reportesPresenter;
     public static final int REQUEST_CODE_BICICAR_LOGIN = 202;
@@ -51,10 +55,14 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
         reportesPresenter = new ReportesPresenter(this);
         getGranTotal();
 
-
-        Intent i = new Intent(this, CrearRutaActivity.class);
-        startActivity(i);
-
+        Beneficiario beneficiario = Beneficiarios.readBeneficio();
+        if (beneficiario == null){
+            lyUnirmeaBicicar.setVisibility(View.VISIBLE);
+            lyMisDatos.setVisibility(View.GONE);
+        }else{
+            lyUnirmeaBicicar.setVisibility(View.GONE);
+            lyMisDatos.setVisibility(View.VISIBLE);
+        }
 
     }
     private void getGranTotal(){
@@ -115,6 +123,11 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
                 Intent i = new Intent(this, RegistrarActividadActivity.class);
                 startActivity(i);
             }
+        }else if(requestCode == REQUEST_CODE_BICICAR_LOGIN_RUTAS){
+            if (resultCode == Activity.RESULT_OK) {
+                Intent i = new Intent(this, CrearRutaActivity.class);
+                startActivity(i);
+            }
         }
     }
 
@@ -128,8 +141,7 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
 
         Beneficiario beneficiario = Beneficiarios.readBeneficio();
         if (beneficiario == null){
-            Intent i = new Intent(this, LoginBiciCarActivity.class);
-            startActivityForResult(i, REQUEST_CODE_BICICAR_LOGIN);
+            mostrarMensajeCrearCuenta(REQUEST_CODE_BICICAR_LOGIN);
         }else{
             Intent i = new Intent(this, RegistrarActividadActivity.class);
             startActivity(i);
@@ -137,15 +149,27 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
 
     }
 
-    @OnClick(R.id.lyUnirmeaBicicar) void onUnivermeaBicicar(){
-            Intent i = new Intent(this, WebViewBicicarActivity.class);
-            i.putExtra(WebViewActivity.URL, Server.ServerBICICAR() + "WebSite/paginas/BiciUsuario");
-            i.putExtra(WebViewActivity.TITULO, "Registro en BiciCAR");
-            startActivity(i);
+    @OnClick(R.id.lyUnirmeaBicicar) void onUnirmeaBicicar(){
+           abrirUnirmeAbicicar();
     }
 
     @OnClick(R.id.lyHuellaAmbiental) void onHuellaAmbiental(){
         Intent i = new Intent(this, HuellaAmbientalActivity.class);
+        startActivity(i);
+    }
+
+    @OnClick(R.id.lyCrearRuta) void onCrearRuta(){
+        Beneficiario beneficiario = Beneficiarios.readBeneficio();
+        if (beneficiario == null) {
+            mostrarMensajeCrearCuenta(REQUEST_CODE_BICICAR_LOGIN_RUTAS);
+        }else{
+            Intent i = new Intent(this, CrearRutaActivity.class);
+            startActivity(i);
+        }
+    }
+
+    @OnClick(R.id.lyRutas) void onRutas(){
+        Intent i = new Intent(this, RutasActivity.class);
         startActivity(i);
     }
 
@@ -155,6 +179,39 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
         startActivity(browserIntent);
     }
 
+    @OnClick(R.id.lyMisDatos) void onMisDatos(){
+
+        Intent i = new Intent(this, EstadisticaPersonaActivity.class);
+        startActivity(i);
+    }
+
+    private void mostrarMensajeCrearCuenta( final int  requestCode){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainBicicarActivity.this);
+        builder.setMessage("Debe crear una cuenta o iniciar sesión para ingresar en esta opción");
+
+        builder.setPositiveButton("Crear cuenta", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                abrirUnirmeAbicicar();
+            }
+        });
+
+        builder.setNegativeButton("Iniciar Sesión", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                Intent j = new Intent(MainBicicarActivity.this, LoginBiciCarActivity.class);
+                startActivityForResult(j, requestCode);
+            }
+        });
+        builder.show();
+    }
+
+    private void abrirUnirmeAbicicar(){
+        Intent i = new Intent(MainBicicarActivity.this, WebViewBicicarActivity.class);
+        i.putExtra(WebViewActivity.URL, Server.ServerBICICAR() + "WebSite/paginas/BiciUsuario");
+        i.putExtra(WebViewActivity.TITULO, "Registro en BiciCAR");
+        startActivity(i);
+    }
     private void mostrarError(ErrorApi errorApi){
         if (errorApi.getStatusCode() == 404)
             return;

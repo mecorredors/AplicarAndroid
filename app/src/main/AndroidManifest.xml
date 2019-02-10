@@ -22,7 +22,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".bicicar.activities.RutasActivity"
+            android:label="@string/title_rutas"></activity>
         <!-- -Configuracion -->
         <service android:name=".services.FirebaseMessagin">
             <intent-filter>
@@ -48,9 +49,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
-        </provider>
-
-        <!-- actividades -->
+        </provider> <!-- actividades -->
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -165,8 +164,7 @@
             android:name=".bicicar.activities.EscanearQRActivity"
             android:label="@string/title_escaner"
             android:theme="@style/AppThemeBicicar" />
-        <activity android:name=".Utils.ConfigActivity" />
-        <!-- Add the service created in services package ! -->
+        <activity android:name=".Utils.ConfigActivity" /> <!-- Add the service created in services package ! -->
         <service android:name=".bicicar.services.LocationMonitoringService" />
         <service android:name=".bicicar.services.SeguirRutaService" />
 
@@ -198,7 +196,7 @@
         <activity
             android:name=".bicicar.activities.SeguirRutaActivity"
             android:label="@string/title_activity_seguir_ruta"
-            android:theme="@style/AppThemeBicicar"></activity>
+            android:theme="@style/AppThemeBicicar" />
         <activity
             android:name=".petcar.activities.MainPETCARActivity"
             android:label="@string/title_activity_main_petcar"
@@ -206,7 +204,8 @@
         <activity
             android:name=".bicicar.activities.CrearRutaActivity"
             android:theme="@style/AppThemeBicicar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            />
     </application>
 
 </manifest>

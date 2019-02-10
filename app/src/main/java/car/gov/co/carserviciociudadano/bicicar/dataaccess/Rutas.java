@@ -109,7 +109,7 @@ public class Rutas {
         cv.put(Ruta.RUTA_TRAYECTO, element.RutaTrayecto);
         cv.put(Ruta.ESTADO, element.Estado);
 
-        long rowid = 0;
+        long rowid;
 
         SQLiteDatabase db = _dbHelper.getWritableDatabase();
 
@@ -158,12 +158,12 @@ public class Rutas {
         try {
 
             // String[] selectionArgs =  {String.valueOf(estado)};
-            String where = null;
+            String where;
 
             if (estado == Enumerator.Estado.TODOS) {
                 where = Ruta.ID_BENEFICIARIO + "= " + idBeneficiario ;
             }else{
-                where = Ruta.ESTADO + "="+ estado + " and " + Ruta.ID_BENEFICIARIO + "= " + idBeneficiario ;
+                where = Ruta.ESTADO + "="+ estado + " and " + Ruta.ID_BENEFICIARIO + "=" + idBeneficiario ;
             }
 
             Cursor c = db.query(Ruta.TABLE_NAME, projectionDefault(), where, null, null, null, "[" + Ruta.ID + "] DESC");
@@ -220,7 +220,7 @@ public class Rutas {
                     public void onResponse(JSONObject response) {
                         try {
                             Ruta rutaResponse =  getItemFromJson(response.toString());
-                           // logTrayectoResponse.IDLogTrayecto = logTrayecto.IDLogTrayecto;
+                            rutaResponse.Id = ruta.Id;
                             iRuta.onSuccess(rutaResponse);
                         }catch (JsonSyntaxException ex){
                             iRuta.onError(new ErrorApi(ex));

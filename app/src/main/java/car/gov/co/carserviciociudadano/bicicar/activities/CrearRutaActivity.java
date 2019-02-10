@@ -2,7 +2,6 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,16 +31,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.PolyUtil;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,7 +44,6 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
-import car.gov.co.carserviciociudadano.bicicar.adapter.LogTrayectoAdapter;
 import car.gov.co.carserviciociudadano.bicicar.adapter.RutasAdapter;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.LogTrayectos;
@@ -60,19 +52,14 @@ import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.model.Nivel;
 import car.gov.co.carserviciociudadano.bicicar.model.Ruta;
-import car.gov.co.carserviciociudadano.bicicar.presenter.BeneficiarioPresenter;
-import car.gov.co.carserviciociudadano.bicicar.presenter.IViewBeneficiario;
-import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewNivel;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewRutas;
-import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.NivelesPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.RutasPresenter;
 import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.common.Notifications;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Municipio;
 
 
 public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IViewNivel, RutasAdapter.RutaListener {
@@ -105,7 +92,6 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
     String ruta;
     RutasAdapter mAdaptador;
     List<Ruta> mLstRutas = new ArrayList<>();
-    Beneficiario mBeneficiario = null;
     Beneficiario mBeneficiarioLogin;
     float distancia = 0;
     float tiempo_en_minutos = 0;
@@ -116,9 +102,8 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
     float distanciaEvento09 = 0;
     long tiempoMillisEvento09 = 0;
 
-    private List<Beneficiario> lstBeneficiarios;
     private int mPosition;
-    public static final float DISTANCIA_MINIMA_MTS = 200;
+    public static final float DISTANCIA_MINIMA_MTS = 0;
     List<Nivel> mLstNiveles = new ArrayList<>();
     ArrayAdapter<Nivel> adapterNiveles;
 
@@ -159,9 +144,7 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-
-
-        obtenerItemsActividad();
+        obtenerRutas();
 
         if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
 
@@ -295,7 +278,7 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
             mAlreadyStartedService = false;
             btnPausa.setText("Continuar");
 
-            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos );
+            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos , CrearRutaActivity.class.getSimpleName() );
 
         }
 
@@ -356,20 +339,6 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
                 mBeneficiarioLogin  = Beneficiarios.readBeneficio();
                 ruta = PreferencesApp.getDefault(PreferencesApp.READ).getString(LocationMonitoringService.EXTRA_RUTA);
 
-                double latitude_punto_a = 0;
-                double longitude_punto_a = 0;
-                double latitude_punto_b = 0;
-                double longitude_punto_b = 0;
-                if (ruta != null && !ruta.isEmpty()) {
-                    List<LatLng> latLngs = PolyUtil.decode(ruta);
-                    if (latLngs.size() > 0){
-                        latitude_punto_a = latLngs.get(0).latitude;
-                        longitude_punto_a = latLngs.get(0).longitude;
-                        latitude_punto_b = latLngs.get(latLngs.size() - 1).latitude;
-                        longitude_punto_b = latLngs.get(latLngs.size() - 1).longitude;
-                    }
-                }
-
                 stopService(new Intent(CrearRutaActivity.this, LocationMonitoringService.class));
                 mAlreadyStartedService = false;
 
@@ -381,15 +350,20 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
                     distancia = distanciaEvento09;
                 }
 
-                if (distancia > DISTANCIA_MINIMA_MTS) {
+                if (distancia >= DISTANCIA_MINIMA_MTS) {
                     mRuta.RutaTrayecto = ruta;
                     mRuta.DistanciaKM = (distancia / 1000);
                     mRuta.DuracionMinutos = tiempo_en_minutos;
                     mRuta.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
                     rutasPresenter.guardarRuta(mRuta);
+                    txtDescripcion.setText("");
+                    txtNombre.setText("");
+                    mSpiNivel.setSelection(0);
+                    mRuta = null;
+                    obtenerRutas();
                     publicar();
                 }else{
-                    mostrarMensajeDialog("La distancia de recorrida es muy corta, debe ser mínimo de " + DISTANCIA_MINIMA_MTS + " mts");
+                    mostrarMensajeDialog("La distancia recorrida es muy corta, debe ser mínimo de " + DISTANCIA_MINIMA_MTS + " mts");
                 }
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, 0).commit();
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, 0).commit();
@@ -432,13 +406,13 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
         nivelesPresenter.getNiveles();
     }
 
-    private  void obtenerItemsActividad(){
+    private  void obtenerRutas(){
 
         if (mBeneficiarioLogin == null) return;
 
         mLstRutas.clear();
-        mLstRutas = new Rutas().List(Enumerator.Estado.PENDIENTE_PUBLICAR, mBeneficiarioLogin.IDBeneficiario);
-
+        List<Ruta> lstRutas  = new Rutas().List(Enumerator.Estado.PENDIENTE_PUBLICAR, mBeneficiarioLogin.IDBeneficiario);
+        mLstRutas.addAll(lstRutas);
         btnPublicar.setVisibility(mLstRutas.size() == 0 ? View.GONE :View.VISIBLE);
         mAdaptador.notifyDataSetChanged();
 
@@ -517,11 +491,11 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
         super.onActivityResult(requestCode, resultCode, data);
 
       if (requestCode == REQUEST_CODE_BENEFICIARIOS && resultCode == RESULT_OK){
-           obtenerItemsActividad();
+          obtenerRutas();
        }else if (requestCode == REQUEST_MIS_DATOS && resultCode == RESULT_OK){
-           obtenerItemsActividad();
+          obtenerRutas();
        }else if (requestCode == REQUEST_HISTORIAL_TRAYECTOS && resultCode == RESULT_OK){
-           obtenerItemsActividad();
+          obtenerRutas();
        }
     }
 
@@ -637,6 +611,7 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
 
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_EVENTO_09, 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_EVENTO_09, 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putString(LocationMonitoringService.EXTRA_ACTIVIDAD , CrearRutaActivity.class.getSimpleName()).commit();
 
             Intent intent = new Intent(this, LocationMonitoringService.class);
             startService(intent);
@@ -658,6 +633,7 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
             PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putString(LocationMonitoringService.EXTRA_ACTIVIDAD , CrearRutaActivity.class.getSimpleName()).commit();
 
             Intent intent = new Intent(this, LocationMonitoringService.class);
             startService(intent);
@@ -779,13 +755,13 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
 
         AlertDialog.Builder builder = new AlertDialog.Builder(CrearRutaActivity.this);
 
-        builder.setMessage("¿Eliminar trayecto?");
+        builder.setMessage("¿Eliminar ruta?");
 
         builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Ruta ruta = mLstRutas.get(mPosition);
-                new LogTrayectos().Delete(ruta.Id);
+                new Rutas().Delete(ruta.Id);
                 mLstRutas.remove(mPosition);
                 mAdaptador.notifyDataSetChanged();
                 dialog.dismiss();
@@ -810,14 +786,14 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
     @Override
     public void onSuccess() {
         ocultarProgressDialog();
-        obtenerItemsActividad();
+        obtenerRutas();
         mostrarMensajeDialog("Los datos fueron publicados correctamente");
     }
 
     @Override
     public void onError(ErrorApi errorApi) {
         ocultarProgressDialog();
-        obtenerItemsActividad();
+        obtenerRutas();
         mostrarMensajeDialog(errorApi.getMessage());
     }
 
@@ -839,13 +815,10 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
     @Override
     public void onErrorNivel(ErrorApi errorApi) {
         ocultarProgressDialog();
-        mostrarMensajeDialog(errorApi.getMessage());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(CrearRutaActivity.this);
-
         builder.setMessage(errorApi.getMessage());
-
-        builder.setPositiveButton("Reintentr", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                obtenerNiveles();

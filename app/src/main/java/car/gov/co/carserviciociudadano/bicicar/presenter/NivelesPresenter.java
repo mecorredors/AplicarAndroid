@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.bicicar.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Niveles;
@@ -26,6 +27,15 @@ public class NivelesPresenter implements INivel {
 
     @Override
     public void onError(ErrorApi errorApi) {
-        iViewNivel.onErrorNivel(errorApi);
+
+        List<Nivel> lstNiveles = new ArrayList<>();
+        lstNiveles.add(new Nivel(1, "Familiar"));
+        lstNiveles.add(new Nivel(2, "Básico"));
+        lstNiveles.add(new Nivel(3, "Medio"));
+        lstNiveles.add(new Nivel(4, "Avanzado"));
+        lstNiveles.add(new Nivel(5, "Profesional"));
+
+        iViewNivel.onSuccessNiveles(lstNiveles);
+
     }
 }

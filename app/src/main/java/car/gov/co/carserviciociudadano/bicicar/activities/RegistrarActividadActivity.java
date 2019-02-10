@@ -278,7 +278,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             mAlreadyStartedService = false;
             btnPausa.setText("Continuar");
 
-            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos );
+            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos, RegistrarActividadActivity.class.getSimpleName() );
 
         }
 
@@ -786,6 +786,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_EVENTO_09, 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_EVENTO_09, 0).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putString(LocationMonitoringService.EXTRA_ACTIVIDAD , RegistrarActividadActivity.class.getSimpleName()).commit();
 
             Intent intent = new Intent(this, LocationMonitoringService.class);
             startService(intent);
@@ -809,6 +810,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA , 0).commit();
             PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_START_TIME , System.currentTimeMillis()).commit();
+            PreferencesApp.getDefault(PreferencesApp.WRITE).putString(LocationMonitoringService.EXTRA_ACTIVIDAD , RegistrarActividadActivity.class.getSimpleName()).commit();
 
             Intent intent = new Intent(this, LocationMonitoringService.class);
             startService(intent);

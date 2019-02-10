@@ -363,6 +363,20 @@ public class Utils {
         return bd.floatValue();
     }
 
+    public static String horasMinutosSegundos(int segundos){
+        int hor, min, seg;
+        hor = segundos/3600;
+        min = (segundos-(3600*hor)) / 60;
+        seg = segundos - ((hor*3600) + (min*60));
+
+        if (hor > 0){
+            return String.format("%d Horas: %d Min: %02d Seg", hor, min, seg);
+        }else{
+            return String.format("%d Min: %02d Seg", min, seg);
+        }
+
+
+    }
     public static List<Integer> listColores(){
         ArrayList<Integer> colores = new ArrayList<>();
         colores.add(ContextCompat.getColor(AppCar.getContext(), R.color.red500));

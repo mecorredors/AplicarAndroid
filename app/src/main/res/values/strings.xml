@@ -26,6 +26,7 @@
     <string name="title_escaner">Escanear QR </string>
     <string name="title_historial_trayectos">Historial trayectos </string>
     <string name="title_asistencia">Registrar asistencia </string>
+    <string name="title_rutas">Rutas disponibles </string>
 
     <string name="maximo_dias">Sólo se permite reservar máximo</string>
     <string name="fecha_inicial">La fecha inicial de la reserva debe ser menor ó igual a</string>
@@ -157,8 +158,7 @@
     <string name="descripcion_bicicar"> Propuesta educativa ambiental para mitigar los efectos del cambio climático en los municipios priorizados de la jurisdicción CAR</string>
     <string name="titulo_registrar_asistencia"> Seleccione los estudiantes para registrar su asistencia</string>
     <string name="title_activity_seguir_ruta">Ruta BICICAR</string>
-    <string name="crear_ruta_descripcion">Si conoces una ruta en bicicleta ingresa sus datos y realiza el recorrido el tu bicicleta, al finalizar otros usuarios podrán conocer esta ruta y seguir el recorrido </string>
-
+    <string name="crear_ruta_descripcion">Si conoces una ruta en bicicleta ingresa sus datos y realiza el recorrido en tu bicicleta, al finalizar otros usuarios podrán conocer esta ruta y seguir el recorrido </string>
 
 
     <!-- petcar -->
