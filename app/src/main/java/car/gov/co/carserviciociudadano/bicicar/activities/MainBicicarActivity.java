@@ -131,11 +131,11 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
         }
     }
 
-    @OnClick({R.id.imgLogo, R.id.btnVerRecorrido}) void onImgLogo(){
+  /*  @OnClick({R.id.imgLogo, R.id.btnVerRecorrido}) void onImgLogo(){
         Intent i = new Intent(this, SeguirRutaActivity.class);
         startActivity(i);
     }
-
+*/
 
     @OnClick(R.id.lyRegistrarActividad) void onRegistrarActividad(){
 
