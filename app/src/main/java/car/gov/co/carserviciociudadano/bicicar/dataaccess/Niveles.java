@@ -66,7 +66,7 @@ public class Niveles {
         objRequest.setTag(TAG);
         objRequest.setRetryPolicy(
                 new DefaultRetryPolicy(
-                        20000,
+                        10000,
                         0,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppCar.VolleyQueue().add(objRequest);

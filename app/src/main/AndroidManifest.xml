@@ -204,6 +204,7 @@
         <activity
             android:name=".bicicar.activities.CrearRutaActivity"
             android:theme="@style/AppThemeBicicar"
+            android:label="@string/title_crear_ruta"
             android:windowSoftInputMode="stateHidden|adjustPan"
             />
     </application>

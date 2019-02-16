@@ -85,6 +85,7 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
     @BindView(R.id.txtDescripcion) EditText txtDescripcion;
     @BindView(R.id.inputLyNombre) TextInputLayout inputLyNombre;
     @BindView(R.id.spiNivel) Spinner mSpiNivel;
+    @BindView(R.id.lblDescripcion) TextView lblDescripcion;
 
     RutasPresenter rutasPresenter;
     NivelesPresenter nivelesPresenter;
@@ -116,8 +117,8 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         if (mBeneficiarioLogin == null) return;
         bar.setDisplayHomeAsUpEnabled(true);
-        if (mBeneficiarioLogin != null)
-            bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
+        //if (mBeneficiarioLogin != null)
+          //  bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
 
 
         rutasPresenter = new RutasPresenter(this);
@@ -196,6 +197,7 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
         lblDuracion.setVisibility(View.VISIBLE);
         lyInfoRecorrido.setVisibility(View.VISIBLE);
         btnDetener.setVisibility(View.VISIBLE);
+        lblDescripcion.setVisibility(View.GONE);
 
         if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
             btnPausa.setVisibility(View.GONE);
@@ -285,11 +287,6 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
     }
 
 
-    @OnClick(R.id.btnMisDatos) void onMisDatos(){
-        Intent i = new Intent(this, EstadisticaPersonaActivity.class);
-        startActivityForResult(i, REQUEST_MIS_DATOS);
-
-    }
     @OnClick(R.id.btnIniciar) void onIniciar(){
         if (txtNombre.getText().toString().trim().length() == 0){
             inputLyNombre.setError("Ingrese un nombre para la ruta");
@@ -414,7 +411,9 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
         List<Ruta> lstRutas  = new Rutas().List(Enumerator.Estado.PENDIENTE_PUBLICAR, mBeneficiarioLogin.IDBeneficiario);
         mLstRutas.addAll(lstRutas);
         btnPublicar.setVisibility(mLstRutas.size() == 0 ? View.GONE :View.VISIBLE);
+        lblDescripcion.setVisibility(mLstRutas.size() == 0 ? View.VISIBLE :View.GONE);
         mAdaptador.notifyDataSetChanged();
+
 
     }
 

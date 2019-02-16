@@ -23,31 +23,6 @@
         android:orientation="vertical"
         >
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-        <TextView android:id="@+id/lblTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="Crear ruta "
-            android:layout_marginTop="@dimen/margin_4dp"
-            android:textSize="@dimen/text_size_16"
-            android:textColor="@color/accentBicicar"
-            android:background="@color/blue50"
-            android:paddingLeft="70dp"
-            android:gravity="center_vertical"
-            />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_directions_bike_blue_light_36dp"
-                android:layout_marginLeft="16dp"
-                android:layout_gravity="center_vertical"/>
-        </FrameLayout>
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,7 +31,7 @@
             android:layout_marginRight="@dimen/margin_16dp"
             android:orientation="vertical">
 
-            <TextView
+            <TextView android:id="@+id/lblDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/crear_ruta_descripcion"
@@ -256,7 +231,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Publicar"
+            android:text="Publicar ruta"
             android:layout_marginLeft="@dimen/margin_16dp"
             android:layout_marginRight="@dimen/margin_16dp"
             android:layout_marginTop="@dimen/margin_10dp"
@@ -264,18 +239,7 @@
             android:textColor="@color/textLight"
            />
 
-        <Button android:id="@+id/btnMisDatos"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Mis datos"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:layout_marginRight="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:background="@drawable/boton_bicicar"
-            android:textColor="@color/textLight"
-            android:drawableLeft="@drawable/ic_equalizer_white_24dp"
-            />
+
     </LinearLayout>
 
 </RelativeLayout>

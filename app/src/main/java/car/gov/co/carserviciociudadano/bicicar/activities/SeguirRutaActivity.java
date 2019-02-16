@@ -616,7 +616,7 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
             }
             if (i == rutas.size() -1 ){
                 float totalKilometros = mRuta != null ? mRuta.DistanciaKM : km;
-                mapa.addMarker(new MarkerOptions().position(directionPositionList.get(size-1)).title("Fin recorrido Km: " + totalKilometros).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_finish_map)).visible(true)).showInfoWindow();
+                mapa.addMarker(new MarkerOptions().position(directionPositionList.get(size-1)).title("Fin recorrido Km: " + Utils.round(2,totalKilometros)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_finish_map)).visible(true)).showInfoWindow();
             }
             i++;
 
