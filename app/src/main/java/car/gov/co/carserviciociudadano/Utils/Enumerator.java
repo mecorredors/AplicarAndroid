@@ -24,11 +24,11 @@ public class Enumerator {
         public static final int ARCHIVOS_PARQUE = 1;
     }
     public static class CacheTimeInMilliSeconds{
-        public static final int PARQUES = 300000;
+        public static final long PARQUES =  20 * 24 * 3600 * 1000; // 20 dias;
         public static final int SERVICIOS_PARQUE = 300000;
         public static final int MUNICIPIOS = 300000;
         public static final int BANCOS = 300000;
-        public static final int ARCHIVOS_PARQUE = 300000;
+        public static final long ARCHIVOS_PARQUE = 20 * 24 * 3600 * 1000; // 20 dias;
         public static final int PETCAR = 300000;
     }
 

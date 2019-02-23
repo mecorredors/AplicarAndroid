@@ -44,7 +44,7 @@ public class Parques {
         url = url.replace(" ", "%20");
         final String keycache = url + BuildConfig.VERSION_CODE;
         Parques parques  = null;
-        if (Utils.existeCache(keycache)) {
+        if (Utils.existeCache(keycache) && !Utils.isOnline(AppCar.getContext())) {
             try {
                 parques = Reservoir.get(keycache, Parques.class);
             } catch (Exception ex) {
@@ -63,7 +63,7 @@ public class Parques {
                             try {
                                 mLstParques = JSONArrayToList(response);
                                 try {
-                                    Reservoir.put(keycache,Parques.this,  Enumerator.CacheTimeInMilliSeconds.PARQUES);
+                                    Reservoir.put(keycache,Parques.this, Enumerator.CacheTimeInMilliSeconds.PARQUES);
                                     Log.d(TAG," guaardado cache");
                                 } catch (Exception e) {
                                     Log.e(TAG, " guardar cache " + e.toString());

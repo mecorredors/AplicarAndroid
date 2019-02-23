@@ -40,7 +40,7 @@ public class ArchivosParque {
         url = url.replace(" ", "%20");
         final String keycache = url + BuildConfig.VERSION_CODE;
         ArchivosParque archivosParque  = null;
-        if (Utils.existeCache(keycache)) {
+        if (Utils.existeCache(keycache) && !Utils.isOnline(AppCar.getContext())) {
             try {
                 archivosParque = Reservoir.get(keycache, ArchivosParque.class);
             } catch (Exception ex) {
