@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.bicicar.activities.CrearRutaActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
 import car.gov.co.carserviciociudadano.bicicar.activities.SeguirRutaActivity;
 import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
@@ -22,12 +23,25 @@ import car.gov.co.carserviciociudadano.bicicar.services.SeguirRutaService;
 
 public  class Notifications {
 
-    public static void showNotification(String mensaje ){
-        Intent intent = new Intent(AppCar.getContext(), RegistrarActividadActivity.class);
+    public static void showNotification(String mensaje, String actividad ){
+        if (actividad.equals(CrearRutaActivity.class.getSimpleName())) {
+            showNotification(mensaje, CrearRutaActivity.class);
+        }else{
+            showNotification(mensaje, RegistrarActividadActivity.class);
+        }
+    }
+
+    private static void showNotification(String mensaje, Class<?> cls ){
+        Intent intent = new Intent(AppCar.getContext(), cls);
         showNotification(mensaje, intent, LocationMonitoringService.NOTIFICATION_ID);
     }
     public static void showNotificationSeguirRuta(String mensaje ){
         Intent intent = new Intent(AppCar.getContext(), SeguirRutaActivity.class);
+        showNotification(mensaje, intent,SeguirRutaService.NOTIFICATION_ID);
+    }
+
+    public static void showNotificationCrearRuta(String mensaje ){
+        Intent intent = new Intent(AppCar.getContext(), CrearRutaActivity.class);
         showNotification(mensaje, intent,SeguirRutaService.NOTIFICATION_ID);
     }
 

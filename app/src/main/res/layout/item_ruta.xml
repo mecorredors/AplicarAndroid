@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyItemLogTrayecto"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardUseCompatPadding="false"
+    card_view:cardElevation="0dp"
+    card_view:cardCornerRadius="0dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardBackgroundColor="@color/background"
+    >
+
+
+
+    <LinearLayout android:id="@+id/lyItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginBottom="@dimen/margin_10dp"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_directions_bike_blue_light_36dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_gravity="center"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            >
+
+
+            <TextView android:id="@+id/lblNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="Nombre"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/primaryText"
+                android:layout_gravity="center_vertical|right"
+
+                />
+
+                <TextView android:id="@+id/lblDistancia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:text="15,2 km"
+                    android:textSize="@dimen/text_size_16"
+                    android:textColor="@color/primaryText"
+                    android:layout_gravity="center_vertical|right"
+
+                    />
+
+                <TextView android:id="@+id/lblDuracion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="00:00"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/secondaryText"
+                android:layout_gravity="center_vertical|right"
+                />
+
+
+
+
+
+        </LinearLayout>
+
+        <Button android:id="@+id/btnVerRuta"
+            android:theme="@style/ButtonBorderlessBicicar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_10"
+            android:text="Ver Ruta"/>
+        <Button android:id="@+id/btnEliminar"
+            android:theme="@style/ButtonBorderlessBicicar"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_10"
+            android:drawableLeft="@drawable/ic_delete_forever_blue_24dp"
+            android:text=""
+            android:layout_marginRight="@dimen/margin_10dp"/>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

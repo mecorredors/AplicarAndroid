@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.maps.android.PolyUtil;
 
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -232,6 +233,10 @@ public class ComoLLegarActivity extends LocationBaseGoogleApiActivity implements
     private void dibujarRuta(Route route, int color) {
         Leg leg = route.getLegList().get(0);
         ArrayList<LatLng> directionPositionList = leg.getDirectionPoint();
+
+       // String ruta = PolyUtil.encode(directionPositionList);
+       // Log.d("ruta completa", ruta);
+
         PolylineOptions polylineOptions = DirectionConverter.createPolyline(ComoLLegarActivity.this, directionPositionList, 6, color);
         mapa.addPolyline(polylineOptions);
     }

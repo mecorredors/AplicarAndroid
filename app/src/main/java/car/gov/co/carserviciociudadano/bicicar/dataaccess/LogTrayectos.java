@@ -182,7 +182,7 @@ public class LogTrayectos {
                 // String[] selectionArgs =  {String.valueOf(estado)};
                 String where = null;
 
-                if (estado == Enumerator.BicicarLogTrayecto.TODOS) {
+                if (estado == Enumerator.Estado.TODOS) {
                      where = LogTrayecto.ID_BENEFICIARIO_REGISTRO + "= " + idBeneficiario ;
                 }else{
                      where = LogTrayecto.ESTADO + "="+ estado + " and " + LogTrayecto.ID_BENEFICIARIO_REGISTRO + "= " + idBeneficiario ;

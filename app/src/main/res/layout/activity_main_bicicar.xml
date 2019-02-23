@@ -25,48 +25,48 @@
                     android:gravity="center_horizontal"
                     android:background="@drawable/background_bicicar_main"
                     android:orientation="vertical">
-                   <!-- <ImageView android:id="@+id/imgLogo"
+                    <ImageView android:id="@+id/imgLogo"
                         android:layout_width="wrap_content"
                         android:layout_height="150dp"
                         android:src="@mipmap/logo_bicicar"
                         android:layout_marginTop="20dp"
-                        /> -->
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_18"
-                        android:textColor="@color/white"
-                        android:text="RODADA BICICAR"
-                        android:layout_marginTop="@dimen/margin_12dp"/>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/margin_10dp">
-                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/imgLogo"
-                        android:layout_width="110dp"
-                        android:layout_height="110dp"
-                        android:src="@mipmap/ruta1"
-                        app:civ_border_color="#fff"
-                        app:civ_border_width="2dp"
                         />
 
-                    <Button android:id="@+id/btnVerRecorrido"
-                        android:theme="@style/ButtonBorderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ver recorrido"
-                        android:layout_marginLeft="@dimen/margin_6dp"
-                       android:layout_marginTop="@dimen/margin_16dp"
-                        android:textColor="@color/textLight"
-                        android:drawableLeft="@drawable/ic_directions_bike_white_44dp"
-                        />
-                    </LinearLayout>
+
+                    <!--     <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textSize="@dimen/text_size_18"
+                           android:textColor="@color/white"
+                           android:text="RODADA BICICAR"
+                           android:layout_marginTop="@dimen/margin_12dp"/>
+
+
+                     <LinearLayout
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:orientation="horizontal"
+                           android:layout_marginTop="@dimen/margin_10dp">
+                       <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                           android:id="@+id/imgLogo"
+                           android:layout_width="110dp"
+                           android:layout_height="110dp"
+                           android:src="@mipmap/ruta1"
+                           app:civ_border_color="#fff"
+                           app:civ_border_width="2dp"
+                           />
+
+                       <Button android:id="@+id/btnVerRecorrido"
+                           android:theme="@style/ButtonBorderless"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Ver recorrido"
+                           android:layout_marginLeft="@dimen/margin_6dp"
+                          android:layout_marginTop="@dimen/margin_16dp"
+                           android:textColor="@color/textLight"
+                           android:drawableLeft="@drawable/ic_directions_bike_white_44dp"
+                           />
+                       </LinearLayout>  -->
 
                 </LinearLayout>
 
@@ -223,6 +223,46 @@
                 android:clickable="false"/>
         </LinearLayout>
 
+        <LinearLayout android:id="@+id/lyCrearRuta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_16dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_library_add_blue_36dp"
+                android:clickable="false"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crear rutas"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/lyRutas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_16dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_map_blue_36dp"
+                android:clickable="false"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rutas"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp"
+                android:clickable="false"/>
+        </LinearLayout>
+
         <LinearLayout android:id="@+id/lyHuellaAmbiental"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -238,6 +278,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Huella ambiental"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/lyMisDatos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_16dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_account_box_blue_light_36dp"
+                android:clickable="false"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mis datos"
                 android:layout_marginLeft="20dp"
                 android:textSize="20sp"
                 android:clickable="false"/>

@@ -52,15 +52,21 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
+import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
+import car.gov.co.carserviciociudadano.bicicar.model.Ruta;
+import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
 import car.gov.co.carserviciociudadano.bicicar.services.LocationMonitoringService;
 import car.gov.co.carserviciociudadano.bicicar.services.SeguirRutaService;
 
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.common.Notifications;
+import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
-public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallback {
+public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallback, IViewLogTrayecto {
 
     @BindView(R.id.lblDuracion) TextView lblDuracion;
     @BindView(R.id.lblDistancia) TextView lblDistancia;
@@ -80,6 +86,9 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
     double longitude;
     Marker marker;
     boolean primerMovimientoCamara = false;
+
+    public final static  String RUTA = "ruta";
+    private Ruta mRuta;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +99,9 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        mRuta = (Ruta) IntentHelper.getObjectForKey(RUTA);
 
         btnPausa.setVisibility(View.GONE);
         btnDetener.setVisibility(View.GONE);
@@ -241,14 +253,14 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
 
     }
     private void agregarMiRecorrido(float distancia, float minutos, String ruta, double latitudePuntoA, double longitudePuntoA, double latitudePuntoB, double longitudePuntoB){
-
-       /* if (distancia > 0) {
+        Beneficiario mBeneficiarioLogin =  Beneficiarios.readBeneficio();
+        if (distancia > 0 && mBeneficiarioLogin != null) {
             LogTrayecto logTrayecto = LogTrayectoPresenter.agregarMiRecorrido(distancia, minutos, ruta, latitudePuntoA, longitudePuntoA, latitudePuntoB, longitudePuntoB);
             if (logTrayecto != null) {
-
+                publicar();
             }
         }
-*/
+
 
     //    lyInfoRecorrido.setVisibility(View.GONE);
 
@@ -261,6 +273,12 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
 
     }
 
+    private void publicar(){
+        Beneficiario mBeneficiarioLogin  = Beneficiarios.readBeneficio();
+        mostrarProgressDialog("Publicando ...");
+        LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(this);
+        logTrayectoPresenter.publicar(mBeneficiarioLogin.IDBeneficiario);
+    }
 
 
     /////////////
@@ -558,9 +576,22 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
 
        // String rutas [] = {"caw[`bhcM??L?DCLAHDF@N?LGRCFFD?LP","a}v[pbhcMHLFJFHBDHHJTFLDDDDJPNNFL","uyv[dghcM?DIDGLGHUXABOJCBOJGBQGOKIE","_~v[lihcMGCOICAMIEIGMKOIAEEMSKMCAGKDK","saw[fehcMHOJIHODQ?CBM" };
 
-       String rutas [] = {"w`f[v`acM???^FFPDtA\\PF\\DN?f@B|APRBJJPPNH^TXNRJLFHBNFd@NNFFBhDvAl@BD@rAV`@DTD`@Nl@NCHIVhEf@f@BD?v@VVHfAFx@FB@j@R","erd[lracMrAFDB`A`@JHf@Rh@LdAt@^?|ET`@EZ\\f@CFC|DWh@JT@H@TDN@V@l@HB@qD`AEBiA|AYP}ExB{@NGFGD[P","cdd[pcbcMg@`@KJYPODGBOJmKdHa@XEBaA~@s@d@y@`@_Ap@s@TEDCFQJSJo@XWPYTg@`@UJ]Rk@Z[V_@TYP]R[V_@Ts@d@c@Tk@^mDdC","ove[dhccMQJ[PMHUN]PIDWNEBu@b@a@Ts@h@yItFWPKFOLSNm@`@IDe@T_@T[Tg@V_@Tg@Z]NcAn@OJo@Zk@Xi@^e@XgAn@GDq@^m@Zk@Tu@b@","ofg[vhdcMGBC@ULKJQNSLm@\\c@Vw@h@WLg@X_@To@Z_@Tc@X{@z@EDa@p@q@vA{@bCEh@AFC\\Mh@IZGVOl@CFIZC\\[dACDGRI\\K\\M\\Mn@CZ?CIPU`@[DC?MHKNEFSd@S`ACFK\\M`@","eeh[zuecMO`@Qd@[~@GNa@n@]f@]b@a@b@k@f@i@ZuA|@IFk@\\k@Xy@d@e@Vo@Xo@`@m@\\g@V]T]Ta@V_@Ta@T]V_@Te@Tk@VmA~@e@NEDk@Xo@\\i@Xi@Ri@Xq@\\","eri[dyfcM[Nm@X{@d@y@b@ED_Af@OHc@TYNa@R[Re@V]R]T]Pa@R]Ra@Rs@\\]TWLq@\\YNe@Pa@Xk@Xk@^i@R}@j@OJc@Pc@RQHC?[@A@SBI?KCIYHQ@E@SAYKYOYY_@Ye@]c@Ua@{@kB","k_k[xcgcM_@]KSMQa@g@U_@S_@Ua@]c@c@_ASS_@q@OWk@o@Wg@i@u@MUi@u@K[g@q@]c@a@e@QKEKCAK?K?KBCB[PMBEAAOE_@EOk@cAAUCW?EMe@GKQ]IKGKACSa@IKCCKIGEa@WCCe@YIGCAUG[Km@U_@OMEUI]M","icl[z{ecMu@[[Iq@WKGg@[KGq@OWGOA[GGAo@SKEUGKEMEa@My@U{@WMECIGEQIG?GEcAa@OIWIe@Qu@OeAHo@Cs@Dm@JOBc@XAJEFEFQNIFEHJOHCNI@GEQEMEMKOIMAAKCKHKDIDQPDCPIJExAg@`@e@D[OQ}@_@iBs@mAa@"};
-
+        List<String> rutas = new ArrayList<>();
+        if (mRuta == null) {
+            rutas.add("w`f[v`acM???^FFPDtA\\PF\\DN?f@B|APRBJJPPNH^TXNRJLFHBNFd@NNFFBhDvAl@BD@rAV`@DTD`@Nl@NCHIVhEf@f@BD?v@VVHfAFx@FB@j@R");
+            rutas.add("erd[lracMrAFDB`A`@JHf@Rh@LdAt@^?|ET`@EZ\\f@CFC|DWh@JT@H@TDN@V@l@HB@qD`AEBiA|AYP}ExB{@NGFGD[P");
+            rutas.add("cdd[pcbcMg@`@KJYPODGBOJmKdHa@XEBaA~@s@d@y@`@_Ap@s@TEDCFQJSJo@XWPYTg@`@UJ]Rk@Z[V_@TYP]R[V_@Ts@d@c@Tk@^mDdC");
+            rutas.add("ove[dhccMQJ[PMHUN]PIDWNEBu@b@a@Ts@h@yItFWPKFOLSNm@`@IDe@T_@T[Tg@V_@Tg@Z]NcAn@OJo@Zk@Xi@^e@XgAn@GDq@^m@Zk@Tu@b@");
+            rutas.add("ofg[vhdcMGBC@ULKJQNSLm@\\c@Vw@h@WLg@X_@To@Z_@Tc@X{@z@EDa@p@q@vA{@bCEh@AFC\\Mh@IZGVOl@CFIZC\\[dACDGRI\\K\\M\\Mn@CZ?CIPU`@[DC?MHKNEFSd@S`ACFK\\M`@");
+            rutas.add("eeh[zuecMO`@Qd@[~@GNa@n@]f@]b@a@b@k@f@i@ZuA|@IFk@\\k@Xy@d@e@Vo@Xo@`@m@\\g@V]T]Ta@V_@Ta@T]V_@Te@Tk@VmA~@e@NEDk@Xo@\\i@Xi@Ri@Xq@\\");
+            rutas.add("eri[dyfcM[Nm@X{@d@y@b@ED_Af@OHc@TYNa@R[Re@V]R]T]Pa@R]Ra@Rs@\\]TWLq@\\YNe@Pa@Xk@Xk@^i@R}@j@OJc@Pc@RQHC?[@A@SBI?KCIYHQ@E@SAYKYOYY_@Ye@]c@Ua@{@kB");
+            rutas.add("k_k[xcgcM_@]KSMQa@g@U_@S_@Ua@]c@c@_ASS_@q@OWk@o@Wg@i@u@MUi@u@K[g@q@]c@a@e@QKEKCAK?K?KBCB[PMBEAAOE_@EOk@cAAUCW?EMe@GKQ]IKGKACSa@IKCCKIGEa@WCCe@YIGCAUG[Km@U_@OMEUI]M");
+            rutas.add("icl[z{ecMu@[[Iq@WKGg@[KGq@OWGOA[GGAo@SKEUGKEMEa@My@U{@WMECIGEQIG?GEcAa@OIWIe@Qu@OeAHo@Cs@Dm@JOBc@XAJEFEFQNIFEHJOHCNI@GEQEMEMKOIMAAKCKHKDIDQPDCPIJExAg@`@e@D[OQ}@_@iBs@mAa@");
+        }else{
+            rutas.add(mRuta.RutaTrayecto);
+        }
        int i = 0;
+
        for (String ruta : rutas) {
            ArrayList<LatLng> directionPositionList = (ArrayList<LatLng>) PolyUtil.decode(ruta);
            PolylineOptions polylineOptions = DirectionConverter.createPolyline(SeguirRutaActivity.this, directionPositionList, 6, colorRuta);
@@ -575,7 +606,7 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
             }
 
             int km = i + 1;
-            if (i < rutas.length -1 ){
+            if (i < rutas.size() -1 ){
 
                  MarkerOptions mo = new MarkerOptions().position(directionPositionList.get(size-1)).title("Km: " + km).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_position_map));
                  Marker marker = mapa.addMarker(mo);
@@ -583,11 +614,25 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
                  marker.showInfoWindow();
 
             }
-            if (i == rutas.length -1 ){
-               mapa.addMarker(new MarkerOptions().position(directionPositionList.get(size-1)).title("Fin recorrido Km: " + km).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_finish_map)).visible(true)).showInfoWindow();
+            if (i == rutas.size() -1 ){
+                float totalKilometros = mRuta != null ? mRuta.DistanciaKM : km;
+                mapa.addMarker(new MarkerOptions().position(directionPositionList.get(size-1)).title("Fin recorrido Km: " + Utils.round(2,totalKilometros)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_finish_map)).visible(true)).showInfoWindow();
             }
             i++;
 
        }
+
+    }
+
+    @Override
+    public void onSuccessLogTrayecto() {
+        ocultarProgressDialog();
+        mostrarMensajeDialog("Los datos fueron publicados correctamente");
+    }
+
+    @Override
+    public void onErrorLogTrayecto(ErrorApi errorApi) {
+        ocultarProgressDialog();
+        mostrarMensajeDialog(errorApi.getMessage());
     }
 }

@@ -51,7 +51,7 @@ public class BeneficiarioPresenter implements IBeneficiario {
         LogTrayecto logTrayecto = new LogTrayecto();
 
         logTrayecto.Nombre = beneficiario.Nombres + " " + beneficiario.Apellidos;
-        logTrayecto.Estado = Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR;
+        logTrayecto.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
 
         //Calendar ca = Calendar.getInstance();
         //ca.add(Calendar.DATE , -1);
@@ -123,7 +123,7 @@ public class BeneficiarioPresenter implements IBeneficiario {
 
     private void  procesar(List<Beneficiario> lstBeneficiarios) {
         Beneficiario beneficiarioLogin =  Beneficiarios.readBeneficio();
-        List<LogTrayecto> items = new LogTrayectos().List(Enumerator.BicicarLogTrayecto.PENDIENTE_PUBLICAR, beneficiarioLogin.IDBeneficiario);
+        List<LogTrayecto> items = new LogTrayectos().List(Enumerator.Estado.PENDIENTE_PUBLICAR, beneficiarioLogin.IDBeneficiario);
 
         Calendar fechaActual = Calendar.getInstance();
 

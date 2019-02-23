@@ -58,11 +58,12 @@ public class Enumerator {
 
     }
 
-    public  static class BicicarLogTrayecto{
+    public  static class Estado{
         public static final int PENDIENTE_PUBLICAR = 1;
         public static final int PUBLICADO = 0;
         public static final int TODOS = -1;
-        public static final int ERROR = 2;
+        public static final int EDICION = 2;
+
 
     }
 
