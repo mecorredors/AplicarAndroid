@@ -104,7 +104,7 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
     long tiempoMillisEvento09 = 0;
 
     private int mPosition;
-    public static final float DISTANCIA_MINIMA_MTS = 0;
+    public static final float DISTANCIA_MINIMA_MTS = 300;
     List<Nivel> mLstNiveles = new ArrayList<>();
     ArrayAdapter<Nivel> adapterNiveles;
 
