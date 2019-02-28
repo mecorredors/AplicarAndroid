@@ -9,29 +9,31 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-
 import com.google.firebase.analytics.FirebaseAnalytics;
-
-
+import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.activities.MainBicicarActivity;
-import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
-
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BankProjectActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.BuscarExpedienteActivity;
 import car.gov.co.carserviciociudadano.consultapublica.activities.TramitesActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity;
 import car.gov.co.carserviciociudadano.parques.activities.MainParques;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.parques.model.Parque;
+import car.gov.co.carserviciociudadano.parques.presenter.IViewParque;
+import car.gov.co.carserviciociudadano.parques.presenter.ParquePresenter;
 import car.gov.co.carserviciociudadano.petcar.activities.MainPETCARActivity;
 
 
-public class MainActivity extends BaseActivity  {
+public class MainActivity extends BaseActivity implements IViewParque {
 
     @BindView(R.id.toolbar_layout)   CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.txtAppVersion)  TextView txtAppVersion;
@@ -75,10 +77,19 @@ public class MainActivity extends BaseActivity  {
 
         lyItemsConsultas.setVisibility(View.GONE);
         lyItemsSuAporteAmbiental.setVisibility(View.GONE);
-
+        obtenerParques();
     }
 
-
+    @Override
+    public void onPause() {
+        AppCar.VolleyQueue().cancelAll(Parques.TAG);
+        super.onPause();
+    }
+    @Override
+    public void onDestroy() {
+        AppCar.VolleyQueue().cancelAll(Parques.TAG);
+        super.onDestroy();
+    }
 
     @OnClick(R.id.lyMenuDenunciaAmbiental) void denunciaAmbiental(){
         Intent i = new Intent(this, DenunciaAmbientalActivity.class);
@@ -139,6 +150,26 @@ public class MainActivity extends BaseActivity  {
          startActivity(i);
     }
 
+    /**
+     * Obtener parques para que se guarde en cache por 20 dias
+     */
+    private void obtenerParques(){
+        String url = Config.API_PARQUES_PARQUES;
+        final String keycache = url + BuildConfig.VERSION_CODE;
+        if (!Utils.existeCache(keycache) ) {
+            ParquePresenter parquePresenter = new ParquePresenter(this);
+            parquePresenter.list();
+        }
+    }
 
 
+    @Override
+    public void onSuccess(List<Parque> lstParques) {
+
+    }
+
+    @Override
+    public void onError(ErrorApi error) {
+
+    }
 }
