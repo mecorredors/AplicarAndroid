@@ -58,7 +58,7 @@ public  class Notifications {
                 .setSmallIcon(R.drawable.ic_directions_bike_black_24dp)
                 .setContentTitle("BiciCAR")
                 .setContentText(mensaje)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(false);
@@ -73,9 +73,10 @@ public  class Notifications {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = AppCar.getContext().getString(R.string.channel);
             String description =  AppCar.getContext().getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel = new NotificationChannel(LocationMonitoringService.CHANNEL_ID, name, importance);
             channel.setDescription(description);
+           // channel.setSound(null,null);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager =  AppCar.getContext().getSystemService(NotificationManager.class);

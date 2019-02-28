@@ -335,7 +335,7 @@ public class LocationMonitoringService extends Service implements
         }
     }
 
-    public static final String CHANNEL_ID = "canal_bicicar";
+    public static final String CHANNEL_ID = "canal_bicicar_app";
     public static final int NOTIFICATION_ID = 100;
 
 
