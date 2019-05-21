@@ -34,12 +34,12 @@ public class BeneficiarioPresenter implements IBeneficiario {
         if (Utils.isOnline(AppCar.getContext()))
              new Beneficiarios().listarItems(curso, idColegio, this);
         else{
-            listarItemsLocal();
+            listarItemsLocal(curso, idColegio);
         }
     }
 
-    private  void listarItemsLocal(){
-        List<Beneficiario> lstBeneficiarios = new Beneficiarios().List();
+    private  void listarItemsLocal(String curso, int idColegio){
+        List<Beneficiario> lstBeneficiarios = new Beneficiarios().List(curso, idColegio);
         if (lstBeneficiarios.size() == 0){
             onErrorListarItems(new ErrorApi(500, "No se encontrarón estudiantes, necesita internet para obtener los estudiantes del curso "));
         }else{
@@ -103,10 +103,10 @@ public class BeneficiarioPresenter implements IBeneficiario {
 
     @Override
     public void onErrorListarItems(ErrorApi error) {
-        if (error.getStatusCode() == 404)
-            iViewBeneficiario.onErrorListarItems(error);
-        else
-            listarItemsLocal();
+      //  if (error.getStatusCode() == 404)
+        iViewBeneficiario.onErrorListarItems(error);
+       // else
+         //   listarItemsLocal();
     }
 
     @Override

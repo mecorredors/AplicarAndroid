@@ -16,12 +16,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -31,6 +34,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,6 +42,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.PolyUtil;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -98,6 +103,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.lyIngresarRecorrido) View lyIngresarRecorrido;
     @BindView(R.id.lyContenedor) View lyContenedor;
     @BindView(R.id.lyBotonesAsistencia) View lyBonesAsistencia;
+    @BindView(R.id.menu_bar) BottomNavigationViewEx menu_bar;
 
     LogTrayectoAdapter mAdaptador;
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
@@ -143,6 +149,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         recyclerView.setAdapter(mAdaptador);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        menu_bar.enableShiftingMode(false);
+        menu_bar.enableItemShiftingMode(false);
+        menu_bar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         obtenerItemsActividad();
 
@@ -263,6 +273,28 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
         builder.show();
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            Intent i;
+            switch (item.getItemId()) {
+                case R.id.item_eventos:
+                    return true;
+                case R.id.item_colegios:
+                    return true;
+                case R.id.item_ubicacion_beneficiarios:
+                    i = new Intent(RegistrarActividadActivity.this, UbicacionBeneficiarioActivity.class);
+                    startActivity(i);
+                    return true;
+
+            }
+            return false;
+        }
+    };
 
     @OnClick(R.id.btnPausa)void onPausa() {
 

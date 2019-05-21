@@ -306,35 +306,52 @@
     <LinearLayout android:id="@+id/lyBotonPublicar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginBottom="@dimen/margin_6dp"
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal">
 
-        <Button android:id="@+id/btnPublicar"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Publicar"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:layout_marginRight="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:background="@drawable/boton_bicicar"
-            android:textColor="@color/textLight"
-           />
+            android:orientation="horizontal">
 
-        <Button android:id="@+id/btnMisDatos"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            <Button android:id="@+id/btnPublicar"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Publicar"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:background="@drawable/boton_bicicar"
+                android:textColor="@color/textLight"
+               />
+
+            <Button android:id="@+id/btnMisDatos"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Mis datos"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:layout_marginRight="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:background="@drawable/boton_bicicar"
+                android:textColor="@color/textLight"
+                android:drawableLeft="@drawable/ic_equalizer_white_24dp"
+                />
+        </LinearLayout>
+
+        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+            android:id="@+id/menu_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mis datos"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:layout_marginRight="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:background="@drawable/boton_bicicar"
-            android:textColor="@color/textLight"
-            android:drawableLeft="@drawable/ic_equalizer_white_24dp"
-            />
+            android:layout_alignParentBottom="true"
+            android:background="@color/background"
+            app:itemIconTint="@color/selector_item_primary_color"
+            app:itemTextColor="@color/selector_item_primary_color"
+            app:menu="@menu/menu_bar_bicicar" />
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -207,6 +207,10 @@
             android:label="@string/title_crear_ruta"
             android:windowSoftInputMode="stateHidden|adjustPan"
             />
+        <activity
+            android:name=".bicicar.activities.UbicacionBeneficiarioActivity"
+            android:label="@string/title_ubicacion_beneficiario"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

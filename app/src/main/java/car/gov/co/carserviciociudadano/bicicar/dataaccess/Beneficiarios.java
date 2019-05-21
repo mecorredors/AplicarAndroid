@@ -27,10 +27,12 @@ import java.util.List;
 import java.util.Map;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.IBeneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
+import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.model.RespuestaApi;
 import car.gov.co.carserviciociudadano.common.DbHelper;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
@@ -223,16 +225,26 @@ public class Beneficiarios {
         return (result > 0);
     }
 
-    public List<Beneficiario> List()
+    public List<Beneficiario> List(){
+        return List(null);
+    }
+
+    public List<Beneficiario> List(String curso, int idColegio){
+        String where = Beneficiario.CURSO + "="+ curso + " and " + Beneficiario.ID_COLEGIO + "= " + idColegio ;
+        return List(where);
+    }
+    public List<Beneficiario> List( int idColegio){
+        String where =  Beneficiario.ID_COLEGIO + "= " + idColegio ;
+        return List(where);
+    }
+
+    public List<Beneficiario> List(String where)
     {   synchronized (this) {
         InitDbHelper();
         SQLiteDatabase db = _dbHelper.getReadableDatabase();
         List<Beneficiario> lstBeneficiarios = new ArrayList<>();
 
         try {
-
-            // String[] selectionArgs =  {String.valueOf(estado)};
-            String where = null;
 
             Cursor c = db.query(Beneficiario.TABLE_NAME, projectionDefault(), where, null, null, null, "[" + Beneficiario.ID_BENEFICIARIO + "] DESC");
 

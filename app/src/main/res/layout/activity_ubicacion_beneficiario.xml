@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/background"
+    tools:context="car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbientalActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            >
+
+            <LinearLayout android:id="@+id/btnBuscar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="center"
+                android:layout_marginRight="24dp"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:src="@drawable/ic_search_white_24dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_10"
+                    android:text="@string/buscar_lugar"/>
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:id="@+id/lyDenuncia"
+    android:layout_marginTop="?attr/actionBarSize"
+    >
+
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50">
+      <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/background_gray_border"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="100dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                >
+                  <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_13"
+                    android:textColor="@color/primaryText"
+                    android:text="@string/header_map"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="24dp"
+            android:src="@drawable/ic_person_pin_circle_blue_24dp"/>
+        </FrameLayout>
+        <!--<Button android:id="@+id/btnUbicacion"-->
+            <!--android:theme="@style/ButtonAccent"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/cambiar_ubicacion"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:textSize="@dimen/text_size_12"-->
+            <!--/>-->
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50" >
+
+
+        <LinearLayout android:id="@+id/lyInicial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Seleccione o tome unas fotos sobre la denuncia"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/text_size_16"
+                android:gravity="center_horizontal"
+                android:lines="2"
+                android:minLines="2"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="@dimen/margin_16dp"/>
+
+
+        <LinearLayout android:id="@+id/lyAgregarFotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="#E6E6E6"
+            android:orientation="vertical">
+
+            <ImageView android:id="@+id/imgAgregarFotos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_photo_camera_gray_80dp" />
+
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+        <GridView
+            android:id="@+id/gridGallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/lyHeader"
+            android:layout_above="@+id/LinearBtnNext"
+            android:layout_gravity="top"
+            android:verticalSpacing="3dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="3"
+            android:padding="0dp"
+            android:stretchMode="columnWidth"
+            tools:listitem="@layout/item_gallery"
+            android:visibility="visible"
+
+            android:layout_marginTop="@dimen/margin_6dp"
+            android:layout_marginLeft="@dimen/margin_6dp"
+            android:layout_marginRight="@dimen/margin_6dp"
+            android:layout_marginBottom="50dp"
+            >
+        </GridView>
+
+        <Button android:id="@+id/btnSiguiente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_14"
+            android:theme="@style/ButtonAccent"
+            android:text="Siguiente"
+            android:layout_gravity="bottom|end"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            />
+
+    </FrameLayout>
+
+</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

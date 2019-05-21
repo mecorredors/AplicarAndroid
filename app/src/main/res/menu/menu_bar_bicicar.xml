@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_eventos"
+        android:icon="@drawable/ic_library_books_black_24dp"
+        android:title="@string/title_eventos"
+        app:showAsAction="always"
+        android:checked="true"/>
+
+    <item
+        android:id="@+id/item_ubicacion_beneficiarios"
+        android:icon="@drawable/ic_person_24dp"
+        android:title="@string/title_ubicacion_beneficiario"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/item_colegios"
+        android:icon="@drawable/ic_school_black_24dp"
+        android:title="@string/title_colegios"
+        app:showAsAction="always"/>
+
+
+</menu>
