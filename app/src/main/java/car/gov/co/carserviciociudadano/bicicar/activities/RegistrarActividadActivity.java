@@ -285,6 +285,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 case R.id.item_eventos:
                     return true;
                 case R.id.item_colegios:
+                    i = new Intent(RegistrarActividadActivity.this, ColegiosActivity.class);
+                    startActivity(i);
                     return true;
                 case R.id.item_ubicacion_beneficiarios:
                     i = new Intent(RegistrarActividadActivity.this, UbicacionBeneficiarioActivity.class);

@@ -43,8 +43,6 @@ public class Beneficiario extends ModelBase {
     public String UsuarioCreacion;
     public String UsuarioModificacion;
     public Date FechaModificacion;
-
-
     public int IDBicicleta;
     public int Serial;
     public int Rin;
@@ -55,6 +53,11 @@ public class Beneficiario extends ModelBase {
     public String PersonaEmergecia;
     public String TelefonoEmergencia;
     public String Direccion;
+    public double Latitude;
+    public double Longitude;
+    public double Norte;
+    public double Este;
+    public double Estado;
     // otras propiedades
     public boolean Selected;
     public boolean Enabled = true;
@@ -99,7 +102,11 @@ public class Beneficiario extends ModelBase {
     public static final String ID_BICICLETA = "IDBicicleta";
     public static final String LINK_FOTO = "LinkFoto";
     public static final String DESC_PERFIL = "DescPerfil";
-
+    public static final String LATITUDE = "Latitude";
+    public static final String LONGITUDE = "Longitude";
+    public static final String NORTE = "Norte";
+    public static final String ESTE = "Este";
+    public static final String ESTADO = "Estado";
 
     public  Beneficiario(){
     }
@@ -139,6 +146,11 @@ public class Beneficiario extends ModelBase {
         if(c.getColumnIndex(ID_BICICLETA)>=0) this.IDBicicleta = c.getInt(c.getColumnIndex(ID_BICICLETA));
         if(c.getColumnIndex(LINK_FOTO)>=0) this.LinkFoto = c.getString(c.getColumnIndex(LINK_FOTO));
         if(c.getColumnIndex(DESC_PERFIL)>=0) this.DescPerfil = c.getString(c.getColumnIndex(DESC_PERFIL));
+        if (c.getColumnIndex(LATITUDE) >= 0) this.Latitude = c.getDouble(c.getColumnIndex(LATITUDE));
+        if (c.getColumnIndex(LONGITUDE) >= 0) this.Longitude = c.getDouble(c.getColumnIndex(LONGITUDE));
+        if (c.getColumnIndex(NORTE) >= 0) this.Norte = c.getDouble(c.getColumnIndex(NORTE));
+        if (c.getColumnIndex(ESTE) >= 0) this.Este = c.getDouble(c.getColumnIndex(ESTE));
+        if (c.getColumnIndex(ESTADO) >= 0) this.Estado = c.getInt(c.getColumnIndex(ESTADO));
     }
 
     @Override public String toString(){

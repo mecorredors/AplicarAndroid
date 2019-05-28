@@ -209,8 +209,16 @@
             />
         <activity
             android:name=".bicicar.activities.UbicacionBeneficiarioActivity"
-            android:label="@string/title_ubicacion_beneficiario"
+            android:label="@string/title_ubicacion"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".bicicar.activities.ColegiosActivity"
+            android:label="@string/title_colegios"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".bicicar.activities.BeneficiariosXColegioActivity"
+            android:label="@string/title_estudiantes"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
     </application>
 
 </manifest>

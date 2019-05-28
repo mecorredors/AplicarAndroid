@@ -8,15 +8,27 @@
     tools:context="car.gov.co.carserviciociudadano.bicicar.activities.BeneficiariosActivity">
 
 
-    <TextView android:id="@+id/titulo"
+<FrameLayout android:id="@+id/lyBuscar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <EditText android:id="@+id/txtBuscar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/background_gray_border"
+        android:textSize="@dimen/text_size_16"
+        android:hint="Buscar por municipio o colegio"
+        android:layout_margin="@dimen/margin_6dp"
+        android:paddingLeft="@dimen/margin_10dp"
+        android:imeOptions="actionSearch"
+        android:imeActionLabel="Buscar"
+        android:inputType="text"
+        />
+    <ImageButton android:id="@+id/btnBuscar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="@string/titulo_registrar_asistencia"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginLeft="@dimen/margin_16dp"
-        android:layout_marginRight="@dimen/margin_16dp"
-        android:layout_marginBottom="@dimen/margin_10dp"/>
+        android:layout_gravity="right"
+        android:src="@drawable/ic_search_blue_36dp"/>
+</FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
@@ -25,14 +37,14 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_below="@id/titulo"
-        android:layout_above="@id/btnGuardarAsistencia"
+        android:layout_below="@id/lyBuscar"
+        android:layout_above="@id/btnSincronizarDatos"
         />
 
-    <Button android:id="@+id/btnGuardarAsistencia"
+    <Button android:id="@+id/btnSincronizarDatos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Guardar asistencia"
+        android:text="Sincronizar con servidor"
         android:layout_marginLeft="@dimen/margin_16dp"
         android:layout_marginRight="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_10dp"
@@ -41,5 +53,4 @@
         android:textColor="@color/textLight"
         android:layout_alignParentBottom="true"
         />
-
 </RelativeLayout>

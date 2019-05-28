@@ -144,7 +144,7 @@
 
 
     <!-- bicicar -->
-    <string name="title_ubicacion_beneficiario">Ubicación beneficiario</string>
+    <string name="title_ubicacion">Ubicación</string>
     <string name="escanearCodigo">Código QR </string>
     <string name="tiempo">Tiempo Min (Opcional) </string>
     <string name="seguro_cerrar_sesion">Seguro desea cerrar sesión </string>
@@ -164,6 +164,9 @@
     <string name="title_eventos">Eventos</string>
     <string name="title_estudiantes">Estudiantes</string>
     <string name="title_colegios">Colegios</string>
+    <string name="sin_ubicacion">Sin ubicación</string>
+    <string name="con_ubicacion">Con ubicación</string>
+    <string name="pendiente_publicar">Pendiente publicar</string>
 
     <!-- petcar -->
     <string name="title_activity_main_petcar">PETCAR</string>
@@ -178,6 +181,7 @@
     <string name="title_municipios">Municipios</string>
     <string name="title_guia">Guia</string>
     <string name="title_mas">Más</string>
+    <string name="ubicacion">Ubicación</string>
 
 
 </resources>

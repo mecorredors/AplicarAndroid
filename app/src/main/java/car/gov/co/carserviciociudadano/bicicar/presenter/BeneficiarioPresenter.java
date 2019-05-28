@@ -1,11 +1,10 @@
 package car.gov.co.carserviciociudadano.bicicar.presenter;
 
-import android.content.Context;
 
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
@@ -17,9 +16,59 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class BeneficiarioPresenter implements IBeneficiario {
     IViewBeneficiario iViewBeneficiario;
-
+    List<Beneficiario> mBeneficiariosLocal = new ArrayList<>();
     public  BeneficiarioPresenter(IViewBeneficiario iViewBeneficiario){
         this.iViewBeneficiario = iViewBeneficiario;
+    }
+
+    public void publicar(){
+        final Beneficiarios beneficiariosData = new Beneficiarios();
+        String where =  Beneficiario.ESTADO + "= " + Enumerator.Estado.PENDIENTE_PUBLICAR;
+        List<Beneficiario> lstBeneficiarios = beneficiariosData.List(where);
+        if (lstBeneficiarios.size() > 0){
+            Beneficiario item = lstBeneficiarios.get(0);
+            beneficiariosData.actualizar(item, new IBeneficiario() {
+                @Override
+                public void onSuccess(Beneficiario beneficiario) {
+                    beneficiario.Estado = Enumerator.Estado.PUBLICADO;
+                    if  (beneficiariosData.Update(beneficiario)) {
+                        publicar();
+                    }else{
+                        iViewBeneficiario.onError(new ErrorApi(0,"Error al guardar datos localmente"));
+                    }
+                }
+
+                @Override
+                public void onSuccess(List<Beneficiario> lstBeneficiarios, boolean datosServer) {
+
+                }
+
+                @Override
+                public void onError(ErrorApi error) {
+
+                }
+
+                @Override
+                public void onErrorListarItems(ErrorApi error) {
+
+                }
+
+                @Override
+                public void onSuccessRecordarClave(String mensaje) {
+
+                }
+
+                @Override
+                public void onErrorRecordarClave(ErrorApi error) {
+
+                }
+            });
+
+
+        }else{
+            iViewBeneficiario.onSuccess(new Beneficiario());
+        }
+
     }
 
     public  void login(String numeroId, String claveApp){
@@ -29,32 +78,32 @@ public class BeneficiarioPresenter implements IBeneficiario {
     public  void obtenerItem(String serial, String rin){
         new Beneficiarios().obtenerItem(serial, rin, this);
     }
-    public  void listarItems(String curso, int idColegio){
 
-        if (Utils.isOnline(AppCar.getContext()))
-             new Beneficiarios().listarItems(curso, idColegio, this);
-        else{
-            listarItemsLocal(curso, idColegio);
-        }
+
+    public  void list( int idColegio){
+        mBeneficiariosLocal = listLocal(idColegio);
+        list(null, idColegio);
     }
 
-    private  void listarItemsLocal(String curso, int idColegio){
-        List<Beneficiario> lstBeneficiarios = new Beneficiarios().List(curso, idColegio);
-        if (lstBeneficiarios.size() == 0){
-            onErrorListarItems(new ErrorApi(500, "No se encontrarón estudiantes, necesita internet para obtener los estudiantes del curso "));
-        }else{
-            onSuccess(lstBeneficiarios, false);
-        }
+    public  void list(String curso, int idColegio){
+        mBeneficiariosLocal = listLocal(curso, idColegio);
+        new Beneficiarios().listarItems(curso, idColegio, this);
     }
+
+    public   List<Beneficiario> listLocal(int idColegio){
+        return new Beneficiarios().List(idColegio);
+    }
+
+    public   List<Beneficiario> listLocal(String curso, int idColegio){
+        return new Beneficiarios().List(curso, idColegio);
+    }
+
 
     public void GuardarLogTrayecto(Beneficiario beneficiario, Beneficiario beneficiarioLogin){
         LogTrayecto logTrayecto = new LogTrayecto();
 
         logTrayecto.Nombre = beneficiario.Nombres + " " + beneficiario.Apellidos;
         logTrayecto.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
-
-        //Calendar ca = Calendar.getInstance();
-        //ca.add(Calendar.DATE , -1);
 
         logTrayecto.Fecha =  Calendar.getInstance().getTime();
         logTrayecto.IDBeneficiario = beneficiario.IDBeneficiario;
@@ -86,14 +135,38 @@ public class BeneficiarioPresenter implements IBeneficiario {
 
         if (datosServer){
             Beneficiarios beneficiarios = new Beneficiarios();
-            beneficiarios.DeleteAll();
-            for (Beneficiario item : lstBeneficiarios){
-               boolean res = beneficiarios.Insert(item);
+            for (Beneficiario item : lstBeneficiarios) {
+                if (mBeneficiariosLocal.size() > 0) {
+                    Beneficiario beneficiario = findBeneficiario(mBeneficiariosLocal , item.IDBeneficiario);
+                    if (beneficiario != null){
+                        if (beneficiario.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR){
+                            item.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
+                            item.Latitude = beneficiario.Latitude;
+                            item.Longitude = beneficiario.Longitude;
+                            item.Norte = beneficiario.Norte;
+                            item.Este = beneficiario.Este;
+                        }
+                        beneficiarios.Update(item);
+                    }else{
+                        beneficiarios.Insert(item);
+                    }
+                }else{
+                    beneficiarios.Insert(item);
+                }
             }
         }
 
         procesar(lstBeneficiarios);
         iViewBeneficiario.onSuccess(lstBeneficiarios);
+    }
+
+    private Beneficiario findBeneficiario(List<Beneficiario> lstBeneficiarios, int idBeneficiario){
+        for (Beneficiario item : lstBeneficiarios){
+            if (item.IDBeneficiario == idBeneficiario){
+                return item;
+            }
+        }
+        return  null;
     }
 
     @Override

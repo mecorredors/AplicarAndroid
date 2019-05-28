@@ -11,8 +11,8 @@
 
     <item
         android:id="@+id/item_ubicacion_beneficiarios"
-        android:icon="@drawable/ic_person_24dp"
-        android:title="@string/title_ubicacion_beneficiario"
+        android:icon="@drawable/ic_map_blue_36dp"
+        android:title="@string/title_ubicacion"
         app:showAsAction="always"/>
 
     <item

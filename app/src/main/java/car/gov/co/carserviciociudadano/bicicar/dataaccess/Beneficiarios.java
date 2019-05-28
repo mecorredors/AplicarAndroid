@@ -82,7 +82,12 @@ public class Beneficiarios {
                 "[" + Beneficiario.EPS + "]",
                 "[" + Beneficiario.ID_BICICLETA + "]",
                 "[" + Beneficiario.LINK_FOTO + "]",
-                "[" + Beneficiario.DESC_PERFIL + "]"
+                "[" + Beneficiario.DESC_PERFIL + "]",
+                "[" + Beneficiario.LATITUDE + "]",
+                "[" + Beneficiario.LONGITUDE + "]",
+                "[" + Beneficiario.NORTE + "]",
+                "[" + Beneficiario.ESTE + "]",
+                "[" + Beneficiario.ESTADO + "]"
         };
     }
 
@@ -123,7 +128,11 @@ public class Beneficiarios {
         cv.put(Beneficiario.LINK_FOTO, element.LinkFoto);
         cv.put(Beneficiario.DESC_PERFIL, element.DescPerfil);
         cv.put(Beneficiario.DIRECCION, element.Direccion);
-
+        cv.put(Beneficiario.LATITUDE, element.Latitude);
+        cv.put(Beneficiario.LONGITUDE, element.Longitude);
+        cv.put(Beneficiario.NORTE, element.Norte);
+        cv.put(Beneficiario.ESTE, element.Este);
+        cv.put(Beneficiario.ESTADO, element.Estado);
 
         long rowid = 0;
 
@@ -185,6 +194,11 @@ public class Beneficiarios {
         cv.put(Beneficiario.LINK_FOTO, element.LinkFoto);
         cv.put(Beneficiario.DESC_PERFIL, element.DescPerfil);
         cv.put(Beneficiario.DIRECCION, element.Direccion);
+        cv.put(Beneficiario.LATITUDE, element.Latitude);
+        cv.put(Beneficiario.LONGITUDE, element.Longitude);
+        cv.put(Beneficiario.NORTE, element.Norte);
+        cv.put(Beneficiario.ESTE, element.Este);
+        cv.put(Beneficiario.ESTADO, element.Estado);
 
         long rowid = 0;
 
@@ -377,7 +391,12 @@ public class Beneficiarios {
 
     public void listarItems(String curso, int idColegio, final IBeneficiario iBeneficiario)
     {
-        String url = Config.API_BICICAR_LISTAR_BENEFICIARIOS+"?curso=" + curso + "&idColegio=" + idColegio;
+        String url = "";
+        if (curso != null)
+            url = Config.API_BICICAR_LISTAR_BENEFICIARIOS+"?curso=" + curso + "&idColegio=" + idColegio;
+        else
+            url = Config.API_BICICAR_LISTAR_BENEFICIARIOS+"?idColegio=" + idColegio;
+
         url = url.replace(" ", "%20");
 
         JsonArrayRequest objRequest = new JsonArrayRequest(url,
@@ -495,4 +514,46 @@ public class Beneficiarios {
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppCar.VolleyQueue().add(objRequest);
     }
+
+    public void actualizar(final Beneficiario beneficiario, final IBeneficiario iBeneficiario )
+    {
+        String url = Config.API_BICICAR_BENEFICIARIO_ACTUALIZAR;
+
+        JsonObjectRequest objRequest = new JsonObjectRequest (
+                Request.Method.POST, url,   beneficiario.toJSONObject() ,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            iBeneficiario.onSuccess(Beneficiarios.getItemFromJson(response.toString()));
+                        }catch (JsonSyntaxException ex){
+                            iBeneficiario.onError(new ErrorApi(ex));
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        iBeneficiario.onErrorRecordarClave(new ErrorApi(error));
+                    }
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "Basic " + Utils.getAuthorizationBICICAR());
+                return headers;
+            }
+        };
+
+        objRequest.setTag(TAG);
+        objRequest.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        40000,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppCar.VolleyQueue().add(objRequest);
+    }
+
 }

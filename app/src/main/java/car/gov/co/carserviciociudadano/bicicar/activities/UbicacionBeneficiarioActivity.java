@@ -1,21 +1,27 @@
 package car.gov.co.carserviciociudadano.bicicar.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -44,6 +50,13 @@ import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.SexaDecimalCoordinate;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Colegios;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.UbicacionBeneficiarios;
+import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
+import car.gov.co.carserviciociudadano.bicicar.model.Colegio;
+import car.gov.co.carserviciociudadano.bicicar.model.UbicacionBeneficiario;
+import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.common.LocationBaseGoogleApiActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbiental2Activity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.GalleryActivity;
@@ -59,16 +72,21 @@ import car.gov.co.carserviciociudadano.denunciaambiental.presenter.LugarXCoorden
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
-public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback, IViewElevation, IViewIdLugarXCoordenada{
-    @BindView(R.id.lyInicial)  LinearLayout lyInicial;
-    @BindView(R.id.lyDenuncia)  LinearLayout lyDenuncia;
-    @BindView(R.id.gridGallery)    GridView gridView;
-    @BindView(R.id.btnSiguiente)   Button btnSiguiente;
+public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback, IViewElevation{
+
+    @BindView(R.id.lyPrincipal) LinearLayout lyPrincipal;
+    @BindView(R.id.lblNombre)  TextView lblNombre;
+    @BindView(R.id.lblColegio)  TextView lblColegio;
+    @BindView(R.id.lblCurso)  TextView lblCurso;
+    @BindView(R.id.lblEmail)  TextView lblEmail;
+    @BindView(R.id.lblTelefonosContacto)  TextView lblTelefonosContacto;
+    @BindView(R.id.lblTelefonosEmergecia)  TextView lblTelefonosEmergecia;
+    @BindView(R.id.btnGuardar)   Button btnGuardar;
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private GoogleMap mMap;
     LatLng miPosicion = new LatLng(0, 0);
-    private static final String LOGTAG = "Denuncia ambiental";
+    private static final String LOGTAG = "Ubicacion beneficiario";
    // private static final int PETICION_PERMISO_LOCALIZACION_DENUNCIA = 111;
     private static final int PETICION_GALLERY = 102;
     private static final int PETICION_DENUCIA_PARTE_2 = 105;
@@ -76,13 +94,16 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
     GallerySelectedAdapter mAdapter;
    // private List<Foto> mFotos = new ArrayList<>();
     ElevationPresenter mElevationPresenter;
-    LugarXCoordendaPresenter mLugarXCoordenadaPresenter;
-    private Denuncia mDenuncia;
+    //Beneficiario mBeneficiario;
+    Beneficiario mBeneficiario;
     private ProgressDialog mProgressDialog;
+    private int mIdBeneficiario;
+    private int mIdColegio;
+    Colegio mColegio;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_denuncia_ambiental);
+        setContentView(R.layout.activity_ubicacion_beneficiario);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,21 +115,53 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mDenuncia = Denuncia.newInstance();
+        Bundle b = getIntent().getExtras();
+        if (b != null){
+            mIdBeneficiario = b.getInt(Beneficiario.ID_BENEFICIARIO , 0);
+            mIdColegio = b.getInt(Colegio.ID_COLEGIO , 0);
 
-        mAdapter = new GallerySelectedAdapter(this, new ArrayList<>(mDenuncia.getFotos()));
-        mAdapter.SetOnItemClickListener(listenerGallerySelected);
-        gridView.setAdapter(mAdapter);
-        setNumPhotosSelect();
+        }
+
+        if (mIdColegio > 0){
+            mColegio = new Colegios().read(mIdColegio);
+            lblNombre.setText(mColegio.Municipio);
+            lblColegio.setText(mColegio.Nombre);
+            miPosicion = new LatLng(mColegio.Latitude, mColegio.Longitude);
+        }else {
+            if (mIdBeneficiario > 0) {
+                mBeneficiario = new Beneficiarios().Read(mIdBeneficiario);
+            } else {
+                mBeneficiario = Beneficiarios.readBeneficio();
+            }
+            if (mBeneficiario != null){
+                lblNombre.setText(mBeneficiario.Nombres + " " + mBeneficiario.Apellidos);
+
+                Colegio colegio = new Colegios().read(mBeneficiario.IDColegio);
+                if (colegio != null){
+                    lblColegio.setText("Colegio: " + String.valueOf(colegio.Nombre + " " + colegio.Municipio));
+                }else{
+                    lblColegio.setText("IDColegio: " + String.valueOf(mBeneficiario.IDColegio));
+                }
+                lblCurso.setText("Curso: "+ mBeneficiario.Curso);
+                lblEmail.setText("Email " + mBeneficiario.Email);
+                lblTelefonosContacto.setText("Tel Contacto: "+ mBeneficiario.TelefonoContacto);
+                lblTelefonosEmergecia.setText("Tel Emergencia: "+ mBeneficiario.TelefonoEmergencia);
+
+                miPosicion = new LatLng(mBeneficiario.Latitude, mBeneficiario.Longitude);
+            }
+        }
+
+
+
+
         mElevationPresenter = new ElevationPresenter(this);
-        mLugarXCoordenadaPresenter = new LugarXCoordendaPresenter(this);
 
         if (BuildConfig.DEBUG == false) {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
             Bundle bundleAnalitic = new Bundle();
-            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Denuncia Abiental 1");
-            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Denuncia Abiental 1");
-            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.DENUNCIA_AMBIENTAL);
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Ubicacion beneficiario");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Ubicacion beneficiario");
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.BICICAR);
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
         }
     }
@@ -119,7 +172,7 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
         mMap.getUiSettings().setZoomControlsEnabled(true);
        // mMap.setPadding(0,0,0,80);
       //  enableLocationUpdates();  // para obtener posicion de gps, si no se activa solo se obtine la ultima ubicacion conocida
-
+        moveCamara();
         startGoogleApiClient(); //
 
         if (Build.VERSION.SDK_INT >= 23 &&
@@ -143,14 +196,12 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
     public void onPause(){
         super.onPause();
         if (mProgressDialog != null) mProgressDialog.dismiss();
-        AppCar.VolleyQueue().cancelAll(Lugares.TAG);
         AppCar.VolleyQueue().cancelAll(Elevation.TAG);
     }
     @Override
     public void onDestroy(){
         super.onDestroy();
         if (mProgressDialog != null) mProgressDialog.dismiss();
-        AppCar.VolleyQueue().cancelAll(Lugares.TAG);
         AppCar.VolleyQueue().cancelAll(Elevation.TAG);
     }
 
@@ -165,15 +216,16 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
 
     @Override
     public void onLastLocation(Location loc) {
-        if (loc != null && mDenuncia.getLatitude() == 0 && mDenuncia.getLongitude() == 0 ) {
+        if (loc != null && miPosicion.latitude == 0 && miPosicion.longitude == 0 ) {
             miPosicion = new LatLng(loc.getLatitude(), loc.getLongitude());
-           // insertarMarcador();
             moveCamara();
             Log.i(LOGTAG, "Ultima ubicacion conocidad");
-        } else if (mDenuncia.getLongitude() != 0 && mDenuncia.getLongitude() != 0) {
-            miPosicion = new LatLng(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+        } else if ( mBeneficiario != null && mBeneficiario.Longitude != 0 && mBeneficiario.Longitude != 0) {
+            miPosicion = new LatLng(mBeneficiario.Latitude,mBeneficiario.Longitude);
             moveCamara();
-            Log.i(LOGTAG, "Instance mDenuncia ya tiene lat y lon");
+        }else if ( mColegio != null && mColegio.Longitude != 0 && mColegio.Longitude != 0) {
+            miPosicion = new LatLng(mColegio.Latitude,mColegio.Longitude);
+            moveCamara();
         }else{
             Log.e(LOGTAG, "Aun no hay ultima localizacion");
         }
@@ -201,8 +253,16 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
 
     @OnClick(R.id.btnBuscar) void onBuscar() {
         try {
-            mDenuncia.setLatitude(miPosicion.latitude);
-            mDenuncia.setLongitude(miPosicion.longitude);
+            if (mBeneficiario != null) {
+                mBeneficiario.Latitude = miPosicion.latitude;
+                mBeneficiario.Longitude = miPosicion.longitude;
+            }
+
+            if (mColegio != null) {
+                mColegio.Latitude = miPosicion.latitude;
+                mColegio.Longitude = miPosicion.longitude;
+            }
+
             AutocompleteFilter filter = new AutocompleteFilter.Builder()
                     .setCountry("CO")
                     .build();
@@ -214,7 +274,7 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
             Bundle bundleAnalitic = new Bundle();
             bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Buscar lugar places");
             bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Buscar lugar places");
-            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.DENUNCIA_AMBIENTAL);
+            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.BICICAR);
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
 
         } catch (GooglePlayServicesRepairableException e) {
@@ -224,28 +284,11 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
         }
     }
 
-    @OnClick(R.id.lyAgregarFotos) void onAgregarFotos() {
-        openGalleryPhotos();
-    }
-    @OnClick(R.id.imgAgregarFotos) void onImgAgregarFotos() {
-        openGalleryPhotos();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK){
-            if (requestCode == PETICION_GALLERY){
-                String[] all_path = data.getStringArrayExtra(GalleryActivity.ALL_PATH);
-                int[] all_ids = data.getIntArrayExtra(GalleryActivity.ALL_THUMB_IDS);
-
-                mAdapter.AddPhotos(all_path);
-                setNumPhotosSelect();
-            }else if (requestCode == PETICION_DENUCIA_PARTE_2){
-                finish();
-            }
-        }
 
         if (requestCode ==   PETICION_GOOGLE_PLACES) {
             if (resultCode == RESULT_OK) {
@@ -255,7 +298,7 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
                mostrarMensaje(place.getName().toString());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
-                Crashlytics.logException(new Exception("DenunciaAmbientalActivity.onActivityResult Google Place Status: "+ status));
+                Crashlytics.logException(new Exception("UbicacionBeneficiario.onActivityResult Google Place Status: "+ status));
                 Log.i("google places", status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
@@ -264,134 +307,95 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
         }
     }
 
-    private void openGalleryPhotos(){
-        int size = mAdapter.getItemCount();
-        if (size <= GalleryActivity.MAX_PHOTOS) {
 
-            if (mMap!= null) {
-                CameraPosition camPos = mMap.getCameraPosition();
-                miPosicion = new LatLng(camPos.target.latitude, camPos.target.longitude);
-                mDenuncia.setLatitude(miPosicion.latitude);
-                mDenuncia.setLongitude(miPosicion.longitude);
-            }
 
-            Intent i = new Intent(this, GalleryActivity.class);
-            i.putExtra(GalleryActivity.ITEM_COUNT, size);
-
-            String[] datos = new String[size];
-            for (int t = 0; t < size; t++)
-                datos[t] =  mAdapter.getPhotos().get(t).getPath();
-
-            i.putExtra(GalleryActivity.PATH_PHOTOS_SELECT, datos);
-            startActivityForResult(i, PETICION_GALLERY);
-        } else {
-            mostrarMensaje(getResources().getString(R.string.max_photos));
-        }
-    }
-
-    GallerySelectedAdapter.OnItemClickListener listenerGallerySelected = new GallerySelectedAdapter.OnItemClickListener() {
-
-        @Override
-        public void onItemClick(View view, int position) {
-            Foto foto = mAdapter.getPhotos().get(position);
-            if (foto.getType() == Enumerator.TipoFoto.BOTON_AGREGAR_MAS) {
-                openGalleryPhotos();
-            }
-        }
-
-        @Override
-        public void onCloseClick(View view, int position) {
-            mAdapter.RemoveItem(position);
-            setNumPhotosSelect();
-
-        }
-
-    };
-
-    private void setNumPhotosSelect() {
-        if (mAdapter.getItemCount() <= 1) {
-            lyInicial.setVisibility(View.VISIBLE);
-            gridView.setVisibility(View.GONE);
-            btnSiguiente.setVisibility(View.GONE);
-        }
-        else {
-            lyInicial.setVisibility(View.GONE);
-            gridView.setVisibility(View.VISIBLE);
-            btnSiguiente.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void llenarDenuncia(){
-        mDenuncia.getFotos().clear();
-        if (mAdapter.getItemCount() > 1) {
-            List<Foto> lstFotos = new ArrayList<>(mAdapter.getPhotos());
-            lstFotos.remove(0);
-            mDenuncia.setFotos(lstFotos);
-        }
+    private void llenarUbicacionBeneficiario(){
         if (mMap!= null) {
             CameraPosition camPos = mMap.getCameraPosition();
             miPosicion = new LatLng(camPos.target.latitude, camPos.target.longitude);
-            mDenuncia.setLatitude(miPosicion.latitude);
-            mDenuncia.setLongitude(miPosicion.longitude);
+            mBeneficiario.Latitude = miPosicion.latitude;
+            mBeneficiario.Longitude = miPosicion.longitude;
+
         }
-        SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+        SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(mBeneficiario.Latitude, mBeneficiario.Longitude);
         sexaDecimalCoordinate.ConvertToFlatCoordinate();
-        mDenuncia.setNorte(sexaDecimalCoordinate.get_coorPlanaNorteFinal());
-        mDenuncia.setEste(sexaDecimalCoordinate.get_coorPlanaEsteFinal());
-
+        mBeneficiario.Norte = (sexaDecimalCoordinate.get_coorPlanaNorteFinal());
+        mBeneficiario.Este = (sexaDecimalCoordinate.get_coorPlanaEsteFinal());
     }
 
-    @OnClick(R.id.btnSiguiente) void onSiguiente(){
-        llenarDenuncia();
-        if (mDenuncia.getFotos().size() == 0){
-            mostrarMensaje("Es necesario ingresar alguna foto");
-        }else if (mDenuncia.getLatitude() == 0 && mDenuncia.getLongitude() == 0){
-                mostrarMensaje(getResources().getString(R.string.validacion_ubicacion));
+    private  void guardarBeneficiario(){
+        llenarUbicacionBeneficiario();
+        if (mBeneficiario.IDBeneficiario == 0){
+            mostrarMensaje("Es necesario id usuario, debe iniciar sesión con su biciusuario");
+        }else if (mBeneficiario.Latitude == 0 && mBeneficiario.Longitude == 0){
+            mostrarMensaje(getResources().getString(R.string.validacion_ubicacion));
         }else{
-            obtenterLugarXCoordenda();
+            mBeneficiario.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
+            if (mIdBeneficiario > 0) {
+                new Beneficiarios().Update(mBeneficiario);
+            }else{
+                mBeneficiario.guardar();
+            }
+            mostrarMensajeDialog("Ubicación guardada correctamente ");
         }
     }
 
-    private void obtenterLugarXCoordenda(){
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setMessage(getResources().getString(R.string.verificando_ubicacion));
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.show();
+    @Override protected void mostrarMensajeDialog(String mensaje){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        mLugarXCoordenadaPresenter.getId(mDenuncia.getNorteString(),mDenuncia.getEsteString());
+        builder.setMessage(mensaje);
+
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            setResult(Activity.RESULT_OK);
+            onBackPressed();
+
+            }
+        });
+        builder.show();
+    }
+    private void llenarUbicacionColegio(){
+        if (mMap!= null) {
+            CameraPosition camPos = mMap.getCameraPosition();
+            miPosicion = new LatLng(camPos.target.latitude, camPos.target.longitude);
+            mColegio.Latitude = miPosicion.latitude;
+            mColegio.Longitude = miPosicion.longitude;
+
+        }
+        SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(mColegio.Latitude, mColegio.Longitude);
+        sexaDecimalCoordinate.ConvertToFlatCoordinate();
+        mColegio.Norte = (sexaDecimalCoordinate.get_coorPlanaNorteFinal());
+        mColegio.Este = (sexaDecimalCoordinate.get_coorPlanaEsteFinal());
+    }
+    private  void guardarColegio(){
+        llenarUbicacionColegio();
+        if (mColegio.Latitude == 0 && mColegio.Longitude == 0){
+            mostrarMensaje(getResources().getString(R.string.validacion_ubicacion));
+        }else{
+            mColegio.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
+
+            new Colegios().update(mColegio);
+
+            mostrarMensajeDialog("Ubicación guardada correctamente");
+        }
+    }
+    @OnClick(R.id.btnGuardar) void btnGuardar(){
+        if (mIdColegio > 0) {
+            guardarColegio();
+        }else{
+            guardarBeneficiario();
+        }
+
     }
 
-    @Override
-    public void onSuccessIdLugarXCoordenada(String idLugar) {
-        Log.d("id lugar x coorde", idLugar);
-       if (idLugar != null &&  !idLugar.isEmpty() && !idLugar.equals("0")){
-           mDenuncia.setMunicipioQueja(idLugar);
-           mElevationPresenter.getElevation(mDenuncia.getLatitude(),mDenuncia.getLongitude());
-       }else{
-           if (mProgressDialog != null) mProgressDialog.dismiss();
-           mostrarMensajeDialog(getResources().getString(R.string.error_juridiccion_car));
-       }
-    }
-
-    @Override
-    public void onErrorIdLugarXCoordenada(ErrorApi errorApi) {
-        if (mProgressDialog != null) mProgressDialog.dismiss();
-        Snackbar.make(lyDenuncia,errorApi.getMessage(), Snackbar.LENGTH_INDEFINITE)
-                .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
-                .setAction("REINTENTAR", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        obtenterLugarXCoordenda();
-                    }
-                })
-                .show();
-    }
 
     @Override
     public void onSuccessElevation(double elevation) {
         if (mProgressDialog != null) mProgressDialog.dismiss();
-        mDenuncia.setAltitud(elevation);
+        //mDenuncia.setAltitud(elevation);
         Intent i = new Intent(this, DenunciaAmbiental2Activity.class);
         startActivityForResult(i,PETICION_DENUCIA_PARTE_2);
     }
@@ -399,12 +403,12 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
     @Override
     public void onErrrorElevation(int statusCode) {
         if (mProgressDialog != null) mProgressDialog.dismiss();
-        Snackbar.make(lyDenuncia, getResources().getString(R.string.error_load_elevation), Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(lyPrincipal, getResources().getString(R.string.error_load_elevation), Snackbar.LENGTH_INDEFINITE)
                 .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
                 .setAction("REINTENTAR", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mElevationPresenter.getElevation(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+                       // mElevationPresenter.getElevation(mDenuncia.getLatitude(),mDenuncia.getLongitude());
                     }
                 })
                 .show();

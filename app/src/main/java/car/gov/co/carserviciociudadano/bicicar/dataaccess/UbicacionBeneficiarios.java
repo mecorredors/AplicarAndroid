@@ -30,6 +30,8 @@ public class UbicacionBeneficiarios {
                 "[" + UbicacionBeneficiario.ID_BENEFICIARIO + "]",
                 "[" + UbicacionBeneficiario.LATITUDE + "]",
                 "[" + UbicacionBeneficiario.LONGITUDE + "]",
+                "[" + UbicacionBeneficiario.NORTE + "]",
+                "[" + UbicacionBeneficiario.ESTE + "]",
                 "[" + UbicacionBeneficiario.ESTADO + "]" };
 
     }
@@ -42,6 +44,8 @@ public class UbicacionBeneficiarios {
         cv.put(UbicacionBeneficiario.LATITUDE, element.Latitude);
         cv.put(UbicacionBeneficiario.LONGITUDE, element.Longitude);
         cv.put(UbicacionBeneficiario.ESTADO, element.Estado);
+        cv.put(UbicacionBeneficiario.NORTE, element.Norte);
+        cv.put(UbicacionBeneficiario.ESTE, element.Este);
 
         long rowid = 0;
         SQLiteDatabase db = _dbHelper.getWritableDatabase();
@@ -52,7 +56,8 @@ public class UbicacionBeneficiarios {
         {
             if(ex!=null){
                 Log.d(TAG, ex.toString());
-                Crashlytics.logException(ex);
+
+                //Crashlytics.logException(ex);
             }
             rowid = -1;
         }
@@ -73,7 +78,8 @@ public class UbicacionBeneficiarios {
         cv.put(UbicacionBeneficiario.LATITUDE, element.Latitude);
         cv.put(UbicacionBeneficiario.LONGITUDE, element.Longitude);
         cv.put(UbicacionBeneficiario.ESTADO, element.Estado);
-
+        cv.put(UbicacionBeneficiario.NORTE, element.Norte);
+        cv.put(UbicacionBeneficiario.ESTE, element.Este);
 
         long rowid = 0;
         SQLiteDatabase db = _dbHelper.getWritableDatabase();

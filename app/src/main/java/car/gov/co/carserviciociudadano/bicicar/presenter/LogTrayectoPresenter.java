@@ -30,7 +30,7 @@ public class LogTrayectoPresenter {
             new LogTrayectos().publicar(logTrayecto , new ILogTrayecto() {
                 @Override
                 public void onSuccessLogTrayecto(LogTrayecto logTrayecto) {
-                    logTrayecto.Estado = Enumerator.Estado.PUBLICADO;
+                   logTrayecto.Estado = Enumerator.Estado.PUBLICADO;
                    if ( new LogTrayectos().Update(logTrayecto))
                         publicar(idBeneficiario);
                    else

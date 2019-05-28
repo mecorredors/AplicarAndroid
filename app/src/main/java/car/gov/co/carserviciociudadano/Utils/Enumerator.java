@@ -55,6 +55,7 @@ public class Enumerator {
         public static final String CONSULTA_EXPEDIENTE = "Consulta expediente";
         public static final String CONSULTA_TRAMITE = "Consulta tramite";
         public static final String CONSULTA_PROYECTO_COFIN = "Consulta proyecto cofin";
+        public static final String BICICAR = "Bicicar";
 
     }
 
