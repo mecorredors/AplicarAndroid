@@ -328,17 +328,16 @@
                 android:textColor="@color/textLight"
                />
 
-            <Button android:id="@+id/btnMisDatos"
+            <Button android:id="@+id/btnPublicarMiUbicacion"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Mis datos"
+                android:text="@string/publicar_mi_ubicacion"
                 android:layout_marginLeft="@dimen/margin_16dp"
                 android:layout_marginRight="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_10dp"
                 android:background="@drawable/boton_bicicar"
                 android:textColor="@color/textLight"
-                android:drawableLeft="@drawable/ic_equalizer_white_24dp"
                 />
         </LinearLayout>
 
@@ -350,7 +349,8 @@
             android:background="@color/background"
             app:itemIconTint="@color/selector_item_primary_color"
             app:itemTextColor="@color/selector_item_primary_color"
-            app:menu="@menu/menu_bar_bicicar" />
+            app:menu="@menu/menu_bar_bicicar"
+            android:layout_marginTop="@dimen/margin_16dp"/>
 
     </LinearLayout>
 

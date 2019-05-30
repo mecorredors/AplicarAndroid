@@ -534,7 +534,7 @@ public class Beneficiarios {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        iBeneficiario.onErrorRecordarClave(new ErrorApi(error));
+                        iBeneficiario.onError(new ErrorApi(error));
                     }
                 }) {
 

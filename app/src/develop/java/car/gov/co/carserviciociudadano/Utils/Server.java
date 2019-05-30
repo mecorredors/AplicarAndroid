@@ -16,8 +16,8 @@ public class Server {
     public static String ServerAplicar = "https://bicicar.car.gov.co/";
 
     public static String ServerBICICAR(){
-       // return PreferencesApp.getDefault(PreferencesApp.READ).getString("SERVER_BICICAR", ServerBICICAR);
-        return ServerBICICAR;
+        return PreferencesApp.getDefault(PreferencesApp.READ).getString("SERVER_BICICAR", ServerBICICAR);
+       // return ServerBICICAR;
     }
 
     //public static String ServerParques = "http://192.168.1.53/PARQUES/";    //pruebas car

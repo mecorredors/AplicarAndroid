@@ -21,5 +21,9 @@
         android:title="@string/title_colegios"
         app:showAsAction="always"/>
 
-
+    <item
+        android:id="@+id/item_mis_datos"
+        android:icon="@drawable/ic_equalizer_white_24dp"
+        android:title="Mis datos"
+        app:showAsAction="always"/>
 </menu>

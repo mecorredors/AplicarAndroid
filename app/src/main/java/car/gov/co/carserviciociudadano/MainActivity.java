@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.Utils.ConfigActivity;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.activities.ColegiosActivity;
@@ -73,8 +74,8 @@ public class MainActivity extends BaseActivity implements IViewParque {
         String versionName = BuildConfig.VERSION_NAME;
         txtAppVersion.setText(getString(R.string.copyright) + " " + versionName);
 
-      //  Intent i = new Intent(this, ColegiosActivity.class);
-        //startActivity(i);
+        Intent i = new Intent(this, ConfigActivity.class);
+        startActivity(i);
 
         lyItemsConsultas.setVisibility(View.GONE);
         lyItemsSuAporteAmbiental.setVisibility(View.GONE);

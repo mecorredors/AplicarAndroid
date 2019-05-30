@@ -182,6 +182,7 @@
     <string name="title_guia">Guia</string>
     <string name="title_mas">Más</string>
     <string name="ubicacion">Ubicación</string>
+    <string name="publicar_mi_ubicacion">Publicar mi ubicación</string>
 
 
 </resources>

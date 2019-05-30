@@ -21,6 +21,46 @@ public class BeneficiarioPresenter implements IBeneficiario {
         this.iViewBeneficiario = iViewBeneficiario;
     }
 
+    public void publicarBeneficiarioLogin(Beneficiario beneficiario){
+        if (beneficiario.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR) {
+            new Beneficiarios().actualizar(beneficiario, new IBeneficiario() {
+                @Override
+                public void onSuccess(Beneficiario beneficiario) {
+                    beneficiario.Estado = Enumerator.Estado.PUBLICADO;
+                    beneficiario.guardar();
+                    iViewBeneficiario.onSuccess(new Beneficiario());
+                }
+
+                @Override
+                public void onSuccess(List<Beneficiario> lstBeneficiarios, boolean datosServer) {
+
+                }
+
+                @Override
+                public void onError(ErrorApi error) {
+                    iViewBeneficiario.onError(error);
+                }
+
+                @Override
+                public void onErrorListarItems(ErrorApi error) {
+
+                }
+
+                @Override
+                public void onSuccessRecordarClave(String mensaje) {
+
+                }
+
+                @Override
+                public void onErrorRecordarClave(ErrorApi error) {
+
+                }
+            });
+        }else{
+            iViewBeneficiario.onError(new ErrorApi(0,"Datos ya publicados"));
+        }
+    }
+
     public void publicar(){
         final Beneficiarios beneficiariosData = new Beneficiarios();
         String where =  Beneficiario.ESTADO + "= " + Enumerator.Estado.PENDIENTE_PUBLICAR;
@@ -45,7 +85,7 @@ public class BeneficiarioPresenter implements IBeneficiario {
 
                 @Override
                 public void onError(ErrorApi error) {
-
+                    iViewBeneficiario.onError(error);
                 }
 
                 @Override
@@ -66,6 +106,8 @@ public class BeneficiarioPresenter implements IBeneficiario {
 
 
         }else{
+
+
             iViewBeneficiario.onSuccess(new Beneficiario());
         }
 

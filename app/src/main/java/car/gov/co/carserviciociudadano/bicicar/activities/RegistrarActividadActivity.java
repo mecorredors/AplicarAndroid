@@ -3,9 +3,7 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,10 +19,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -34,10 +29,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
@@ -47,6 +42,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -55,7 +51,6 @@ import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
-import car.gov.co.carserviciociudadano.Utils.SexaDecimalCoordinate;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.adapter.LogTrayectoAdapter;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
@@ -80,6 +75,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     private static final int REQUEST_CODE_BENEFICIARIOS = 3;
     private static final int REQUEST_MIS_DATOS = 4;
     private static final int REQUEST_HISTORIAL_TRAYECTOS = 5;
+    private static final int REQUEST_UBICACION = 6;
 
     @BindView(R.id.lblSerial) TextView lblSerial;
     @BindView(R.id.lblRin) TextView lblRin;
@@ -104,6 +100,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @BindView(R.id.lyContenedor) View lyContenedor;
     @BindView(R.id.lyBotonesAsistencia) View lyBonesAsistencia;
     @BindView(R.id.menu_bar) BottomNavigationViewEx menu_bar;
+    @BindView(R.id.btnPublicarMiUbicacion) Button btnPublicarMiUbicacion;
 
     LogTrayectoAdapter mAdaptador;
     List<LogTrayecto> mLstLogTrayectos = new ArrayList<>();
@@ -132,8 +129,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         if (mBeneficiarioLogin == null) return;
         bar.setDisplayHomeAsUpEnabled(true);
-        if (mBeneficiarioLogin != null)
-            bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
+        if (mBeneficiarioLogin != null) {
+            bar.setTitle(mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
+            btnPublicarMiUbicacion.setVisibility(mBeneficiarioLogin.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR ? View.VISIBLE : View.GONE);
+        }
 
         lyDatosQR.setVisibility(View.GONE);
         lyRegistrarMiRecorrido.setVisibility(View.GONE);
@@ -285,12 +284,20 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 case R.id.item_eventos:
                     return true;
                 case R.id.item_colegios:
-                    i = new Intent(RegistrarActividadActivity.this, ColegiosActivity.class);
-                    startActivity(i);
+                    if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO) {
+                        i = new Intent(RegistrarActividadActivity.this, ColegiosActivity.class);
+                        startActivity(i);
+                    }else{
+                        mostrarMensajeDialog("Disponible solo para Pedagogos");
+                    }
                     return true;
                 case R.id.item_ubicacion_beneficiarios:
                     i = new Intent(RegistrarActividadActivity.this, UbicacionBeneficiarioActivity.class);
-                    startActivity(i);
+                    startActivityForResult(i, REQUEST_UBICACION);
+                    return true;
+                case R.id.item_mis_datos:
+                     i = new Intent(RegistrarActividadActivity.this, EstadisticaPersonaActivity.class);
+                    startActivityForResult(i, REQUEST_MIS_DATOS);
                     return true;
 
             }
@@ -317,6 +324,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         }
 
     }
+
 
     @OnClick(R.id.btnBeneficiarios) void onBeneficiarios(){
         Intent i = new Intent(this, BeneficiariosActivity.class);
@@ -363,11 +371,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     }
 
-    @OnClick(R.id.btnMisDatos) void onMisDatos(){
-        Intent i = new Intent(this, EstadisticaPersonaActivity.class);
-        startActivityForResult(i, REQUEST_MIS_DATOS);
 
-    }
     @OnClick(R.id.btnIniciar) void onIniciar(){
         startStep1();
 
@@ -432,6 +436,12 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         builder.show();
 
 
+    }
+
+    @OnClick(R.id.btnPublicarMiUbicacion) void onPublicarMiUbicacion(){
+        mostrarProgressDialog("publicando ubicación");
+        BeneficiarioPresenter beneficiarioPresenter = new BeneficiarioPresenter(this);
+        beneficiarioPresenter.publicarBeneficiarioLogin(mBeneficiarioLogin);
     }
 
     @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
@@ -611,6 +621,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
            obtenerItemsActividad();
        }else if (requestCode == REQUEST_HISTORIAL_TRAYECTOS && resultCode == RESULT_OK){
            obtenerItemsActividad();
+       }else if (requestCode == REQUEST_UBICACION && resultCode == RESULT_OK){
+           mBeneficiarioLogin = Beneficiarios.readBeneficio();
+           btnPublicarMiUbicacion.setVisibility(mBeneficiarioLogin.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR ? View.VISIBLE : View.GONE);
        }
     }
 
@@ -659,6 +672,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         mBeneficiario = beneficiario;
         lblNombre.setVisibility(View.VISIBLE);
         lblNombre.setText(beneficiario.Nombres + " " + beneficiario.Apellidos);
+
+        mBeneficiarioLogin = Beneficiarios.readBeneficio();
+        btnPublicarMiUbicacion.setVisibility(mBeneficiarioLogin.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR ? View.VISIBLE : View.GONE);
 
     }
 
