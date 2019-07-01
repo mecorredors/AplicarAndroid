@@ -65,7 +65,7 @@ public class ColegiosActivity extends BaseActivity implements IViewColegio, Cole
 
         List<Colegio> lstColegios =  colegioPresenter.listLocal();
         if (lstColegios.size() > 0){
-            onSuccess(lstColegios);
+            onSuccessColegios(lstColegios);
             btnSincronizarDatos.setVisibility(View.VISIBLE);
             String ultimaBusqueda = PreferencesApp.getDefault(PreferencesApp.READ).getString(ULTIMA_BUSQUEDA,null);
             if (ultimaBusqueda != null){
@@ -95,7 +95,7 @@ public class ColegiosActivity extends BaseActivity implements IViewColegio, Cole
     private void actualizarColegiosLocal(){
         List<Colegio> lstColegios =  colegioPresenter.listLocal();
         if (lstColegios.size() > 0) {
-            onSuccess(lstColegios);
+            onSuccessColegios(lstColegios);
         }
     }
 
@@ -146,7 +146,7 @@ public class ColegiosActivity extends BaseActivity implements IViewColegio, Cole
 
 
     @Override
-    public void onSuccess(List<Colegio> lstColegios) {
+    public void onSuccessColegios(List<Colegio> lstColegios) {
         ocultarProgressDialog();
         mLstColegios.clear();
         mLstColegios.addAll(lstColegios);
@@ -168,7 +168,7 @@ public class ColegiosActivity extends BaseActivity implements IViewColegio, Cole
 
 
     @Override
-    public void onError(ErrorApi errorApi) {
+    public void onErrorColegios(ErrorApi errorApi) {
         ocultarProgressDialog();
         if (errorApi.getStatusCode() == 404)
             mostrarMensajeDialog(errorApi.getMessage());

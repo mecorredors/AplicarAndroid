@@ -77,6 +77,8 @@ public class GalleryActivity extends BaseActivity {
 
     public  static final  int MY_PERMISSION_EXTERNAL_STORAGE = 11;
     public  final static int MY_PERMISSIONS_CAMERA = 12;
+    public int mMaxPhotos;
+    public final static String MAX_PHOTOS_EXTRA = "max_photos";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +88,10 @@ public class GalleryActivity extends BaseActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-            int itemCount=extras.getInt(ITEM_COUNT);
-            _MaxItemCount = MAX_PHOTOS - itemCount;
+            int itemCount = extras.getInt(ITEM_COUNT);
+            mMaxPhotos = extras.getInt(MAX_PHOTOS_EXTRA , MAX_PHOTOS);
+
+            _MaxItemCount = mMaxPhotos - itemCount;
 
             _PathPhotosSelect = extras.getStringArray(PATH_PHOTOS_SELECT);
             extras.remove(PATH_PHOTOS_SELECT);

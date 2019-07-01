@@ -260,7 +260,7 @@ public class Beneficiarios {
 
         try {
 
-            Cursor c = db.query(Beneficiario.TABLE_NAME, projectionDefault(), where, null, null, null, "[" + Beneficiario.ID_BENEFICIARIO + "] DESC");
+            Cursor c = db.query(Beneficiario.TABLE_NAME, projectionDefault(), where, null, null, null, "[" + Beneficiario.CURSO + "] ASC,  [" + Beneficiario.NOMBRES + "] ASC");
 
             if (c.moveToFirst()) {
                 do {

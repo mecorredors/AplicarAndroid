@@ -24,6 +24,22 @@ import car.gov.co.carserviciociudadano.AppCar;
  */
 public class ImageUtil {
 
+    public static class Size {
+        float width;
+        float height;
+        public Size(float w, float h){
+            width = w;
+            height = h;
+        }
+        public float getWidth() {
+            return width;
+        }
+
+        public float getHeight() {
+            return height;
+        }
+    }
+
     public static  class Image{
         String path;
         String newName;
@@ -66,8 +82,11 @@ public class ImageUtil {
        return scaledBitmap(path,nameDirectory,false);
     }
     public static Image scaledBitmap(String path,String nameDirectory, boolean modePrivate) {
-        float maxWidth = 832;
-        float maxHeight = 624;
+        return scaledBitmap(path, nameDirectory, modePrivate , new Size(832, 624));
+    }
+    public static Image scaledBitmap(String path, String nameDirectory, boolean modePrivate, Size size) {
+        float maxWidth =  size.getWidth();
+        float maxHeight =  size.getHeight();
         String filePath = path;
         Image image = new Image();
         Bitmap scaledBitmap = null;

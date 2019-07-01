@@ -33,10 +33,8 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Validation;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
-import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
 import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Lugares;
 import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.RadicarPQR;
-import car.gov.co.carserviciociudadano.denunciaambiental.model.ArchivoAdjunto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Lugar;
@@ -44,7 +42,6 @@ import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewLugares;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewRadicarPQR;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.LugaresPresenter;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.RadicarPQRPresener;
-import car.gov.co.carserviciociudadano.parques.model.Banco;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class DenunciaAmbiental2Activity extends BaseActivity implements IViewRadicarPQR, IViewLugares, AdapterView.OnItemSelectedListener {

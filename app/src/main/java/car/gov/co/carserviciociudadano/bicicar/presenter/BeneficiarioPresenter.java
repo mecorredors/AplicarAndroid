@@ -1,7 +1,5 @@
 package car.gov.co.carserviciociudadano.bicicar.presenter;
 
-
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -11,6 +9,7 @@ import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.LogTrayectos;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.IBeneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
+import car.gov.co.carserviciociudadano.bicicar.model.Evento;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
@@ -140,8 +139,11 @@ public class BeneficiarioPresenter implements IBeneficiario {
         return new Beneficiarios().List(curso, idColegio);
     }
 
-
     public void GuardarLogTrayecto(Beneficiario beneficiario, Beneficiario beneficiarioLogin){
+        GuardarLogTrayecto(beneficiario, beneficiarioLogin, null);
+    }
+
+    public void GuardarLogTrayecto(Beneficiario beneficiario, Beneficiario beneficiarioLogin, Evento evento){
         LogTrayecto logTrayecto = new LogTrayecto();
 
         logTrayecto.Nombre = beneficiario.Nombres + " " + beneficiario.Apellidos;
@@ -151,6 +153,12 @@ public class BeneficiarioPresenter implements IBeneficiario {
         logTrayecto.IDBeneficiario = beneficiario.IDBeneficiario;
         logTrayecto.IDBicicleta = beneficiario.IDBicicleta;
         logTrayecto.DistanciaKm = beneficiario.DistanciaKm;
+        if (evento != null) {
+            logTrayecto.IDEvento = evento.IDEvento;
+            logTrayecto.DistanciaKm = evento.DistanciaKm;
+            logTrayecto.DuracionMinutos = evento.DuracionMinutos;
+
+        }
 
         if (beneficiarioLogin != null)
             logTrayecto.IDBeneficiarioRegistro = beneficiarioLogin.IDBeneficiario;
@@ -198,7 +206,7 @@ public class BeneficiarioPresenter implements IBeneficiario {
             }
         }
 
-        procesar(lstBeneficiarios);
+        desabilitarYaRegistrados(lstBeneficiarios,0);
         iViewBeneficiario.onSuccess(lstBeneficiarios);
     }
 
@@ -236,19 +244,21 @@ public class BeneficiarioPresenter implements IBeneficiario {
     }
 
 
-    private void  procesar(List<Beneficiario> lstBeneficiarios) {
+    public void  desabilitarYaRegistrados(List<Beneficiario> lstBeneficiarios, int idEvento) {
         Beneficiario beneficiarioLogin =  Beneficiarios.readBeneficio();
-        List<LogTrayecto> items = new LogTrayectos().List(Enumerator.Estado.PENDIENTE_PUBLICAR, beneficiarioLogin.IDBeneficiario);
+        if (beneficiarioLogin != null) {
+            List<LogTrayecto> items = new LogTrayectos().List(idEvento > 0 ? Enumerator.Estado.TODOS : Enumerator.Estado.PENDIENTE_PUBLICAR, beneficiarioLogin.IDBeneficiario,0, idEvento);
+            Calendar fechaActual = Calendar.getInstance();
 
-        Calendar fechaActual = Calendar.getInstance();
-
-        for (Beneficiario beneficiario : lstBeneficiarios) {
-            for (LogTrayecto item : items) {
-                Calendar fechaItem = Utils.convertToCalendar(item.Fecha);
-                if ( Utils.isEqualsDate(fechaItem, fechaActual)){
-                    if (item.IDBeneficiario == beneficiario.IDBeneficiario) {
-                        beneficiario.Enabled = false;
-                        break;
+            for (Beneficiario beneficiario : lstBeneficiarios) {
+                for (LogTrayecto item : items) {
+                    Calendar fechaItem = Utils.convertToCalendar(item.Fecha);
+                    if (Utils.isEqualsDate(fechaItem, fechaActual) || idEvento > 0) { //si es de evento no se tiene encuenta la fecha
+                        if (item.IDBeneficiario == beneficiario.IDBeneficiario) {
+                            beneficiario.Enabled = false;
+                            beneficiario.Selected = true;
+                            break;
+                        }
                     }
                 }
             }

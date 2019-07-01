@@ -54,9 +54,13 @@ import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.adapter.LogTrayectoAdapter;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Eventos;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.LogTrayectos;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.TiposEvento;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
+import car.gov.co.carserviciociudadano.bicicar.model.Evento;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
+import car.gov.co.carserviciociudadano.bicicar.model.TipoEvento;
 import car.gov.co.carserviciociudadano.bicicar.presenter.BeneficiarioPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewBeneficiario;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
@@ -76,6 +80,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     private static final int REQUEST_MIS_DATOS = 4;
     private static final int REQUEST_HISTORIAL_TRAYECTOS = 5;
     private static final int REQUEST_UBICACION = 6;
+    private static final int REQUEST_EVENTOS = 7;
 
     @BindView(R.id.lblSerial) TextView lblSerial;
     @BindView(R.id.lblRin) TextView lblRin;
@@ -118,7 +123,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     private List<Beneficiario> lstBeneficiarios;
     private int mPosition;
-
+    private Evento mEvento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,10 +157,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         menu_bar.enableShiftingMode(false);
         menu_bar.enableItemShiftingMode(false);
         menu_bar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         obtenerItemsActividad();
 
-        if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+        if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO  || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
             lyBonesAsistencia.setVisibility(View.GONE);
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
             boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false);
@@ -221,6 +225,14 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     @Override
     public void onPause() {
         super.onPause();
+        AppCar.VolleyQueue().cancelAll(Beneficiarios.TAG);
+        AppCar.VolleyQueue().cancelAll(LogTrayectos.TAG);
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        AppCar.VolleyQueue().cancelAll(Beneficiarios.TAG);
+        AppCar.VolleyQueue().cancelAll(LogTrayectos.TAG);
     }
 
     @Override
@@ -282,6 +294,12 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             Intent i;
             switch (item.getItemId()) {
                 case R.id.item_eventos:
+                    if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO) {
+                        i = new Intent(RegistrarActividadActivity.this, EventosActivity.class);
+                        startActivityForResult(i, REQUEST_EVENTOS);
+                    }else{
+                        mostrarMensajeDialog("Disponible solo para Pedagogos");
+                    }
                     return true;
                 case R.id.item_colegios:
                     if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO) {
@@ -292,8 +310,12 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                     }
                     return true;
                 case R.id.item_ubicacion_beneficiarios:
-                    i = new Intent(RegistrarActividadActivity.this, UbicacionBeneficiarioActivity.class);
-                    startActivityForResult(i, REQUEST_UBICACION);
+                    if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP) {
+                        i = new Intent(RegistrarActividadActivity.this, UbicacionBeneficiarioActivity.class);
+                        startActivityForResult(i, REQUEST_UBICACION);
+                    }else{
+                        mostrarMensajeDialog("Disponible solo para Beneficiarios");
+                    }
                     return true;
                 case R.id.item_mis_datos:
                      i = new Intent(RegistrarActividadActivity.this, EstadisticaPersonaActivity.class);
@@ -371,9 +393,42 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     }
 
+    private Evento getEventoConRecorrido(){
+        List<Evento> lstEventos = new Eventos().list(Enumerator.Estado.PENDIENTE_PUBLICAR);
+        TiposEvento tiposEventoData= new TiposEvento();
+        for (Evento evento: lstEventos){
+            TipoEvento tipoEvento = tiposEventoData.read(evento.IDTipoEvento);
+            if (tipoEvento.Recorrido){
+                return  evento;
+            }
+        }
+        return null;
+    }
 
     @OnClick(R.id.btnIniciar) void onIniciar(){
-        startStep1();
+
+       mEvento = getEventoConRecorrido();
+       if (mEvento != null){
+           AlertDialog.Builder builder = new AlertDialog.Builder(RegistrarActividadActivity.this);
+           builder.setMessage("Desea iniciar el recorrido del evento  " + mEvento.Nombre + "?");
+           builder.setPositiveButton("Iniciar actividad", new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
+                   dialog.dismiss();
+                   startStep1();
+
+               }
+           });
+           builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
+                   dialog.dismiss();
+               }
+           });
+           builder.show();
+       }else {
+           startStep1();
+       }
 
     }
     @OnClick(R.id.btnDetener) void onDetener(){
@@ -439,6 +494,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
     @OnClick(R.id.btnPublicarMiUbicacion) void onPublicarMiUbicacion(){
+        if (!Utils.isOnline(this)){
+            mostrarMensajeDialog("No hay conexión a internet");
+            return;
+        }
         mostrarProgressDialog("publicando ubicación");
         BeneficiarioPresenter beneficiarioPresenter = new BeneficiarioPresenter(this);
         beneficiarioPresenter.publicarBeneficiarioLogin(mBeneficiarioLogin);
@@ -455,6 +514,25 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     }
 
     private void publicar(){
+
+        if (!Utils.isOnline(this)){
+            mostrarMensajeDialog("No hay conexión a internet");
+            return;
+        }
+
+        boolean hayTrayectosEvento = false;
+        for (LogTrayecto item : mLstLogTrayectos){
+            if (item.IDEvento > 0){
+                hayTrayectosEvento = true;
+                break;
+            }
+        }
+
+        if (hayTrayectosEvento){
+            mostrarMensajeDialog("La asistencia de eventos se debe pubilcar desde el listado de eventos");
+            return;
+        }
+
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         mostrarProgressDialog("Publicando ...");
         LogTrayectoPresenter logTrayectoPresenter = new LogTrayectoPresenter(this);
@@ -469,7 +547,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
 
         if (distancia > 0) {
-            LogTrayecto logTrayecto = LogTrayectoPresenter.agregarMiRecorrido(distancia, minutos, ruta, latitudePuntoA, longitudePuntoA, latitudePuntoB, longitudePuntoB);
+            LogTrayecto logTrayecto = LogTrayectoPresenter.agregarMiRecorrido(distancia, minutos, ruta, latitudePuntoA, longitudePuntoA, latitudePuntoB, longitudePuntoB, mEvento);
             if (logTrayecto != null) {
                 obtenerItemsActividad();
                 if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
@@ -624,6 +702,14 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
        }else if (requestCode == REQUEST_UBICACION && resultCode == RESULT_OK){
            mBeneficiarioLogin = Beneficiarios.readBeneficio();
            btnPublicarMiUbicacion.setVisibility(mBeneficiarioLogin.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR ? View.VISIBLE : View.GONE);
+       }else if (requestCode == REQUEST_EVENTOS && resultCode == RESULT_OK){
+           int idEvento = data.getIntExtra(Evento.ID_EVENTO, 0);
+           if (idEvento > 0) {
+               mEvento = new Eventos().read(idEvento);
+               startStep1();
+           }else{
+               obtenerItemsActividad();
+           }
        }
     }
 

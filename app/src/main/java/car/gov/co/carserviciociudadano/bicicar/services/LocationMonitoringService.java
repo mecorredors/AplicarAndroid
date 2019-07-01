@@ -386,7 +386,7 @@ public class LocationMonitoringService extends Service implements
        // }
         long tiempoMillis = System.currentTimeMillis() - startTime;
         float tiempoEnMinutos = Utils.round (2, tiempoMillis / (float)60000.0);
-        LogTrayectoPresenter.agregarMiRecorrido(Utils.round(2,(distancia/1000)), tiempoEnMinutos, ruta,latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b);
+        LogTrayectoPresenter.agregarMiRecorrido(Utils.round(2,(distancia/1000)), tiempoEnMinutos, ruta,latitude_punto_a, longitude_punto_a, latitude_punto_b, longitude_punto_b, null);
 
         tiempo_evento_09 = tiempo_evento_09 + tiempoMillis;
         distancia_evento_09 = distancia_evento_09 + distancia;

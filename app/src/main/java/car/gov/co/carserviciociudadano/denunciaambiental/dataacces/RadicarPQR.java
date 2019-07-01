@@ -28,11 +28,8 @@ import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.denunciaambiental.interfaces.IRadicarPQR;
-import car.gov.co.carserviciociudadano.denunciaambiental.model.ArchivoAdjunto;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
 import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
-import car.gov.co.carserviciociudadano.denunciaambiental.model.Lugar;
-import car.gov.co.carserviciociudadano.parques.model.Abono;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 /**

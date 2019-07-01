@@ -43,7 +43,7 @@ public class Denuncia {
     private double Altitud;
 
     private List<Foto> Fotos ;
-  //  private List<ArchivoAdjunto> ArchivosAdjuntos ;
+  //  private List<ArchivoAdjunto> ArchivoAdjunto ;
 
     private static Denuncia instance = null;
 

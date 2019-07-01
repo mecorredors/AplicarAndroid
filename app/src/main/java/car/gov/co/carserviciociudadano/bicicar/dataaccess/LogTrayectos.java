@@ -27,22 +27,22 @@ import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.ILogTrayecto;
+import car.gov.co.carserviciociudadano.bicicar.model.Evento;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
 import car.gov.co.carserviciociudadano.common.DbHelper;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class LogTrayectos {
     private DbHelper _dbHelper;
-    public static  final String TAG = "LogTrayectos";
-    private void InitDbHelper()
-    {
-        if(this._dbHelper == null)
+    public static final String TAG = "LogTrayectos";
+
+    private void InitDbHelper() {
+        if (this._dbHelper == null)
             this._dbHelper = new DbHelper(AppCar.getContext());
     }
 
-    private static String[] projectionDefault()
-    {
-        return new String[] {
+    private static String[] projectionDefault() {
+        return new String[]{
                 "[" + LogTrayecto.ID + "]",
                 "[" + LogTrayecto.SERIAL + "]",
                 "[" + LogTrayecto.RIN + "]",
@@ -62,10 +62,12 @@ public class LogTrayectos {
                 "[" + LogTrayecto.NORTE_PUNTO_A + "]",
                 "[" + LogTrayecto.ESTE_PUNTO_A + "]",
                 "[" + LogTrayecto.NORTE_PUNTO_B + "]",
-                "[" + LogTrayecto.ESTE_PUNTO_B + "]"
+                "[" + LogTrayecto.ESTE_PUNTO_B + "]",
+                "[" + LogTrayecto.ID_EVENTO + "]"
 
         };
     }
+
     public boolean Insert(LogTrayecto element) {
         InitDbHelper();
         ContentValues cv = new ContentValues();
@@ -89,20 +91,19 @@ public class LogTrayectos {
         cv.put(LogTrayecto.ESTE_PUNTO_A, element.EstePuntoA);
         cv.put(LogTrayecto.NORTE_PUNTO_B, element.NortePuntoB);
         cv.put(LogTrayecto.ESTE_PUNTO_B, element.EstePuntoB);
+        cv.put(Evento.ID_EVENTO, element.IDEvento);
 
         long rowid = 0;
 
         SQLiteDatabase db = _dbHelper.getWritableDatabase();
 
         try {
-            rowid=db.insertOrThrow(LogTrayecto.TABLE_NAME, "", cv);
+            rowid = db.insertOrThrow(LogTrayecto.TABLE_NAME, "", cv);
             element.IDLogTrayecto = rowid;
-        }
-        catch(Exception ex)
-        {
-            if(ex!=null){
+        } catch (Exception ex) {
+            if (ex != null) {
                 Log.d("ClientsSQL.Insert", ex.toString());
-               // Crashlytics.logException(ex);
+                // Crashlytics.logException(ex);
             }
             rowid = -1;
         }
@@ -129,19 +130,26 @@ public class LogTrayectos {
         cv.put(LogTrayecto.ID_BENEFICIARIO, element.IDBeneficiario);
         cv.put(LogTrayecto.ID_BENEFICIARIO_REGISTRO, element.IDBeneficiarioRegistro);
         cv.put(LogTrayecto.ID_BICICLETA, element.IDBicicleta);
-       // cv.put(LogTrayecto.RUTA, element.Ruta);
-        
+        cv.put(LogTrayecto.RUTA, element.Ruta);
+        cv.put(LogTrayecto.LATITUDE_PUNTO_A, element.LatitudePuntoA);
+        cv.put(LogTrayecto.LONGITUDE_PUNTO_A, element.LongitudePuntoA);
+        cv.put(LogTrayecto.LATITUDE_PUNTO_B, element.LatitudePuntoB);
+        cv.put(LogTrayecto.LONGITUDE_PUNTO_B, element.LongitudePuntoB);
+        cv.put(LogTrayecto.NORTE_PUNTO_A, element.NortePuntoA);
+        cv.put(LogTrayecto.ESTE_PUNTO_A, element.EstePuntoA);
+        cv.put(LogTrayecto.NORTE_PUNTO_B, element.NortePuntoB);
+        cv.put(LogTrayecto.ESTE_PUNTO_B, element.EstePuntoB);
+        cv.put(Evento.ID_EVENTO, element.IDEvento);
+
         long rowid = 0;
 
         SQLiteDatabase db = _dbHelper.getWritableDatabase();
 
         try {
-            rowid=db.update(LogTrayecto.TABLE_NAME, cv,selection, selectionArgs);
+            rowid = db.update(LogTrayecto.TABLE_NAME, cv, selection, selectionArgs);
 
-        }
-        catch(Exception ex)
-        {
-            if(ex!=null){
+        } catch (Exception ex) {
+            if (ex != null) {
                 Log.d("ClientsSQL.Insert", ex.toString());
                 // Crashlytics.logException(ex);
             }
@@ -170,22 +178,32 @@ public class LogTrayectos {
         return (result > 0);
     }
 
-    public List<LogTrayecto> List(int estado, int idBeneficiario)
+    public List<LogTrayecto> List(int estado, int idBeneficiario){
+        return List(estado, idBeneficiario, 0,0);
+    }
+    public List<LogTrayecto> List(int estado, int idBeneficiarioRegistro, int  idBeneficiario, int idEvento)
     {   synchronized (this) {
             InitDbHelper();
             SQLiteDatabase db = _dbHelper.getReadableDatabase();
             List<LogTrayecto> lstLogTrayectoes = new ArrayList<>();
-
 
             try {
 
                 // String[] selectionArgs =  {String.valueOf(estado)};
                 String where = null;
 
-                if (estado == Enumerator.Estado.TODOS) {
-                     where = LogTrayecto.ID_BENEFICIARIO_REGISTRO + "= " + idBeneficiario ;
+                if (idEvento > 0 && idBeneficiario > 0 ) {
+                    where = LogTrayecto.ID_BENEFICIARIO + " = " + idBeneficiario + " and " + LogTrayecto.ID_EVENTO + " = " + idEvento ;
+                }else if (idEvento > 0 ) {
+                    if (estado == Enumerator.Estado.TODOS){
+                        where =  LogTrayecto.ID_EVENTO + " = " + idEvento;
+                    }else {
+                        where = LogTrayecto.ESTADO + "=" + estado + " and " + LogTrayecto.ID_EVENTO + " = " + idEvento ;
+                    }
+                }else if (estado == Enumerator.Estado.TODOS) {
+                     where =  LogTrayecto.ID_BENEFICIARIO_REGISTRO + " = " + idBeneficiarioRegistro ;
                 }else{
-                     where = LogTrayecto.ESTADO + "="+ estado + " and " + LogTrayecto.ID_BENEFICIARIO_REGISTRO + "= " + idBeneficiario ;
+                     where = LogTrayecto.ESTADO + "="+ estado + " and " + LogTrayecto.ID_BENEFICIARIO_REGISTRO + "= " + idBeneficiarioRegistro ;
                 }
 
                 Cursor c = db.query(LogTrayecto.TABLE_NAME, projectionDefault(), where, null, null, null, "[" + LogTrayecto.ID + "] DESC");

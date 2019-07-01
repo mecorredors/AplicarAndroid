@@ -46,6 +46,14 @@
                 android:textSize="@dimen/text_size_16"
                 android:textColor="@color/primaryText"
                 />
+            <TextView android:id="@+id/lblCurso"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="Carlos"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/primaryText"
+                />
 
               <CheckBox android:id="@+id/cheAsistencia"
                   android:layout_width="wrap_content"

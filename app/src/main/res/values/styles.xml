@@ -185,5 +185,13 @@
         <item name="android:height">@dimen/button_height</item>
     </style>
 
+    <style name="AppTheme.Dialog.NoActioinBar" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:width">320dp</item>
+
+    </style>
 
 </resources>

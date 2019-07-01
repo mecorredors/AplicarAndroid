@@ -8,7 +8,8 @@
     <string name="cambiar_ubicacion">Cambiar ubicación</string>
     <string name="reportar_denuncia_abiental">Su denuncia ambiental</string>
     <string name="header_map">Ubique el lugar de la denuncia</string>
-    <string name="max_photos">Máximo fotos permitidas (20)</string>
+    <string name="max_photos">Máximo fotos permitidas (10)</string>
+    <string name="max_photos_bicicar">Máximo fotos permitidas (50)</string>
     <string name="cedula">Cédula</string>
     <string name="reportar_anonimo">Deseo reportar como anónimo</string>
     <string name="validacion_ubicacion">Selecciona una ubicación en el mapa</string>

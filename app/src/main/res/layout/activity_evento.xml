@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".bicicar.activities.EventoActivity">
+<LinearLayout android:id="@+id/lyPrincipal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".bicicar.activities.EventoActivity"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="INGRESA LOS SIGUIENTES  DATOS"
+        android:background="@color/gray2"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="@dimen/margin_10dp"
+        android:textSize="@dimen/text_size_13"
+        />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/margin_16dp">
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spiTipoEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </android.support.v7.widget.AppCompatSpinner>
+        <ProgressBar
+            android:id="@+id/pbTipoEvento"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario"
+        android:layout_marginBottom="10dp">
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spiColegio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </android.support.v7.widget.AppCompatSpinner>
+        <ProgressBar
+            android:id="@+id/pbColegio"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/lyNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario">
+        <EditText
+            android:id="@+id/txtNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre evento"
+            android:inputType="textNoSuggestions"
+            style="@style/editTextUsuario"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:text="Fecha inicio"
+            android:textSize="@dimen/text_size_14"
+            android:textColor="@color/secondaryText"
+            android:layout_marginTop="@dimen/margin_10dp"/>
+
+        <EditText android:id="@+id/txtFechaInicio"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            />
+    </LinearLayout>
+    <com.stacktips.view.CustomCalendarView
+        android:id="@+id/calendarioFechaInicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:visibility="gone">
+    </com.stacktips.view.CustomCalendarView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/lyUsuario">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:text="Fecha fin"
+            android:textSize="@dimen/text_size_14"
+            android:textColor="@color/secondaryText"
+            android:layout_marginTop="@dimen/margin_10dp"/>
+        <EditText android:id="@+id/txtFechaFin"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_4dp"
+            android:focusable="false"/>
+    </LinearLayout>
+    <com.stacktips.view.CustomCalendarView
+        android:id="@+id/calendarioFechaFin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:visibility="gone">
+    </com.stacktips.view.CustomCalendarView>
+
+
+    <LinearLayout
+        style="@style/lyUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_gray_border"
+        >
+        <EditText
+            android:id="@+id/txtDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/denuncia_height_description"
+            android:hint="@string/descripcion"
+            android:maxEms="500"
+            android:textSize="@dimen/text_size_14"
+            android:textColor="@color/secondaryText"
+            android:gravity="top"
+            android:maxLength="500"
+            android:paddingLeft="6dp"
+            android:paddingTop="3dp"
+            android:paddingRight="3dp"
+            android:paddingBottom="3dp"
+            android:background="#00ffffff"
+            android:scrollHorizontally="false"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:minLines="6"
+            />
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/lyDistanciaKM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario">
+        <EditText
+            android:id="@+id/txtDistanciaKM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Disntacia en KM"
+            android:inputType="numberDecimal"
+            style="@style/editTextUsuario"
+            />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/lyDuracionMinutos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario">
+        <EditText
+            android:id="@+id/txtDuracionMinutos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tiempo recorrido en minutos"
+            android:inputType="numberDecimal"
+            style="@style/editTextUsuario"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button android:id="@+id/btnGuardar"
+        android:theme="@style/ButtonAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guardar"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginLeft="@dimen/margin_16dp"/>
+</LinearLayout>
+</ScrollView>

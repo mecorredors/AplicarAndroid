@@ -1,7 +1,6 @@
 package car.gov.co.carserviciociudadano.bicicar.model;
 
 import android.database.Cursor;
-
 import car.gov.co.carserviciociudadano.common.ModelBase;
 
 public class Colegio extends ModelBase {
@@ -35,7 +34,9 @@ public class Colegio extends ModelBase {
 
     public  Colegio(){
     }
-
+    public  Colegio(String nombre){
+        Nombre = nombre;
+    }
     public Colegio(Cursor c) {
         if (c.getColumnIndex(ID_COLEGIO) >= 0) this.IDColegio = c.getInt(c.getColumnIndex(ID_COLEGIO));
         if (c.getColumnIndex(ID_MUNICIPIO) >= 0) this.IDMunicipio = c.getInt(c.getColumnIndex(ID_MUNICIPIO));
@@ -51,4 +52,12 @@ public class Colegio extends ModelBase {
         if (c.getColumnIndex(ESTADO) >= 0) this.Estado = c.getInt(c.getColumnIndex(ESTADO));
     }
 
+    @Override
+    public String  toString(){
+        return this.Nombre + ( Municipio != null ?  " | " + Municipio : "") ;
+    }
+    @Override
+    public boolean equals(Object o) {
+        return (o instanceof Colegio && IDColegio == ((Colegio) o).IDColegio );
+    }
 }

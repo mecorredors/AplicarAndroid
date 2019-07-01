@@ -26,16 +26,24 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.bicicar.adapter.BeneficiariosAdapter;
 import car.gov.co.carserviciociudadano.bicicar.adapter.LogTrayectoAdapter;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Asistentes;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Eventos;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.LogTrayectos;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.TiposEvento;
+import car.gov.co.carserviciociudadano.bicicar.model.Asistente;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
+import car.gov.co.carserviciociudadano.bicicar.model.Evento;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
+import car.gov.co.carserviciociudadano.bicicar.model.TipoEvento;
+import car.gov.co.carserviciociudadano.bicicar.presenter.AsistentesPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.BeneficiarioPresenter;
+import car.gov.co.carserviciociudadano.bicicar.presenter.IViewAsistente;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewBeneficiario;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
-public class BeneficiariosActivity extends BaseActivity implements IViewBeneficiario, BeneficiariosAdapter.BeneficiarioListener{
+public class BeneficiariosActivity extends BaseActivity implements IViewBeneficiario, BeneficiariosAdapter.BeneficiarioListener  {
     @BindView(R.id.recycler_view)   RecyclerView recyclerView;
     @BindView(R.id.btnGuardarAsistencia) Button btnGuardarAsistencia;
 
@@ -43,7 +51,9 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
     BeneficiariosAdapter mAdaptador;
     List<Beneficiario> mLstBeneficiarios = new ArrayList<>();
     BeneficiarioPresenter beneficiarioPresenter;
-
+    private Evento mEvento;
+    private TipoEvento mTipoEvento;
+    private AsistentesPresenter asistentesPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +65,14 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         if (mBeneficiarioLogin != null)
             bar.setTitle( mBeneficiarioLogin.Nombres + " " + mBeneficiarioLogin.Apellidos);
 
+
+        Bundle b = getIntent().getExtras();
+        if (b != null){
+            int idEvento = b.getInt(Evento.ID_EVENTO,0);
+            mEvento = new Eventos().read(idEvento);
+            mTipoEvento = new TiposEvento().read(mEvento.IDTipoEvento);
+        }
+
         recyclerView.setHasFixedSize(true);
         mAdaptador = new BeneficiariosAdapter(mLstBeneficiarios);
         mAdaptador.setBeneficiarioListener(this);
@@ -62,8 +80,18 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         beneficiarioPresenter = new BeneficiarioPresenter(this);
+        asistentesPresenter = new AsistentesPresenter(iViewAsistente);
 
-        List<Beneficiario> lstBeneficiarios = beneficiarioPresenter.listLocal(mBeneficiarioLogin.Curso, mBeneficiarioLogin.IDColegio);
+        List<Beneficiario> lstBeneficiarios;
+        if (mEvento != null) {
+            lstBeneficiarios = beneficiarioPresenter.listLocal( mEvento.IDColegio);
+            beneficiarioPresenter.desabilitarYaRegistrados(lstBeneficiarios, mEvento.IDEvento);
+            asistentesPresenter.desabilitarYaRegistrados(lstBeneficiarios, mEvento.IDEvento);
+        }else{
+            //cuando registra asistencia el lider grupo
+            lstBeneficiarios = beneficiarioPresenter.listLocal(mBeneficiarioLogin.Curso, mBeneficiarioLogin.IDColegio);
+            beneficiarioPresenter.desabilitarYaRegistrados(lstBeneficiarios, 0);
+        }
         if (lstBeneficiarios.size() > 0){
             onSuccess(lstBeneficiarios);
         }else{
@@ -81,7 +109,11 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
     }
     private  void obtenerBeneficiarios(){
         mostrarProgressDialog("Descargando estudiantes");
-        beneficiarioPresenter.list(mBeneficiarioLogin.Curso, mBeneficiarioLogin.IDColegio);
+        if (mEvento != null) {
+            beneficiarioPresenter.list(mEvento.IDColegio);
+        }else{
+            beneficiarioPresenter.list(mBeneficiarioLogin.Curso, mBeneficiarioLogin.IDColegio);
+        }
     }
 
     @OnClick(R.id.btnGuardarAsistencia) void onGuardarAsistencia(){
@@ -89,9 +121,26 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
     }
 
     private  void guardarAsistencia(){
+        boolean actualizarEstadoEvento = false;
         for (Beneficiario b : mLstBeneficiarios){
-            if (b.Selected)
-                beneficiarioPresenter.GuardarLogTrayecto(b, mBeneficiarioLogin);
+            Asistentes asistentes = new Asistentes();
+            if (b.Selected && b.Enabled) {
+               if (mEvento != null && mTipoEvento != null){
+                   if (mTipoEvento.Recorrido){
+                       beneficiarioPresenter.GuardarLogTrayecto(b, mBeneficiarioLogin, mEvento);
+                   }else{
+                        asistentes.insert(new Asistente(mEvento.IDEvento, b.IDBeneficiario, Enumerator.Estado.PENDIENTE_PUBLICAR));
+                   }
+                   actualizarEstadoEvento = true;
+               }else {
+                   beneficiarioPresenter.GuardarLogTrayecto(b, mBeneficiarioLogin);
+               }
+            }
+        }
+
+        if (actualizarEstadoEvento){
+            mEvento.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
+            new Eventos().update(mEvento);
         }
 
         Intent i = new Intent();
@@ -102,7 +151,7 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
     private void activarBoton(){
         int count = 0;
         for (Beneficiario b : mLstBeneficiarios) {
-            if (b.Selected)
+            if (b.Selected && b.Enabled)
                 count ++;
         }
 
@@ -170,4 +219,19 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         }
         activarBoton();
     }
+
+    IViewAsistente iViewAsistente = new IViewAsistente() {
+        @Override
+        public void onSuccess(int idEvento) {
+        }
+
+        @Override
+        public void onErrorAsistente(ErrorApi error) {
+        }
+
+        @Override
+        public void onError(ErrorApi error) {
+        }
+    };
+
 }

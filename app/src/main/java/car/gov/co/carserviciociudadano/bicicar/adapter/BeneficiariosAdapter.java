@@ -30,12 +30,14 @@ public class BeneficiariosAdapter extends RecyclerView.Adapter<BeneficiariosAdap
 
 
         private TextView lblNombre;
+        private TextView lblCurso;
         private CheckBox cheAsistencia;
 
         public PlaceSelectorViewHolder(View itemView) {
             super(itemView);
 
             lblNombre = itemView.findViewById(R.id.lblNombre);
+            lblCurso = itemView.findViewById(R.id.lblCurso);
             cheAsistencia = itemView.findViewById(R.id.cheAsistencia);
 
              cheAsistencia.setOnCheckedChangeListener(this);
@@ -43,6 +45,8 @@ public class BeneficiariosAdapter extends RecyclerView.Adapter<BeneficiariosAdap
 
         public void bind(Beneficiario b) {
             lblNombre.setText(b.Nombres + " " + b.Apellidos);
+            lblCurso.setText(b.Curso);
+            cheAsistencia.setChecked(b.Selected);
             cheAsistencia.setEnabled(b.Enabled);
         }
 

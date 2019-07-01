@@ -32,13 +32,13 @@ public class ColegiosPresenter implements IColegio {
                     if (colegiosData.update(colegio)){
                         publicar();
                     }else{
-                        iViewColegio.onError(new ErrorApi(0,"Error al guardar datos localmente"));
+                        iViewColegio.onErrorColegios(new ErrorApi(0,"Error al guardar datos localmente"));
                     }
                 }
 
                 @Override
                 public void onError(ErrorApi error) {
-                    iViewColegio.onError(error);
+                    iViewColegio.onErrorColegios(error);
                 }
             });
         }else{
@@ -94,7 +94,7 @@ public class ColegiosPresenter implements IColegio {
     @Override
     public void onSuccess(List<Colegio> lstColegios) {
         guardarColegios(lstColegios);
-        iViewColegio.onSuccess(lstColegios);
+        iViewColegio.onSuccessColegios(lstColegios);
     }
 
     @Override
@@ -104,6 +104,6 @@ public class ColegiosPresenter implements IColegio {
 
     @Override
     public void onError(ErrorApi error) {
-        iViewColegio.onError(error);
+        iViewColegio.onErrorColegios(error);
     }
 }

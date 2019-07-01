@@ -17,6 +17,10 @@ public class Evento  extends ModelBase {
     public Date FInicio;
     public Date FFin;
     public String Descripcion;
+    public String UsuarioCreacion;
+    public int Participantes;
+    public float DistanciaKm;
+    public float DuracionMinutos;
     public int Estado;
 
 
@@ -31,7 +35,9 @@ public class Evento  extends ModelBase {
     public static final String F_FIN ="FFin";
     public static final String DESCRIPCION ="Descripcion";
     public static final String ESTADO ="Estado";
-
+    public static final String PARTICIPANTES ="Participantes";
+    public static final String DISTANCIA_KM = "DistanciaKM";
+    public static final String DURACION_MINUTOS = "DuracionMinutos";
 
     public  Evento(){
     }
@@ -46,5 +52,8 @@ public class Evento  extends ModelBase {
         if (c.getColumnIndex(F_FIN) >= 0) this.FFin = Utils.convertToDateSQLLite(c.getString(c.getColumnIndex(F_FIN)));
         if (c.getColumnIndex(DESCRIPCION) >= 0) this.Descripcion = c.getString(c.getColumnIndex(DESCRIPCION));
         if (c.getColumnIndex(ESTADO) >= 0) this.Estado = c.getInt(c.getColumnIndex(ESTADO));
+        if (c.getColumnIndex(PARTICIPANTES) >= 0) this.Participantes = c.getInt(c.getColumnIndex(PARTICIPANTES));
+        if(c.getColumnIndex(DISTANCIA_KM)>=0) this.DistanciaKm = c.getFloat(c.getColumnIndex(DISTANCIA_KM));
+        if(c.getColumnIndex(DURACION_MINUTOS)>=0) this.DuracionMinutos = c.getFloat(c.getColumnIndex(DURACION_MINUTOS));
     }
 }

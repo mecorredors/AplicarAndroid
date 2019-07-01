@@ -255,7 +255,7 @@ public class SeguirRutaActivity extends BaseActivity implements OnMapReadyCallba
     private void agregarMiRecorrido(float distancia, float minutos, String ruta, double latitudePuntoA, double longitudePuntoA, double latitudePuntoB, double longitudePuntoB){
         Beneficiario mBeneficiarioLogin =  Beneficiarios.readBeneficio();
         if (distancia > 0 && mBeneficiarioLogin != null) {
-            LogTrayecto logTrayecto = LogTrayectoPresenter.agregarMiRecorrido(distancia, minutos, ruta, latitudePuntoA, longitudePuntoA, latitudePuntoB, longitudePuntoB);
+            LogTrayecto logTrayecto = LogTrayectoPresenter.agregarMiRecorrido(distancia, minutos, ruta, latitudePuntoA, longitudePuntoA, latitudePuntoB, longitudePuntoB, null);
             if (logTrayecto != null) {
                 publicar();
             }

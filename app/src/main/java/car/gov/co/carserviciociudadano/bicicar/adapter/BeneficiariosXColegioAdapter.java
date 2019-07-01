@@ -59,13 +59,13 @@ public class BeneficiariosXColegioAdapter extends RecyclerView.Adapter<Beneficia
                 lblNombre.setText(nombre);
 
             if (b.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR){
-                imgEstado.setImageDrawable(AppCar.getContext().getDrawable(ic_warning_yellow_24dp));
+                imgEstado.setImageDrawable(AppCar.getContext().getResources().getDrawable(ic_warning_yellow_24dp));
                 lblEstado.setText(AppCar.getContext().getResources().getString(R.string.pendiente_publicar));
             }else if (b.Latitude == 0 || b.Longitude == 0){
-                imgEstado.setImageDrawable(AppCar.getContext().getDrawable(ic_highlight_off_24dp));
+                imgEstado.setImageDrawable(AppCar.getContext().getResources().getDrawable(ic_highlight_off_24dp));
                 lblEstado.setText(AppCar.getContext().getResources().getString(R.string.sin_ubicacion));
             }else{
-                imgEstado.setImageDrawable(AppCar.getContext().getDrawable(ic_check_circle_green_24dp));
+                imgEstado.setImageDrawable(AppCar.getContext().getResources().getDrawable(ic_check_circle_green_24dp));
                 lblEstado.setText(AppCar.getContext().getResources().getString(R.string.con_ubicacion));
             }
         }

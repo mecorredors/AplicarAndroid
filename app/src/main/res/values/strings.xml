@@ -162,12 +162,15 @@
     <string name="title_activity_seguir_ruta">Ruta BICICAR</string>
     <string name="crear_ruta_descripcion">Si conoces una ruta en bicicleta ingresa sus datos y realiza el recorrido, al finalizar otros usuarios podrán conocer esta ruta y seguir el recorrido </string>
     <string name="title_eventos">Eventos</string>
+    <string name="title_fotos_evento">Fotos del evento</string>
     <string name="title_estudiantes">Estudiantes</string>
-    <string name="title_colegios">Colegios</string>
+    <string name="title_colegios">Instituciones</string>
     <string name="sin_ubicacion">Sin ubicación</string>
     <string name="con_ubicacion">Con ubicación</string>
     <string name="pendiente_publicar">Pendiente publicar</string>
-
+    <string name="title_crear_evento">Crear evento</string>
+    <string name="title_vento">Evento</string>
+    <string name="publicado">Publicado</string>
     <!-- petcar -->
     <string name="title_activity_main_petcar">PETCAR</string>
 
@@ -183,6 +186,7 @@
     <string name="title_mas">Más</string>
     <string name="ubicacion">Ubicación</string>
     <string name="publicar_mi_ubicacion">Publicar mi ubicación</string>
+    <string name="guardar">Guardar</string>
 
 
 </resources>

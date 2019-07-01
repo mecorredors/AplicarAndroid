@@ -34,6 +34,7 @@ public class LogTrayecto {
     public double EstePuntoB;
     public String Ruta;
     public int TotalItems;
+    public int IDEvento;
 
     public static final String ID = "id";
     public static final String SERIAL = "Serial";
@@ -55,6 +56,7 @@ public class LogTrayecto {
     public static final String NORTE_PUNTO_A = "NortePuntoA";
     public static final String ESTE_PUNTO_B = "EstePuntoB";
     public static final String NORTE_PUNTO_B = "NortePuntoB";
+    public static final String ID_EVENTO = "IDEvento";
 
     public static final String TABLE_NAME = "LogTrayectos";
 
@@ -82,6 +84,7 @@ public class LogTrayecto {
         if(c.getColumnIndex(ESTE_PUNTO_A)>=0) this.EstePuntoA = c.getDouble(c.getColumnIndex(ESTE_PUNTO_A));
         if(c.getColumnIndex(NORTE_PUNTO_B)>=0) this.NortePuntoB = c.getDouble(c.getColumnIndex(NORTE_PUNTO_B));
         if(c.getColumnIndex(ESTE_PUNTO_B)>=0) this.EstePuntoB = c.getDouble(c.getColumnIndex(ESTE_PUNTO_B));
+        if (c.getColumnIndex(ID_EVENTO) >= 0) this.IDEvento = c.getInt(c.getColumnIndex(ID_EVENTO));
     }
 
     @Override public String toString(){

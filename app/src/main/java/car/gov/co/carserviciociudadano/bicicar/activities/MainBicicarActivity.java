@@ -53,6 +53,7 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
         setContentView(R.layout.activity_main_bicicar);
         ButterKnife.bind(this);
         reportesPresenter = new ReportesPresenter(this);
+        progressBar.setVisibility(View.GONE);
         getGranTotal();
 
         Beneficiario beneficiario = Beneficiarios.readBeneficio();
@@ -66,8 +67,10 @@ public class MainBicicarActivity extends BaseActivity implements IViewReportes {
 
     }
     private void getGranTotal(){
-        progressBar.setVisibility(View.VISIBLE);
-        reportesPresenter.getGranTotal();
+        if (Utils.isOnline(this)) {
+            progressBar.setVisibility(View.VISIBLE);
+            reportesPresenter.getGranTotal();
+        }
     }
 
     @Override
