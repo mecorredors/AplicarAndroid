@@ -165,6 +165,7 @@
     <string name="title_fotos_evento">Fotos del evento</string>
     <string name="title_estudiantes">Estudiantes</string>
     <string name="title_colegios">Instituciones</string>
+    <string name="seleccione_institucion">Seleccione institución</string>
     <string name="sin_ubicacion">Sin ubicación</string>
     <string name="con_ubicacion">Con ubicación</string>
     <string name="pendiente_publicar">Pendiente publicar</string>

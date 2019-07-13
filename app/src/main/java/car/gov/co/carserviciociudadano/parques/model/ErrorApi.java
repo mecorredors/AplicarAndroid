@@ -23,6 +23,7 @@ public class ErrorApi {
     private int StatusCode;
     private int Code;
     private String Message;
+    private String ExceptionMessage;
 
     public int getCode() {
         return Code;
@@ -42,7 +43,12 @@ public class ErrorApi {
     public void setStatusCode(int statusCode) {
         StatusCode = statusCode;
     }
-
+    public String getExceptionMessage() {
+        return ExceptionMessage;
+    }
+    public void setExceptionMessage(String message) {
+        ExceptionMessage = message;
+    }
     // constructor objeto response apatir de un error de volley
     public ErrorApi(VolleyError vError){
         if(vError != null )

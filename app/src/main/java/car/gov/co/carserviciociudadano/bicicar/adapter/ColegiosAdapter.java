@@ -1,6 +1,7 @@
 package car.gov.co.carserviciociudadano.bicicar.adapter;
 
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
-import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.Colegio;
 
 import static car.gov.co.carserviciociudadano.R.drawable.ic_check_circle_green_24dp;
@@ -28,10 +28,11 @@ import static car.gov.co.carserviciociudadano.R.drawable.ic_warning_yellow_24dp;
  * Created by Olger on 28/11/2016.
  */
 
-public class ColegiosAdapter extends RecyclerView.Adapter<ColegiosAdapter.PlaceSelectorViewHolder>  implements View.OnClickListener {
+public class ColegiosAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  implements View.OnClickListener {
     private View.OnClickListener listener;
     private List<Colegio> datos;
     static ColegiosListener colegiosListener;
+    private boolean isTipoSelector = false;
 
     public void setData(List<Colegio> datos){
         if (this.datos == null)
@@ -46,7 +47,7 @@ public class ColegiosAdapter extends RecyclerView.Adapter<ColegiosAdapter.PlaceS
         this.colegiosListener = colegiosListener;
     }
 
-    public static class PlaceSelectorViewHolder
+    public static class PlaceViewHolder
             extends RecyclerView.ViewHolder implements CompoundButton.OnClickListener  {
 
         private TextView lblNombre;
@@ -57,7 +58,7 @@ public class ColegiosAdapter extends RecyclerView.Adapter<ColegiosAdapter.PlaceS
         private ImageView imgEstado;
         private TextView lblEstado;
 
-        public PlaceSelectorViewHolder(View itemView) {
+        public PlaceViewHolder(View itemView) {
             super(itemView);
 
             lblNombre = itemView.findViewById(R.id.lblNombre);
@@ -103,27 +104,75 @@ public class ColegiosAdapter extends RecyclerView.Adapter<ColegiosAdapter.PlaceS
         }
     }
 
-    public ColegiosAdapter(List<Colegio> datos) {
+
+    public static class PlaceSelectorViewHolder
+            extends RecyclerView.ViewHolder implements CompoundButton.OnClickListener  {
+
+        private TextView lblNombre;
+        private TextView lblMunicipio;
+        private View lyItem;
+
+        public PlaceSelectorViewHolder(View itemView) {
+            super(itemView);
+
+            lblNombre = itemView.findViewById(R.id.lblNombre);
+            lblMunicipio = itemView.findViewById(R.id.lblMunicipio);
+            lyItem = itemView.findViewById(R.id.lyItem);
+            lyItem.setOnClickListener(this);
+        }
+
+        public void bind(Colegio b) {
+            lblNombre.setText(b.Nombre);
+            lblMunicipio.setText(b.Municipio);
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.lyItem:
+                    colegiosListener.onSelected(getAdapterPosition(), view);
+                    break;
+            }
+        }
+    }
+
+    public ColegiosAdapter(List<Colegio> datos, boolean isTipoSelector) {
         this.datos = datos;
+        this.isTipoSelector = isTipoSelector;
     }
 
     @Override
-    public PlaceSelectorViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_colegio, viewGroup, false);
+    public int getItemViewType(int position) {
+        return 0;
+    }
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        itemView.setOnClickListener(this);
-        //android:background="?android:attr/selectableItemBackground"
+        if (isTipoSelector){
+            View itemView = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.item_colegio_selector, viewGroup, false);
+            itemView.setOnClickListener(this);
+            return new PlaceSelectorViewHolder(itemView);
 
-        PlaceSelectorViewHolder tvh = new PlaceSelectorViewHolder(itemView);
-
-        return tvh;
+        }else {
+            View itemView = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.item_colegio, viewGroup, false);
+            itemView.setOnClickListener(this);
+            return new PlaceViewHolder(itemView);
+        }
     }
 
     @Override
-    public void onBindViewHolder(PlaceSelectorViewHolder viewHolder, int pos) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int pos) {
         Colegio item = datos.get(pos);
-        viewHolder.bind(item);
+        if (isTipoSelector){
+            PlaceSelectorViewHolder holder = (PlaceSelectorViewHolder) viewHolder;
+            holder.bind(item);
+        }else {
+            PlaceViewHolder holder = (PlaceViewHolder) viewHolder;
+            holder.bind(item);
+        }      
     }
 
     @Override
@@ -144,6 +193,7 @@ public class ColegiosAdapter extends RecyclerView.Adapter<ColegiosAdapter.PlaceS
     public interface ColegiosListener{
         void onEstudiantes(int position, View view);
         void onUbicacion(int position, View view);
+        void onSelected(int position, View view);
     }
 }
 

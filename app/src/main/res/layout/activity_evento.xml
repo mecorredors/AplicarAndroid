@@ -31,6 +31,14 @@
         style="@style/lyUsuario"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="@dimen/margin_16dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            style="@style/editTextUsuario"
+            />
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spiTipoEvento"
             android:layout_width="match_parent"
@@ -57,14 +65,21 @@
             android:layout_height="wrap_content"
             >
         </android.support.v7.widget.AppCompatSpinner>
-        <ProgressBar
-            android:id="@+id/pbColegio"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone" />
+            <EditText
+                android:id="@+id/txtColegio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/seleccione_institucion"
+                android:inputType="textNoSuggestions"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                style="@style/editTextUsuario"
+                />
     </FrameLayout>
+
+
+
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/lyNombre"
@@ -179,7 +194,7 @@
             android:id="@+id/txtDistanciaKM"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Disntacia en KM"
+            android:hint="Distancia en KM"
             android:inputType="numberDecimal"
             style="@style/editTextUsuario"
             />

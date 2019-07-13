@@ -2,6 +2,7 @@ package car.gov.co.carserviciociudadano.bicicar.activities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
@@ -48,11 +49,11 @@ import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
-public class EventoActivity extends BaseActivity implements IViewEvento, IViewTipoEvento, IViewBeneficiario, IViewColegio {
+public class EventoActivity extends BaseActivity implements IViewEvento, IViewTipoEvento, IViewBeneficiario {
 
     @BindView(R.id.pbTipoEvento)  ProgressBar pbTipoEvento;
     @BindView(R.id.spiTipoEvento)   Spinner spiTipoEvento;
-    @BindView(R.id.pbColegio)  ProgressBar pbColegio;
+
     @BindView(R.id.spiColegio)   Spinner spiColegio;
     @BindView(R.id.txtFechaInicio)  EditText txtFechaInicio;
     @BindView(R.id.txtFechaFin) EditText txtFechaFin;
@@ -67,18 +68,19 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     @BindView(R.id.txtDuracionMinutos)  EditText txtDuracionMinutos;
     @BindView(R.id.lyDuracionMinutos)  TextInputLayout lyDuracionMinutos;
     @BindView(R.id.lyPrincipal)  View lyPrincipal;
+    @BindView(R.id.txtColegio)  EditText txtColegio;
+
 
     TiposEventoPresenter tiposEventoPresenter;
     EventoPresenter eventoPresenter;
-    ColegiosPresenter colegiosPresenter;
     BeneficiarioPresenter beneficiarioPresenter;
     List<TipoEvento>  mLstTiposEvento = new ArrayList<>();
     ArrayAdapter<TipoEvento> mAdapterTiposEvento;
-    List<Colegio>  mLstColegios = new ArrayList<>();
-    ArrayAdapter<Colegio> mAdapterColegios;
+
     Evento mEvento = new Evento();
     Beneficiario mBeneficiarioLogin;
     int mIdEvento;
+    private static final int REQUEST_COLEGIOS = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,17 +101,17 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         mAdapterTiposEvento.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
         spiTipoEvento.setAdapter(mAdapterTiposEvento);
 
-        mLstColegios.add(new Colegio ("Colegios"));
+       /* mLstColegios.add(new Colegio ("Colegios"));
         mAdapterColegios = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstColegios);
         mAdapterColegios.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
-        spiColegio.setAdapter(mAdapterColegios);
+        spiColegio.setAdapter(mAdapterColegios);*/
 
         tiposEventoPresenter = new TiposEventoPresenter(this);
         eventoPresenter = new EventoPresenter(this);
-        colegiosPresenter = new ColegiosPresenter(this);
         beneficiarioPresenter = new BeneficiarioPresenter(this);
         obtenerDatos();
 
+        txtColegio.setOnClickListener(onClickListener);
         btnGuardar.setOnClickListener(onClickListener);
         txtFechaInicio.setOnClickListener(onClickListener);
         txtFechaFin.setOnClickListener(onClickListener);
@@ -175,15 +177,15 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
             txtFechaInicio.setText(Utils.toStringFromDate(mEvento.FInicio));
             txtFechaFin.setText(Utils.toStringFromDate(mEvento.FFin));
             spiTipoEvento.setEnabled(false);
+
+            Colegio colegio = new Colegios().read(mEvento.IDColegio);
+            txtColegio.setText(colegio.Nombre);
         }
     }
 
     private  void obtenerDatos(){
         pbTipoEvento.setVisibility(View.VISIBLE);
-        pbColegio.setVisibility(View.VISIBLE);
         tiposEventoPresenter.list();
-        colegiosPresenter.list();
-
     }
 
     @Override
@@ -285,19 +287,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     public void onError(ErrorApi error) {
 
     }
-    @Override
-    public void onSuccessColegios(List<Colegio> lstColegios){
-        pbColegio.setVisibility(View.GONE);
-        mAdapterColegios.clear();
-        lstColegios.add(0, new Colegio("Seleccion un colegio"));
-        mAdapterColegios.addAll(lstColegios);
-        mAdapterColegios.notifyDataSetChanged();
 
-        if (mIdEvento > 0){
-            spiColegio.setSelection(getColegiosPosition(lstColegios));
-
-        }
-    }
 
     public int getColegiosPosition(List<Colegio> lstColegios){
         int i = 0;
@@ -309,16 +299,6 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         return i;
     }
 
-    @Override
-    public void onSuccess(Colegio colegio){
-
-    }
-
-    @Override
-    public void onErrorColegios(ErrorApi errorApi) {
-        pbColegio.setVisibility(View.GONE);
-        mostrarErrorDatos(errorApi);
-    }
 
     private  void mostrarErrorDatos(ErrorApi error){
 
@@ -358,9 +338,13 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
                     calendarioFechaFin.setVisibility(View.VISIBLE);
                     ocultarTeclado(lyPrincipal);
                     break;
-
                 case R.id.btnGuardar:
                     obtenerBeneficiarios();
+                    break;
+                case R.id.txtColegio:
+                    Intent i = new Intent(EventoActivity.this, ColegiosActivity.class);
+                    i.putExtra(ColegiosActivity.IS_SELECTOR, true);
+                    startActivityForResult(i , REQUEST_COLEGIOS);
                     break;
 
             }
@@ -369,8 +353,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
 
 private  void obtenerBeneficiarios(){
     if (validar()) {
-        Colegio colegio = mAdapterColegios.getItem(spiColegio.getSelectedItemPosition());
-        beneficiarioPresenter.list(colegio.IDColegio);
+        beneficiarioPresenter.list(mEvento.IDColegio);
         mostrarProgressDialog("Descargando estudiantes");
     }
 }
@@ -380,9 +363,9 @@ private  void obtenerBeneficiarios(){
         if (Validation.IsEmpty(txtFechaFin)) res = false;
         if (Validation.IsEmpty(txtFechaInicio)) res = false;
         if (Validation.IsEmpty(spiTipoEvento)) res = false;
-        if (Validation.IsEmpty(spiColegio)) res = false;
         if (Validation.IsEmpty(txtNombre, lyNombre)) res = false;
         if (Validation.IsEmpty(txtDescripcion)) res = false;
+        if (Validation.IsEmpty(txtColegio)) res = false;
 
         TipoEvento tipoEvento = (TipoEvento) spiTipoEvento.getSelectedItem();
 
@@ -414,7 +397,6 @@ private  void obtenerBeneficiarios(){
         TipoEvento tipoEvento =  (TipoEvento) spiTipoEvento.getSelectedItem();
 
         mEvento.IDTipoEvento =  tipoEvento.IDTipoEvento; // mAdapterTiposEvento.getItem(spiTipoEvento.getSelectedItemPosition()).IDTipoEvento;
-        mEvento.IDColegio =  mAdapterColegios.getItem(spiColegio.getSelectedItemPosition()).IDColegio;
         mEvento.Nombre = txtNombre.getText().toString();
         mEvento.Descripcion = txtDescripcion.getText().toString();
         mEvento.UsuarioCreacion = "Android";
@@ -450,5 +432,15 @@ private  void obtenerBeneficiarios(){
         builder.show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode == RESULT_OK){
+            if (requestCode == REQUEST_COLEGIOS){
+                mEvento.IDColegio = data.getIntExtra(Colegio.ID_COLEGIO, 0);
+                txtColegio.setText(data.getStringExtra(Colegio.NOMBRE));
+            }
+        }
+    }
 }

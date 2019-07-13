@@ -16,7 +16,7 @@
         android:layout_height="44dp"
         android:background="@drawable/background_gray_border"
         android:textSize="@dimen/text_size_16"
-        android:hint="Buscar por municipio o colegio"
+        android:hint="Buscar por municipio o institución"
         android:layout_margin="@dimen/margin_6dp"
         android:paddingLeft="@dimen/margin_10dp"
         android:imeOptions="actionSearch"

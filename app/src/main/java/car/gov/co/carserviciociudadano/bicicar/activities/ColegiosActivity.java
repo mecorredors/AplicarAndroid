@@ -47,6 +47,9 @@ public class ColegiosActivity extends BaseActivity implements IViewColegio, Cole
     public static final String ULTIMA_BUSQUEDA = "ultima_busqueda";
     public static final int REQUEST_UBICACION = 100;
     boolean publicar = false;
+    boolean isSelector = false;
+    public static final String  IS_SELECTOR = "is_selectror";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +58,16 @@ public class ColegiosActivity extends BaseActivity implements IViewColegio, Cole
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
 
+        Bundle b = getIntent().getExtras();
+        if (b != null){
+            isSelector = b.getBoolean(IS_SELECTOR, false);
+            if (isSelector){
+                btnSincronizarDatos.setVisibility(View.GONE);
+            }
+        }
+
         recyclerView.setHasFixedSize(true);
-        mAdaptador = new ColegiosAdapter(mLstColegios);
+        mAdaptador = new ColegiosAdapter(mLstColegios, isSelector);
         mAdaptador.setColegiosListener(this);
         recyclerView.setAdapter(mAdaptador);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
@@ -210,6 +221,17 @@ public class ColegiosActivity extends BaseActivity implements IViewColegio, Cole
             Intent i = new Intent(this, UbicacionBeneficiarioActivity.class);
             i.putExtra(Colegio.ID_COLEGIO, colegio.IDColegio);
             startActivityForResult(i, REQUEST_UBICACION);
+        }
+    }
+    @Override
+    public void onSelected(int position, View view) {
+        Colegio colegio = mLstColegios.get(position);
+        if (colegio != null) {
+            Intent i = getIntent();
+            i.putExtra(Colegio.ID_COLEGIO, colegio.IDColegio);
+            i.putExtra(Colegio.NOMBRE, colegio.Nombre);
+            setResult(RESULT_OK, i);
+            finish();
         }
     }
 
