@@ -35,15 +35,16 @@ android {
         }
     }
 
+    flavorDimensions "default"
     productFlavors {
         production {
             dimension 'default'
-            flavorDimensions "default"
+            flavorDimensions 'default'
             targetSdkVersion 27
         }
         develop {
             dimension 'default'
-            flavorDimensions "default"
+            flavorDimensions 'default'
             targetSdkVersion 27
         }
     }

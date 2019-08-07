@@ -62,7 +62,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="60">
+        android:layout_weight="1">
       <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
@@ -95,13 +95,12 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="40" >
+        android:layout_height="wrap_content"
+         >
 
-
-        <LinearLayout android:id="@+id/lyInicial"
+        <LinearLayout android:id="@+id/lyDatos"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="240dp"
             android:gravity="center"
             android:orientation="vertical"
             >
@@ -152,11 +151,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_14"
-            android:theme="@style/ButtonAccent"
+            android:textColor="#fff"
+            android:background="@drawable/boton_bicicar"
             android:text="Guardar"
             android:layout_gravity="bottom|end"
-            android:layout_marginLeft="@dimen/margin_10dp"
-            android:layout_marginRight="@dimen/margin_10dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginBottom="@dimen/margin_16dp"
             />
 
     </FrameLayout>

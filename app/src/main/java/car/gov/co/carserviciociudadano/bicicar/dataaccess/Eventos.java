@@ -46,7 +46,7 @@ public class Eventos {
 
     private static String[] projectionDefault()
     {
-        return new String[]{
+       /* return new String[]{
                 "[" + Evento.ID_EVENTO + "]",
                 "[" + Evento.ID_COLEGIO + "]",
                 "[" + Evento.ID_TIPO_EVENTO + "]",
@@ -58,6 +58,33 @@ public class Eventos {
                 "[" + Evento.PARTICIPANTES + "]",
                 "[" + Evento.DISTANCIA_KM + "]",
                 "[" + Evento.DURACION_MINUTOS + "]",
+                "[" + Evento.ESTADO + "]" };*/
+
+
+        return new String[]{
+
+                "[" + Evento.ID_EVENTO + "]",
+                "[" + Evento.ID_COLEGIO + "]",
+                "[" + Evento.ID_TIPO_EVENTO + "]",
+                "[" + Evento.ID_RESPONSABLE + "]",
+                "[" + Evento.NOMBRE + "]",
+                "[" + Evento.F_INICIO + "]",
+                "[" + Evento.F_FIN + "]",
+                "[" + Evento.DESCRIPCION + "]",
+                "[" + Evento.PARTICIPANTES + "]",
+                "[" + Evento.DISTANCIA_KM + "]",
+                "[" + Evento.DURACION_MINUTOS + "]",
+                "[" + Evento.HORA_INICIO + "]",
+                "[" + Evento.HORA_FIN + "]",
+                "[" + Evento.ID_MUNICIPIO + "]",
+                "[" + Evento.ID_VEREDA + "]",
+                "[" + Evento.PREDIO + "]",
+                "[" + Evento.ID_CUENCA + "]",
+                "[" + Evento.LATITUD + "]",
+                "[" + Evento.LONGITUD + "]",
+                "[" + Evento.NORTE + "]",
+                "[" + Evento.ESTE + "]",
+                "[" + Evento.ALTITUD + "]",
                 "[" + Evento.ESTADO + "]" };
 
     }
@@ -78,6 +105,17 @@ public class Eventos {
         cv.put(Evento.PARTICIPANTES, element.Participantes);
         cv.put(Evento.DISTANCIA_KM, element.DistanciaKm);
         cv.put(Evento.DURACION_MINUTOS, element.DuracionMinutos);
+        cv.put(Evento.HORA_INICIO, element.HoraInicio);
+        cv.put(Evento.HORA_FIN, element.HoraFin);
+        cv.put(Evento.ID_MUNICIPIO, element.IDMunicipio);
+        cv.put(Evento.ID_VEREDA, element.IDVereda);
+        cv.put(Evento.PREDIO, element.Predio);
+        cv.put(Evento.ID_CUENCA, element.IDCuenca);
+        cv.put(Evento.LATITUD, element.Latitud);
+        cv.put(Evento.LONGITUD, element.Longitud);
+        cv.put(Evento.NORTE, element.Norte);
+        cv.put(Evento.ESTE, element.Este);
+        cv.put(Evento.ALTITUD, element.Altitud);
 
         long rowid = 0;
         SQLiteDatabase db = _dbHelper.getWritableDatabase();
@@ -117,6 +155,17 @@ public class Eventos {
         cv.put(Evento.PARTICIPANTES, element.Participantes);
         cv.put(Evento.DISTANCIA_KM, element.DistanciaKm);
         cv.put(Evento.DURACION_MINUTOS, element.DuracionMinutos);
+        cv.put(Evento.HORA_INICIO, element.HoraInicio);
+        cv.put(Evento.HORA_FIN, element.HoraFin);
+        cv.put(Evento.ID_MUNICIPIO, element.IDMunicipio);
+        cv.put(Evento.ID_VEREDA, element.IDVereda);
+        cv.put(Evento.PREDIO, element.Predio);
+        cv.put(Evento.ID_CUENCA, element.IDCuenca);
+        cv.put(Evento.LATITUD, element.Latitud);
+        cv.put(Evento.LONGITUD, element.Longitud);
+        cv.put(Evento.NORTE, element.Norte);
+        cv.put(Evento.ESTE, element.Este);
+        cv.put(Evento.ALTITUD, element.Altitud);
 
         long rowid = 0;
         SQLiteDatabase db = _dbHelper.getWritableDatabase();

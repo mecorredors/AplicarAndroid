@@ -59,6 +59,7 @@ public class Config {
     public static String API_BICICAR_CATALOGO_OBTENER_NIVELES =  Server.ServerBICICAR() + "api/catalogos/ObtenerNiveles/";
     public static String API_BICICAR_CATALOGO_OBTENER_COLEGIOS =  Server.ServerBICICAR() + "api/catalogos/ObtenerColegios/";
     public static String API_BICICAR_CATALOGO_ACTUALIZAR_COLEGIO =  Server.ServerBICICAR() + "api/catalogos/ActualizarColegio/";
+    public static String API_BICICAR_CATALOGO_OBTENER_CUENCAS =  Server.ServerBICICAR() + "api/catalogos/ObtenerCuencas/";
     public static String API_BICICAR_BENEFICIARIO_ACTUALIZAR =  Server.ServerBICICAR() + "api/beneficiarios/Actualizar/";
     public static String API_BICICAR_EVENTO_PUBLICAR =  Server.ServerBICICAR() + "api/eventos/agregar/";
     public static String API_BICICAR_EVENTO_MODIFICAR =  Server.ServerBICICAR() + "api/eventos/modificar/";

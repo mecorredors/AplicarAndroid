@@ -22,7 +22,17 @@ public class Evento  extends ModelBase {
     public float DistanciaKm;
     public float DuracionMinutos;
     public int Estado;
-
+    public String HoraInicio;
+    public String HoraFin;
+    public String IDMunicipio;
+    public String IDVereda;
+    public String Predio;
+    public int IDCuenca;
+    public double Latitud;
+    public double Longitud;
+    public String Norte;
+    public String Este;
+    public double Altitud;
 
     public static final String TABLE_NAME = "Eventos";
 
@@ -38,6 +48,17 @@ public class Evento  extends ModelBase {
     public static final String PARTICIPANTES ="Participantes";
     public static final String DISTANCIA_KM = "DistanciaKM";
     public static final String DURACION_MINUTOS = "DuracionMinutos";
+    public static final String HORA_INICIO = "HoraInicio";
+    public static final String HORA_FIN = "HoraFin";
+    public static final String ID_MUNICIPIO = "IDMunicipio";
+    public static final String ID_VEREDA = "IDVereda";
+    public static final String PREDIO = "Predio";
+    public static final String ID_CUENCA = "IDCuenca";
+    public static final String LATITUD = "Latitud";
+    public static final String LONGITUD = "Longitud";
+    public static final String NORTE = "Norte";
+    public static final String ESTE = "Este";
+    public static final String ALTITUD = "Altitud";
 
     public  Evento(){
     }
@@ -55,5 +76,16 @@ public class Evento  extends ModelBase {
         if (c.getColumnIndex(PARTICIPANTES) >= 0) this.Participantes = c.getInt(c.getColumnIndex(PARTICIPANTES));
         if(c.getColumnIndex(DISTANCIA_KM)>=0) this.DistanciaKm = c.getFloat(c.getColumnIndex(DISTANCIA_KM));
         if(c.getColumnIndex(DURACION_MINUTOS)>=0) this.DuracionMinutos = c.getFloat(c.getColumnIndex(DURACION_MINUTOS));
+        if(c.getColumnIndex(HORA_INICIO)>=0) this.HoraInicio = c.getString(c.getColumnIndex(HORA_INICIO));
+        if(c.getColumnIndex(HORA_FIN)>=0) this.HoraFin = c.getString(c.getColumnIndex(HORA_FIN));
+        if(c.getColumnIndex(ID_MUNICIPIO)>=0) this.IDMunicipio = c.getString(c.getColumnIndex(ID_MUNICIPIO));
+        if(c.getColumnIndex(ID_VEREDA)>=0) this.IDVereda = c.getString(c.getColumnIndex(ID_VEREDA));
+        if(c.getColumnIndex(PREDIO)>=0) this.Predio = c.getString(c.getColumnIndex(PREDIO));
+        if(c.getColumnIndex(ID_CUENCA)>=0) this.IDCuenca = c.getInt(c.getColumnIndex(ID_CUENCA));
+        if(c.getColumnIndex(LATITUD)>=0) this.Latitud = c.getDouble(c.getColumnIndex(LATITUD));
+        if(c.getColumnIndex(LONGITUD)>=0) this.Longitud = c.getDouble(c.getColumnIndex(LONGITUD));
+        if(c.getColumnIndex(NORTE)>=0) this.Norte = c.getString(c.getColumnIndex(NORTE));
+        if(c.getColumnIndex(ESTE)>=0) this.Este = c.getString(c.getColumnIndex(ESTE));
+        if(c.getColumnIndex(ALTITUD)>=0) this.Altitud = c.getDouble(c.getColumnIndex(ALTITUD));
     }
 }

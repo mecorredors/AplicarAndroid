@@ -24,7 +24,7 @@ public class ElevationPresenter {
 
             @Override
             public void onErrror(ErrorApi errorApi) {
-                viewElevation.onSuccessElevation(errorApi.getStatusCode());
+                viewElevation.onErrrorElevation(errorApi.getStatusCode());
             }
         });
     }

@@ -362,12 +362,12 @@ public class Utils {
         bd = bd.setScale(numDecimales, BigDecimal.ROUND_HALF_EVEN);
         return bd.floatValue();
     }
-    public static float round(int numDecimales, double d ) {
+    public static double round(int numDecimales, double d ) {
         if (d == 0) return  0;
 
         BigDecimal bd = new BigDecimal(Double.toString(d));
         bd = bd.setScale(numDecimales, BigDecimal.ROUND_HALF_EVEN);
-        return bd.floatValue();
+        return bd.doubleValue();
     }
     public static String horasMinutosSegundos(int segundos){
         int hor, min, seg;

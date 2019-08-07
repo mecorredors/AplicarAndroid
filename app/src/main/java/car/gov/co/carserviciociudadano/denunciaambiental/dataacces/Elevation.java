@@ -26,7 +26,7 @@ public class Elevation {
     public void getElevation( double latitude, double longitude,final IElevation iElevation )
     {
         String url = "https://maps.googleapis.com/maps/api/elevation/json?locations="+ latitude  +","+ longitude+"&key="+ AppCar.getContext().getResources().getString(R.string.api_key_map);
-
+        Log.d(TAG , url);
         JsonObjectRequest objRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>(){
                     @Override

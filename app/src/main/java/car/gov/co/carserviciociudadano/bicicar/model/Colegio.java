@@ -5,7 +5,7 @@ import car.gov.co.carserviciociudadano.common.ModelBase;
 
 public class Colegio extends ModelBase {
     public  int  IDColegio;
-    public  int IDMunicipio;
+    public  String IDMunicipio;
     public  String  Nombre;
     public boolean  Activo;
     public String Municipio;
@@ -39,7 +39,7 @@ public class Colegio extends ModelBase {
     }
     public Colegio(Cursor c) {
         if (c.getColumnIndex(ID_COLEGIO) >= 0) this.IDColegio = c.getInt(c.getColumnIndex(ID_COLEGIO));
-        if (c.getColumnIndex(ID_MUNICIPIO) >= 0) this.IDMunicipio = c.getInt(c.getColumnIndex(ID_MUNICIPIO));
+        if (c.getColumnIndex(ID_MUNICIPIO) >= 0) this.IDMunicipio = c.getString(c.getColumnIndex(ID_MUNICIPIO));
         if (c.getColumnIndex(NOMBRE) >= 0) this.Nombre = c.getString(c.getColumnIndex(NOMBRE));
         if (c.getColumnIndex(ACTIVO) >= 0) this.Activo =  c.getInt(c.getColumnIndex(ACTIVO)) == 0;
         if (c.getColumnIndex(MUNICIPIO) >= 0) this.Municipio = c.getString(c.getColumnIndex(MUNICIPIO));

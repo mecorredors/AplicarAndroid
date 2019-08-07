@@ -18,6 +18,28 @@
         android:layout_marginRight="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_10dp"/>
 
+    <FrameLayout android:id="@+id/lyBuscar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText android:id="@+id/txtBuscar"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@drawable/background_gray_border"
+            android:textSize="@dimen/text_size_16"
+            android:hint="Buscar por nombre o apellido"
+            android:layout_margin="@dimen/margin_6dp"
+            android:paddingLeft="@dimen/margin_10dp"
+            android:imeOptions="actionSearch"
+            android:imeActionLabel="Buscar"
+            android:inputType="text"
+            />
+        <ImageButton android:id="@+id/btnBuscar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_search_blue_36dp"/>
+    </FrameLayout>
+
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/recycler_view"

@@ -172,6 +172,7 @@
     <string name="title_crear_evento">Crear evento</string>
     <string name="title_vento">Evento</string>
     <string name="publicado">Publicado</string>
+    <string name="seleccione_ubicacion_evento">Seleccione ubicación del evento</string>
     <!-- petcar -->
     <string name="title_activity_main_petcar">PETCAR</string>
 

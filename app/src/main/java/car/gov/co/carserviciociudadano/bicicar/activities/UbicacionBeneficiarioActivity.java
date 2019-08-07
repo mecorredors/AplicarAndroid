@@ -82,6 +82,7 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
     @BindView(R.id.lblTelefonosContacto)  TextView lblTelefonosContacto;
     @BindView(R.id.lblTelefonosEmergecia)  TextView lblTelefonosEmergecia;
     @BindView(R.id.btnGuardar)   Button btnGuardar;
+    @BindView(R.id.lyDatos)   View lyDatos;
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private GoogleMap mMap;
@@ -100,6 +101,11 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
     private int mIdBeneficiario;
     private int mIdColegio;
     Colegio mColegio;
+    public static final  String RETORNAR_UBICACION = "retornar_ubicacion";
+    public static final  String LATITUDE = "latitude";
+    public static final  String LONGITUDE = "longitude";
+
+    private boolean mRetornarUbicacion = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,39 +125,43 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
         if (b != null){
             mIdBeneficiario = b.getInt(Beneficiario.ID_BENEFICIARIO , 0);
             mIdColegio = b.getInt(Colegio.ID_COLEGIO , 0);
-
+            mRetornarUbicacion = b.getBoolean(RETORNAR_UBICACION, false);
         }
 
-        if (mIdColegio > 0){
-            mColegio = new Colegios().read(mIdColegio);
-            lblNombre.setText(mColegio.Municipio);
-            lblColegio.setText(mColegio.Nombre);
-            miPosicion = new LatLng(mColegio.Latitude, mColegio.Longitude);
+        if (mRetornarUbicacion){
+            lyDatos.setVisibility(View.GONE);
         }else {
-            if (mIdBeneficiario > 0) {
-                mBeneficiario = new Beneficiarios().Read(mIdBeneficiario);
+
+            if (mIdColegio > 0) {
+                mColegio = new Colegios().read(mIdColegio);
+                lblNombre.setText(mColegio.Municipio);
+                lblColegio.setText(mColegio.Nombre);
+                miPosicion = new LatLng(mColegio.Latitude, mColegio.Longitude);
             } else {
-                mBeneficiario = Beneficiarios.readBeneficio();
-            }
-            if (mBeneficiario != null){
-                lblNombre.setText(mBeneficiario.Nombres + " " + mBeneficiario.Apellidos);
-
-                Colegio colegio = new Colegios().read(mBeneficiario.IDColegio);
-                if (colegio != null){
-                    lblColegio.setText("Colegio: " + String.valueOf(colegio.Nombre + " " + colegio.Municipio));
-                }else{
-                    lblColegio.setText("IDColegio: " + String.valueOf(mBeneficiario.IDColegio));
+                if (mIdBeneficiario > 0) {
+                    mBeneficiario = new Beneficiarios().Read(mIdBeneficiario);
+                } else {
+                    mBeneficiario = Beneficiarios.readBeneficio();
                 }
-                lblCurso.setText("Curso: "+ mBeneficiario.Curso);
-                lblEmail.setText("Email " + mBeneficiario.Email);
-                lblTelefonosContacto.setText("Tel Contacto: "+ mBeneficiario.TelefonoContacto);
-                lblTelefonosEmergecia.setText("Tel Emergencia: "+ mBeneficiario.TelefonoEmergencia);
+                if (mBeneficiario != null) {
+                    lblNombre.setText(mBeneficiario.Nombres + " " + mBeneficiario.Apellidos);
 
-                miPosicion = new LatLng(mBeneficiario.Latitude, mBeneficiario.Longitude);
+                    Colegio colegio = new Colegios().read(mBeneficiario.IDColegio);
+                    if (colegio != null) {
+                        lblColegio.setText("Colegio: " + String.valueOf(colegio.Nombre + " " + colegio.Municipio));
+                    } else {
+                        lblColegio.setText("IDColegio: " + String.valueOf(mBeneficiario.IDColegio));
+                    }
+                    lblCurso.setText("Curso: " + mBeneficiario.Curso);
+                    lblEmail.setText("Email " + mBeneficiario.Email);
+                    lblTelefonosContacto.setText("Tel Contacto: " + mBeneficiario.TelefonoContacto);
+                    lblTelefonosEmergecia.setText("Tel Emergencia: " + mBeneficiario.TelefonoEmergencia);
+
+                    miPosicion = new LatLng(mBeneficiario.Latitude, mBeneficiario.Longitude);
+                }
             }
+
         }
-
-
 
 
         mElevationPresenter = new ElevationPresenter(this);
@@ -383,10 +393,23 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
         }
     }
     @OnClick(R.id.btnGuardar) void btnGuardar(){
-        if (mIdColegio > 0) {
-            guardarColegio();
-        }else{
-            guardarBeneficiario();
+        if (mRetornarUbicacion){
+            if (mMap!= null) {
+                CameraPosition camPos = mMap.getCameraPosition();
+                miPosicion = new LatLng(camPos.target.latitude, camPos.target.longitude);
+
+                Intent i = getIntent();
+                i.putExtra(LATITUDE , miPosicion.latitude);
+                i.putExtra(LONGITUDE, miPosicion.longitude);
+                setResult(RESULT_OK , i);
+                finish();
+            }
+        }else {
+            if (mIdColegio > 0) {
+                guardarColegio();
+            } else {
+                guardarBeneficiario();
+            }
         }
 
     }

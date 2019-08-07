@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.bicicar.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -9,10 +10,17 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +32,7 @@ import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.bicicar.adapter.BeneficiariosAdapter;
 import car.gov.co.carserviciociudadano.bicicar.adapter.LogTrayectoAdapter;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Asistentes;
@@ -33,6 +42,7 @@ import car.gov.co.carserviciociudadano.bicicar.dataaccess.LogTrayectos;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.TiposEvento;
 import car.gov.co.carserviciociudadano.bicicar.model.Asistente;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
+import car.gov.co.carserviciociudadano.bicicar.model.Colegio;
 import car.gov.co.carserviciociudadano.bicicar.model.Evento;
 import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.model.TipoEvento;
@@ -46,10 +56,14 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 public class BeneficiariosActivity extends BaseActivity implements IViewBeneficiario, BeneficiariosAdapter.BeneficiarioListener  {
     @BindView(R.id.recycler_view)   RecyclerView recyclerView;
     @BindView(R.id.btnGuardarAsistencia) Button btnGuardarAsistencia;
+    @BindView(R.id.txtBuscar) EditText txtBuscar;
+    @BindView(R.id.btnBuscar) ImageButton btnBuscar;
 
     Beneficiario mBeneficiarioLogin;
     BeneficiariosAdapter mAdaptador;
     List<Beneficiario> mLstBeneficiarios = new ArrayList<>();
+    List<Beneficiario> mLstCopyBeneficiarios = new ArrayList<>();
+
     BeneficiarioPresenter beneficiarioPresenter;
     private Evento mEvento;
     private TipoEvento mTipoEvento;
@@ -99,6 +113,20 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         }
 
         activarBoton();
+
+        txtBuscar.setImeActionLabel("Buscar", KeyEvent.KEYCODE_SEARCH);
+        txtBuscar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        txtBuscar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    filter(txtBuscar.getText().toString().trim());
+                    handled = true;
+                }
+                return handled;
+            }
+        });
     }
 
     @Override
@@ -107,6 +135,54 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         super.onPause();
 
     }
+
+    @Override
+    public void onBackPressed(){
+        setResult(RESULT_OK);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id== android.R.id.home){
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                getSupportFragmentManager().popBackStack();
+            else
+                this.onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void filter(String text){
+        if (btnGuardarAsistencia.getVisibility() == View.VISIBLE){
+            mostrarMensajeDialog("Debe guardar los seleccionados antes de hacer otra búsqueda ");
+            return;
+        }
+
+        mLstBeneficiarios.clear();
+        if (text != null && text.trim().length() > 0) {
+            String filter = text.trim().toLowerCase();
+
+            for (Beneficiario item : mLstCopyBeneficiarios) {
+                if (item.Nombres.toLowerCase().contains(filter) || item.Apellidos.toLowerCase().contains(filter)) {
+                    mLstBeneficiarios.add(item);
+                }
+            }
+           // if (mLstColegios.size() > 0) {
+             //   PreferencesApp.getDefault(PreferencesApp.WRITE).putString(ULTIMA_BUSQUEDA, filter).commit();
+           // }
+
+        }else{
+            mLstBeneficiarios.addAll(mLstCopyBeneficiarios);
+        }
+        mAdaptador.notifyDataSetChanged();
+        txtBuscar.clearFocus();
+        InputMethodManager in = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(txtBuscar.getWindowToken(), 0);
+
+    }
+
     private  void obtenerBeneficiarios(){
         mostrarProgressDialog("Descargando estudiantes");
         if (mEvento != null) {
@@ -114,6 +190,10 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         }else{
             beneficiarioPresenter.list(mBeneficiarioLogin.Curso, mBeneficiarioLogin.IDColegio);
         }
+    }
+
+    @OnClick(R.id.btnBuscar) void onBuscar(){
+        filter(txtBuscar.getText().toString());
     }
 
     @OnClick(R.id.btnGuardarAsistencia) void onGuardarAsistencia(){
@@ -132,9 +212,12 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
                         asistentes.insert(new Asistente(mEvento.IDEvento, b.IDBeneficiario, Enumerator.Estado.PENDIENTE_PUBLICAR));
                    }
                    actualizarEstadoEvento = true;
+
                }else {
                    beneficiarioPresenter.GuardarLogTrayecto(b, mBeneficiarioLogin);
                }
+
+               b.Enabled = false;
             }
         }
 
@@ -143,9 +226,17 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
             new Eventos().update(mEvento);
         }
 
-        Intent i = new Intent();
-        this.setResult(RESULT_OK , i);
-        finish();
+        if (mEvento != null && mTipoEvento != null){
+            beneficiarioPresenter.desabilitarYaRegistrados(mLstCopyBeneficiarios, mEvento.IDEvento);
+            asistentesPresenter.desabilitarYaRegistrados(mLstCopyBeneficiarios, mEvento.IDEvento);
+            mAdaptador.notifyDataSetChanged();
+            mostrarMensaje("Asistencia guardada");
+        }else {
+            setResult(RESULT_OK);
+            finish();
+        }
+
+
     }
 
     private void activarBoton(){
@@ -168,6 +259,7 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         ocultarProgressDialog();
         mLstBeneficiarios.clear();
         mLstBeneficiarios.addAll(lstBeneficiarios);
+        mLstCopyBeneficiarios = new ArrayList<>(mLstBeneficiarios);
         mAdaptador.notifyDataSetChanged();
     }
 

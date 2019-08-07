@@ -5,66 +5,66 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     tools:context=".bicicar.activities.EventoActivity">
-<LinearLayout android:id="@+id/lyPrincipal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".bicicar.activities.EventoActivity"
-    android:background="@color/background"
-    android:orientation="vertical">
-
-    <TextView
+    <LinearLayout android:id="@+id/lyPrincipal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="INGRESA LOS SIGUIENTES  DATOS"
-        android:background="@color/gray2"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:paddingLeft="@dimen/margin_10dp"
-        android:textSize="@dimen/text_size_13"
-        />
+        android:layout_height="match_parent"
+        tools:context=".bicicar.activities.EventoActivity"
+        android:background="@color/background"
+        android:orientation="vertical">
 
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/lyUsuario"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="@dimen/margin_16dp">
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            style="@style/editTextUsuario"
+            android:text="INGRESA LOS SIGUIENTES  DATOS"
+            android:background="@color/gray2"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="@dimen/margin_10dp"
+            android:textSize="@dimen/text_size_13"
             />
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/spiTipoEvento"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-        </android.support.v7.widget.AppCompatSpinner>
-        <ProgressBar
-            android:id="@+id/pbTipoEvento"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone" />
-    </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/lyUsuario"
-        android:layout_marginBottom="10dp">
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/spiColegio"
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-        </android.support.v7.widget.AppCompatSpinner>
+            style="@style/lyUsuario"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="@dimen/margin_16dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                style="@style/editTextUsuario"
+                />
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spiTipoEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </android.support.v7.widget.AppCompatSpinner>
+            <ProgressBar
+                android:id="@+id/pbTipoEvento"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario"
+            android:layout_marginBottom="10dp">
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spiColegio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </android.support.v7.widget.AppCompatSpinner>
             <EditText
                 android:id="@+id/txtColegio"
                 android:layout_width="match_parent"
@@ -76,150 +76,396 @@
                 android:focusableInTouchMode="false"
                 style="@style/editTextUsuario"
                 />
-    </FrameLayout>
+        </FrameLayout>
 
 
 
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/lyNombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/lyUsuario">
-        <EditText
-            android:id="@+id/txtNombre"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/lyNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre evento"
-            android:inputType="textNoSuggestions"
-            style="@style/editTextUsuario"
-            />
-    </android.support.design.widget.TextInputLayout>
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre evento"
+                android:inputType="textNoSuggestions"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/lyUsuario"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
+        <LinearLayout
+            style="@style/lyUsuario"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fecha inicio"
-            android:textSize="@dimen/text_size_14"
-            android:textColor="@color/secondaryText"
-            android:layout_marginTop="@dimen/margin_10dp"/>
+            android:orientation="vertical"
+            android:background="@drawable/background_gray_border"
+            >
+            <EditText
+                android:id="@+id/txtDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/denuncia_height_description"
+                android:hint="@string/descripcion"
+                android:maxEms="500"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/secondaryText"
+                android:gravity="top"
+                android:maxLength="500"
+                android:paddingLeft="6dp"
+                android:paddingTop="3dp"
+                android:paddingRight="3dp"
+                android:paddingBottom="3dp"
+                android:background="#00ffffff"
+                android:scrollHorizontally="false"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:minLines="6"
+                />
+        </LinearLayout>
 
-        <EditText android:id="@+id/txtFechaInicio"
-            android:layout_width="0dp"
-            android:layout_weight="6"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            />
+            style="@style/lyUsuario"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:text="Fecha inicio"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/secondaryText"
+                android:layout_marginTop="@dimen/margin_10dp"/>
+
+            <EditText android:id="@+id/txtFechaInicio"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                />
+        </LinearLayout>
+        <com.stacktips.view.CustomCalendarView
+            android:id="@+id/calendarioFechaInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:visibility="gone">
+        </com.stacktips.view.CustomCalendarView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            style="@style/lyUsuario">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:text="Fecha fin"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/secondaryText"
+                android:layout_marginTop="@dimen/margin_10dp"/>
+            <EditText android:id="@+id/txtFechaFin"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_4dp"
+                android:focusable="false"/>
+        </LinearLayout>
+        <com.stacktips.view.CustomCalendarView
+            android:id="@+id/calendarioFechaFin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:visibility="gone">
+        </com.stacktips.view.CustomCalendarView>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            style="@style/lyUsuario">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/lyHoraInicio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                >
+                <EditText
+                    android:id="@+id/txtHoraInicio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Hora Inicio"
+                    android:inputType="textNoSuggestions"
+                    style="@style/editTextUsuario"
+                    android:focusable="false"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/lyHoraFin"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                >
+                <EditText
+                    android:id="@+id/txtHoraFin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Hora fin"
+                    android:inputType="textNoSuggestions"
+                    style="@style/editTextUsuario"
+                    android:focusable="false"
+                    />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario"
+            android:layout_marginBottom="10dp">
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spiMunicipio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </android.support.v7.widget.AppCompatSpinner>
+            <ProgressBar
+                android:id="@+id/pbMunicipio"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario"
+            android:layout_marginBottom="10dp">
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spiVereda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </android.support.v7.widget.AppCompatSpinner>
+            <ProgressBar
+                android:id="@+id/pbVereda"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario"
+            android:layout_marginBottom="10dp">
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spiCuenca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </android.support.v7.widget.AppCompatSpinner>
+            <ProgressBar
+                android:id="@+id/pbCuenca"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/lyPredio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtPredio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Predio"
+                android:inputType="textNoSuggestions"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/lyDistanciaKM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtDistanciaKM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Distancia en KM"
+                android:inputType="numberDecimal"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/lyDuracionMinutos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/lyUsuario">
+            <EditText
+                android:id="@+id/txtDuracionMinutos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tiempo recorrido en minutos"
+                android:inputType="numberDecimal"
+                style="@style/editTextUsuario"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <LinearLayout android:id="@+id/lyUbicacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <Button android:id="@+id/btnUbicacionEvento"
+                android:theme="@style/ButtonBorderlessColored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/seleccione_ubicacion_evento"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginLeft="@dimen/margin_16dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                style="@style/lyUsuario"
+                >
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/lyLatitude"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+                    <EditText
+                        android:id="@+id/txtLatitud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Latitud"
+                        android:inputType="textNoSuggestions"
+                        android:enabled="false"
+                        android:text=""
+                        style="@style/editTextUsuario"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/lyLongitud"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+                    <EditText
+                        android:id="@+id/txtLongitud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Longitud"
+                        android:enabled="false"
+                        android:inputType="textNoSuggestions"
+                        style="@style/editTextUsuario"
+                        />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                style="@style/lyUsuario"
+                >
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/lyNorte"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+                    <EditText
+                        android:id="@+id/txtNorte"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Norte"
+                        android:inputType="textNoSuggestions"
+                        android:enabled="false"
+                        android:text=""
+                        style="@style/editTextUsuario"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/lyEste"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+                    <EditText
+                        android:id="@+id/txtEste"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Este"
+                        android:enabled="false"
+                        android:inputType="textNoSuggestions"
+                        style="@style/editTextUsuario"
+                        />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/lyAltitud"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/lyUsuario"
+                >
+                <EditText
+                    android:id="@+id/txtAltitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Altitud"
+                    android:enabled="false"
+                    android:inputType="textNoSuggestions"
+                    style="@style/editTextUsuario"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <Button android:id="@+id/btnGuardar"
+            android:textColor="#fff"
+            android:background="@drawable/boton_bicicar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/guardar"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginBottom="@dimen/margin_16dp"/>
+
+
     </LinearLayout>
-    <com.stacktips.view.CustomCalendarView
-        android:id="@+id/calendarioFechaInicio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:visibility="gone">
-    </com.stacktips.view.CustomCalendarView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="@style/lyUsuario">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="wrap_content"
-            android:text="Fecha fin"
-            android:textSize="@dimen/text_size_14"
-            android:textColor="@color/secondaryText"
-            android:layout_marginTop="@dimen/margin_10dp"/>
-        <EditText android:id="@+id/txtFechaFin"
-            android:layout_width="0dp"
-            android:layout_weight="6"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_4dp"
-            android:focusable="false"/>
-    </LinearLayout>
-    <com.stacktips.view.CustomCalendarView
-        android:id="@+id/calendarioFechaFin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:visibility="gone">
-    </com.stacktips.view.CustomCalendarView>
-
-
-    <LinearLayout
-        style="@style/lyUsuario"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/background_gray_border"
-        >
-        <EditText
-            android:id="@+id/txtDescripcion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/denuncia_height_description"
-            android:hint="@string/descripcion"
-            android:maxEms="500"
-            android:textSize="@dimen/text_size_14"
-            android:textColor="@color/secondaryText"
-            android:gravity="top"
-            android:maxLength="500"
-            android:paddingLeft="6dp"
-            android:paddingTop="3dp"
-            android:paddingRight="3dp"
-            android:paddingBottom="3dp"
-            android:background="#00ffffff"
-            android:scrollHorizontally="false"
-            android:inputType="textMultiLine"
-            android:lines="8"
-            android:minLines="6"
-            />
-    </LinearLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/lyDistanciaKM"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/lyUsuario">
-        <EditText
-            android:id="@+id/txtDistanciaKM"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Distancia en KM"
-            android:inputType="numberDecimal"
-            style="@style/editTextUsuario"
-            />
-    </android.support.design.widget.TextInputLayout>
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/lyDuracionMinutos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/lyUsuario">
-        <EditText
-            android:id="@+id/txtDuracionMinutos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Tiempo recorrido en minutos"
-            android:inputType="numberDecimal"
-            style="@style/editTextUsuario"
-            />
-    </android.support.design.widget.TextInputLayout>
-
-    <Button android:id="@+id/btnGuardar"
-        android:theme="@style/ButtonAccent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/guardar"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginLeft="@dimen/margin_16dp"/>
-</LinearLayout>
 </ScrollView>

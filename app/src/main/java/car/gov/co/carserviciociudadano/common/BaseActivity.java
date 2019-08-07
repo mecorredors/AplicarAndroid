@@ -101,10 +101,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void mostrarProgressDialog(String mensaje){
+        mostrarProgressDialog(mensaje, false);
+    }
+    protected void mostrarProgressDialog(String mensaje, boolean cancelable){
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setMessage(mensaje);
-        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCancelable(cancelable);
         mProgressDialog.show();
     }
     protected void ocultarProgressDialog(){
