@@ -66,7 +66,6 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
 
     BeneficiarioPresenter beneficiarioPresenter;
     private Evento mEvento;
-    private TipoEvento mTipoEvento;
     private AsistentesPresenter asistentesPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +83,6 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         if (b != null){
             int idEvento = b.getInt(Evento.ID_EVENTO,0);
             mEvento = new Eventos().read(idEvento);
-            mTipoEvento = new TiposEvento().read(mEvento.IDTipoEvento);
         }
 
         recyclerView.setHasFixedSize(true);
@@ -98,7 +96,11 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
 
         List<Beneficiario> lstBeneficiarios;
         if (mEvento != null) {
-            lstBeneficiarios = beneficiarioPresenter.listLocal( mEvento.IDColegio);
+            if (mEvento.getTipoEvento().Publico){
+                lstBeneficiarios = beneficiarioPresenter.listAllLocal();
+            }else {
+                lstBeneficiarios = beneficiarioPresenter.listLocal(mEvento.IDColegio);
+            }
             beneficiarioPresenter.desabilitarYaRegistrados(lstBeneficiarios, mEvento.IDEvento);
             asistentesPresenter.desabilitarYaRegistrados(lstBeneficiarios, mEvento.IDEvento);
         }else{
@@ -205,11 +207,11 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         for (Beneficiario b : mLstBeneficiarios){
             Asistentes asistentes = new Asistentes();
             if (b.Selected && b.Enabled) {
-               if (mEvento != null && mTipoEvento != null){
-                   if (mTipoEvento.Recorrido){
-                       beneficiarioPresenter.GuardarLogTrayecto(b, mBeneficiarioLogin, mEvento);
+               if (mEvento != null && mEvento.getTipoEvento() != null){
+                   if (!mEvento.getTipoEvento().Recorrido || mEvento.getTipoEvento().Publico){
+                       asistentes.insert(new Asistente(mEvento.IDEvento, b.IDBeneficiario, Enumerator.Estado.PENDIENTE_PUBLICAR));
                    }else{
-                        asistentes.insert(new Asistente(mEvento.IDEvento, b.IDBeneficiario, Enumerator.Estado.PENDIENTE_PUBLICAR));
+                       beneficiarioPresenter.GuardarLogTrayecto(b, mBeneficiarioLogin, mEvento);
                    }
                    actualizarEstadoEvento = true;
 
@@ -226,7 +228,7 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
             new Eventos().update(mEvento);
         }
 
-        if (mEvento != null && mTipoEvento != null){
+        if (mEvento != null && mEvento.getTipoEvento() != null){
             beneficiarioPresenter.desabilitarYaRegistrados(mLstCopyBeneficiarios, mEvento.IDEvento);
             asistentesPresenter.desabilitarYaRegistrados(mLstCopyBeneficiarios, mEvento.IDEvento);
             mAdaptador.notifyDataSetChanged();

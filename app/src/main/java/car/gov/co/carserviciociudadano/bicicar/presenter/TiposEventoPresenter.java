@@ -1,6 +1,7 @@
 package car.gov.co.carserviciociudadano.bicicar.presenter;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.TiposEvento;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.ITipoEvento;
@@ -33,8 +34,15 @@ public class TiposEventoPresenter implements ITipoEvento {
     @Override
     public void onSuccess(List<TipoEvento> lstTiposEvento) {
         guardarTiposEvento(lstTiposEvento);
-        lstTiposEvento.add(0, new TipoEvento("Seleccione tipo evento"));
-        iViewTipoEvento.onSuccessTipoEvento(lstTiposEvento);
+        List<TipoEvento> eventos = new ArrayList<>();
+        eventos.add( new TipoEvento("Seleccione tipo evento"));
+        for (TipoEvento item : lstTiposEvento){
+            if (!item.Publico){
+                eventos.add(item);
+            }
+        }
+
+        iViewTipoEvento.onSuccessTipoEvento(eventos);
     }
 
     @Override

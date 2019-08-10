@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.adapter.EventoAdapter;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Asistentes;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
@@ -38,11 +39,13 @@ import car.gov.co.carserviciociudadano.bicicar.presenter.IViewArchivoAdjunto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewAsistente;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewEvento;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
+import car.gov.co.carserviciociudadano.bicicar.presenter.IViewTipoEvento;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
+import car.gov.co.carserviciociudadano.bicicar.presenter.TiposEventoPresenter;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
-public class EventosActivity extends BaseActivity implements EventoAdapter.EventosListener, IViewEvento, IViewAsistente {
+public class EventosActivity extends BaseActivity implements EventoAdapter.EventosListener, IViewEvento, IViewAsistente, IViewTipoEvento {
     @BindView(R.id.recycler_view)  RecyclerView recyclerView;
     EventoAdapter mAdaptador;
     List<Evento> mLstEventos = new ArrayList<>();
@@ -52,7 +55,9 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
     public static final int REQUEST_PUBLICAR_EVENTO = 103;
     EventoPresenter eventoPresenter;
     AsistentesPresenter asistentesPresenter;
+    TiposEventoPresenter tiposEventoPresenter;
     int idEventoTemporal;
+    Beneficiario mBeneficiarioLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +68,9 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
 
+        mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         asistentesPresenter = new AsistentesPresenter(this);
+        tiposEventoPresenter = new TiposEventoPresenter(this);
         eventoPresenter = new EventoPresenter(this);
         recyclerView.setHasFixedSize(true);
         mAdaptador = new EventoAdapter(mLstEventos);
@@ -72,6 +79,37 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         cargarEventos();
+        obtenerDatos();
+    }
+
+    private void obtenerDatos(){
+        if (Utils.isOnline(this)) {
+            mostrarProgressDialog("Obteniendo evento publico actual ");
+            eventoPresenter.obtenerPublicoActual();
+            tiposEventoPresenter.list();
+        }
+    }
+
+    private void mensajeReintentar(String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(message);
+        builder.setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                obtenerDatos();
+                dialog.dismiss();
+
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
     }
 
     private void cargarEventos(){
@@ -80,10 +118,6 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
         mLstEventos.addAll(eventos);
         mAdaptador.notifyDataSetChanged();
 
-        if (eventos.size() == 0){
-            Intent i = new Intent(this, EventoActivity.class);
-            startActivityForResult(i, REQUEST_CREAR_EVENTO);
-        }
     }
 
     @Override
@@ -91,12 +125,17 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
         super.onPause();
         AppCar.VolleyQueue().cancelAll(LogTrayectos.TAG);
         AppCar.VolleyQueue().cancelAll(Asistentes.TAG);
+        AppCar.VolleyQueue().cancelAll(TiposEvento.TAG);
+        AppCar.VolleyQueue().cancelAll(Eventos.TAG);
     }
     @Override
     public void onDestroy(){
         super.onDestroy();
         AppCar.VolleyQueue().cancelAll(LogTrayectos.TAG);
         AppCar.VolleyQueue().cancelAll(Asistentes.TAG);
+        AppCar.VolleyQueue().cancelAll(TiposEvento.TAG);
+        AppCar.VolleyQueue().cancelAll(Eventos.TAG);
+
     }
 
     @Override
@@ -142,13 +181,17 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
         Evento evento = mLstEventos.get(position);
         idEventoTemporal = evento.IDEvento;
         if (evento != null) {
-            TipoEvento tipoEvento = new TiposEvento().read(evento.IDTipoEvento);
-            if (tipoEvento != null && tipoEvento.Recorrido) {
+            TipoEvento tipoEvento = evento.getTipoEvento();
+            if (tipoEvento == null) {
+                mostrarMensajeDialog("No fue posible obtener los tips de eventos, vuelva a ingresar");
+                return;
+            }
+            if (!tipoEvento.Recorrido || tipoEvento.Publico) {
+                publicar(evento);
+            } else {
                 Intent i = new Intent(this, PublicarEventoActivity.class);
                 i.putExtra(Evento.ID_EVENTO, evento.IDEvento);
                 startActivityForResult(i, REQUEST_PUBLICAR_EVENTO);
-            } else {
-                publicar(evento);
             }
         }
     }
@@ -196,9 +239,21 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
 
     @Override
     public void onIniciar(int position, View view) {
-        Intent intent = getIntent();
+
         Evento evento = mLstEventos.get(position);
         if (evento != null) {
+
+            if (evento.getTipoEvento() == null){
+                mostrarMensajeDialog("No fue posible obtener los tipos de eventos, vuelva a ingresar");
+                return;
+            }
+
+            if (evento.getTipoEvento().Publico && evento.IDResponsable != mBeneficiarioLogin.IDBeneficiario){
+                mostrarMensajeDialog("Usted no es el responsable de este evento, pero puede registrar asistencia  y tomar fotos");
+                return;
+            }
+
+            Intent intent = getIntent();
             intent.putExtra(Evento.ID_EVENTO, evento.IDEvento);
             setResult(RESULT_OK , intent);
             finish();
@@ -248,9 +303,23 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
     }
 
     @Override
+    public void onSuccessPublicoActual(Evento evento) {
+        ocultarProgressDialog();
+        cargarEventos();
+    }
+
+    @Override
     public void onErrorEvento(ErrorApi error) {
         ocultarProgressDialog();
         mostrarMensajeDialog(error.getMessage());
+    }
+
+    @Override
+    public void onErrorPublicoActual(ErrorApi error) {
+        AppCar.VolleyQueue().cancelAll(TiposEvento.TAG);
+        AppCar.VolleyQueue().cancelAll(Eventos.TAG);
+        ocultarProgressDialog();
+        mensajeReintentar(error.getMessage());
     }
 
     @Override
@@ -319,4 +388,17 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
             }
         }
     };
+
+    @Override
+    public void onSuccessTipoEvento(List<TipoEvento> lstTiposEvento) {
+        ocultarProgressDialog();
+    }
+
+    @Override
+    public void onErrorTiposEvento(ErrorApi error) {
+        AppCar.VolleyQueue().cancelAll(TiposEvento.TAG);
+        AppCar.VolleyQueue().cancelAll(Eventos.TAG);
+        ocultarProgressDialog();
+        mensajeReintentar(error.getMessage());
+    }
 }

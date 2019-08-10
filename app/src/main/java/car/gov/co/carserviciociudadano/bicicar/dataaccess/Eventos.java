@@ -27,6 +27,7 @@ import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
+import car.gov.co.carserviciociudadano.bicicar.interfaces.IBeneficiario;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.IEvento;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.ILogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.model.Evento;
@@ -46,20 +47,6 @@ public class Eventos {
 
     private static String[] projectionDefault()
     {
-       /* return new String[]{
-                "[" + Evento.ID_EVENTO + "]",
-                "[" + Evento.ID_COLEGIO + "]",
-                "[" + Evento.ID_TIPO_EVENTO + "]",
-                "[" + Evento.ID_RESPONSABLE + "]",
-                "[" + Evento.NOMBRE + "]",
-                "[" + Evento.F_INICIO + "]",
-                "[" + Evento.F_FIN + "]",
-                "[" + Evento.DESCRIPCION + "]",
-                "[" + Evento.PARTICIPANTES + "]",
-                "[" + Evento.DISTANCIA_KM + "]",
-                "[" + Evento.DURACION_MINUTOS + "]",
-                "[" + Evento.ESTADO + "]" };*/
-
 
         return new String[]{
 
@@ -396,5 +383,47 @@ public class Eventos {
 
         Evento element = gson.fromJson(json, Evento.class);
         return  element;
+    }
+
+    public void obtenerPublicoActual( final IEvento iEvento)
+    {
+        String url = Config.API_BICICAR_EVENTO_OBTENER_ACTUAL;
+
+        JsonObjectRequest objRequest = new JsonObjectRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        try {
+                            iEvento.onSuccessPublicoActual(Eventos.getItemFromJson(response.toString()));
+                        }catch (JsonSyntaxException ex){
+                            iEvento.onErrorPublicoActual(new ErrorApi(ex));
+                        }
+                    }
+                },	new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                iEvento.onErrorPublicoActual(new ErrorApi(error));
+            }
+        }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationBICICAR());
+                return headerMap;
+            }
+        };
+
+        objRequest.setTag(TAG);
+        objRequest.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        20000,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppCar.VolleyQueue().add(objRequest);
     }
 }

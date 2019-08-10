@@ -119,6 +119,9 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.PlaceSelec
             if (tipoEvento != null) {
                 lblTipo.setText(tipoEvento.Nombre + (tipoEvento.Recorrido ?  " | Con recorrido"  : ""));
                 lyIniciar.setVisibility(tipoEvento.Recorrido ? View.VISIBLE : View.GONE);
+                lyModificar.setVisibility(tipoEvento.Publico ? View.GONE : View.VISIBLE);
+                lyEliminar.setVisibility(tipoEvento.Publico ? View.GONE : View.VISIBLE);
+
             }
 
             if (item.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR){

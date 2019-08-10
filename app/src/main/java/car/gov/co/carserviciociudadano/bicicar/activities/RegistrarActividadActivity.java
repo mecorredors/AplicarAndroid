@@ -310,7 +310,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                     }
                     return true;
                 case R.id.item_ubicacion_beneficiarios:
-                    if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP) {
+                    if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.LIDER_GRUPO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP) {
                         i = new Intent(RegistrarActividadActivity.this, UbicacionBeneficiarioActivity.class);
                         startActivityForResult(i, REQUEST_UBICACION);
                     }else{
@@ -399,7 +399,13 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         for (Evento evento: lstEventos){
             TipoEvento tipoEvento = tiposEventoData.read(evento.IDTipoEvento);
             if (tipoEvento.Recorrido){
-                return  evento;
+                if (tipoEvento.Publico){
+                    if (evento.IDResponsable == mBeneficiarioLogin.IDBeneficiario){
+                        return evento;
+                    }
+                }else {
+                    return evento;
+                }
             }
         }
         return null;
@@ -493,14 +499,17 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
 
     }
 
-    @OnClick(R.id.btnPublicarMiUbicacion) void onPublicarMiUbicacion(){
+    private void publicarUbicacion(){
         if (!Utils.isOnline(this)){
-            mostrarMensajeDialog("No hay conexión a internet");
+            mostrarMensajeDialog(getResources().getString(R.string.error_publicar_ubicacion));
             return;
         }
         mostrarProgressDialog("publicando ubicación");
         BeneficiarioPresenter beneficiarioPresenter = new BeneficiarioPresenter(this);
         beneficiarioPresenter.publicarBeneficiarioLogin(mBeneficiarioLogin);
+    }
+    @OnClick(R.id.btnPublicarMiUbicacion) void onPublicarMiUbicacion(){
+        publicarUbicacion();
     }
 
     @OnClick(R.id.btnEscanearCodigo) void onEscaner(){
@@ -529,7 +538,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         }
 
         if (hayTrayectosEvento){
-            mostrarMensajeDialog("La asistencia de eventos se debe pubilcar desde el listado de eventos");
+            mostrarMensajeDialog("La asistencia de eventos se debe publicar desde el listado de eventos");
             return;
         }
 
@@ -701,6 +710,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
            obtenerItemsActividad();
        }else if (requestCode == REQUEST_UBICACION && resultCode == RESULT_OK){
            mBeneficiarioLogin = Beneficiarios.readBeneficio();
+           publicarUbicacion();
            btnPublicarMiUbicacion.setVisibility(mBeneficiarioLogin.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR ? View.VISIBLE : View.GONE);
        }else if (requestCode == REQUEST_EVENTOS && resultCode == RESULT_OK){
            int idEvento = data.getIntExtra(Evento.ID_EVENTO, 0);

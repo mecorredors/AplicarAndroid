@@ -30,6 +30,7 @@ public class BeneficiariosAdapter extends RecyclerView.Adapter<BeneficiariosAdap
 
 
         private TextView lblNombre;
+        private TextView lblColegio;
         private TextView lblCurso;
         private CheckBox cheAsistencia;
 
@@ -37,6 +38,7 @@ public class BeneficiariosAdapter extends RecyclerView.Adapter<BeneficiariosAdap
             super(itemView);
 
             lblNombre = itemView.findViewById(R.id.lblNombre);
+            lblColegio = itemView.findViewById(R.id.lblColegio);
             lblCurso = itemView.findViewById(R.id.lblCurso);
             cheAsistencia = itemView.findViewById(R.id.cheAsistencia);
 
@@ -48,6 +50,7 @@ public class BeneficiariosAdapter extends RecyclerView.Adapter<BeneficiariosAdap
             lblCurso.setText(b.Curso);
             cheAsistencia.setChecked(b.Selected);
             cheAsistencia.setEnabled(b.Enabled);
+
         }
 
         @Override

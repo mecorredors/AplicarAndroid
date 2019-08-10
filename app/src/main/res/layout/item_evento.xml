@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_16dp"
                 android:text="Nombre"
-                android:textSize="@dimen/text_size_16"
+                android:textSize="@dimen/text_size_14"
                 android:textColor="@color/primaryText"
                 />
             <TextView android:id="@+id/lblDescripcion"
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_16dp"
                 android:text="Descripcion"
-                android:textSize="@dimen/text_size_16"
+                android:textSize="@dimen/text_size_14"
                 android:textColor="@color/primaryText"
                 android:layout_marginTop="@dimen/margin_4dp"
                 />
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_16dp"
                 android:text="Tipo"
-                android:textSize="@dimen/text_size_16"
+                android:textSize="@dimen/text_size_14"
                 android:textColor="@color/primaryText"
                 android:layout_marginTop="@dimen/margin_4dp"
                 />

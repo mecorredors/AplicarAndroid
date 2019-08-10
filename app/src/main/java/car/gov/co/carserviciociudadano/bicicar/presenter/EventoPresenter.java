@@ -6,8 +6,10 @@ import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Eventos;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.TiposEvento;
 import car.gov.co.carserviciociudadano.bicicar.interfaces.IEvento;
 import car.gov.co.carserviciociudadano.bicicar.model.Evento;
+import car.gov.co.carserviciociudadano.bicicar.model.TipoEvento;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class EventoPresenter implements IEvento {
@@ -15,6 +17,10 @@ public class EventoPresenter implements IEvento {
 
     public EventoPresenter(IViewEvento iViewEvento){
         this.iViewEvento = iViewEvento;
+    }
+
+    public void obtenerPublicoActual(){
+        new Eventos().obtenerPublicoActual(this);
     }
 
     public Evento read(int idEvento){
@@ -30,7 +36,7 @@ public class EventoPresenter implements IEvento {
     }
 
     public void eliminar(Evento evento) {
-        if (Utils.isOnline(AppCar.getContext()) && evento.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR) {
+        if (Utils.isOnline(AppCar.getContext()) && evento.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR ) {
             new Eventos().eliminar(evento, this);
         }else{
             onSuccessEliminar(evento);
@@ -66,7 +72,24 @@ public class EventoPresenter implements IEvento {
     }
 
     @Override
+    public void onSuccessPublicoActual(Evento evento) {
+        Evento item = read(evento.IDEvento);
+        if (item == null){
+            insert(evento);
+        }else{
+            evento.Estado = item.Estado;
+            update(evento);
+        }
+        iViewEvento.onSuccessPublicoActual(evento);
+    }
+
+    @Override
     public void onError(ErrorApi error) {
         iViewEvento.onErrorEvento(error);
+    }
+
+    @Override
+    public void onErrorPublicoActual(ErrorApi error) {
+        iViewEvento.onErrorPublicoActual(error);
     }
 }

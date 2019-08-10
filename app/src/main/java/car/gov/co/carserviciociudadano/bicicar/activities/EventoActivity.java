@@ -261,7 +261,9 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
 
 
             Colegio colegio = new Colegios().read(mEvento.IDColegio);
-            txtColegio.setText(colegio.Nombre);
+            if (colegio != null) {
+                txtColegio.setText(colegio.Nombre);
+            }
         }
     }
 
@@ -433,9 +435,19 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     }
 
     @Override
+    public void onSuccessPublicoActual(Evento evento) {
+
+    }
+
+    @Override
     public void onErrorEvento(ErrorApi error) {
         ocultarProgressDialog();
         mostrarMensajeDialog(error.getMessage());
+    }
+
+    @Override
+    public void onErrorPublicoActual(ErrorApi error) {
+
     }
 
     @Override
@@ -468,7 +480,8 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     public void onErrorRecordarClave(ErrorApi error){}
     @Override
     public void onError(ErrorApi error) {
-
+        ocultarProgressDialog();
+        mostrarMensajeDialog(error.getMessage());
     }
 
     /// Iview lugares

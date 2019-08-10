@@ -7,5 +7,8 @@ public interface IEvento {
     void onSuccess(Evento evento);
     void onSuccessModificar(Evento evento);
     void onSuccessEliminar(Evento evento);
+    void onSuccessPublicoActual(Evento evento);
     void onError(ErrorApi error);
+    void onErrorPublicoActual(ErrorApi error);
+
 }

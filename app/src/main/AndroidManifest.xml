@@ -205,7 +205,8 @@
             android:theme="@style/AppThemeBicicar" />
         <activity
             android:name=".bicicar.activities.BeneficiariosActivity"
-            android:label="@string/title_asistencia" />
+            android:label="@string/title_asistencia"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".bicicar.activities.SeguirRutaActivity"
             android:label="@string/title_activity_seguir_ruta"

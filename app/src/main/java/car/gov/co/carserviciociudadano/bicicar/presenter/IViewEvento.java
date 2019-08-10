@@ -9,5 +9,7 @@ public interface IViewEvento extends IView {
     void onSuccess(Evento evento);
     void onSuccessModificar(Evento evento);
     void onSuccessEliminar(Evento evento);
+    void onSuccessPublicoActual(Evento evento);
     void onErrorEvento(ErrorApi error);
+    void onErrorPublicoActual(ErrorApi error);
 }

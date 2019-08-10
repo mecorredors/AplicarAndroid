@@ -131,6 +131,10 @@ public class BeneficiarioPresenter implements IBeneficiario {
         new Beneficiarios().listarItems(curso, idColegio, this);
     }
 
+    public   List<Beneficiario> listAllLocal(){
+        return new Beneficiarios().List();
+    }
+
     public   List<Beneficiario> listLocal(int idColegio){
         return new Beneficiarios().List(idColegio);
     }

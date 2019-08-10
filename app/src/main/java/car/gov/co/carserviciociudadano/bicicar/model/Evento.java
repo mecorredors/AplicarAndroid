@@ -5,6 +5,7 @@ import android.database.Cursor;
 import java.util.Date;
 
 import car.gov.co.carserviciociudadano.Utils.Utils;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.TiposEvento;
 import car.gov.co.carserviciociudadano.common.ModelBase;
 
 public class Evento  extends ModelBase {
@@ -33,6 +34,7 @@ public class Evento  extends ModelBase {
     public String Norte;
     public String Este;
     public double Altitud;
+    public TipoEvento _TipoEvento;
 
     public static final String TABLE_NAME = "Eventos";
 
@@ -87,5 +89,12 @@ public class Evento  extends ModelBase {
         if(c.getColumnIndex(NORTE)>=0) this.Norte = c.getString(c.getColumnIndex(NORTE));
         if(c.getColumnIndex(ESTE)>=0) this.Este = c.getString(c.getColumnIndex(ESTE));
         if(c.getColumnIndex(ALTITUD)>=0) this.Altitud = c.getDouble(c.getColumnIndex(ALTITUD));
+    }
+
+    public TipoEvento getTipoEvento(){
+        if (_TipoEvento == null)
+            _TipoEvento = new TiposEvento().read(IDTipoEvento);
+
+        return _TipoEvento;
     }
 }
