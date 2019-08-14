@@ -319,7 +319,11 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
         AppCar.VolleyQueue().cancelAll(TiposEvento.TAG);
         AppCar.VolleyQueue().cancelAll(Eventos.TAG);
         ocultarProgressDialog();
-        mensajeReintentar(error.getMessage());
+        if  (error.getStatusCode() == 404){
+            mostrarMensaje(error.getMessage());
+        }else {
+            mensajeReintentar(error.getMessage());
+        }
     }
 
     @Override

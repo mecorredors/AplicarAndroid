@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -547,7 +548,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
                         public void onClick(View view) {
                             Lugar municipio = (Lugar) spiMunicipio.getSelectedItem();
                             if (municipio!= null)
-                                mLugaresPresenter.obtenerMunicipios(municipio.getIDLugar());
+                                mLugaresPresenter.obtenerVeredas(municipio.getIDLugar());
                         }
                     })
                     .show();
@@ -816,7 +817,7 @@ private  void obtenerBeneficiarios(){
     @Override
     public void onErrorCuencas(ErrorApi errorApi) {
         pbCuenca.setVisibility(View.GONE);
-        Snackbar.make(lyPrincipal, getResources().getString(R.string.error_load_municipios), Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(lyPrincipal, getResources().getString(R.string.error_load_cuencas) , Snackbar.LENGTH_INDEFINITE)
                 .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
                 .setAction("REINTENTAR", new View.OnClickListener() {
                     @Override
@@ -825,6 +826,7 @@ private  void obtenerBeneficiarios(){
                     }
                 })
                 .show();
+        Log.e("eventoActivity", errorApi.getMessage());
     }
 
     @Override
