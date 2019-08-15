@@ -10,7 +10,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,11 +21,13 @@ import android.widget.TimePicker;
 
 import com.stacktips.view.CalendarListener;
 import com.stacktips.view.CustomCalendarView;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import car.gov.co.carserviciociudadano.AppCar;
@@ -45,13 +46,10 @@ import car.gov.co.carserviciociudadano.bicicar.model.Colegio;
 import car.gov.co.carserviciociudadano.bicicar.model.Cuenca;
 import car.gov.co.carserviciociudadano.bicicar.model.Evento;
 import car.gov.co.carserviciociudadano.bicicar.model.TipoEvento;
-import car.gov.co.carserviciociudadano.bicicar.model.UbicacionBeneficiario;
 import car.gov.co.carserviciociudadano.bicicar.presenter.BeneficiarioPresenter;
-import car.gov.co.carserviciociudadano.bicicar.presenter.ColegiosPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.CuencasPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.EventoPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewBeneficiario;
-import car.gov.co.carserviciociudadano.bicicar.presenter.IViewColegio;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewCuenca;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewEvento;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewTipoEvento;
@@ -65,7 +63,6 @@ import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewElevatio
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewLugares;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.LugaresPresenter;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-import car.gov.co.carserviciociudadano.parques.model.Municipio;
 
 
 public class EventoActivity extends BaseActivity implements IViewEvento, IViewTipoEvento, IViewBeneficiario, IViewLugares,  AdapterView.OnItemSelectedListener, IViewCuenca , IViewElevation {
@@ -175,8 +172,8 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         eventoPresenter = new EventoPresenter(this);
         beneficiarioPresenter = new BeneficiarioPresenter(this);
         mElevationPresenter = new ElevationPresenter(this);
+
         obtenerDatos();
-        obtenerCuencas();
 
         txtColegio.setOnClickListener(onClickListener);
         btnGuardar.setOnClickListener(onClickListener);
@@ -268,16 +265,15 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         }
     }
 
-    private void obtenerCuencas(){
-        pbCuenca.setVisibility(View.VISIBLE);
-        mCuencasPresenter.getCuencas();
-    }
     private  void obtenerDatos(){
         pbTipoEvento.setVisibility(View.VISIBLE);
         tiposEventoPresenter.list();
 
         pbMunicipio.setVisibility(View.VISIBLE);
         mLugaresPresenter.obtenerMunicipios(ID_CUNDINAMARCA);
+
+        pbCuenca.setVisibility(View.VISIBLE);
+        mCuencasPresenter.getCuencas();
 
     }
 
@@ -358,7 +354,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
                return i;
             i++;
         }
-        return i;
+        return 0;
     }
 
     public int getMunicipiosPosition(String idMunicipio){
@@ -368,7 +364,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
                 return i;
             i++;
         }
-        return i;
+        return 0;
     }
 
     public int getCuencaPosition(int idCuenca){
@@ -378,7 +374,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
                 return i;
             i++;
         }
-        return i;
+        return 0;
     }
 
     public int getVeredaPosition(String idVereda){
@@ -388,7 +384,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
                 return i;
             i++;
         }
-        return i;
+        return 0;
     }
 
     @Override
@@ -403,7 +399,6 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     public void onDestroy(){
         super.onDestroy();
         AppCar.VolleyQueue().cancelAll(TiposEvento.TAG);
-        AppCar.VolleyQueue().cancelAll(Colegios.TAG);
         AppCar.VolleyQueue().cancelAll(Beneficiarios.TAG);
         AppCar.VolleyQueue().cancelAll(Lugares.TAG);
         AppCar.VolleyQueue().cancelAll(Cuencas.TAG);
@@ -453,7 +448,6 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
 
     @Override
     public void onErrorTiposEvento(ErrorApi error) {
-        pbTipoEvento.setVisibility(View.GONE);
         mostrarErrorDatos(error);
     }
     @Override
@@ -523,18 +517,8 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
 
     @Override
     public void onErrorMunicipios(ErrorApi errorApi) {
-        pbMunicipio.setVisibility(View.GONE);
-        Snackbar.make(lyPrincipal, getResources().getString(R.string.error_load_municipios), Snackbar.LENGTH_INDEFINITE)
-                .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
-                .setAction("REINTENTAR", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        mLugaresPresenter.obtenerMunicipios(ID_CUNDINAMARCA);
-                    }
-                })
-                .show();
-
+        errorApi.setMessage(getResources().getString(R.string.error_load_municipios));
+        mostrarErrorDatos(errorApi);
  }
 
     @Override
@@ -585,6 +569,13 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
 
 
     private  void mostrarErrorDatos(ErrorApi error){
+        AppCar.VolleyQueue().cancelAll(TiposEvento.TAG);
+        AppCar.VolleyQueue().cancelAll(Lugares.TAG);
+        AppCar.VolleyQueue().cancelAll(Cuencas.TAG);
+
+        pbCuenca.setVisibility(View.GONE);
+        pbMunicipio.setVisibility(View.GONE);
+        pbTipoEvento.setVisibility(View.GONE);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(EventoActivity.this);
         builder.setMessage(error.getMessage());
@@ -593,7 +584,6 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
             public void onClick(DialogInterface dialog, int which) {
                 obtenerDatos();
                 dialog.dismiss();
-
 
             }
         });
@@ -623,7 +613,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
                     ocultarTeclado(lyPrincipal);
                     break;
                 case R.id.btnGuardar:
-                    obtenerBeneficiarios();
+                    preGuaradar();
                     break;
                 case R.id.txtColegio:
                     Intent i = new Intent(EventoActivity.this, ColegiosActivity.class);
@@ -656,7 +646,9 @@ private  void obtenerBeneficiarios(){
 
         if (Validation.IsEmpty(txtFechaFin)) res = false;
         if (Validation.IsEmpty(txtFechaInicio)) res = false;
-        if (Validation.IsEmpty(spiTipoEvento)) res = false;
+        if (mIdEvento == 0 || (mIdEvento > 0 && mLstTiposEvento.size() > 1) ) { // no se valida en edicion si no hay internet y no pudo obtener tipo
+            if (Validation.IsEmpty(spiTipoEvento)) res = false;
+        }
         if (Validation.IsEmpty(txtNombre, lyNombre)) res = false;
         if (Validation.IsEmpty(txtDescripcion)) res = false;
         if (Validation.IsEmpty(txtColegio)) res = false;
@@ -667,18 +659,12 @@ private  void obtenerBeneficiarios(){
             if (Validation.IsEmpty(txtDistanciaKM, lyDistanciaKM)) res = false;
             if (Validation.IsEmpty(txtDuracionMinutos, lyDuracionMinutos)) res = false;
 
-        }else{
-            if (Validation.IsEmpty(txtLatitud, lyLatitude)) res = false;
-            if (Validation.IsEmpty(txtLongitud, lyLongitud)) res = false;
-            if (Validation.IsEmpty(txtNorte, lyNorte)) res = false;
-            if (Validation.IsEmpty(txtEste, lyEste)) res = false;
-            if (Validation.IsEmpty(txtAltitud, lyAltitud)) res = false;
         }
         if (Validation.IsEmpty(txtHoraInicio, lyHoraInicio)) res = false;
         if (Validation.IsEmpty(txtHoraFin, lyHoraFin)) res = false;
-        if (Validation.IsEmpty(spiCuenca)) res = false;
-        if (Validation.IsEmpty(spiMunicipio)) res = false;
-
+        if (mIdEvento == 0 || (mIdEvento > 0 && mLstMunicipios.size() > 1) ) {
+            if (Validation.IsEmpty(spiMunicipio)) res = false;
+        }
 
         Calendar fechaActual = Calendar.getInstance();
 
@@ -698,6 +684,18 @@ private  void obtenerBeneficiarios(){
         return res;
     }
 
+    private void preGuaradar(){
+
+        if (mIdEvento == 0 || ( mLstMunicipios.size() > 1 && mLstCuencas.size() > 1)) {
+            obtenerBeneficiarios();
+        }else{
+            if (eventoPresenter.update(mEvento)) {
+                mostrarMensajeEventoCreado();
+            }else{
+                mostrarMensajeDialog("Error al guardar evento en el teléfono");
+            }
+        }
+    }
     private void guardar(){
         TipoEvento tipoEvento =  (TipoEvento) spiTipoEvento.getSelectedItem();
 
@@ -712,17 +710,26 @@ private  void obtenerBeneficiarios(){
             mEvento.DuracionMinutos = Utils.convertFloat(txtDuracionMinutos.getText().toString());
         }
 
-        Lugar municipio = (Lugar) spiMunicipio.getSelectedItem();
-        if (municipio != null) {
-            mEvento.IDMunicipio = municipio.getIDLugar();
+        if (mLstMunicipios.size() > 1) {
+            Lugar municipio = (Lugar) spiMunicipio.getSelectedItem();
+            if (municipio != null) {
+                mEvento.IDMunicipio = municipio.getIDLugar();
+            }
         }
-        Lugar vereda = (Lugar) spiVereda.getSelectedItem();
-        if (vereda != null) {
-            mEvento.IDVereda = vereda.getIDLugar();
+
+        if (mLstVeredas.size() > 1) {
+
+            Lugar vereda = (Lugar) spiVereda.getSelectedItem();
+            if (vereda != null) {
+                mEvento.IDVereda = vereda.getIDLugar();
+            }
         }
-        Cuenca cuenca = (Cuenca) spiCuenca.getSelectedItem();
-        if (cuenca != null) {
-            mEvento.IDCuenca = cuenca.IDCuenca;
+
+        if (mLstCuencas.size() > 1) {
+            Cuenca cuenca = (Cuenca) spiCuenca.getSelectedItem();
+            if (cuenca != null) {
+                mEvento.IDCuenca = cuenca.IDCuenca;
+            }
         }
 
         mEvento.Predio = txtPredio.getText().toString();
@@ -816,17 +823,8 @@ private  void obtenerBeneficiarios(){
 
     @Override
     public void onErrorCuencas(ErrorApi errorApi) {
-        pbCuenca.setVisibility(View.GONE);
-        Snackbar.make(lyPrincipal, getResources().getString(R.string.error_load_cuencas) , Snackbar.LENGTH_INDEFINITE)
-                .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
-                .setAction("REINTENTAR", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        obtenerCuencas();
-                    }
-                })
-                .show();
-        Log.e("eventoActivity", errorApi.getMessage());
+        errorApi.setMessage(getResources().getString(R.string.error_load_cuencas));
+        mostrarErrorDatos(errorApi);
     }
 
     @Override
@@ -839,14 +837,25 @@ private  void obtenerBeneficiarios(){
     @Override
     public void onErrrorElevation(int statusCode) {
         ocultarProgressDialog();
-        Snackbar.make(lyPrincipal, getResources().getString(R.string.error_load_elevation), Snackbar.LENGTH_INDEFINITE)
-                .setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
-                .setAction("REINTENTAR", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                         mElevationPresenter.getElevation(mEvento.Latitud,mEvento.Longitud);
-                    }
-                })
-                .show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(EventoActivity.this);
+        builder.setMessage(getResources().getString(R.string.error_load_elevation));
+        builder.setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mElevationPresenter.getElevation(mEvento.Latitud,mEvento.Longitud);
+                dialog.dismiss();
+
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        builder.show();
+
     }
 }

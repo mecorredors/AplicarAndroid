@@ -294,6 +294,8 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
 
     @Override
     public void onSuccessModificar(Evento evento) {
+        ocultarProgressDialog();
+        actualizarEstadoEvento(evento.IDEvento);
     }
     @Override
     public void onSuccessEliminar(Evento evento) {
@@ -380,8 +382,8 @@ public class EventosActivity extends BaseActivity implements EventoAdapter.Event
     IViewArchivoAdjunto iViewArchivoAdjunto = new IViewArchivoAdjunto() {
         @Override
         public void onSuccessArchivosAdjunto(List<ArchivoAdjunto> lstArchivoAdjunto) {
-            ocultarProgressDialog();
-            actualizarEstadoEvento(idEventoTemporal);
+            Evento evento = eventoPresenter.read(idEventoTemporal);
+            eventoPresenter.modificar(evento);
         }
 
         @Override
