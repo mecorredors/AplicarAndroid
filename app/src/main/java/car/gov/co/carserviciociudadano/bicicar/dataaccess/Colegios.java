@@ -168,7 +168,7 @@ public class Colegios {
     {   synchronized (this) {
         InitDbHelper();
         SQLiteDatabase db = _dbHelper.getReadableDatabase();
-        List<Colegio> lstEventos = new ArrayList<>();
+        List<Colegio> lstColegios = new ArrayList<>();
 
         try {
 
@@ -176,7 +176,7 @@ public class Colegios {
 
             if (c.moveToFirst()) {
                 do {
-                    lstEventos.add(new Colegio(c));
+                    lstColegios.add(new Colegio(c));
                 } while (c.moveToNext());
             }
             c.close();
@@ -186,10 +186,47 @@ public class Colegios {
 
         db.close();
 
-        return lstEventos;
+        return lstColegios;
     }
     }
 
+    public List<Colegio> conEstudiates(){
+
+        String sql = "Select a."+ Colegio.ID_COLEGIO + ",a." + Colegio.NOMBRE +
+                 " From " + Colegio.TABLE_NAME + " a Inner join " + Beneficiario.TABLE_NAME +
+                " b ON a." + Colegio.ID_COLEGIO  + " = b." + Beneficiario.ID_COLEGIO +
+                " group by a."+ Colegio.ID_COLEGIO  + ",a." + Colegio.NOMBRE;
+
+        Log.d(Colegios.TAG , sql);
+        return query(sql);
+    }
+
+
+    private List<Colegio> query(String sql){
+        synchronized (this) {
+            InitDbHelper();
+            SQLiteDatabase db = _dbHelper.getReadableDatabase();
+            List<Colegio> lstColegios = new ArrayList<>();
+
+            try {
+
+                Cursor c = db.rawQuery(sql, null);
+
+                if (c.moveToFirst()) {
+                    do {
+                        lstColegios.add(new Colegio(c));
+                    } while (c.moveToNext());
+                }
+                c.close();
+            } catch (Exception ex) {
+                Log.d(TAG, ex.getMessage());
+            }
+
+            db.close();
+
+            return lstColegios;
+        }
+    }
     public Colegio read(int id)
     {
         synchronized (this) {

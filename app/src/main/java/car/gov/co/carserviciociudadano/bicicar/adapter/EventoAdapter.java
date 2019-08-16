@@ -123,7 +123,6 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.PlaceSelec
                 lyEliminar.setVisibility(tipoEvento.Publico ? View.GONE : View.VISIBLE);
 
             }
-
             if (item.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR){
                 imgEstado.setImageDrawable(AppCar.getContext().getResources().getDrawable(ic_warning_yellow_24dp));
                 lblEstado.setText(AppCar.getContext().getResources().getString(R.string.pendiente_publicar));

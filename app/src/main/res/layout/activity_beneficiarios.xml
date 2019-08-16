@@ -7,16 +7,32 @@
     android:background="@color/background"
     tools:context="car.gov.co.carserviciociudadano.bicicar.activities.BeneficiariosActivity">
 
-
+<LinearLayout android:id="@+id/lyOpciones"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:orientation="vertical">
     <TextView android:id="@+id/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:text="@string/titulo_registrar_asistencia"
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_marginLeft="@dimen/margin_16dp"
         android:layout_marginRight="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_10dp"/>
+
+    <FrameLayout android:id="@+id/lySpiColegios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario"
+         >
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spiColegio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </android.support.v7.widget.AppCompatSpinner>
+    </FrameLayout>
 
     <FrameLayout android:id="@+id/lyBuscar"
         android:layout_width="match_parent"
@@ -39,7 +55,7 @@
             android:layout_gravity="right"
             android:src="@drawable/ic_search_blue_36dp"/>
     </FrameLayout>
-
+</LinearLayout>
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/recycler_view"
@@ -47,7 +63,7 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_below="@id/titulo"
+        android:layout_below="@id/lyOpciones"
         android:layout_above="@id/btnGuardarAsistencia"
         />
 

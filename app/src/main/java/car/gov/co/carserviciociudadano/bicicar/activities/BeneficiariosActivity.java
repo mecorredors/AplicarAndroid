@@ -15,11 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ import car.gov.co.carserviciociudadano.bicicar.adapter.BeneficiariosAdapter;
 import car.gov.co.carserviciociudadano.bicicar.adapter.LogTrayectoAdapter;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Asistentes;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Colegios;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Eventos;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.LogTrayectos;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.TiposEvento;
@@ -51,6 +55,7 @@ import car.gov.co.carserviciociudadano.bicicar.presenter.BeneficiarioPresenter;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewAsistente;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewBeneficiario;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
+import car.gov.co.carserviciociudadano.denunciaambiental.model.Lugar;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class BeneficiariosActivity extends BaseActivity implements IViewBeneficiario, BeneficiariosAdapter.BeneficiarioListener  {
@@ -58,12 +63,14 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
     @BindView(R.id.btnGuardarAsistencia) Button btnGuardarAsistencia;
     @BindView(R.id.txtBuscar) EditText txtBuscar;
     @BindView(R.id.btnBuscar) ImageButton btnBuscar;
-
+    @BindView(R.id.spiColegio) Spinner spiColegio;
+    @BindView(R.id.lySpiColegios)    View lySpiColegios;
     Beneficiario mBeneficiarioLogin;
     BeneficiariosAdapter mAdaptador;
     List<Beneficiario> mLstBeneficiarios = new ArrayList<>();
     List<Beneficiario> mLstCopyBeneficiarios = new ArrayList<>();
-
+    List<Colegio> mLstColegios = new ArrayList<>();
+    ArrayAdapter<Colegio> adapterColegios;
     BeneficiarioPresenter beneficiarioPresenter;
     private Evento mEvento;
     private AsistentesPresenter asistentesPresenter;
@@ -95,9 +102,24 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
         asistentesPresenter = new AsistentesPresenter(iViewAsistente);
 
         List<Beneficiario> lstBeneficiarios;
+        lySpiColegios.setVisibility(View.GONE);
         if (mEvento != null) {
             if (mEvento.getTipoEvento().Publico){
-                lstBeneficiarios = beneficiarioPresenter.listAllLocal();
+
+                lySpiColegios.setVisibility(View.VISIBLE);
+
+                mLstColegios.addAll(new Colegios().conEstudiates());
+                adapterColegios = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, mLstColegios);
+                adapterColegios.setDropDownViewResource( R.layout.simple_spinner_dropdown_item);
+                spiColegio.setAdapter(adapterColegios);
+
+                lstBeneficiarios = mLstColegios.size() > 0 ? beneficiarioPresenter.listLocal(mLstColegios.get(0).IDColegio) : beneficiarioPresenter.listAllLocal();
+                onItemSelecteColegio();
+
+                if (mLstColegios.size() == 0){
+                    mostrarMensajeDialog("Debe descargar instituciones y estudiantes para registrar asistencia de otras instituciones");
+                }
+
             }else {
                 lstBeneficiarios = beneficiarioPresenter.listLocal(mEvento.IDColegio);
             }
@@ -127,6 +149,26 @@ public class BeneficiariosActivity extends BaseActivity implements IViewBenefici
                     handled = true;
                 }
                 return handled;
+            }
+        });
+    }
+
+    private void onItemSelecteColegio(){
+        spiColegio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                txtBuscar.setText("");
+                Colegio colegio = mLstColegios.get(i);
+                if (colegio != null ){
+                    List<Beneficiario> lstBeneficiarios =  beneficiarioPresenter.listLocal(colegio.IDColegio);
+                    asistentesPresenter.desabilitarYaRegistrados(lstBeneficiarios, mEvento.IDEvento);
+                    onSuccess(lstBeneficiarios);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }

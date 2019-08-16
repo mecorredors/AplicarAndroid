@@ -172,7 +172,9 @@
     <string name="title_crear_evento">Crear evento</string>
     <string name="title_vento">Evento</string>
     <string name="publicado">Publicado</string>
-    <string name="seleccione_ubicacion_evento">Seleccione ubicación del evento</string>
+    <string name="seleccione_ubicacion_evento"> Ubicacar en mapa</string>
+    <string name="presicion"> Presición</string>
+
     <string name="error_publicar_ubicacion">Su ubicación fue guardada correctamente pero debe publicarla cuando haya conexión a internet</string>
     <string name="error_load_cuencas">No fue posible obtener las cuencas</string>
     <!-- petcar -->

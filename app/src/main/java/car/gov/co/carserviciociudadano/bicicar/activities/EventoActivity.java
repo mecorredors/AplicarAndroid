@@ -1,15 +1,22 @@
 package car.gov.co.carserviciociudadano.bicicar.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.stacktips.view.CalendarListener;
@@ -63,7 +71,10 @@ import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewElevatio
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewLugares;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.LugaresPresenter;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
-
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.widget.Toast;
 
 public class EventoActivity extends BaseActivity implements IViewEvento, IViewTipoEvento, IViewBeneficiario, IViewLugares,  AdapterView.OnItemSelectedListener, IViewCuenca , IViewElevation {
 
@@ -102,12 +113,15 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     @BindView(R.id.lyNorte)  TextInputLayout lyNorte;
     @BindView(R.id.lyEste)  TextInputLayout lyEste;
     @BindView(R.id.txtPredio)  EditText txtPredio;
+    @BindView(R.id.btnUbicacionEventoMapa)   Button btnUbicacionEventoMapa;
     @BindView(R.id.btnUbicacionEvento)   Button btnUbicacionEvento;
+    @BindView(R.id.pbUbicacion)   ProgressBar pbUbicacion;
     @BindView(R.id.lyUbicacion)   View lyUbicacion;
     @BindView(R.id.txtHoraInicio)   EditText txtHoraInicio;
     @BindView(R.id.txtHoraFin)   EditText txtHoraFin;
     @BindView(R.id.lyHoraInicio)  TextInputLayout lyHoraInicio;
     @BindView(R.id.lyHoraFin)  TextInputLayout lyHoraFin;
+    @BindView(R.id.lblPresicion) TextView lblPresicion;
 
     TiposEventoPresenter tiposEventoPresenter;
     EventoPresenter eventoPresenter;
@@ -131,6 +145,14 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     private static final String ID_CUNDINAMARCA = "25";
     private static final String CERO = "0";
     private static final String DOS_PUNTOS = ":";
+
+    private LocationManager mLocationManager;
+    boolean isRunning = false;
+    private float mAccuracy = Float.MAX_VALUE;
+    boolean gps_enabled=false;
+    boolean network_enabled=false;
+    private  boolean isRunningElevation = false;
+    public  final static int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,6 +199,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
 
         txtColegio.setOnClickListener(onClickListener);
         btnGuardar.setOnClickListener(onClickListener);
+        btnUbicacionEventoMapa.setOnClickListener(onClickListener);
         btnUbicacionEvento.setOnClickListener(onClickListener);
         txtFechaInicio.setOnClickListener(onClickListener);
         txtFechaFin.setOnClickListener(onClickListener);
@@ -403,6 +426,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         AppCar.VolleyQueue().cancelAll(Lugares.TAG);
         AppCar.VolleyQueue().cancelAll(Cuencas.TAG);
         AppCar.VolleyQueue().cancelAll(Elevation.TAG);
+        cancel();
     }
 
     @Override
@@ -621,6 +645,10 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
                     startActivityForResult(i , REQUEST_COLEGIOS);
                     break;
                 case R.id.btnUbicacionEvento:
+                    localizacion();
+                    break;
+                case R.id.btnUbicacionEventoMapa:
+                    cancel();
                     Intent j = new Intent(EventoActivity.this , UbicacionBeneficiarioActivity.class);
                     j.putExtra(UbicacionBeneficiarioActivity.RETORNAR_UBICACION , true);
                     startActivityForResult(j , REQUEST_UBICACION);
@@ -685,7 +713,7 @@ private  void obtenerBeneficiarios(){
     }
 
     private void preGuaradar(){
-
+        cancel();
         if (mIdEvento == 0 || ( mLstMunicipios.size() > 1 && mLstCuencas.size() > 1)) {
             obtenerBeneficiarios();
         }else{
@@ -793,18 +821,9 @@ private  void obtenerBeneficiarios(){
                 Colegio colegio = new Colegios().read(mEvento.IDColegio);
                 spiMunicipio.setSelection(getMunicipiosPosition(colegio.IDMunicipio));
             }else if (requestCode == REQUEST_UBICACION){
-                mEvento.Latitud = Utils.round(7 , data.getDoubleExtra(UbicacionBeneficiarioActivity.LATITUDE, 0));
-                mEvento.Longitud = Utils.round(7 ,data.getDoubleExtra(UbicacionBeneficiarioActivity.LONGITUDE, 0));
-                txtLatitud.setText(String.valueOf(mEvento.Latitud));
-                txtLongitud.setText(String.valueOf(mEvento.Longitud));
-                SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(mEvento.Latitud, mEvento.Longitud);
-                sexaDecimalCoordinate.ConvertToFlatCoordinate();
-                mEvento.Norte = String.valueOf(Utils.round(0, sexaDecimalCoordinate.get_coorPlanaNorteFinal())).replace(".0","");
-                mEvento.Este = String.valueOf(Utils.round(0, sexaDecimalCoordinate.get_coorPlanaEsteFinal())).replace(".0","");
-                txtNorte.setText(mEvento.Norte);
-                txtEste.setText(mEvento.Este);
-                mostrarProgressDialog("Obteniendo Altitud", true);
-                mElevationPresenter.getElevation(mEvento.Latitud , mEvento.Longitud);
+
+                mAccuracy = Float.MAX_VALUE;
+                setResult(data.getDoubleExtra(UbicacionBeneficiarioActivity.LATITUDE, 0), data.getDoubleExtra(UbicacionBeneficiarioActivity.LONGITUDE, 0), 0,0);
             }
         }
     }
@@ -829,6 +848,7 @@ private  void obtenerBeneficiarios(){
 
     @Override
     public void onSuccessElevation(double elevation) {
+        isRunningElevation = false;
         ocultarProgressDialog();
         mEvento.Altitud = Utils.round(2 ,elevation);
         txtAltitud.setText(String.valueOf( mEvento.Altitud ));
@@ -837,7 +857,7 @@ private  void obtenerBeneficiarios(){
     @Override
     public void onErrrorElevation(int statusCode) {
         ocultarProgressDialog();
-
+        isRunningElevation = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(EventoActivity.this);
         builder.setMessage(getResources().getString(R.string.error_load_elevation));
         builder.setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
@@ -858,4 +878,164 @@ private  void obtenerBeneficiarios(){
         builder.show();
 
     }
+
+
+    /**
+     * Obtener ubicacion sin internet
+     */
+
+    private void localizacion(){
+        // if (mTipo == Enumeradores.Tipo.VisitProperty) return;
+
+        if (isRunning) {
+            cancel();
+        } else {
+            mAccuracy = Float.MAX_VALUE;
+            mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            try {
+                gps_enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            } catch (Exception ex) {
+            }
+            try {
+                network_enabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            } catch (Exception ex) {
+            }
+
+            if (Build.VERSION.SDK_INT >= 23 &&
+                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION ,  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                        MY_PERMISSIONS_ACCESS_FINE_LOCATION );
+
+            }else {
+
+                if (gps_enabled == false) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+
+                if (gps_enabled) {
+                    btnUbicacionEvento.setText("Detener");
+                    pbUbicacion.setVisibility(View.VISIBLE);
+                    isRunning = true;
+                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListenerGps);
+                    Log.d(" gps enabled", "gps ejecutadi");
+                }
+                if (network_enabled) {
+                    btnUbicacionEvento.setText("Detener");
+                    pbUbicacion.setVisibility(View.VISIBLE);
+                    isRunning = true;
+                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListenerNetwork);
+                    Log.d("network enable", "ejecutado");
+                }
+            }
+        }
+    }
+    public void cancel()
+    {
+        if (isRunning) {
+            isRunning = false;
+            isRunningElevation = false;
+            btnUbicacionEvento.setText(getString(R.string.ubicacion));
+            pbUbicacion.setVisibility(View.GONE);
+
+            if (mLocationManager != null) {
+                if (Build.VERSION.SDK_INT >= 23 &&
+                        ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Log.d("permiso", "Permiso denegado");
+                    return;
+                }
+
+                mLocationManager.removeUpdates(locationListenerGps);
+                mLocationManager.removeUpdates(locationListenerNetwork);
+
+            }
+            AppCar.VolleyQueue().cancelAll(Elevation.TAG);
+        }
+    }
+
+    private void setResult(double latitude, double longitude, double altitud, float accuracy){
+        if (accuracy < mAccuracy ) {
+
+            mEvento.Latitud = Utils.round(7 , latitude);
+            mEvento.Longitud = Utils.round(7 ,longitude);
+            txtLatitud.setText(String.valueOf(mEvento.Latitud));
+            txtLongitud.setText(String.valueOf(mEvento.Longitud));
+            SexaDecimalCoordinate sexaDecimalCoordinate = new SexaDecimalCoordinate(mEvento.Latitud, mEvento.Longitud);
+            sexaDecimalCoordinate.ConvertToFlatCoordinate();
+            mEvento.Norte = String.valueOf(Utils.round(0, sexaDecimalCoordinate.get_coorPlanaNorteFinal())).replace(".0","");
+            mEvento.Este = String.valueOf(Utils.round(0, sexaDecimalCoordinate.get_coorPlanaEsteFinal())).replace(".0","");
+            txtNorte.setText(mEvento.Norte);
+            txtEste.setText(mEvento.Este);
+
+            lblPresicion.setText("Presición" + String.valueOf(accuracy));
+            mAccuracy = accuracy;
+
+            if (altitud != 0) {
+                txtAltitud.setText(String.valueOf(altitud));
+            }
+        }
+
+        //consulta altitud en api google elevation
+        if (isRunningElevation == false && txtAltitud.getText().length() == 0) {
+            if (altitud != 0){
+                txtAltitud.setText(String.valueOf(altitud));
+            }
+            isRunningElevation = true;
+            mostrarProgressDialog("Obteniendo Altitud", true);
+            mElevationPresenter.getElevation(mEvento.Latitud , mEvento.Longitud);
+        }
+    }
+
+
+    final LocationListener locationListenerGps = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            setResult(location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy());
+          //  resultLocation(location);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+            Toast.makeText(AppCar.getContext(), "Gps is turned on!! ", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+            Toast.makeText(AppCar.getContext(), "Gps is turned off!! ", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    final LocationListener locationListenerNetwork = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            setResult(location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy());
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+            Toast.makeText(AppCar.getContext(), "Gps is turned on!! ", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+            Toast.makeText(AppCar.getContext(), "Gps is turned off!! ", Toast.LENGTH_SHORT).show();
+        }
+    };
+
 }

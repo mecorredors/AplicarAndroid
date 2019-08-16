@@ -336,15 +336,41 @@
             android:orientation="vertical">
 
 
-
-            <Button android:id="@+id/btnUbicacionEvento"
-                android:theme="@style/ButtonBorderlessColored"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/seleccione_ubicacion_evento"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:layout_marginLeft="@dimen/margin_16dp"/>
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_16dp">
+                <Button android:id="@+id/btnUbicacionEvento"
+                    android:theme="@style/ButtonBorderlessColored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ubicacion"
+                    android:layout_marginLeft="@dimen/margin_16dp"/>
 
+                <ProgressBar
+                    android:id="@+id/pbUbicacion"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/margin_4dp"/>
+                <TextView android:id="@+id/lblPresicion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/margin_6dp"/>
+
+                <Button android:id="@+id/btnUbicacionEventoMapa"
+                    android:theme="@style/ButtonBorderlessColored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/seleccione_ubicacion_evento"
+                    android:layout_marginLeft="@dimen/margin_16dp"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
