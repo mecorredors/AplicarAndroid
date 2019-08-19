@@ -42,13 +42,13 @@ public class CambiarPasswordActivity extends BaseActivity implements IViewBenefi
         bar.setDisplayHomeAsUpEnabled(true);
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
         mBeneficiarioPresenter = new BeneficiarioPresenter(this);
-        if (PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(CAMBIAR_CLAVE_1_VEZ, true))
+       /* if (PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(CAMBIAR_CLAVE_1_VEZ, true))
         {
             txtClaveActual.setText(mBeneficiarioLogin.ClaveAPP);
             PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(CAMBIAR_CLAVE_1_VEZ, false);
             txtNuevaClave.requestFocus();
         }
-
+*/
 
     }
 
