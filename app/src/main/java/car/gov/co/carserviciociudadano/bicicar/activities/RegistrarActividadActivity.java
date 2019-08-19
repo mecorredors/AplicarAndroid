@@ -81,6 +81,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
     private static final int REQUEST_HISTORIAL_TRAYECTOS = 5;
     private static final int REQUEST_UBICACION = 6;
     private static final int REQUEST_EVENTOS = 7;
+    private static final int REQUEST_CAMBIAR_PASSWORD = 8;
 
     @BindView(R.id.lblSerial) TextView lblSerial;
     @BindView(R.id.lblRin) TextView lblRin;
@@ -195,6 +196,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 }, new IntentFilter(LocationMonitoringService.ACTION_LOCATION_BROADCAST)
         );
 
+       /* if (PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(CambiarPasswordActivity.CAMBIAR_CLAVE_1_VEZ, true)){
+            Intent i = new Intent(this, CambiarPasswordActivity.class);
+            startActivityForResult(i, REQUEST_CAMBIAR_PASSWORD);
+        }*/
+
     }
     private void mostrarTiempoyDistancia(){
         segundos = (int) (tiempoMillis / 1000);
@@ -247,9 +253,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         if (id == R.id.item_cerrar_sesion ) {
             cerrarSesion();
             return true;
-        }else if (id == R.id.item_historial ) {
-            Intent i = new Intent(this, HistorialTrayectosActivity.class);
-            startActivityForResult(i, REQUEST_HISTORIAL_TRAYECTOS);
+        }else if (id == R.id.item_cambiar_contrasena ) {
+            Intent i = new Intent(this, CambiarPasswordActivity.class);
+            startActivityForResult(i, REQUEST_CAMBIAR_PASSWORD);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -720,7 +726,9 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
            }else{
                obtenerItemsActividad();
            }
-       }
+       }else if (requestCode == REQUEST_CAMBIAR_PASSWORD && resultCode == RESULT_OK){
+           mBeneficiarioLogin = Beneficiarios.readBeneficio();
+        }
     }
 
     private void obtenerDatos(String datosEscaner){

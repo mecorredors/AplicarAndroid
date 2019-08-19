@@ -116,6 +116,10 @@ public class BeneficiarioPresenter implements IBeneficiario {
         new Beneficiarios().login(numeroId, claveApp, this);
     }
 
+    public  void cambiarPassword(String numeroId, String claveApp, String nuevaClave){
+        new Beneficiarios().cambiarPassword(numeroId, claveApp, nuevaClave, this);
+    }
+
     public  void obtenerItem(String serial, String rin){
         new Beneficiarios().obtenerItem(serial, rin, this);
     }

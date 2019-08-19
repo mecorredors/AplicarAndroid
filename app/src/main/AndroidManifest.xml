@@ -22,8 +22,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".bicicar.activities.PublicarEventoActivity"
-            android:theme="@style/AppTheme.Dialog.NoActioinBar"></activity>
+        <activity android:name=".bicicar.activities.CambiarPasswordActivity"></activity>
+        <activity
+            android:name=".bicicar.activities.PublicarEventoActivity"
+            android:theme="@style/AppTheme.Dialog.NoActioinBar" />
         <activity
             android:name=".bicicar.activities.FotosEventoBicicarActivity"
             android:label="@string/title_fotos_evento"
@@ -206,7 +208,7 @@
         <activity
             android:name=".bicicar.activities.BeneficiariosActivity"
             android:label="@string/title_asistencia"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".bicicar.activities.SeguirRutaActivity"
             android:label="@string/title_activity_seguir_ruta"

@@ -278,7 +278,7 @@ public class LocationMonitoringService extends Service implements
                 locationBest = location;
               //  calcular_distancia = true;
             }
-            if (numRequest > 8) {
+            if (numRequest > 4) {
                 calcular_distancia = true;
             }
             Log.d("calculo", "precicion > 16");
@@ -287,7 +287,7 @@ public class LocationMonitoringService extends Service implements
                 locationBest = location;
                // calcular_distancia = true;
             }
-            if (numRequest > 16) {
+            if (numRequest > 5) {
                 calcular_distancia = true;
             }
             Log.d("calculo", "precicion > 20");

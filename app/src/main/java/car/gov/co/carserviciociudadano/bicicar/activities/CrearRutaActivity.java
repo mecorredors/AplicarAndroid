@@ -228,10 +228,6 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
         if (id == R.id.item_cerrar_sesion ) {
             cerrarSesion();
             return true;
-        }else if (id == R.id.item_historial ) {
-            Intent i = new Intent(this, HistorialTrayectosActivity.class);
-            startActivityForResult(i, REQUEST_HISTORIAL_TRAYECTOS);
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }

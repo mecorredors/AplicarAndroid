@@ -4,9 +4,9 @@
     tools:context="car.gov.co.carserviciociudadano.parques.activities.DetalleParqueActivity">
 
     <item
-        android:id="@+id/item_historial"
+        android:id="@+id/item_cambiar_contrasena"
         android:orderInCategory="100"
-        android:title="@string/historial_trayectos"
+        android:title="@string/cambiar_contrasena"
         app:showAsAction="never" />
     <item
         android:id="@+id/item_cerrar_sesion"

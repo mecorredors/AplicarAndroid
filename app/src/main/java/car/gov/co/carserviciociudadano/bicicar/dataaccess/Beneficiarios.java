@@ -346,6 +346,49 @@ public class Beneficiarios {
         AppCar.VolleyQueue().add(objRequest);
     }
 
+    public void cambiarPassword(String numeroID, String claveApp , String nuevaClave, final IBeneficiario iBeneficiario)
+    {
+        String url = Config.API_BICICAR_CAMBIAR_PASSWORD + "?numeroID=" + numeroID +"&claveApp=" + claveApp+"&nuevaClave=" + nuevaClave;
+        url = url.replace(" ", "%20");
+
+        JsonObjectRequest objRequest = new JsonObjectRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        try {
+                            iBeneficiario.onSuccess(Beneficiarios.getItemFromJson(response.toString()));
+                        }catch (JsonSyntaxException ex){
+                            iBeneficiario.onError(new ErrorApi(ex));
+                        }
+                    }
+                },	new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                iBeneficiario.onError(new ErrorApi(error));
+            }
+        }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Basic " + Utils.getAuthorizationBICICAR());
+                return headerMap;
+            }
+        };
+
+        objRequest.setTag(TAG);
+        objRequest.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        20000,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppCar.VolleyQueue().add(objRequest);
+    }
+
     public void obtenerItem(String serial, String rin , final IBeneficiario iBeneficiario)
     {
         String url = Config.API_BICICAR_OBTENER_BENEFICIARIO + "?serial=" + serial +"&rin=" + rin;
