@@ -196,10 +196,10 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 }, new IntentFilter(LocationMonitoringService.ACTION_LOCATION_BROADCAST)
         );
 
-       /* if (PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(CambiarPasswordActivity.CAMBIAR_CLAVE_1_VEZ, true)){
+        if (PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(CambiarPasswordActivity.CAMBIAR_CLAVE_1_VEZ, true)){
             Intent i = new Intent(this, CambiarPasswordActivity.class);
             startActivityForResult(i, REQUEST_CAMBIAR_PASSWORD);
-        }*/
+        }
 
     }
     private void mostrarTiempoyDistancia(){
