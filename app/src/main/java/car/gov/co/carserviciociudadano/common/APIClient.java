@@ -51,7 +51,7 @@ public class APIClient {
        Gson gson = builder.create();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(Server.ServerAplicar)
+                .baseUrl(Server.ServerBICICAR())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();

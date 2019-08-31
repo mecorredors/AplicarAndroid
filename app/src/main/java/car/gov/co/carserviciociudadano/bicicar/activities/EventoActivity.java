@@ -64,12 +64,12 @@ import car.gov.co.carserviciociudadano.bicicar.presenter.IViewTipoEvento;
 import car.gov.co.carserviciociudadano.bicicar.presenter.TiposEventoPresenter;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Elevation;
-import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Lugares;
-import car.gov.co.carserviciociudadano.denunciaambiental.model.Lugar;
+import car.gov.co.carserviciociudadano.bicicar.dataaccess.Lugares;
+import car.gov.co.carserviciociudadano.bicicar.model.Lugar;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.ElevationPresenter;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewElevation;
-import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewLugares;
-import car.gov.co.carserviciociudadano.denunciaambiental.presenter.LugaresPresenter;
+import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLugares;
+import car.gov.co.carserviciociudadano.bicicar.presenter.LugaresPresenter;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import android.location.Location;
 import android.location.LocationListener;
@@ -293,7 +293,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         tiposEventoPresenter.list();
 
         pbMunicipio.setVisibility(View.VISIBLE);
-        mLugaresPresenter.obtenerMunicipios(ID_CUNDINAMARCA);
+        mLugaresPresenter.obtenerMunicipios();
 
         pbCuenca.setVisibility(View.VISIBLE);
         mCuencasPresenter.getCuencas();
@@ -423,7 +423,6 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         super.onDestroy();
         AppCar.VolleyQueue().cancelAll(TiposEvento.TAG);
         AppCar.VolleyQueue().cancelAll(Beneficiarios.TAG);
-        AppCar.VolleyQueue().cancelAll(Lugares.TAG);
         AppCar.VolleyQueue().cancelAll(Cuencas.TAG);
         AppCar.VolleyQueue().cancelAll(Elevation.TAG);
         cancel();
@@ -504,10 +503,6 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     }
 
     /// Iview lugares
-    @Override
-    public void onSuccessDepartamentos(List<Lugar> lstDepartamentos) {
-
-    }
 
     @Override
     public void onSuccessMunicipios(List<Lugar> lstMunicipios) {
@@ -534,16 +529,12 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         }
     }
 
-    @Override
-    public void onErrorDepartamentos(ErrorApi errorApi) {
-
-    }
 
     @Override
     public void onErrorMunicipios(ErrorApi errorApi) {
         errorApi.setMessage(getResources().getString(R.string.error_load_municipios));
         mostrarErrorDatos(errorApi);
- }
+    }
 
     @Override
     public void onErrorVeredas(ErrorApi errorApi) {
@@ -594,7 +585,6 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
 
     private  void mostrarErrorDatos(ErrorApi error){
         AppCar.VolleyQueue().cancelAll(TiposEvento.TAG);
-        AppCar.VolleyQueue().cancelAll(Lugares.TAG);
         AppCar.VolleyQueue().cancelAll(Cuencas.TAG);
 
         pbCuenca.setVisibility(View.GONE);
