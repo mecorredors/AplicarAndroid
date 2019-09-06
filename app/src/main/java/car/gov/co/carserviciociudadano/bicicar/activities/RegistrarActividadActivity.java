@@ -432,6 +432,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                @Override
                public void onClick(DialogInterface dialog, int which) {
                    dialog.dismiss();
+                   PreferencesApp.getDefault(PreferencesApp.WRITE).putInt(Evento.ID_EVENTO, mEvento.IDEvento).commit();
                    startStep1();
 
                }
