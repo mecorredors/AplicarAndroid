@@ -1,10 +1,8 @@
 package car.gov.co.carserviciociudadano.bicicar.presenter;
 
-import android.util.Log;
 
 import java.util.Calendar;
 import java.util.List;
-
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.SexaDecimalCoordinate;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;

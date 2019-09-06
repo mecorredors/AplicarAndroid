@@ -1,47 +1,28 @@
 package car.gov.co.carserviciociudadano.bicicar.services;
 
-import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-        import android.content.pm.PackageManager;
-        import android.location.Location;
-import android.os.Build;
-import android.os.Bundle;
+import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
-        import android.support.annotation.Nullable;
-        import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-        import android.util.Log;
+import android.util.Log;
 
-        import com.google.android.gms.common.ConnectionResult;
-        import com.google.android.gms.common.api.GoogleApiClient;
-        import com.google.android.gms.location.LocationListener;
-        import com.google.android.gms.location.LocationRequest;
-        import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.PolyUtil;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.AppCar;
-import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.activities.RegistrarActividadActivity;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
-import car.gov.co.carserviciociudadano.bicicar.model.LogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLogTrayecto;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LogTrayectoPresenter;
 import car.gov.co.carserviciociudadano.common.Notifications;
@@ -53,13 +34,9 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
  */
 
 public class LocationMonitoringService extends Service implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
     private static final String TAG = LocationMonitoringService.class.getSimpleName();
-    GoogleApiClient mLocationClient;
-    LocationRequest mLocationRequest = new LocationRequest();
-
 
     public static final String ACTION_LOCATION_BROADCAST = LocationMonitoringService.class.getName() + "LocationBroadcast";
 
@@ -98,6 +75,9 @@ public class LocationMonitoringService extends Service implements
     long tiempo_evento_09 = 0;
     float distancia_evento_09 = 0;
     Beneficiario  mBeneficiarioLogin;
+
+    LocationRetriever locationRetriever;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -116,25 +96,10 @@ public class LocationMonitoringService extends Service implements
             latLngs.addAll(PolyUtil.decode(ruta));
         }
 
-        mLocationClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        mLocationRequest.setInterval(INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        mLocationRequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
+        locationRetriever = new LocationRetriever(AppCar.getContext(),this);
+        locationRetriever.start();
 
         numRequest = 0;
-
-        int priority = LocationRequest.PRIORITY_HIGH_ACCURACY; //by default
-        //PRIORITY_BALANCED_POWER_ACCURACY, PRIORITY_LOW_POWER, PRIORITY_NO_POWER are the other priority modes
-
-
-        mLocationRequest.setPriority(priority);
-        mLocationClient.connect();
-
 
         _handler = new Handler();
         Runnable r = new Runnable() {
@@ -187,7 +152,7 @@ public class LocationMonitoringService extends Service implements
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
-        Notifications.showNotification(" Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos + "  Pre: " + Utils.round(2, precision), actividad);
+        Notifications.showNotification(" Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos + "  Pre: " + Utils.round(2, precision), actividad, this);
 
     }
 
@@ -206,133 +171,14 @@ public class LocationMonitoringService extends Service implements
         return null;
     }
 
-    /*
-     * LOCATION CALLBACKS
-     */
-    @Override
-    public void onConnected(Bundle dataBundle) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            Log.d(TAG, "== Error On onConnected() Permission not granted");
-            return;
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mLocationClient, mLocationRequest, this);
-
-        Log.d(TAG, "Connected to Google API");
-    }
-
-    /*
-     * Called by Location Services if the connection to the
-     * location client drops because of an error.
-     */
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "Connection suspended");
-    }
-
-    //to get the location change
-    @Override
-    public void onLocationChanged(Location location) {
-
-        numRequest++;
-        boolean calcular_distancia = false;
-        precision = location.getAccuracy();
-
-        if (locationPreview == null) {
-            locationPreview = location;
-        }
-
-        if (locationBest == null) {
-            locationBest = location;
-        }
-
-        if (precision < 7) {
-            if (isBetterLocation(locationBest, location)) {
-                locationBest = location;
-            }
-            if (numRequest > 2) {
-                calcular_distancia = true;
-            }
-
-            Log.d("calculo", "precicion < 7");
-        }else if (precision  >= 7 && precision < 10 ) {
-            if (isBetterLocation(locationBest, location)) {
-                locationBest = location;
-            }
-            if (numRequest > 3) {
-                calcular_distancia = true;
-            }
-            Log.d("calculo", "precicion > 10");
-        }else if (precision  >= 10 && precision < 16 ) {
-            if (isBetterLocation(locationBest, location)) {
-                locationBest = location;
-               // calcular_distancia = true;
-            }
-            if (numRequest > 4) {
-                calcular_distancia = true;
-            }
-            Log.d("calculo", "precicion > 10");
-        }
-        else if (precision  >= 16 && precision < 20 ) {
-            if (isBetterLocation(locationBest, location)) {
-                locationBest = location;
-              //  calcular_distancia = true;
-            }
-            if (numRequest > 4) {
-                calcular_distancia = true;
-            }
-            Log.d("calculo", "precicion > 16");
-        }else if (precision  >= 20 ) {
-            if (isBetterLocation(locationBest, location)) {
-                locationBest = location;
-               // calcular_distancia = true;
-            }
-            if (numRequest > 5) {
-                calcular_distancia = true;
-            }
-            Log.d("calculo", "precicion > 20");
-        }
-
-        if (locationPreview != null && locationBest != null && calcular_distancia){
-            float recorrido = locationPreview.distanceTo(locationBest);
-            Log.d(TAG, "distancia " +recorrido);
-            if (recorrido > MIN_DISTANCE){
-                distancia += recorrido;
-                locationPreview = locationBest;
-                if (latLngs.size() == 0)
-                    addPuntoRuta(locationPreview);
-
-                addPuntoRuta(locationBest);
-                PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(EXTRA_DISTANCIA , distancia).commit();
-
-                if (distancia >= 1000  && mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){// para evento 09
-                    guardarTrayectoEvento09();
-                }
-
-            }
-
-            locationBest = null;
-            numRequest = 0;
-            Log.d("calculo", "calculado ------");
-        }
-    }
-
     private void addPuntoRuta(Location location){
         latLngs.add(new LatLng(location.getLatitude(), location.getLongitude()));
         String ruta = PolyUtil.encode(latLngs);
         PreferencesApp.getDefault(PreferencesApp.WRITE).putString(EXTRA_RUTA , ruta).commit();
     }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d(TAG, "Failed to connect to Google API");
-
-    }
-
     protected void disableLocationUpdates() {
-        if (mLocationClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mLocationClient, this);
-        }
+        locationRetriever.stop();
     }
 
     public static final String CHANNEL_ID = "canal_bicicar_app";
@@ -429,4 +275,88 @@ public class LocationMonitoringService extends Service implements
             }
         }
     };
+
+    @Override
+    public void onLocationChanged(Location location) {
+        numRequest++;
+        boolean calcular_distancia = false;
+        precision = location.getAccuracy();
+
+        if (locationPreview == null) {
+            locationPreview = location;
+        }
+
+        if (locationBest == null) {
+            locationBest = location;
+        }
+
+        if (precision < 7) {
+            if (isBetterLocation(locationBest, location)) {
+                locationBest = location;
+            }
+            if (numRequest > 2) {
+                calcular_distancia = true;
+            }
+
+            Log.d("calculo", "precicion < 7");
+        }else if (precision  >= 7 && precision < 10 ) {
+            if (isBetterLocation(locationBest, location)) {
+                locationBest = location;
+            }
+            if (numRequest > 3) {
+                calcular_distancia = true;
+            }
+            Log.d("calculo", "precicion > 10");
+        }else if (precision  >= 10 && precision < 16 ) {
+            if (isBetterLocation(locationBest, location)) {
+                locationBest = location;
+                // calcular_distancia = true;
+            }
+            if (numRequest > 4) {
+                calcular_distancia = true;
+            }
+            Log.d("calculo", "precicion > 10");
+        }
+        else if (precision  >= 16 && precision < 20 ) {
+            if (isBetterLocation(locationBest, location)) {
+                locationBest = location;
+                //  calcular_distancia = true;
+            }
+            if (numRequest > 4) {
+                calcular_distancia = true;
+            }
+            Log.d("calculo", "precicion > 16");
+        }else if (precision  >= 20 ) {
+            if (isBetterLocation(locationBest, location)) {
+                locationBest = location;
+                // calcular_distancia = true;
+            }
+            if (numRequest > 5) {
+                calcular_distancia = true;
+            }
+            Log.d("calculo", "precicion > 20");
+        }
+
+        if (locationPreview != null && locationBest != null && calcular_distancia){
+            float recorrido = locationPreview.distanceTo(locationBest);
+            Log.d(TAG, "distancia " +recorrido);
+            if (recorrido > MIN_DISTANCE){
+                distancia += recorrido;
+                locationPreview = locationBest;
+                if (latLngs.size() == 0)
+                    addPuntoRuta(locationPreview);
+
+                addPuntoRuta(locationBest);
+                PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(EXTRA_DISTANCIA , distancia).commit();
+
+                if (distancia >= 1000  && mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){// para evento 09
+                    guardarTrayectoEvento09();
+                }
+
+            }
+
+            locationBest = null;
+            numRequest = 0;
+        }
+    }
 }

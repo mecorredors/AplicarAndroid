@@ -161,6 +161,11 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
         obtenerItemsActividad();
 
         if (mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.PEDAGOGO || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO_APP || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.BENEFICIARIO  || mBeneficiarioLogin.IDPerfil == Enumerator.BicicarPerfil.EVENTO){
+            int idEvento = PreferencesApp.getDefault(PreferencesApp.READ).getInt(Evento.ID_EVENTO, 0);
+            if (idEvento > 0){
+                mEvento = new Eventos().read(idEvento);
+            }
+
             lyBonesAsistencia.setVisibility(View.GONE);
             lyRegistrarMiRecorrido.setVisibility(View.VISIBLE);
             boolean isInPause = PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false);
@@ -347,7 +352,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
             mAlreadyStartedService = false;
             btnPausa.setText("Continuar");
 
-            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos, RegistrarActividadActivity.class.getSimpleName() );
+            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos, RegistrarActividadActivity.class.getSimpleName() , null );
 
         }
 
@@ -493,6 +498,8 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putFloat(LocationMonitoringService.EXTRA_DISTANCIA_IN_PAUSE, 0).commit();
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putLong(LocationMonitoringService.EXTRA_TIEMPO_MILLIS_IN_PAUSE, 0).commit();
                 PreferencesApp.getDefault(PreferencesApp.WRITE).putBoolean(LocationMonitoringService.EXTRA_IN_PAUSE, false).commit();
+                PreferencesApp.getDefault(PreferencesApp.WRITE).putInt(Evento.ID_EVENTO, 0).commit();
+                mEvento = null;
 
                 dialog.dismiss();
 
@@ -720,6 +727,7 @@ public class RegistrarActividadActivity extends BaseActivity implements IViewBen
            btnPublicarMiUbicacion.setVisibility(mBeneficiarioLogin.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR ? View.VISIBLE : View.GONE);
        }else if (requestCode == REQUEST_EVENTOS && resultCode == RESULT_OK){
            int idEvento = data.getIntExtra(Evento.ID_EVENTO, 0);
+           PreferencesApp.getDefault(PreferencesApp.WRITE).putInt(Evento.ID_EVENTO, idEvento).commit();
            if (idEvento > 0) {
                mEvento = new Eventos().read(idEvento);
                startStep1();

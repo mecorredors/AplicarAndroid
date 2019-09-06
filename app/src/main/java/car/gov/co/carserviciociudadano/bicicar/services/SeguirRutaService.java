@@ -169,7 +169,7 @@ public class SeguirRutaService extends Service implements
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
-        Notifications.showNotificationSeguirRuta(" Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos + "  Pre: " + Utils.round(2, precision));
+        Notifications.showNotificationSeguirRuta(" Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos + "  Pre: " + Utils.round(2, precision), this);
 
     }
 

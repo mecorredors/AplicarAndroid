@@ -276,7 +276,7 @@ public class CrearRutaActivity extends BaseActivity implements   IViewRutas, IVi
             mAlreadyStartedService = false;
             btnPausa.setText("Continuar");
 
-            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos , CrearRutaActivity.class.getSimpleName() );
+            Notifications.showNotification("PAUSA: " + " Distancia: " + Utils.round(2,(distancia/1000)) + " Kms: Duración "+ minutos + ":" + segundos , CrearRutaActivity.class.getSimpleName(),null);
 
         }
 

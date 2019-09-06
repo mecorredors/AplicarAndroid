@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -23,21 +24,21 @@ import car.gov.co.carserviciociudadano.bicicar.services.SeguirRutaService;
 
 public  class Notifications {
 
-    public static void showNotification(String mensaje, String actividad ){
+    public static void showNotification(String mensaje, String actividad, Service service ){
         if (actividad.equals(CrearRutaActivity.class.getSimpleName())) {
-            showNotification(mensaje, CrearRutaActivity.class);
+            showNotification(mensaje, CrearRutaActivity.class, service);
         }else{
-            showNotification(mensaje, RegistrarActividadActivity.class);
+            showNotification(mensaje, RegistrarActividadActivity.class, service);
         }
     }
 
-    private static void showNotification(String mensaje, Class<?> cls ){
+    private static void showNotification(String mensaje, Class<?> cls, Service service ){
         Intent intent = new Intent(AppCar.getContext(), cls);
-        showNotification(mensaje, intent, LocationMonitoringService.NOTIFICATION_ID);
+        showNotification(mensaje, intent, LocationMonitoringService.NOTIFICATION_ID, service);
     }
-    public static void showNotificationSeguirRuta(String mensaje ){
+    public static void showNotificationSeguirRuta(String mensaje, Service service ){
         Intent intent = new Intent(AppCar.getContext(), SeguirRutaActivity.class);
-        showNotification(mensaje, intent,SeguirRutaService.NOTIFICATION_ID);
+        showNotification(mensaje, intent,SeguirRutaService.NOTIFICATION_ID, service);
     }
 
     public static void showNotificationCrearRuta(String mensaje ){
@@ -46,6 +47,9 @@ public  class Notifications {
     }
 
     public static void showNotification(String mensaje, Intent intent, int idNotification){
+        showNotification(mensaje, intent,idNotification, null);
+    }
+    public static void showNotification(String mensaje, Intent intent, int idNotification, Service service){
         // Create an explicit intent for an Activity in your app
 
         createNotificationChannel();
@@ -63,8 +67,13 @@ public  class Notifications {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(false);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(AppCar.getContext());
-        notificationManager.notify(idNotification, mBuilder.build());
+        if (service != null){
+            service.startForeground(idNotification, mBuilder.build());
+        }else {
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(AppCar.getContext());
+            notificationManager.notify(idNotification, mBuilder.build());
+        }
+
     }
 
     public static  void createNotificationChannel() {
