@@ -64,6 +64,7 @@ public class LogTrayectoPresenter {
                 item.EstePuntoA = logTrayectoPedagogo.EstePuntoA;
                 item.NortePuntoB = logTrayectoPedagogo.NortePuntoB;
                 item.EstePuntoB = logTrayectoPedagogo.EstePuntoB;
+                item.Ruta = logTrayectoPedagogo.Ruta;
                 logTrayectosData.Update(item);
             }
         }

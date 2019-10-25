@@ -1,6 +1,8 @@
 package car.gov.co.carserviciociudadano.bicicar.presenter;
 
 
+import android.database.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.TiposEvento;
@@ -25,7 +27,12 @@ public class TiposEventoPresenter implements ITipoEvento {
     private   void guardarTiposEvento(List<TipoEvento> lstTiposEvento){
 
         TiposEvento tiposEventosData = new TiposEvento();
-        tiposEventosData.deleteAll();
+        try {
+            tiposEventosData.deleteAll();
+        }catch (SQLException ex){
+            onError(new ErrorApi(500, "Error en base de datos local, ingrese a configuración android y elimine los datos de Aplicar"));
+            return;
+        }
         for (TipoEvento item : lstTiposEvento) {
             tiposEventosData.insert(item);
         }

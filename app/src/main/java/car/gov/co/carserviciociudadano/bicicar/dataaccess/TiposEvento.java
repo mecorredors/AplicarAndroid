@@ -2,6 +2,7 @@ package car.gov.co.carserviciociudadano.bicicar.dataaccess;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -125,12 +126,13 @@ public class TiposEvento {
         return (result > 0);
     }
 
-    public boolean deleteAll() {
+    public boolean deleteAll()
+    {
         InitDbHelper();
         SQLiteDatabase db = _dbHelper.getWritableDatabase();
-
         int result = db.delete(TipoEvento.TABLE_NAME, null, null);
         return (result > 0);
+
     }
 
     public List<TipoEvento> list()

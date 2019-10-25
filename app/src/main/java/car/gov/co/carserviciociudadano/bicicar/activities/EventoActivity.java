@@ -137,7 +137,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     ArrayAdapter<Cuenca> adapterCuenca;
     CuencasPresenter mCuencasPresenter;
     ElevationPresenter mElevationPresenter;
-    Evento mEvento = new Evento();
+    Evento mEvento;
     Beneficiario mBeneficiarioLogin;
     int mIdEvento;
     private static final int REQUEST_COLEGIOS = 100;
@@ -165,6 +165,8 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         if (b != null){
             mIdEvento = b.getInt(Evento.ID_EVENTO, 0);
             mEvento = new Eventos().read(mIdEvento);
+        }else{
+            mEvento = new Evento();
         }
 
         mBeneficiarioLogin  = Beneficiarios.readBeneficio();
@@ -283,7 +285,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
 
             Colegio colegio = new Colegios().read(mEvento.IDColegio);
             if (colegio != null) {
-                txtColegio.setText(colegio.Nombre);
+                txtColegio.setText("(" + mEvento.IDColegio + ") " + colegio.Nombre);
             }
         }
     }
@@ -488,7 +490,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         if(errorApi.getStatusCode() == 404){
             guardar();
         }else {
-            mostrarMensajeDialog(errorApi.getMessage());
+            mostrarMensajeDialog("Error al obtener estudiantes " + errorApi.getMessage());
         }
 
     }
@@ -671,6 +673,11 @@ private  void obtenerBeneficiarios(){
         if (Validation.IsEmpty(txtDescripcion)) res = false;
         if (Validation.IsEmpty(txtColegio)) res = false;
 
+        if (mEvento.IDColegio <= 0){
+            mostrarMensajeDialog("Seleccione un colegio");
+            return false;
+        }
+
         TipoEvento tipoEvento = (TipoEvento) spiTipoEvento.getSelectedItem();
 
         if (tipoEvento != null && tipoEvento.Recorrido) {
@@ -807,7 +814,7 @@ private  void obtenerBeneficiarios(){
         if (resultCode == RESULT_OK){
             if (requestCode == REQUEST_COLEGIOS){
                 mEvento.IDColegio = data.getIntExtra(Colegio.ID_COLEGIO, 0);
-                txtColegio.setText(data.getStringExtra(Colegio.NOMBRE));
+                txtColegio.setText("(" + mEvento.IDColegio + ") " + data.getStringExtra(Colegio.NOMBRE));
                 Colegio colegio = new Colegios().read(mEvento.IDColegio);
                 spiMunicipio.setSelection(getMunicipiosPosition(colegio.IDMunicipio));
             }else if (requestCode == REQUEST_UBICACION){
