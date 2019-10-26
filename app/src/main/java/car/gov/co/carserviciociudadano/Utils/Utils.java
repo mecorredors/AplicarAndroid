@@ -44,6 +44,17 @@ public class Utils {
         }
         return res;
     }
+    public  static double convertDouble(String value){
+        if (value == null ) return  0;
+
+        double res = 0;
+        try{
+            res = Double.parseDouble(value);
+        }catch (NumberFormatException e){
+
+        }
+        return res;
+    }
     public  static int convertInt(String value){
         if (value == null ) return  0;
         if (value.trim().isEmpty()) return  0;

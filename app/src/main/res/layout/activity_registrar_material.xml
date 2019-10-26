@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".petcar.activities.RegistrarMaterialActivity"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="INGRESA LOS SIGUIENTES  DATOS"
+        android:background="@color/gray2"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="@dimen/margin_10dp"
+        android:textSize="@dimen/text_size_13"
+        />
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/lyCodigo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario">
+        <EditText
+            android:id="@+id/txtCodigo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/codigo"
+            android:inputType="textNoSuggestions"
+            style="@style/editTextUsuario"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView android:id="@+id/lblContenedor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario"/>
+
+    <TextView android:id="@+id/lblTipoMaterial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tipo de material recogido"
+        android:textColor="@color/primaryText"
+        style="@style/lyUsuario"/>
+
+    <LinearLayout android:id="@+id/lyTiposMaterial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+
+    <Button android:id="@+id/btnGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guardar"
+        android:background="@drawable/boton_bicicar2"
+        />
+
+</LinearLayout>

@@ -80,4 +80,10 @@ public class Enumerator {
 
     public static final int TIMEOUT_PUBLISH_IMAGES = 40000;
     public static final String NAME_DIRECTORY_IMAGES = "CAR-Servicio-Ciudadano";
+
+    public  static class TipoPersona{
+        public static final int RECOLECTOR = 1;
+        public static final int INSPECTOR = 2;
+
+    }
 }

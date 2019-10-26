@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyItemColegios"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardElevation="2dp"
+    card_view:cardCornerRadius="2dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardBackgroundColor="@color/background"
+    android:layout_margin="@dimen/margin_4dp"
+    >
+
+
+    <LinearLayout android:id="@+id/lyItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginBottom="@dimen/margin_4dp"        >
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            >
+            <TextView android:id="@+id/lblDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="Direccion"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/primaryText"
+                />
+            <TextView android:id="@+id/lblMunicipio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="Municipio"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/primaryText"
+                android:layout_marginTop="@dimen/margin_10dp"
+                />
+            <TextView android:id="@+id/lblTipoMaterial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="Tipo Material"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/primaryText"
+                android:layout_marginTop="@dimen/margin_10dp"
+                />
+            <TextView android:id="@+id/lblComentarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16dp"
+                android:text="Comentarios"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/primaryText"
+                android:layout_marginTop="@dimen/margin_10dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/margin_16dp">
+                <TextView android:id="@+id/lblKilos"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:text="0 Kg"
+                    android:textSize="@dimen/text_size_16"
+                    android:textColor="@color/primaryText"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    />
+                <TextView android:id="@+id/lblEstado"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:text="Estado"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/text_size_12"
+                    android:textColor="@color/primaryText"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

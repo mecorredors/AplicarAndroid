@@ -22,7 +22,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".bicicar.activities.CambiarPasswordActivity"></activity>
+        <activity android:name=".petcar.activities.RegistrarKilosYFotosMaterialActivity"></activity>
+        <activity android:name=".petcar.activities.PublicarMaterialActivity" />
+        <activity android:name=".petcar.activities.RegistrarMaterialActivity" />
+        <activity android:name=".bicicar.activities.CambiarPasswordActivity" />
         <activity
             android:name=".bicicar.activities.PublicarEventoActivity"
             android:theme="@style/AppTheme.Dialog.NoActioinBar" />
@@ -234,6 +237,14 @@
             android:name=".bicicar.activities.BeneficiariosXColegioActivity"
             android:label="@string/title_estudiantes"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".petcar.activities.LoginPetCarActivity"
+            android:label="@string/title_login_petcar"
+            android:theme="@style/AppThemeBicicar" />
+        <activity
+            android:name=".petcar.activities.ContenedoresActivity"
+            android:label="@string/title_contenedores"
+            android:theme="@style/AppThemeBicicar" />
     </application>
 
 </manifest>

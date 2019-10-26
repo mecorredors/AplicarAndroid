@@ -22,6 +22,19 @@
                 android:icon="@drawable/ic_person_24dp"
                 android:title="Iniciar sesión" />
 
+            <item
+                android:id="@+id/nav_contenedores"
+                android:icon="@drawable/ic_person_24dp"
+                android:title="Contenedores" />
+            <item
+                android:id="@+id/nav_registrar_material"
+                android:icon="@drawable/ic_person_24dp"
+                android:title="Registrar material" />
+            <item
+                android:id="@+id/nav_publicar_material"
+                android:icon="@drawable/ic_person_24dp"
+                android:title="Publicar material" />
+
         </menu>
     </item>
 
