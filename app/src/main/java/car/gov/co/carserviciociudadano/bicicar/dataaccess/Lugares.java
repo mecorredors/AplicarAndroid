@@ -63,7 +63,7 @@ public class Lugares {
             @Override
             public void onFailure(Call<List<Lugar>> call, Throwable t) {
                 call.cancel();
-                iLugar.onErrorVeredas(new ErrorApi(t));
+                iLugar.onErrorMunicipios(new ErrorApi(t));
                 Log.d("item error", t.toString());
             }
         });

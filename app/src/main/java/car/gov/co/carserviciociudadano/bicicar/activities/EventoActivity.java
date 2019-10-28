@@ -291,15 +291,16 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     }
 
     private  void obtenerDatos(){
-        pbTipoEvento.setVisibility(View.VISIBLE);
-        tiposEventoPresenter.list();
+        if (Utils.isOnline(this)) {
+            pbTipoEvento.setVisibility(View.VISIBLE);
+            tiposEventoPresenter.list();
 
-        pbMunicipio.setVisibility(View.VISIBLE);
-        mLugaresPresenter.obtenerMunicipios();
+            pbMunicipio.setVisibility(View.VISIBLE);
+            mLugaresPresenter.obtenerMunicipios();
 
-        pbCuenca.setVisibility(View.VISIBLE);
-        mCuencasPresenter.getCuencas();
-
+            pbCuenca.setVisibility(View.VISIBLE);
+            mCuencasPresenter.getCuencas();
+        }
     }
 
     private void obtenerHoraInicio(){
@@ -561,7 +562,7 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         switch (parent.getId()) {
             case R.id.spiMunicipio:
                 Lugar municipio = (Lugar) spiMunicipio.getSelectedItem();
-                if(municipio!=null) {
+                if(municipio!=null && !municipio.getIDLugar().equals("")) {
                     pbVereda.setVisibility(View.VISIBLE);
                     mLugaresPresenter.obtenerVeredas(municipio.getIDLugar());
                 }
@@ -655,12 +656,11 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         }
     };
 
-private  void obtenerBeneficiarios(){
-    if (validar()) {
+    private  void obtenerBeneficiarios(){
         beneficiarioPresenter.list(mEvento.IDColegio);
         mostrarProgressDialog("Descargando estudiantes");
     }
-}
+
     private boolean validar(){
         boolean res = true;
 
@@ -691,6 +691,15 @@ private  void obtenerBeneficiarios(){
             if (Validation.IsEmpty(spiMunicipio)) res = false;
         }
 
+        if (mEvento.HoraInicio == null){
+            mostrarMensajeDialog("Seleccione hora de inicio");
+            return false;
+        }
+        if (mEvento.HoraFin == null){
+            mostrarMensajeDialog("Seleccione hora de finalización");
+            return false;
+        }
+
         Calendar fechaActual = Calendar.getInstance();
 
         Calendar fechaInicio = Utils.convertToCalendar(mEvento.FInicio);
@@ -711,13 +720,15 @@ private  void obtenerBeneficiarios(){
 
     private void preGuaradar(){
         cancel();
-        if (mIdEvento == 0 || ( mLstMunicipios.size() > 1 && mLstCuencas.size() > 1)) {
-            obtenerBeneficiarios();
-        }else{
-            if (eventoPresenter.update(mEvento)) {
-                mostrarMensajeEventoCreado();
-            }else{
-                mostrarMensajeDialog("Error al guardar evento en el teléfono");
+        if (validar()) {
+            if (mIdEvento == 0 || (mLstMunicipios.size() > 1 && mLstCuencas.size() > 1)) {
+                obtenerBeneficiarios();
+            } else {
+                if (eventoPresenter.update(mEvento)) {
+                    mostrarMensajeEventoCreado();
+                } else {
+                    mostrarMensajeDialog("Error al guardar evento en el teléfono");
+                }
             }
         }
     }
