@@ -1,9 +1,11 @@
 package car.gov.co.carserviciociudadano.petcar.activities;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -69,10 +71,37 @@ public class RegistrarKilosYFotosMaterialActivity extends BaseActivity {
 
     }
 
+    @OnClick(R.id.btnEliminar) void onEliminar(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("¿Seguro desea eliminar el material " + mMaterialRecogido.getTipoMaterial().Nombre + " ?");
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               eliminar();
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+
+    }
+
+    private void eliminar(){
+        new MaterialesRecogidos().delete(mMaterialRecogido.Id);
+        setResult(RESULT_OK);
+        onBackPressed();
+    }
 
     @OnClick(R.id.btnGuardar) void onGuardar(){
         guardar();
     }
+
+
 
     private void guardar(){
         if (Validation.IsEmpty(txtKilos , lyKilos)) {
@@ -90,7 +119,8 @@ public class RegistrarKilosYFotosMaterialActivity extends BaseActivity {
         if (!new MaterialesRecogidos().guardar(mMaterialRecogido)){
             mostrarMensajeDialog("Error al guardar los datos");
         }else{
-           onBackPressed();
+            setResult(RESULT_OK);
+            onBackPressed();
         }
 
     }

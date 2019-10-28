@@ -143,6 +143,15 @@ public class Gestores {
         return (result > 0);
     }
 
+
+    public Gestor getLogin(){
+        List<Gestor> lstGestores = list();
+        if (lstGestores.size() > 0)
+            return  lstGestores.get(0);
+
+        return  null;
+    }
+
     public List<Gestor> list(){
         return list(null);
     }

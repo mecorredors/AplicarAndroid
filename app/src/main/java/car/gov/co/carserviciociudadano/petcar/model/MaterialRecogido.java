@@ -25,6 +25,10 @@ public class MaterialRecogido extends ModelBase {
     private   Contenedor contenedor;
     private TipoMaterial tipoMaterial;
 
+    // otros
+    public String UsuarioCreacion;
+    public int IDGestor;
+
     public static final String TABLE_NAME = "MaterialRecogido";
 
     public static final String ID = "Id";

@@ -14,14 +14,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.adapter.MaterialRecogidoAdapter;
 import car.gov.co.carserviciociudadano.petcar.dataaccess.MaterialesRecogidos;
 import car.gov.co.carserviciociudadano.petcar.model.MaterialRecogido;
+import car.gov.co.carserviciociudadano.petcar.presenter.IViewMaterialRecogido;
+import car.gov.co.carserviciociudadano.petcar.presenter.MaterialRecogidoPresenter;
 
-public class PublicarMaterialActivity extends BaseActivity {
+public class PublicarMaterialActivity extends BaseActivity  implements IViewMaterialRecogido {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
 
@@ -29,6 +33,9 @@ public class PublicarMaterialActivity extends BaseActivity {
     List<MaterialRecogido> mLstMaterialRecogido = new ArrayList<>();
 
     public static final int REQUEST_REGISTRAR_KILOS  = 100;
+
+    MaterialRecogidoPresenter materialRecogidoPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +51,13 @@ public class PublicarMaterialActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdaptador.setOnClickListener(onClickListener);
+
+
+    }
+    private  void obtenerMaterial(){
+        mLstMaterialRecogido.clear();
+        mLstMaterialRecogido.addAll(new MaterialesRecogidos().list());
+        mAdaptador.notifyDataSetChanged();
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -59,4 +73,41 @@ public class PublicarMaterialActivity extends BaseActivity {
 
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            if (requestCode == REQUEST_REGISTRAR_KILOS){
+                obtenerMaterial();
+            }
+        }
+    }
+
+    @OnClick(R.id.btnPublicar) void onPublicar(){
+        mostrarProgressDialog("Publicando Material");
+        materialRecogidoPresenter = new MaterialRecogidoPresenter(this);
+        materialRecogidoPresenter.publicar();
+    }
+
+    @Override
+    public void onSuccessPublicarMaterial() {
+        ocultarProgressDialog();
+        mostrarMensajeDialog("Los materiales fueron publicados correctamente");
+        obtenerMaterial();
+    }
+
+    @Override
+    public void onErrorPublicarMaterial(ErrorApi error) {
+        ocultarProgressDialog();
+        mostrarMensajeDialog(error.getMessage() + ", No fue posible publicar material");
+        obtenerMaterial();
+    }
+
+    @Override
+    public void onErrorValidacion(String mensaje){
+        ocultarProgressDialog();
+        mostrarMensajeDialog(mensaje);
+    }
+
 }

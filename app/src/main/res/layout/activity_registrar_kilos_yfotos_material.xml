@@ -56,13 +56,28 @@
     </LinearLayout>
 
 
-
-    <Button android:id="@+id/btnGuardar"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/white"
-        android:text="@string/guardar"
-        android:background="@drawable/boton_bicicar"
-        android:layout_marginTop="@dimen/margin_16dp"/>
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button android:id="@+id/btnGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/guardar"
+            android:background="@drawable/boton_bicicar"
+            android:layout_marginTop="@dimen/margin_16dp"/>
+
+        <Button android:id="@+id/btnEliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="Eliminar"
+            android:background="@drawable/boton_bicicar"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginLeft="@dimen/margin_16dp"/>
+    </LinearLayout>
 </LinearLayout>

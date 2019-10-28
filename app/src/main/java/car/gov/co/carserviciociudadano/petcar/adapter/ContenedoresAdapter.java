@@ -38,6 +38,7 @@ public class ContenedoresAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         private TextView lblDireccion;
         private TextView lblMunicipio;
+        private TextView lblCodigo;
 
 
         public PlaceViewHolder(View itemView) {
@@ -45,11 +46,13 @@ public class ContenedoresAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             lblDireccion = itemView.findViewById(R.id.lblDireccion);
             lblMunicipio = itemView.findViewById(R.id.lblMunicipio);
+            lblCodigo = itemView.findViewById(R.id.lblCodigo);
         }
 
         public void bind(Contenedor b) {
             lblDireccion.setText(b.Direccion);
             lblMunicipio.setText(b.Municipio);
+            lblCodigo.setText(b.Codigo);
         }
 
 

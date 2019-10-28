@@ -10,9 +10,20 @@ import com.crashlytics.android.Crashlytics;
 import java.util.ArrayList;
 import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
+import car.gov.co.carserviciociudadano.common.APIClient;
 import car.gov.co.carserviciociudadano.common.DbHelper;
+import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.petcar.interfaces.ApiGestor;
+import car.gov.co.carserviciociudadano.petcar.interfaces.ApiMaterialRecogido;
+import car.gov.co.carserviciociudadano.petcar.interfaces.IGestor;
+import car.gov.co.carserviciociudadano.petcar.interfaces.IMaterialRecogido;
+import car.gov.co.carserviciociudadano.petcar.model.Gestor;
 import car.gov.co.carserviciociudadano.petcar.model.MaterialRecogido;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MaterialesRecogidos {
@@ -132,6 +143,12 @@ public class MaterialesRecogidos {
         return (result > 0);
     }
 
+    public List<MaterialRecogido> list(int estado){
+
+        String where = MaterialRecogido.ESTADO + " = " + estado;
+        return list(where);
+    }
+
     public List<MaterialRecogido> list(){
         return list(null);
     }
@@ -144,7 +161,7 @@ public class MaterialesRecogidos {
 
         try {
 
-            Cursor c = db.query(MaterialRecogido.TABLE_NAME, projectionDefault(), where, null, null, null, "[" + MaterialRecogido.ID + "]");
+            Cursor c = db.query(MaterialRecogido.TABLE_NAME, projectionDefault(), where, null, null, null, "[" + MaterialRecogido.ID + "] DESC");
 
             if (c.moveToFirst()) {
                 do {
@@ -190,4 +207,28 @@ public class MaterialesRecogidos {
     }
 
 
+    public void publicar(final MaterialRecogido materialRecogido , final IMaterialRecogido iMaterialRecogido)
+    {
+        ApiMaterialRecogido apiMaterialRecogido = APIClient.getClient().create(ApiMaterialRecogido.class);
+        Call<MaterialRecogido> call = apiMaterialRecogido.agregar(materialRecogido);
+
+        call.enqueue(new Callback<MaterialRecogido>() {
+            @Override
+            public void onResponse(Call<MaterialRecogido> call, Response<MaterialRecogido> response) {
+                if (response.code() == 200) {
+                   // MaterialRecogido element = response.body()
+                    iMaterialRecogido.onSuccessPublicarMaterial(materialRecogido);
+                } else {
+                    iMaterialRecogido.onErrorPublicarMaterial(new ErrorApi(response));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MaterialRecogido> call, Throwable t) {
+                call.cancel();
+                iMaterialRecogido.onErrorPublicarMaterial(new ErrorApi(t));
+                Log.d("item error", t.toString());
+            }
+        });
+    }
 }
