@@ -8,16 +8,23 @@
     tools:context="car.gov.co.carserviciociudadano.bicicar.activities.BeneficiariosActivity">
 
 
-
+    <TextView android:id="@+id/lblTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seleccione un municipio"
+        android:textColor="@color/primaryText"
+        style="@style/lyUsuario"/>
     <FrameLayout android:id="@+id/lySpiColegios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/lyUsuario"
+        android:layout_below="@+id/lblTitle"
         >
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spiMunicipio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             >
         </android.support.v7.widget.AppCompatSpinner>
     </FrameLayout>

@@ -104,6 +104,9 @@ public class RegistrarMaterialActivity extends BaseActivity {
     @OnClick(R.id.btnGuardar) void onGuardar(){
         guardar();
     }
+    @OnClick(R.id.btnEscanearCodigo) void onEscanearCodigo(){
+        abrirEscaner();
+    }
     private void guardar(){
 
         if (Validation.IsEmpty(txtCodigo, lyCodigo)){
@@ -174,9 +177,12 @@ public class RegistrarMaterialActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_SCANNER) {
             if (resultCode == Activity.RESULT_OK) {
                 String datosEscaner = data.getStringExtra(EscanearQRActivity.ESCANER_DATOS);
-                Log.d("escaner", datosEscaner);
-                txtCodigo.setText(datosEscaner);
-
+                if (datosEscaner != null && !datosEscaner.trim().equals("")) {
+                    txtCodigo.setText(datosEscaner.trim());
+                    getContenedor(datosEscaner.trim());
+                }else{
+                    mostrarMensajeDialog("Codigo QR es incorrecto");
+                }
             }
         }
     }
