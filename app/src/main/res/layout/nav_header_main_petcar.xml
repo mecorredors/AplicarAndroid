@@ -8,11 +8,27 @@
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+       >
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
         app:srcCompat="@mipmap/petcar_contenedor" />
 
+    <TextView android:id="@+id/lblUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/primaryText"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="@dimen/margin_10dp"
+        android:textSize="@dimen/text_size_16"
+        android:text=""/>
+    </FrameLayout>
 </LinearLayout>

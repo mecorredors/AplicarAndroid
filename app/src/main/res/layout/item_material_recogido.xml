@@ -45,7 +45,7 @@
                 android:text="Municipio"
                 android:textSize="@dimen/text_size_16"
                 android:textColor="@color/primaryText"
-                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginTop="@dimen/margin_4dp"
                 />
             <TextView android:id="@+id/lblTipoMaterial"
                 android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                 android:text="Tipo Material"
                 android:textSize="@dimen/text_size_16"
                 android:textColor="@color/primaryText"
-                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginTop="@dimen/margin_4dp"
                 />
             <TextView android:id="@+id/lblComentarios"
                 android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                 android:text="Comentarios"
                 android:textSize="@dimen/text_size_16"
                 android:textColor="@color/primaryText"
-                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginTop="@dimen/margin_4dp"
                 />
 
             <LinearLayout
@@ -71,29 +71,37 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="@dimen/margin_16dp">
-                <TextView android:id="@+id/lblKilos"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:layout_marginBottom="@dimen/margin_4dp">
+
+                <TextView
+                    android:id="@+id/lblKilos"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_weight="1"
                     android:text="0 Kg"
-                    android:textSize="@dimen/text_size_16"
                     android:textColor="@color/primaryText"
-                    android:layout_marginTop="@dimen/margin_10dp"
-                    />
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
                 <TextView android:id="@+id/lblEstado"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/margin_16dp"
+                    android:layout_marginLeft="@dimen/margin_6dp"
                     android:text="Estado"
                     android:textAlignment="textEnd"
                     android:textSize="@dimen/text_size_12"
                     android:textColor="@color/primaryText"
-                    android:layout_marginTop="@dimen/margin_10dp"
-                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_4dp"
                     />
+                <ImageView android:id="@+id/icoEstado"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_warning_yellow_24dp"
+                    android:layout_marginRight="@dimen/margin_16dp"
+                    android:layout_marginLeft="@dimen/margin_4dp"/>
             </LinearLayout>
 
         </LinearLayout>

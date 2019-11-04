@@ -7,12 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
+
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.petcar.model.MaterialRecogido;
+
+import static car.gov.co.carserviciociudadano.R.drawable.ic_check_circle_green_24dp;
+import static car.gov.co.carserviciociudadano.R.drawable.ic_warning_yellow_24dp;
 
 /**
  * Created by Olger on 28/11/2016.
@@ -43,6 +49,7 @@ public class MaterialRecogidoAdapter extends RecyclerView.Adapter<RecyclerView.V
         private TextView lblComentarios;
         private TextView lblKilos;
         private TextView lblEstado;
+        private ImageView icoEstado;
 
 
 
@@ -55,6 +62,7 @@ public class MaterialRecogidoAdapter extends RecyclerView.Adapter<RecyclerView.V
             lblComentarios = itemView.findViewById(R.id.lblComentarios);
             lblKilos = itemView.findViewById(R.id.lblKilos);
             lblEstado = itemView.findViewById(R.id.lblEstado);
+            icoEstado = itemView.findViewById(R.id.icoEstado);
 
         }
 
@@ -81,12 +89,19 @@ public class MaterialRecogidoAdapter extends RecyclerView.Adapter<RecyclerView.V
                 lblComentarios.setVisibility(View.GONE);
             }
 
-            lblKilos.setText(String.valueOf(b.Kilos));
-            if (b.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR) {
+            lblKilos.setText(String.valueOf(b.Kilos) + " Kilos");
+            if (b.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR ) {
                 lblEstado.setText("Pendiente publicar");
+                icoEstado.setImageDrawable(AppCar.getContext().getResources().getDrawable(ic_warning_yellow_24dp));
+            }else if ( b.Estado == Enumerator.Estado.PENDIENTE_PUBLICAR_FOTOS) {
+                lblEstado.setText("Pendiente publicar fotos");
+                icoEstado.setImageDrawable(AppCar.getContext().getResources().getDrawable(ic_warning_yellow_24dp));
             }else{
                 lblEstado.setText("Publicado");
+                icoEstado.setImageDrawable(AppCar.getContext().getResources().getDrawable(ic_check_circle_green_24dp));
             }
+
+
         }
 
         @Override

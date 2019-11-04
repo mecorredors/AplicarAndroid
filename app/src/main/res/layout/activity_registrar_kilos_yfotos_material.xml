@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +8,10 @@
     android:orientation="vertical"
     android:background="@color/background">
 
+    <LinearLayout android:id="@+id/lyDatos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,13 +33,14 @@
             android:id="@+id/lyKilos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10dp"
             >
             <EditText
                 android:id="@+id/txtKilos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Kilos"
-                android:inputType="textNoSuggestions"
+                android:inputType="textNoSuggestions|numberDecimal"
                 style="@style/editTextUsuario"
                 />
         </android.support.design.widget.TextInputLayout>
@@ -54,30 +59,112 @@
                 />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
+    </LinearLayout>
 
 
-    <LinearLayout
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lyDatos"
+        android:layout_above="@+id/lyBotones">
+
+
+        <LinearLayout android:id="@+id/lyInicial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Seleccione o tome fotos de material recogido"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/text_size_16"
+                android:gravity="center_horizontal"
+                android:lines="2"
+                android:minLines="2"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="@dimen/margin_16dp"/>
+
+
+            <LinearLayout android:id="@+id/lyAgregarFotos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="#E6E6E6"
+                android:orientation="vertical">
+
+                <ImageView android:id="@+id/imgAgregarFotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_photo_camera_gray_80dp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+        <GridView
+            android:id="@+id/gridGallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/lyHeader"
+            android:layout_above="@+id/LinearBtnNext"
+            android:layout_gravity="top"
+            android:verticalSpacing="3dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="3"
+            android:padding="0dp"
+            android:stretchMode="columnWidth"
+            tools:listitem="@layout/item_gallery"
+            android:visibility="visible"
+
+            android:layout_marginTop="@dimen/margin_6dp"
+            android:layout_marginLeft="@dimen/margin_6dp"
+            android:layout_marginRight="@dimen/margin_6dp"
+            android:layout_marginBottom="50dp"
+            >
+        </GridView>
+
+
+    </FrameLayout>
+
+
+    <LinearLayout android:id="@+id/lyBotones"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_margin="@dimen/margin_16dp">
         <Button android:id="@+id/btnGuardar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:text="@string/guardar"
             android:background="@drawable/boton_bicicar"
-            android:layout_marginTop="@dimen/margin_16dp"/>
+           />
 
         <Button android:id="@+id/btnEliminar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:text="Eliminar"
             android:background="@drawable/boton_bicicar"
-            android:layout_marginTop="@dimen/margin_16dp"
+
             android:layout_marginLeft="@dimen/margin_16dp"/>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

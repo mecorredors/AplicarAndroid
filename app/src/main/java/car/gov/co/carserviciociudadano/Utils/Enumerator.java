@@ -64,7 +64,7 @@ public class Enumerator {
         public static final int PUBLICADO = 0;
         public static final int TODOS = -1;
         public static final int EDICION = 2;
-
+        public static final int PENDIENTE_PUBLICAR_FOTOS = 3;
 
     }
 

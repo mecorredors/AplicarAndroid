@@ -29,7 +29,7 @@ public class MaterialRecogidoPresenter {
         List<MaterialRecogido> lstMaterialRecogido = new MaterialesRecogidos().list(Enumerator.Estado.PENDIENTE_PUBLICAR);
 
         if (lstMaterialRecogido.size() == 0){
-            iViewMaterialRecogido.onErrorValidacion("No hay material pendiente de publicar");
+            iViewMaterialRecogido.onSuccessPublicarMaterial();
             return;
         }
 
@@ -57,7 +57,7 @@ public class MaterialRecogidoPresenter {
             materialesRecogidosData.publicar(item, new IMaterialRecogido() {
                 @Override
                 public void onSuccessPublicarMaterial(MaterialRecogido materialRecogido) {
-                    materialRecogido.Estado = Enumerator.Estado.PUBLICADO;
+                    materialRecogido.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR_FOTOS;
 
                     if (materialesRecogidosData.guardar(materialRecogido)){
                         publicar(gestor);

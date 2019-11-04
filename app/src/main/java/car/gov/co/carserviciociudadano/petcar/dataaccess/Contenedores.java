@@ -172,6 +172,11 @@ public class Contenedores {
         return list(null);
     }
 
+    public List<Contenedor> listByMunicipio(String idMunicipio){
+        String where = Contenedor.IDMUNICIPIO + " = " + idMunicipio.trim();
+        return list(where);
+    }
+
     public List<Contenedor> list(String where)
     {   synchronized (this) {
         InitDbHelper();

@@ -182,6 +182,10 @@
     <string name="title_activity_main_petcar">PETCAR</string>
     <string name="title_login_petcar">Login PETCAR </string>
     <string name="title_contenedores">Contenedores </string>
+    <string name="title_publicar_material">Publicar material </string>
+    <string name="title_registrar_kilos">Registrar kilos recogidos </string>
+    <string name="title_registrar_material">Registrar material</string>
+    <string name="mensaje_seleccionar_material">Seleccione un material para registrar la cantidad  recogida </string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

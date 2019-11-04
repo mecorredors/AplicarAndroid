@@ -70,4 +70,6 @@ public class Config {
     public static String API_BICICAR_EVENTO_AGREGAR_FOTOS =  Server.ServerBICICAR() + "api/eventos/agregarFotos/";
     public static String API_BICICAR_EVENTO_OBTENER_ACTUAL =  Server.ServerBICICAR() + "api/eventos/obtenerActual/";
 
+    public static String API_PETCAR_AGREGAR_ADJUNTOS =  Server.ServerBICICAR() + "api/adjuntos/agregarAdjunto/";
+
 }

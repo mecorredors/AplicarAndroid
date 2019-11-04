@@ -1,5 +1,6 @@
 package car.gov.co.carserviciociudadano.petcar.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,13 +10,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -30,7 +35,9 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.adapter.MunicipiosAdapter;
+import car.gov.co.carserviciociudadano.petcar.dataaccess.Gestores;
 import car.gov.co.carserviciociudadano.petcar.fragments.MapPETCARFragment;
+import car.gov.co.carserviciociudadano.petcar.model.Gestor;
 import car.gov.co.carserviciociudadano.petcar.model.Municipio;
 import car.gov.co.carserviciociudadano.petcar.presenter.IViewMunicipios;
 import car.gov.co.carserviciociudadano.petcar.presenter.MunicipiosPresenter;
@@ -38,8 +45,10 @@ import car.gov.co.carserviciociudadano.petcar.presenter.MunicipiosPresenter;
 public class MainPETCARActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, IViewMunicipios {
 
-
+    Menu navMenu;
+    NavigationView navigationView;
     DrawerLayout drawer;
+    TextView lblUsuario;
     @BindView(R.id.recyclerMunicipios) RecyclerView mRecyclerMunicipios;
     @BindView(R.id.lyMunicipios) View mLyMunicipios;
     @BindView(R.id.lyGuia) View mLyGuia;
@@ -49,6 +58,8 @@ public class MainPETCARActivity extends BaseActivity
     List<Municipio> mLstMunicipios;
     MunicipiosPresenter municipiosPresenter;
     MapPETCARFragment mMapPETCARFragment;
+    Gestor mGestor;
+    public static final int REQUEST_LOGIN = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +68,7 @@ public class MainPETCARActivity extends BaseActivity
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         drawer =  findViewById(R.id.drawer_layout);
+
 
         //bnve.enableAnimation(false);
         menu_bar.enableShiftingMode(false);
@@ -71,8 +83,13 @@ public class MainPETCARActivity extends BaseActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView =  findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navMenu = navigationView.getMenu();
+        lblUsuario = navigationView.getHeaderView(0).findViewById(R.id.lblUsuario);
+
+
+        configMenuLateral();
 
 
         mLstMunicipios = new ArrayList<>();
@@ -86,6 +103,26 @@ public class MainPETCARActivity extends BaseActivity
         mLyGuia.setVisibility(View.GONE);
 
 
+    }
+    private void configMenuLateral(){
+        mGestor = new Gestores().getLogin();
+        if (mGestor != null){
+
+            navMenu.findItem(R.id.nav_login).setVisible(false);
+            navMenu.findItem(R.id.nav_cerrar_sesion).setVisible(true);
+            navMenu.findItem(R.id.nav_publicar_material).setVisible(true);
+            navMenu.findItem(R.id.nav_contenedores).setVisible(true);
+            navMenu.findItem(R.id.nav_registrar_material).setVisible(true);
+            lblUsuario.setText(mGestor.NombreCompleto);
+
+        }else{
+            navMenu.findItem(R.id.nav_login).setVisible(true);
+            navMenu.findItem(R.id.nav_cerrar_sesion).setVisible(false);
+            navMenu.findItem(R.id.nav_publicar_material).setVisible(false);
+            navMenu.findItem(R.id.nav_contenedores).setVisible(false);
+            navMenu.findItem(R.id.nav_registrar_material).setVisible(false);
+            lblUsuario.setText("");
+        }
     }
 
     private void obtenerMunicipios(){
@@ -188,28 +225,68 @@ public class MainPETCARActivity extends BaseActivity
         // Handle menu_bar_petcar view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_enviar) {
-            mostrarMensaje("Próximamente, en desarrollo");
-        } else if (id == R.id.nav_usuario) {
-            Intent i = new Intent(this, LoginPetCarActivity.class);
-            startActivity(i);
+        if (id == R.id.nav_login) {
+            loginPetCar();
+        } else if (id == R.id.nav_cerrar_sesion) {
+           cerrarSesion();
         }else if (id == R.id.nav_co2) {
             mostrarMensaje("Próximamente, en desarrollo");
         }else if (id == R.id.nav_contenedores) {
-            Intent i = new Intent(this, ContenedoresActivity.class);
-            startActivity(i);
+            if (mGestor != null) {
+                Intent i = new Intent(this, ContenedoresActivity.class);
+                startActivity(i);
+            }else{
+                loginPetCar();
+            }
         }else if (id == R.id.nav_registrar_material) {
+            if (mGestor != null) {
             Intent i = new Intent(this, RegistrarMaterialActivity.class);
             startActivity(i);
+            }else{
+                loginPetCar();
+            }
         }else if (id == R.id.nav_publicar_material) {
+            if (mGestor != null) {
             Intent i = new Intent(this, PublicarMaterialActivity.class);
             startActivity(i);
+            }else{
+                loginPetCar();
+            }
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    private  void loginPetCar(){
+        Intent i = new Intent(this, LoginPetCarActivity.class);
+        startActivityForResult(i , REQUEST_LOGIN);
+    }
+
+    private void cerrarSesion(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainPETCARActivity.this);
+
+        builder.setMessage("¿Seguro desea cerrar sesión?");
+
+        builder.setPositiveButton(R.string.cerrar_sesion, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if (mGestor != null){
+                    new Gestores().delete(mGestor.IDGestor);
+                    configMenuLateral();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
     private void openMap() {
 
         mMapPETCARFragment  =  MapPETCARFragment.newInstance();
@@ -248,5 +325,16 @@ public class MainPETCARActivity extends BaseActivity
     @OnClick(R.id.imgClose2) void onCerrarGuia() {
         mLyGuia.setVisibility(View.GONE);
         mLyGuia.startAnimation(AnimationUtils.loadAnimation(AppCar.getContext(), R.anim.slide_dow));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK ){
+            if (requestCode == REQUEST_LOGIN){
+                configMenuLateral();
+                drawer.openDrawer(Gravity.LEFT);
+            }
+        }
     }
 }

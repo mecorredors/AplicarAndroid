@@ -168,8 +168,8 @@ public class LoginPetCarActivity extends BaseActivity implements IGestor, IViewC
         builder.setNegativeButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
-                onBackPressed();
+                setResult(RESULT_OK);
+                finish();
             }
         });
         builder.show();

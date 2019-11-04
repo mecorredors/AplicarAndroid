@@ -6,10 +6,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.Utils.Config;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
+import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.DbHelper;
 import car.gov.co.carserviciociudadano.petcar.model.AdjuntoPetCar;
 
@@ -47,10 +60,9 @@ public class AdjuntosPetCar {
         InitDbHelper();
         ContentValues cv = new ContentValues();
 
-        cv.put(AdjuntoPetCar.ID, element.Id);
         cv.put(AdjuntoPetCar.IDADJUNTO, element.IDAdjunto);
         cv.put(AdjuntoPetCar.PATH, element.Path);
-        cv.put(AdjuntoPetCar.IDMATERIAL_RECOGIDO, element.IDTipoMaterialRecogido);
+        cv.put(AdjuntoPetCar.IDMATERIAL_RECOGIDO, element.IDMaterialRecogido);
         cv.put(AdjuntoPetCar.ESTADO, element.Estado);
 
 
@@ -84,7 +96,7 @@ public class AdjuntosPetCar {
 
         cv.put(AdjuntoPetCar.IDADJUNTO, element.IDAdjunto);
         cv.put(AdjuntoPetCar.PATH, element.Path);
-        cv.put(AdjuntoPetCar.IDMATERIAL_RECOGIDO, element.IDTipoMaterialRecogido);
+        cv.put(AdjuntoPetCar.IDMATERIAL_RECOGIDO, element.IDMaterialRecogido);
         cv.put(AdjuntoPetCar.ESTADO, element.Estado);
 
         long rowid;
@@ -128,6 +140,14 @@ public class AdjuntosPetCar {
 
     public List<AdjuntoPetCar> list(){
         return list(null);
+    }
+
+    public List<AdjuntoPetCar> list(int idLocalMaterialRecogido, int estado){
+        String where = AdjuntoPetCar.IDMATERIAL_RECOGIDO  + " = " + idLocalMaterialRecogido;
+        if (estado != Enumerator.Estado.TODOS) {
+            where = where + " and " + AdjuntoPetCar.ESTADO + " = " + estado;
+        }
+        return list(where);
     }
 
     public List<AdjuntoPetCar> list(String where)
@@ -183,5 +203,123 @@ public class AdjuntosPetCar {
         }
     }
 
+
+    public int publicar(AdjuntoPetCar archivoAdjunto, int idMaterialRecogido, String usuarioCreacion) {
+
+        int serverResponseCode = 0;
+        String sourceFileUri = archivoAdjunto.Path;
+
+        HttpURLConnection conn = null;
+        DataOutputStream dos = null;
+        String lineEnd = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+        File sourceFile = new File(sourceFileUri);
+
+
+        if (!sourceFile.isFile()) {
+            Log.d("uploadFile", "Source File not exist :" + sourceFileUri);
+            return 0;
+
+        }
+        else
+        {
+            try {
+                // open a URL connection to the Servlet
+                FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                URL url = new URL(Config.API_PETCAR_AGREGAR_ADJUNTOS+ "?idMaterialRecogido="+ idMaterialRecogido + "&usuarioCreacion=" + usuarioCreacion);
+
+                // Open a HTTP  connection to  the URL
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setDoInput(true); // Allow Inputs
+                conn.setDoOutput(true); // Allow Outputs
+                conn.setUseCaches(false); // Don't use a Cached Copy
+                conn.setConnectTimeout(Enumerator.TIMEOUT_PUBLISH_IMAGES);
+                conn.setReadTimeout(Enumerator.TIMEOUT_PUBLISH_IMAGES);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                conn.setRequestProperty("uploaded_file", sourceFileUri);
+                conn.setRequestProperty("Authorization", "Basic " + Utils.getAuthorizationBICICAR());
+
+                dos = new DataOutputStream(conn.getOutputStream());
+
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=uploaded_file;filename=" + sourceFileUri + "" + lineEnd);
+
+                dos.writeBytes(lineEnd);
+
+                // create a buffer of  maximum size
+                bytesAvailable = fileInputStream.available();
+
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
+
+                // read file and write it into form...
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                while (bytesRead > 0) {
+
+                    dos.write(buffer, 0, bufferSize);
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                }
+
+                // send multipart form data necesssary after file data...
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+                // Responses from the server (code and message)
+                serverResponseCode = conn.getResponseCode();
+                String serverResponseMessage = conn.getResponseMessage();
+
+                Log.d("status code",serverResponseCode+ "");
+                Log.d("mensaje",serverResponseMessage);
+                if(serverResponseCode == 200){
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    br.close();
+
+                    GsonBuilder builder = new GsonBuilder();
+                    builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    Gson gson = builder.create();
+                    String pathServer = gson.fromJson(sb.toString(), String.class);
+                    Log.d("imagen subida ",pathServer);
+                    archivoAdjunto.PathTemporal = pathServer;
+
+                    return serverResponseCode;
+
+                }
+                Log.d("publicarImagen", "HTTP: " + serverResponseMessage + ": " + serverResponseCode);
+
+                //close the streams //
+                fileInputStream.close();
+                dos.flush();
+                dos.close();
+
+            } catch (MalformedURLException ex) {
+                Log.e("Upload file to server", "MalformedURLException " + ex.getMessage(), ex);
+                return 500;
+            } catch (Exception e) {
+                Log.e("Upload file", "Exception : " + e.getMessage(), e);
+                return 500;
+            }
+
+            return  serverResponseCode;
+
+        } // End else block
+
+    }
 
 }

@@ -40,6 +40,7 @@ public class MaterialesRecogidos {
     {
         return new String[] {
                 "[" + MaterialRecogido.ID + "]",
+                "[" + MaterialRecogido.ID_MATERIAL_RECOGIDO + "]",
                 "[" + MaterialRecogido.IDCONTENEDOR + "]",
                 "[" + MaterialRecogido.IDTIPO_MATERIAL + "]",
                 "[" + MaterialRecogido.FECHALECTURA_QR + "]",
@@ -62,6 +63,7 @@ public class MaterialesRecogidos {
         InitDbHelper();
         ContentValues cv = new ContentValues();
 
+        cv.put(MaterialRecogido.ID_MATERIAL_RECOGIDO, element.IDMaterialRecogido);
         cv.put(MaterialRecogido.IDCONTENEDOR, element.IDContenedor);
         cv.put(MaterialRecogido.IDTIPO_MATERIAL, element.IDTipoMaterial);
         cv.put(MaterialRecogido.FECHALECTURA_QR, Utils.toStringFromDate(element.FechaLecturaQR));
@@ -97,6 +99,7 @@ public class MaterialesRecogidos {
         String selection = MaterialRecogido.ID + " = ? ";
         String[] selectionArgs = {String.valueOf(element.Id)};
 
+        cv.put(MaterialRecogido.ID_MATERIAL_RECOGIDO, element.IDMaterialRecogido);
         cv.put(MaterialRecogido.IDCONTENEDOR, element.IDContenedor);
         cv.put(MaterialRecogido.IDTIPO_MATERIAL, element.IDTipoMaterial);
         cv.put(MaterialRecogido.FECHALECTURA_QR, Utils.toStringFromDate(element.FechaLecturaQR));
@@ -216,7 +219,8 @@ public class MaterialesRecogidos {
             @Override
             public void onResponse(Call<MaterialRecogido> call, Response<MaterialRecogido> response) {
                 if (response.code() == 200) {
-                   // MaterialRecogido element = response.body()
+                    MaterialRecogido element = response.body();
+                    materialRecogido.IDMaterialRecogido = element.IDMaterialRecogido;
                     iMaterialRecogido.onSuccessPublicarMaterial(materialRecogido);
                 } else {
                     iMaterialRecogido.onErrorPublicarMaterial(new ErrorApi(response));

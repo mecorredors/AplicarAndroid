@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RadioButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,17 +17,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.adapter.MaterialRecogidoAdapter;
 import car.gov.co.carserviciociudadano.petcar.dataaccess.MaterialesRecogidos;
+import car.gov.co.carserviciociudadano.petcar.interfaces.IViewAdjuntoPetCar;
+import car.gov.co.carserviciociudadano.petcar.model.AdjuntoPetCar;
 import car.gov.co.carserviciociudadano.petcar.model.MaterialRecogido;
+import car.gov.co.carserviciociudadano.petcar.presenter.AdjuntoPetCarPresenter;
 import car.gov.co.carserviciociudadano.petcar.presenter.IViewMaterialRecogido;
 import car.gov.co.carserviciociudadano.petcar.presenter.MaterialRecogidoPresenter;
 
-public class PublicarMaterialActivity extends BaseActivity  implements IViewMaterialRecogido {
+public class PublicarMaterialActivity extends BaseActivity  implements IViewMaterialRecogido, IViewAdjuntoPetCar {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.rbPendiente) RadioButton rbPendiente;
+    @BindView(R.id.rbPublicado) RadioButton rbPublicado;
 
 
     MaterialRecogidoAdapter mAdaptador;
@@ -35,7 +42,7 @@ public class PublicarMaterialActivity extends BaseActivity  implements IViewMate
     public static final int REQUEST_REGISTRAR_KILOS  = 100;
 
     MaterialRecogidoPresenter materialRecogidoPresenter;
-
+    AdjuntoPetCarPresenter adjuntoPetCarPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,19 +51,32 @@ public class PublicarMaterialActivity extends BaseActivity  implements IViewMate
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
 
-        mLstMaterialRecogido.addAll(new MaterialesRecogidos().list());
 
         mAdaptador = new MaterialRecogidoAdapter(mLstMaterialRecogido);
         recyclerView.setAdapter(mAdaptador);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdaptador.setOnClickListener(onClickListener);
-
+        adjuntoPetCarPresenter = new AdjuntoPetCarPresenter(this);
+        obtenerMaterial();
 
     }
+
+      @OnClick({R.id.rbPendiente, R.id.rbPublicado}) void onRadioButtonClick(){
+          obtenerMaterial();
+      }
+
     private  void obtenerMaterial(){
+
+        String where = "";
+        if (rbPendiente.isChecked()){
+            where = MaterialRecogido.ESTADO + " = " + Enumerator.Estado.PENDIENTE_PUBLICAR + " or " + MaterialRecogido.ESTADO + " = " + Enumerator.Estado.PENDIENTE_PUBLICAR_FOTOS;
+        }else{
+            where =  MaterialRecogido.ESTADO + " = " + Enumerator.Estado.PUBLICADO;
+        }
+
         mLstMaterialRecogido.clear();
-        mLstMaterialRecogido.addAll(new MaterialesRecogidos().list());
+        mLstMaterialRecogido.addAll(new MaterialesRecogidos().list(where));
         mAdaptador.notifyDataSetChanged();
     }
 
@@ -84,6 +104,18 @@ public class PublicarMaterialActivity extends BaseActivity  implements IViewMate
         }
     }
 
+    public  void publicarAdjuntosPetcar(){
+        List<MaterialRecogido> lstMaterialRecogido = new MaterialesRecogidos().list(Enumerator.Estado.PENDIENTE_PUBLICAR_FOTOS);
+
+        if (lstMaterialRecogido.size() > 0) {
+            adjuntoPetCarPresenter.publicarArchivosAdjuntos(lstMaterialRecogido.get(0));
+        }else{
+            ocultarProgressDialog();
+            mostrarMensajeDialog("Material publicado correctamente");
+            obtenerMaterial();
+        }
+    }
+
     @OnClick(R.id.btnPublicar) void onPublicar(){
         mostrarProgressDialog("Publicando Material");
         materialRecogidoPresenter = new MaterialRecogidoPresenter(this);
@@ -93,8 +125,8 @@ public class PublicarMaterialActivity extends BaseActivity  implements IViewMate
     @Override
     public void onSuccessPublicarMaterial() {
         ocultarProgressDialog();
-        mostrarMensajeDialog("Los materiales fueron publicados correctamente");
-        obtenerMaterial();
+        mostrarProgressDialog("Publicando fotos");
+        publicarAdjuntosPetcar();
     }
 
     @Override
@@ -110,4 +142,20 @@ public class PublicarMaterialActivity extends BaseActivity  implements IViewMate
         mostrarMensajeDialog(mensaje);
     }
 
+    @Override
+    public void onSuccessArchivosAdjunto(MaterialRecogido materialRecogido) {
+        materialRecogido.Estado = Enumerator.Estado.PUBLICADO;
+        if (new MaterialesRecogidos().update(materialRecogido)) {
+            publicarAdjuntosPetcar();
+        }else {
+            onErrorValidacion("Error al guardar localmente despues de publicar adjunto");
+        }
+
+    }
+
+    @Override
+    public void onErrorArchivoAdjunto(String mensaje) {
+        ocultarProgressDialog();
+        mostrarMensajeDialog(mensaje);
+    }
 }
