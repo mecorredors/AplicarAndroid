@@ -251,6 +251,7 @@
             android:label="@string/title_contenedores"
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppThemeBicicar" />
+        <activity android:name=".petcar.activities.CambiarPasswordActivity" />
     </application>
 
 </manifest>

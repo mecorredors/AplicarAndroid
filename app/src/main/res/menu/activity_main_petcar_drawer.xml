@@ -32,6 +32,10 @@
                 android:icon="@drawable/ic_person_24dp"
                 android:title="Iniciar sesión" />
             <item
+                android:id="@+id/nav_cambiar_clave"
+                android:icon="@drawable/ic_person_24dp"
+                android:title="Cambiar clave" />
+            <item
                 android:id="@+id/nav_cerrar_sesion"
                 android:icon="@drawable/ic_exit_to_app_white_24dp"
                 android:title="Cerrar sesión" />

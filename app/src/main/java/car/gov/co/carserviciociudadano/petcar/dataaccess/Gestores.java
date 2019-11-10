@@ -10,12 +10,16 @@ import com.crashlytics.android.Crashlytics;
 import java.util.ArrayList;
 import java.util.List;
 import car.gov.co.carserviciociudadano.AppCar;
+import car.gov.co.carserviciociudadano.bicicar.model.RespuestaApi;
 import car.gov.co.carserviciociudadano.common.APIClient;
 import car.gov.co.carserviciociudadano.common.DbHelper;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.interfaces.ApiGestor;
+import car.gov.co.carserviciociudadano.petcar.interfaces.ApiMaterialRecogido;
 import car.gov.co.carserviciociudadano.petcar.interfaces.IGestor;
+import car.gov.co.carserviciociudadano.petcar.interfaces.IMaterialRecogido;
 import car.gov.co.carserviciociudadano.petcar.model.Gestor;
+import car.gov.co.carserviciociudadano.petcar.model.MaterialRecogido;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -236,5 +240,53 @@ public class Gestores {
         });
     }
 
+    public void cambiarClave(String identificacion, String claveApp, String nuevaClave , final IGestor iGestor)
+    {
+        ApiGestor apiGestor = APIClient.getClient().create(ApiGestor.class);
+        Call<Gestor> call = apiGestor.cambiarClave(identificacion, claveApp, nuevaClave);
 
+        call.enqueue(new Callback<Gestor>() {
+            @Override
+            public void onResponse(Call<Gestor> call, Response<Gestor> response) {
+
+                if (response.code() == 200) {
+                    iGestor.onSuccessCambiarClave(response.body());
+                } else {
+                    iGestor.onErrorCambiarClave(new ErrorApi(response));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Gestor> call, Throwable t) {
+                call.cancel();
+                iGestor.onErrorCambiarClave(new ErrorApi(t));
+                Log.d("item error", t.toString());
+            }
+        });
+    }
+
+    public void recordarClave(final Gestor gestor , final IGestor iGestor)
+    {
+        ApiGestor apiGestor = APIClient.getClient().create(ApiGestor.class);
+        Call<RespuestaApi> call = apiGestor.recordarClave(gestor);
+
+        call.enqueue(new Callback<RespuestaApi>() {
+            @Override
+            public void onResponse(Call<RespuestaApi> call, Response<RespuestaApi> response) {
+                if (response.code() == 200) {
+                    iGestor.onSuccessRercordarClave(response.body());
+                } else {
+                    iGestor.onErrorRecordarClave(new ErrorApi(response));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaApi> call, Throwable t) {
+                call.cancel();
+                iGestor.onErrorRecordarClave(new ErrorApi(t));
+                Log.d("item error", t.toString());
+            }
+        });
+    }
 }

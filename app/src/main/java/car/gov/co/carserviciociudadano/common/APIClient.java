@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import car.gov.co.carserviciociudadano.Utils.Server;
 import car.gov.co.carserviciociudadano.Utils.Utils;
@@ -32,6 +33,7 @@ public class APIClient {
                okhttp3.Request request = chain.request();
                Headers headers = request.headers().newBuilder().add("Authorization", "Basic " + Utils.getAuthorizationBICICAR()).build();
                request = request.newBuilder().headers(headers).build();
+
                return chain.proceed(request);
            }
        };
@@ -44,7 +46,9 @@ public class APIClient {
        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
        clientBuilder.addInterceptor(headerAuthorizationInterceptor);
        clientBuilder.addInterceptor(interceptor);
-       OkHttpClient client = clientBuilder.build();
+       OkHttpClient client = clientBuilder.connectTimeout(20, TimeUnit.MINUTES)
+               .readTimeout(20, TimeUnit.SECONDS)
+               .writeTimeout(20, TimeUnit.SECONDS) .build();
 
        GsonBuilder builder = new GsonBuilder();
        builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");

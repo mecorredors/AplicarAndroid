@@ -18,8 +18,8 @@ android {
         applicationId "car.gov.co.carserviciociudadano"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 29
-        versionName "2.4.4.1"
+        versionCode 30
+        versionName "2.4.6.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

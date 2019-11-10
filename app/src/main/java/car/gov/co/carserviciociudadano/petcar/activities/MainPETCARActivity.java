@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.adapter.MunicipiosAdapter;
@@ -90,7 +91,7 @@ public class MainPETCARActivity extends BaseActivity
 
 
         configMenuLateral();
-
+        cambiarClave();
 
         mLstMunicipios = new ArrayList<>();
         mAdaptador = new MunicipiosAdapter( mLstMunicipios);
@@ -102,7 +103,15 @@ public class MainPETCARActivity extends BaseActivity
         mLyMunicipios.setVisibility(View.GONE);
         mLyGuia.setVisibility(View.GONE);
 
-
+    }
+    private void cambiarClave(){
+        mGestor = new Gestores().getLogin();
+        if (mGestor != null) {
+            if (PreferencesApp.getDefault(PreferencesApp.READ).getBoolean(CambiarPasswordActivity.CAMBIAR_CLAVE_1_VEZ_PETCAR, true)) {
+                Intent i = new Intent(this, CambiarPasswordActivity.class);
+                startActivity(i);
+            }
+        }
     }
     private void configMenuLateral(){
         mGestor = new Gestores().getLogin();
@@ -113,6 +122,7 @@ public class MainPETCARActivity extends BaseActivity
             navMenu.findItem(R.id.nav_publicar_material).setVisible(true);
             navMenu.findItem(R.id.nav_contenedores).setVisible(true);
             navMenu.findItem(R.id.nav_registrar_material).setVisible(true);
+            navMenu.findItem(R.id.nav_cambiar_clave).setVisible(true);
             lblUsuario.setText(mGestor.NombreCompleto);
 
         }else{
@@ -121,6 +131,7 @@ public class MainPETCARActivity extends BaseActivity
             navMenu.findItem(R.id.nav_publicar_material).setVisible(false);
             navMenu.findItem(R.id.nav_contenedores).setVisible(false);
             navMenu.findItem(R.id.nav_registrar_material).setVisible(false);
+            navMenu.findItem(R.id.nav_cambiar_clave).setVisible(false);
             lblUsuario.setText("");
         }
     }
@@ -252,6 +263,13 @@ public class MainPETCARActivity extends BaseActivity
             }else{
                 loginPetCar();
             }
+        }else if (id == R.id.nav_cambiar_clave) {
+            if (mGestor != null) {
+                Intent i = new Intent(this, CambiarPasswordActivity.class);
+                startActivity(i);
+            }else{
+                loginPetCar();
+            }
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -334,6 +352,7 @@ public class MainPETCARActivity extends BaseActivity
             if (requestCode == REQUEST_LOGIN){
                 configMenuLateral();
                 drawer.openDrawer(Gravity.LEFT);
+                cambiarClave();
             }
         }
     }

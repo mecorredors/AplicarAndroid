@@ -105,7 +105,7 @@
         android:layout_marginRight="@dimen/margin_16dp"
         android:text="@string/olvidaste_contrasena"
         android:theme="@style/ButtonBorderlessBicicar"
-        android:visibility="gone" />
+        />
 
 
     <LinearLayout android:id="@+id/lyRecordarClave"

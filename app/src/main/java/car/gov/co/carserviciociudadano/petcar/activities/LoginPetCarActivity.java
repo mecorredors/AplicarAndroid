@@ -1,11 +1,8 @@
 package car.gov.co.carserviciociudadano.petcar.activities;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -18,7 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Validation;
-import car.gov.co.carserviciociudadano.bicicar.model.Lugar;
+import car.gov.co.carserviciociudadano.bicicar.model.RespuestaApi;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.dataaccess.Contenedores;
@@ -82,7 +79,7 @@ public class LoginPetCarActivity extends BaseActivity implements IGestor, IViewC
     }
 
     @OnClick(R.id.btnRecordarClave) void onRecordarClave() {
-       mostrarMensaje("no implementado");
+       recordarClave();
     }
 
     @OnClick(R.id.btnOlvidasteContrasena) void onOlvidasteContrasena() {
@@ -135,6 +132,13 @@ public class LoginPetCarActivity extends BaseActivity implements IGestor, IViewC
         }
     }
 
+    private void recordarClave() {
+        if (validarRecordarClave()){
+            mostrarProgressDialog("Enviando email ...");
+            gestorPresenter.recordarClave(txtNumeroID2.getText().toString(), txtEmail.getText().toString());
+        }
+    }
+
     @Override
     public void onSuccessLoging(Gestor gestor) {
         ocultarProgressDialog();
@@ -150,6 +154,30 @@ public class LoginPetCarActivity extends BaseActivity implements IGestor, IViewC
 
     @Override
     public void onErrorLoging(ErrorApi error) {
+        ocultarProgressDialog();
+        mostrarMensajeDialog(error.getMessage());
+    }
+
+    @Override
+    public void onSuccessCambiarClave(Gestor gestor) {
+
+    }
+
+    @Override
+    public void onErrorCambiarClave(ErrorApi error) {
+
+    }
+
+    @Override
+    public void onSuccessRercordarClave(RespuestaApi respuestaApi) {
+        ocultarProgressDialog();
+        mostrarMensajeDialog(respuestaApi.Mensaje);
+        lyIngresar.setVisibility(View.VISIBLE);
+        lyRecordarClave.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onErrorRecordarClave(ErrorApi error) {
         ocultarProgressDialog();
         mostrarMensajeDialog(error.getMessage());
     }
