@@ -3,10 +3,10 @@ package car.gov.co.carserviciociudadano.petcar.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.RadioButton;
 
@@ -24,7 +24,6 @@ import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.adapter.MaterialRecogidoAdapter;
 import car.gov.co.carserviciociudadano.petcar.dataaccess.MaterialesRecogidos;
 import car.gov.co.carserviciociudadano.petcar.interfaces.IViewAdjuntoPetCar;
-import car.gov.co.carserviciociudadano.petcar.model.AdjuntoPetCar;
 import car.gov.co.carserviciociudadano.petcar.model.MaterialRecogido;
 import car.gov.co.carserviciociudadano.petcar.presenter.AdjuntoPetCarPresenter;
 import car.gov.co.carserviciociudadano.petcar.presenter.IViewMaterialRecogido;

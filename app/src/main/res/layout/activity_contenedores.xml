@@ -20,16 +20,16 @@
         style="@style/lyUsuario"
         android:layout_below="@+id/lblTitle"
         >
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spiMunicipio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             >
-        </android.support.v7.widget.AppCompatSpinner>
+        </androidx.appcompat.widget.AppCompatSpinner>
     </FrameLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

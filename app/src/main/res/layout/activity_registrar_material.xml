@@ -28,7 +28,7 @@
         android:orientation="horizontal"
         style="@style/lyUsuario"
         android:layout_marginTop="@dimen/margin_16dp">
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyCodigo"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -42,7 +42,7 @@
                 android:inputType="textNoSuggestions"
                 style="@style/editTextUsuario"
                 />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button android:id="@+id/btnEscanearCodigo"
             android:theme="@style/ButtonAccentBicicar"

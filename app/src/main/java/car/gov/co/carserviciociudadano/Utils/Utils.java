@@ -2,8 +2,8 @@ package car.gov.co.carserviciociudadano.Utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.content.ContextCompat;
-import android.util.Base64;
+import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 
 import com.anupcowkur.reservoir.Reservoir;
@@ -22,8 +22,6 @@ import java.util.Locale;
 
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
-import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
-import car.gov.co.carserviciociudadano.petcar.presenter.ContenedorPresenter;
 
 /**
  * Created by Olger on 26/11/2016.

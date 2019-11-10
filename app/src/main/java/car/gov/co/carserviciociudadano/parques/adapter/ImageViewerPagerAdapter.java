@@ -4,9 +4,9 @@ package car.gov.co.carserviciociudadano.parques.adapter;
  * Created by Olger on 21/01/2017.
  */
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 
 import java.util.ArrayList;

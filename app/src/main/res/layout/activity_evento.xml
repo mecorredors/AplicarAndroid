@@ -39,12 +39,12 @@
                 android:focusableInTouchMode="false"
                 style="@style/editTextUsuario"
                 />
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spiTipoEvento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-            </android.support.v7.widget.AppCompatSpinner>
+            </androidx.appcompat.widget.AppCompatSpinner>
             <ProgressBar
                 android:id="@+id/pbTipoEvento"
                 style="?android:attr/progressBarStyleSmall"
@@ -59,12 +59,12 @@
             android:layout_height="wrap_content"
             style="@style/lyUsuario"
             android:layout_marginBottom="10dp">
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spiColegio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-            </android.support.v7.widget.AppCompatSpinner>
+            </androidx.appcompat.widget.AppCompatSpinner>
             <EditText
                 android:id="@+id/txtColegio"
                 android:layout_width="match_parent"
@@ -81,7 +81,7 @@
 
 
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                 android:inputType="textNoSuggestions"
                 style="@style/editTextUsuario"
                 />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             style="@style/lyUsuario"
@@ -191,7 +191,7 @@
             android:orientation="horizontal"
             style="@style/lyUsuario">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/lyHoraInicio"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -206,9 +206,9 @@
                     style="@style/editTextUsuario"
                     android:focusable="false"
                     />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/lyHoraFin"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -223,7 +223,7 @@
                     style="@style/editTextUsuario"
                     android:focusable="false"
                     />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <FrameLayout
@@ -231,12 +231,12 @@
             android:layout_height="wrap_content"
             style="@style/lyUsuario"
             android:layout_marginBottom="10dp">
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spiMunicipio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-            </android.support.v7.widget.AppCompatSpinner>
+            </androidx.appcompat.widget.AppCompatSpinner>
             <ProgressBar
                 android:id="@+id/pbMunicipio"
                 style="?android:attr/progressBarStyleSmall"
@@ -250,12 +250,12 @@
             android:layout_height="wrap_content"
             style="@style/lyUsuario"
             android:layout_marginBottom="10dp">
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spiVereda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-            </android.support.v7.widget.AppCompatSpinner>
+            </androidx.appcompat.widget.AppCompatSpinner>
             <ProgressBar
                 android:id="@+id/pbVereda"
                 style="?android:attr/progressBarStyleSmall"
@@ -270,12 +270,12 @@
             android:layout_height="wrap_content"
             style="@style/lyUsuario"
             android:layout_marginBottom="10dp">
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spiCuenca"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-            </android.support.v7.widget.AppCompatSpinner>
+            </androidx.appcompat.widget.AppCompatSpinner>
             <ProgressBar
                 android:id="@+id/pbCuenca"
                 style="?android:attr/progressBarStyleSmall"
@@ -285,7 +285,7 @@
                 android:visibility="gone" />
         </FrameLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyPredio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -298,9 +298,9 @@
                 android:inputType="textNoSuggestions"
                 style="@style/editTextUsuario"
                 />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyDistanciaKM"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -313,8 +313,8 @@
                 android:inputType="numberDecimal"
                 style="@style/editTextUsuario"
                 />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyDuracionMinutos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -327,7 +327,7 @@
                 android:inputType="numberDecimal"
                 style="@style/editTextUsuario"
                 />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <LinearLayout android:id="@+id/lyUbicacion"
@@ -379,7 +379,7 @@
                 style="@style/lyUsuario"
                 >
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/lyLatitude"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -395,9 +395,9 @@
                         android:text=""
                         style="@style/editTextUsuario"
                         />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/lyLongitud"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -412,7 +412,7 @@
                         android:inputType="textNoSuggestions"
                         style="@style/editTextUsuario"
                         />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
 
@@ -425,7 +425,7 @@
                 style="@style/lyUsuario"
                 >
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/lyNorte"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -441,9 +441,9 @@
                         android:text=""
                         style="@style/editTextUsuario"
                         />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/lyEste"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -458,11 +458,11 @@
                         android:inputType="textNoSuggestions"
                         style="@style/editTextUsuario"
                         />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/lyAltitud"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -477,7 +477,7 @@
                     android:inputType="textNoSuggestions"
                     style="@style/editTextUsuario"
                     />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 

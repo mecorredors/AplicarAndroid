@@ -21,6 +21,7 @@
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name=".petcar.activities.RegistrarKilosYFotosMaterialActivity"
             android:windowSoftInputMode="stateHidden"

@@ -9,11 +9,9 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by Olger on 01/05/2017.

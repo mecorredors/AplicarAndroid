@@ -2,7 +2,7 @@ package car.gov.co.carserviciociudadano.parques.activities;
 
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 

@@ -1,11 +1,10 @@
 package car.gov.co.carserviciociudadano.consultapublica.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,18 +22,12 @@ import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
-import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.consultapublica.adapter.BankProjectAdapter;
-import car.gov.co.carserviciociudadano.consultapublica.adapter.ExpedienteAdapter;
 import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.BankProjects;
-import car.gov.co.carserviciociudadano.consultapublica.dataaccesss.Expedientes;
 import car.gov.co.carserviciociudadano.consultapublica.interfaces.IBankProyects;
-import car.gov.co.carserviciociudadano.consultapublica.interfaces.IExpediente;
 import car.gov.co.carserviciociudadano.consultapublica.model.BankProjectDocument;
 import car.gov.co.carserviciociudadano.consultapublica.model.BankProjectItem;
-import car.gov.co.carserviciociudadano.consultapublica.model.Expediente;
-import car.gov.co.carserviciociudadano.consultapublica.model.ExpedienteResumen;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 public class BankProjectActivity extends BaseActivity {

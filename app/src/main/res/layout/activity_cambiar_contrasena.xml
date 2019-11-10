@@ -24,7 +24,7 @@
         android:textSize="@dimen/text_size_13"
         />
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/inputLyContrasenaActual"
@@ -42,9 +42,9 @@
             android:textSize="@dimen/text_size_14"
             android:textColor="@color/secondaryText"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/inputLyNuevaContrasena"
@@ -62,9 +62,9 @@
             android:textSize="@dimen/text_size_14"
             android:textColor="@color/secondaryText"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_10dp"
@@ -81,7 +81,7 @@
             android:textSize="@dimen/text_size_14"
             android:textColor="@color/secondaryText"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <Button android:id="@+id/btnActualizar"

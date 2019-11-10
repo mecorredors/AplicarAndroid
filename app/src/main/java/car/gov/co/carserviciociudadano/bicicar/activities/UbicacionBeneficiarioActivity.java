@@ -8,18 +8,16 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,9 +37,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -52,24 +47,14 @@ import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.SexaDecimalCoordinate;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Colegios;
-import car.gov.co.carserviciociudadano.bicicar.dataaccess.UbicacionBeneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.model.Beneficiario;
 import car.gov.co.carserviciociudadano.bicicar.model.Colegio;
-import car.gov.co.carserviciociudadano.bicicar.model.UbicacionBeneficiario;
-import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.common.LocationBaseGoogleApiActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.activities.DenunciaAmbiental2Activity;
-import car.gov.co.carserviciociudadano.denunciaambiental.activities.GalleryActivity;
 import car.gov.co.carserviciociudadano.denunciaambiental.adapter.GallerySelectedAdapter;
 import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Elevation;
-import car.gov.co.carserviciociudadano.denunciaambiental.dataacces.Lugares;
-import car.gov.co.carserviciociudadano.denunciaambiental.model.Denuncia;
-import car.gov.co.carserviciociudadano.denunciaambiental.model.Foto;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.ElevationPresenter;
 import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewElevation;
-import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewIdLugarXCoordenada;
-import car.gov.co.carserviciociudadano.denunciaambiental.presenter.LugarXCoordendaPresenter;
-import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 
 
 public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity implements OnMapReadyCallback, IViewElevation{
