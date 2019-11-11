@@ -32,6 +32,10 @@
                 android:icon="@drawable/ic_person_24dp"
                 android:title="Iniciar sesión" />
             <item
+                android:id="@+id/nav_reporte"
+                android:icon="@drawable/ic_equalizer_blue_light_36dp"
+                android:title="Reporte" />
+            <item
                 android:id="@+id/nav_cambiar_clave"
                 android:icon="@drawable/ic_person_24dp"
                 android:title="Cambiar clave" />

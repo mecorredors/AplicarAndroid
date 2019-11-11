@@ -2,6 +2,7 @@ package car.gov.co.carserviciociudadano.petcar.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,7 +33,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.R;
+import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.PreferencesApp;
+import car.gov.co.carserviciociudadano.Utils.Server;
+import car.gov.co.carserviciociudadano.bicicar.activities.WebViewBicicarActivity;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.adapter.MunicipiosAdapter;
@@ -123,6 +127,7 @@ public class MainPETCARActivity extends BaseActivity
             navMenu.findItem(R.id.nav_contenedores).setVisible(true);
             navMenu.findItem(R.id.nav_registrar_material).setVisible(true);
             navMenu.findItem(R.id.nav_cambiar_clave).setVisible(true);
+            navMenu.findItem(R.id.nav_reporte).setVisible(true);
             lblUsuario.setText(mGestor.NombreCompleto);
 
         }else{
@@ -132,6 +137,7 @@ public class MainPETCARActivity extends BaseActivity
             navMenu.findItem(R.id.nav_contenedores).setVisible(false);
             navMenu.findItem(R.id.nav_registrar_material).setVisible(false);
             navMenu.findItem(R.id.nav_cambiar_clave).setVisible(false);
+            navMenu.findItem(R.id.nav_reporte).setVisible(false);
             lblUsuario.setText("");
         }
     }
@@ -266,6 +272,15 @@ public class MainPETCARActivity extends BaseActivity
         }else if (id == R.id.nav_cambiar_clave) {
             if (mGestor != null) {
                 Intent i = new Intent(this, CambiarPasswordActivity.class);
+                startActivity(i);
+            }else{
+                loginPetCar();
+            }
+        }else if (id == R.id.nav_reporte) {
+            if (mGestor != null) {
+                Intent i = new Intent(this, WebViewBicicarActivity.class);
+                i.putExtra(WebViewBicicarActivity.URL, Server.ServerBICICAR() + "Modulos/PETCAR/ReportePublico?IDGestor="+mGestor.IDGestor);
+                i.putExtra(WebViewBicicarActivity.TITULO, "Reporte de material recogido");
                 startActivity(i);
             }else{
                 loginPetCar();
