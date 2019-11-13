@@ -4,17 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,13 +32,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
-import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.openweather.activities.WeatherActivity;
 import car.gov.co.carserviciociudadano.openweather.interfaces.IViewOpenWeather;
@@ -58,7 +56,6 @@ import car.gov.co.carserviciociudadano.parques.model.ArchivoParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
 import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
-import okhttp3.internal.Util;
 
 public class DetalleParqueActivity extends BaseActivity  {
 

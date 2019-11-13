@@ -2,13 +2,13 @@ package car.gov.co.carserviciociudadano.openweather.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.stacktips.view.utils.CalendarUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,12 +37,9 @@ import car.gov.co.carserviciociudadano.openweather.model.ItemForecast;
 import car.gov.co.carserviciociudadano.openweather.model.List;
 import car.gov.co.carserviciociudadano.openweather.presenter.OpenWeatherPresenter;
 import car.gov.co.carserviciociudadano.parques.activities.IntentHelper;
-import car.gov.co.carserviciociudadano.parques.activities.ReservaActivity;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
-import car.gov.co.carserviciociudadano.parques.dataaccess.ServiciosParque;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.parques.model.Parque;
-import car.gov.co.carserviciociudadano.parques.model.ServicioParque;
 
 
 public class WeatherActivity extends BaseActivity implements IViewOpenWeather, View.OnClickListener {

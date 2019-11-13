@@ -64,7 +64,7 @@ public class Enumerator {
         public static final int PUBLICADO = 0;
         public static final int TODOS = -1;
         public static final int EDICION = 2;
-
+        public static final int PENDIENTE_PUBLICAR_FOTOS = 3;
 
     }
 
@@ -80,4 +80,10 @@ public class Enumerator {
 
     public static final int TIMEOUT_PUBLISH_IMAGES = 40000;
     public static final String NAME_DIRECTORY_IMAGES = "CAR-Servicio-Ciudadano";
+
+    public  static class TipoPersona{
+        public static final int RECOLECTOR = 1;
+        public static final int INSPECTOR = 2;
+
+    }
 }

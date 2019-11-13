@@ -1,25 +1,15 @@
 package car.gov.co.carserviciociudadano.parques.adapter;
-import android.graphics.Bitmap;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.parques.model.DetalleReserva;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 /**
  * Created by Olger on 28/11/2016.

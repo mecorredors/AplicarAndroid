@@ -114,8 +114,19 @@ public class ErrorApi {
             this.StatusCode = res.code();
             if (res.errorBody() != null){
                 try {
-                    this.Message = res.errorBody().string();
-                } catch (IOException e) {
+                   String responseBody = res.errorBody().string();
+                    if(responseBody.contains("Message")){
+                        JSONObject jsonObject = new JSONObject(responseBody );
+
+                        Gson gson= new Gson();
+                        ErrorApi er= gson.fromJson(jsonObject.toString(), ErrorApi.class);
+                        this.Message=er.getMessage();
+                        this.Code=er.getCode();
+                    }else{
+                        this.Message=responseBody;
+                    }
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

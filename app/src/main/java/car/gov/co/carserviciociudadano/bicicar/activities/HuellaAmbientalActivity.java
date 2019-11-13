@@ -1,11 +1,10 @@
 package car.gov.co.carserviciociudadano.bicicar.activities;
 
 import android.content.DialogInterface;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -29,7 +28,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Utils;
-import car.gov.co.carserviciociudadano.bicicar.dataaccess.Beneficiarios;
 import car.gov.co.carserviciociudadano.bicicar.model.Estadistica;
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewReportes;
 import car.gov.co.carserviciociudadano.bicicar.presenter.ReportesPresenter;

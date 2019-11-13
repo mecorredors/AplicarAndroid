@@ -1,6 +1,6 @@
 package car.gov.co.carserviciociudadano.consultapublica.adapter;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +12,6 @@ import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.consultapublica.model.BankProjectDocument;
 import car.gov.co.carserviciociudadano.consultapublica.model.BankProjectItem;
-import car.gov.co.carserviciociudadano.consultapublica.model.Documento;
 
 /**
  * Created by Olger on 28/11/2016.

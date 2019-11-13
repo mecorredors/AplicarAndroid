@@ -8,8 +8,7 @@ package car.gov.co.carserviciociudadano.Utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.graphics.drawable.Drawable;
-import android.support.design.widget.TextInputLayout;
+import com.google.android.material.textfield.TextInputLayout;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;

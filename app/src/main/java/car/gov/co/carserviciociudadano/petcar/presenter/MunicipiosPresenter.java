@@ -27,19 +27,19 @@ public class MunicipiosPresenter implements IContenedor {
         String keycache  = ContenedorPresenter.CONTENEDORES_CACHE + BuildConfig.VERSION_CODE;
         ContenedorPresenter contenedorPresenter = ContenedorPresenter.getFromCache(keycache);
         if (contenedorPresenter != null ){
-            onSuccess(contenedorPresenter.mLstContenedores);
+            onSuccessContenedores(contenedorPresenter.mLstContenedores);
         }else {
             Contenedores.getContenedores(this);
         }
     }
 
     @Override
-    public void onError(ErrorApi error) {
+    public void onErrorContenedores(ErrorApi error) {
         iView.onError(error);
     }
 
     @Override
-    public void onSuccess(List<Contenedor> lstContenedores) {
+    public void onSuccessContenedores(List<Contenedor> lstContenedores) {
         if (lstContenedores != null && lstContenedores.size() > 0){
             List<Municipio> lstMunicipios = new ArrayList<>();
             lstMunicipios.add(new Municipio(null , "Ver todos"));

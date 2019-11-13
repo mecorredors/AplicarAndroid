@@ -30,7 +30,7 @@
         />
 
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/inputLyFechaConsignacion"
@@ -44,9 +44,9 @@
             android:inputType="textNoSuggestions"
             style="@style/editText"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/inputLyValor"
@@ -59,22 +59,22 @@
             android:inputType="number"
             style="@style/editText"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/lyControl"
         android:layout_marginBottom="10dp">
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spiBanco"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-        </android.support.v7.widget.AppCompatSpinner>
+        </androidx.appcompat.widget.AppCompatSpinner>
     </FrameLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/inputLyNroConsignacion"
@@ -87,9 +87,9 @@
             android:inputType="number"
             style="@style/editText"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/inputLyObservaciones"
@@ -102,7 +102,7 @@
             android:inputType="textNoSuggestions"
             style="@style/editText"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <Button android:id="@+id/btnSeleccionarComprobante"

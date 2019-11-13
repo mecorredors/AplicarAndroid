@@ -8,9 +8,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -20,14 +20,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -38,9 +36,6 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
-import org.json.JSONException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -315,13 +310,13 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
     }
 
     @Override
-    public void onError(ErrorApi error) {
+    public void onErrorContenedores(ErrorApi error) {
         ocultarProgressDialog();
         mostrarError(error);
     }
 
     @Override
-    public void onSuccess(List<Contenedor> lstContenedores) {
+    public void onSuccessContenedores(List<Contenedor> lstContenedores) {
         ocultarProgressDialog();
         if (isAdded()) {
             if (lstContenedores != null && lstContenedores.size() > 0) {

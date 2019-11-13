@@ -1,10 +1,10 @@
 package car.gov.co.carserviciociudadano.consultapublica.activities;
 
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 

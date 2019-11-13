@@ -8,7 +8,7 @@ import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 
 import android.graphics.Bitmap;
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;

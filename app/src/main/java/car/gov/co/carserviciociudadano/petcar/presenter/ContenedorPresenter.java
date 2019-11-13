@@ -43,9 +43,9 @@ public class ContenedorPresenter implements IContenedor {
                 }
             }
             if (mLstContenedores.size() == 0)
-                iview.onError(new ErrorApi(404, "No hay contenedores en este municipio"));
+                iview.onErrorContenedores(new ErrorApi(404, "No hay contenedores en este municipio"));
             else
-                iview.onSuccess(mLstContenedores);
+                iview.onSuccessContenedores(mLstContenedores);
         }else {
             Contenedores.getContenedores(idMunicipio, this);
         }
@@ -56,7 +56,7 @@ public class ContenedorPresenter implements IContenedor {
 
         ContenedorPresenter contenedorPresenter = ContenedorPresenter.getFromCache(keycache);
         if (contenedorPresenter != null ){
-            iview.onSuccess(contenedorPresenter.mLstContenedores);
+            iview.onSuccessContenedores(contenedorPresenter.mLstContenedores);
         }else {
             Contenedores.getContenedores(this);
         }
@@ -76,18 +76,18 @@ public class ContenedorPresenter implements IContenedor {
 
 
     @Override
-    public void onError(ErrorApi error) {
-        iview.onError(error);
+    public void onErrorContenedores(ErrorApi error) {
+        iview.onErrorContenedores(error);
     }
 
     @Override
-    public void onSuccess(List<Contenedor> lstContenedores) {
+    public void onSuccessContenedores(List<Contenedor> lstContenedores) {
         try {
             Reservoir.put(keycache, ContenedorPresenter.this,  Enumerator.CacheTimeInMilliSeconds.PETCAR);
         } catch (Exception e) {
             Log.e(CONTENEDORES_CACHE, " guardar cache " + e.toString());
         }
 
-        iview.onSuccess(lstContenedores);
+        iview.onSuccessContenedores(lstContenedores);
     }
 }

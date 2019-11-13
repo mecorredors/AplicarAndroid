@@ -4,10 +4,7 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_enviar"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Enviar datos" />
+
         <item
             android:id="@+id/nav_co2"
             android:icon="@drawable/ic_menu_gallery"
@@ -17,10 +14,35 @@
 
     <item android:title="Mi cuenta">
         <menu>
+
             <item
-                android:id="@+id/nav_usuario"
+                android:id="@+id/nav_contenedores"
+                android:icon="@drawable/ic_contenedor_white_24dp"
+                android:title="Contenedores" />
+            <item
+                android:id="@+id/nav_registrar_material"
+                android:icon="@drawable/ic_edit_blue_24dp"
+                android:title="Registrar material" />
+            <item
+                android:id="@+id/nav_publicar_material"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Publicar material" />
+            <item
+                android:id="@+id/nav_login"
                 android:icon="@drawable/ic_person_24dp"
                 android:title="Iniciar sesión" />
+            <item
+                android:id="@+id/nav_reporte"
+                android:icon="@drawable/ic_equalizer_blue_light_36dp"
+                android:title="Reporte" />
+            <item
+                android:id="@+id/nav_cambiar_clave"
+                android:icon="@drawable/ic_person_24dp"
+                android:title="Cambiar clave" />
+            <item
+                android:id="@+id/nav_cerrar_sesion"
+                android:icon="@drawable/ic_exit_to_app_white_24dp"
+                android:title="Cerrar sesión" />
 
         </menu>
     </item>

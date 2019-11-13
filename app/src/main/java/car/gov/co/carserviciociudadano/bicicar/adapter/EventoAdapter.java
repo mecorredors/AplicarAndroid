@@ -2,12 +2,11 @@ package car.gov.co.carserviciociudadano.bicicar.adapter;
 
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,7 +31,6 @@ import car.gov.co.carserviciociudadano.bicicar.model.Evento;
 import car.gov.co.carserviciociudadano.bicicar.model.TipoEvento;
 
 import static car.gov.co.carserviciociudadano.R.drawable.ic_check_circle_green_24dp;
-import static car.gov.co.carserviciociudadano.R.drawable.ic_highlight_off_24dp;
 import static car.gov.co.carserviciociudadano.R.drawable.ic_warning_yellow_24dp;
 
 /**

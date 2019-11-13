@@ -13,7 +13,7 @@
         <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
         <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
         <item name="spinnerDropDownItemStyle">@style/AppTheme.Dialog</item>
-        <item name="textColorError">@color/black</item>
+        <item name="colorError">@color/black</item>
     </style>
 
 
@@ -139,7 +139,7 @@
         <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
         <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
         <item name="spinnerDropDownItemStyle">@style/AppTheme.Dialog</item>
-        <item name="textColorError">@color/black</item>
+        <item name="colorError">@color/black</item>
     </style>
 
     <style name="AppThemeBicicar.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -154,7 +154,7 @@
         <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
         <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
         <item name="spinnerDropDownItemStyle">@style/AppTheme.Dialog</item>
-        <item name="textColorError">@color/black</item>
+        <item name="colorError">@color/black</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

@@ -1,8 +1,12 @@
 package car.gov.co.carserviciociudadano.petcar.dataaccess;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.anupcowkur.reservoir.Reservoir;
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -15,16 +19,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
 import car.gov.co.carserviciociudadano.bicicar.dataaccess.Reportes;
 import car.gov.co.carserviciociudadano.bicicar.model.Estadistica;
 import car.gov.co.carserviciociudadano.common.APIClient;
+import car.gov.co.carserviciociudadano.common.DbHelper;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.interfaces.ApiContenedor;
 import car.gov.co.carserviciociudadano.petcar.interfaces.IContenedor;
+import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
 import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,16 +42,208 @@ import retrofit2.Response;
  */
 
 public class Contenedores {
+    public static final String TAG ="Contenedores";
+    private DbHelper _dbHelper;
+
+    private void InitDbHelper()
+    {
+        if(this._dbHelper == null)
+            this._dbHelper = new DbHelper(AppCar.getContext());
+    }
+
+    private static String[] projectionDefault()
+    {
+        return new String[] {
+                "[" + Contenedor.IDCONTENEDOR + "]",
+                "[" + Contenedor.IDMUNICIPIO + "]",
+                "[" + Contenedor.LATITUDE + "]",
+                "[" + Contenedor.LONGITUDE + "]",
+                "[" + Contenedor.ALTITUD + "]",
+                "[" + Contenedor.FOTO_PRINCIPAL + "]",
+                "[" + Contenedor.DIRECCION + "]",
+                "[" + Contenedor.TOPE_MAXIMO_KG + "]",
+                "[" + Contenedor.CODIGO + "]",
+                "[" + Contenedor.MUNICIPIO + "]",
+
+        };
+    }
+
+    public  boolean guardar(Contenedor element){
+        if (read(element.IDContenedor) == null){
+            return insert(element);
+        }else{
+            return update(element);
+        }
+    }
+
+    public boolean insert(Contenedor element) {
+        InitDbHelper();
+        ContentValues cv = new ContentValues();
+
+        cv.put(Contenedor.IDCONTENEDOR, element.IDContenedor);
+        cv.put(Contenedor.IDMUNICIPIO, element.IDMunicipio);
+        cv.put(Contenedor.LATITUDE, element.Latitude);
+        cv.put(Contenedor.LONGITUDE, element.Longitude);
+        cv.put(Contenedor.ALTITUD, element.Altitud);
+        cv.put(Contenedor.DIRECCION, element.Direccion);
+        cv.put(Contenedor.FOTO_PRINCIPAL, element.FotoPrincipal);
+        cv.put(Contenedor.CODIGO, element.Codigo);
+        cv.put(Contenedor.TOPE_MAXIMO_KG, element.TopeMaximoKG);
+        cv.put(Contenedor.MUNICIPIO, element.Municipio);
+
+        long rowid = 0;
+
+        SQLiteDatabase db = _dbHelper.getWritableDatabase();
+
+        try {
+            rowid=db.insertOrThrow(Contenedor.TABLE_NAME, "", cv);
+        }
+        catch(Exception ex)
+        {
+            if(ex!=null){
+                Log.d("Contenedors.Insert", ex.toString());
+                 Crashlytics.logException(ex);
+            }
+            rowid = -1;
+        }
+
+        db.close();
+
+        return (rowid > 0);
+    }
+
+    public boolean update(Contenedor element) {
+        InitDbHelper();
+        ContentValues cv = new ContentValues();
+
+        String selection = Contenedor.IDCONTENEDOR + " = ? ";
+        String[] selectionArgs = {String.valueOf(element.IDContenedor)};
+
+        cv.put(Contenedor.IDMUNICIPIO, element.IDMunicipio);
+        cv.put(Contenedor.LATITUDE, element.Latitude);
+        cv.put(Contenedor.LONGITUDE, element.Longitude);
+        cv.put(Contenedor.ALTITUD, element.Altitud);
+        cv.put(Contenedor.DIRECCION, element.Direccion);
+        cv.put(Contenedor.FOTO_PRINCIPAL, element.FotoPrincipal);
+        cv.put(Contenedor.CODIGO, element.Codigo);
+        cv.put(Contenedor.TOPE_MAXIMO_KG, element.TopeMaximoKG);
+        cv.put(Contenedor.MUNICIPIO, element.Municipio);
+
+        long rowid;
+
+        SQLiteDatabase db = _dbHelper.getWritableDatabase();
+
+        try {
+            rowid=db.update(Contenedor.TABLE_NAME, cv,selection, selectionArgs);
+
+        }
+        catch(Exception ex)
+        {
+            if(ex!=null){
+                Log.d("Contenedors.Insert", ex.toString());
+                Crashlytics.logException(ex);
+            }
+            rowid = -1;
+        }
+
+        db.close();
+
+        return (rowid > 0);
+    }
+
+    public boolean delete(long id) {
+        InitDbHelper();
+        SQLiteDatabase db = _dbHelper.getWritableDatabase();
+        String selection = Contenedor.IDCONTENEDOR + " = ? ";
+        String[] selectionArgs = {String.valueOf(id)};
+        int result = db.delete(Contenedor.TABLE_NAME, selection, selectionArgs);
+        return (result > 0);
+    }
+
+    public boolean deleteAll() {
+        InitDbHelper();
+        SQLiteDatabase db = _dbHelper.getWritableDatabase();
+
+        int result = db.delete(Contenedor.TABLE_NAME, null, null);
+        return (result > 0);
+    }
+
+    public List<Contenedor> list(){
+        return list(null);
+    }
+
+    public List<Contenedor> listByMunicipio(String idMunicipio){
+        String where = Contenedor.IDMUNICIPIO + " = " + idMunicipio.trim();
+        return list(where);
+    }
+
+    public List<Contenedor> list(String where)
+    {   synchronized (this) {
+        InitDbHelper();
+        SQLiteDatabase db = _dbHelper.getReadableDatabase();
+        List<Contenedor> lstContenedors = new ArrayList<>();
+
+        try {
+
+            Cursor c = db.query(Contenedor.TABLE_NAME, projectionDefault(), where, null, null, null, "[" + Contenedor.IDCONTENEDOR + "]");
+
+            if (c.moveToFirst()) {
+                do {
+                    lstContenedors.add(new Contenedor(c));
+                } while (c.moveToNext());
+            }
+            c.close();
+        } catch (Exception ex) {
+            Log.d("Categories.List", ex.getMessage());
+            Crashlytics.logException(ex);
+        }
+
+        db.close();
+
+        return lstContenedors;
+    }
+    }
+
+    public Contenedor read(int id)
+    {
+        synchronized (this) {
+            InitDbHelper();
+            SQLiteDatabase db = _dbHelper.getReadableDatabase();
+            Contenedor Contenedor = null;
+            try {
+                String where = Contenedor.IDCONTENEDOR + "=?";
+                String[] selectionArgs = {String.valueOf(id)};
+                Cursor c = db.query(Contenedor.TABLE_NAME, projectionDefault(), where, selectionArgs, null, null, "[" + Contenedor.IDCONTENEDOR + "] DESC");
+
+                if (c.moveToFirst()) {
+                    Contenedor = new Contenedor(c);
+                }
+                c.close();
+            } catch (Exception ex) {
+                Log.e("Contenedores.List", ex.getMessage());
+                Crashlytics.logException(ex);
+            }
+
+            db.close();
+
+            return Contenedor;
+        }
+    }
+
+    public Contenedor read(String codigo)
+    {
+        synchronized (this) {
+           String where = Contenedor.CODIGO + " = " + codigo;
+           List<Contenedor> listContenedores = list(where);
+           if (listContenedores.size() > 0) {
+               return  listContenedores.get(0);
+            }
+            return null;
+
+        }
+    }
 
     public  static void  getContenedores(String idMunicipio, final IContenedor iContenedor){
-
-     /*   List<Contenedor> lstContenedores = getContenedoresFromJson();
-        List<Contenedor> items = new ArrayList<>();
-        for (Contenedor item : lstContenedores){
-            if (item.IDMunicipio.equals(idMunicipio))
-                items.add(item);
-        }
-        iContenedor.onSuccess(items);*/
 
         ApiContenedor apiContenedor = APIClient.getClient().create(ApiContenedor.class);
         Call<List<Contenedor>> call = apiContenedor.getContenedores(idMunicipio);
@@ -55,9 +254,9 @@ public class Contenedores {
 
                 if (response.code() == 200) {
 
-                    iContenedor.onSuccess(response.body());
+                    iContenedor.onSuccessContenedores(response.body());
                 } else {
-                    iContenedor.onError(new ErrorApi(response));
+                    iContenedor.onErrorContenedores(new ErrorApi(response));
                 }
 
             }
@@ -65,7 +264,7 @@ public class Contenedores {
             @Override
             public void onFailure(Call<List<Contenedor>> call, Throwable t) {
                 call.cancel();
-                iContenedor.onError(new ErrorApi(t));
+                iContenedor.onErrorContenedores(new ErrorApi(t));
                 Log.d("item error", t.toString());
             }
         });
@@ -83,9 +282,9 @@ public class Contenedores {
             public void onResponse(Call<List<Contenedor>> call, Response<List<Contenedor>> response) {
 
                 if (response.code() == 200) {
-                    iContenedor.onSuccess(response.body());
+                    iContenedor.onSuccessContenedores(response.body());
                 }else{
-                    iContenedor.onError(new ErrorApi(response));
+                    iContenedor.onErrorContenedores(new ErrorApi(response));
                 }
 
             }
@@ -93,7 +292,7 @@ public class Contenedores {
             @Override
             public void onFailure(Call<List<Contenedor>> call, Throwable t) {
                 call.cancel();
-                iContenedor.onError(new ErrorApi(t));
+                iContenedor.onErrorContenedores(new ErrorApi(t));
                 Log.d("item error", t.toString());
             }
         });

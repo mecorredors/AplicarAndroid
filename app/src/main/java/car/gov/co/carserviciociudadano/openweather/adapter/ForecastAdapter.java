@@ -1,10 +1,9 @@
 package car.gov.co.carserviciociudadano.openweather.adapter;
 import android.graphics.Bitmap;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,7 +19,6 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.R;
 import car.gov.co.carserviciociudadano.Utils.Config;
 import car.gov.co.carserviciociudadano.openweather.model.ItemForecast;
-import car.gov.co.carserviciociudadano.parques.model.Parque;
 
 /**
  * Created by Olger on 28/11/2016.

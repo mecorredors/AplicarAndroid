@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context="car.gov.co.carserviciociudadano.bicicar.activities.BeneficiariosActivity">
+
+
+    <TextView android:id="@+id/lblTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seleccione un municipio"
+        android:textColor="@color/primaryText"
+        style="@style/lyUsuario"/>
+    <FrameLayout android:id="@+id/lySpiColegios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario"
+        android:layout_below="@+id/lblTitle"
+        >
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spiMunicipio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+        </androidx.appcompat.widget.AppCompatSpinner>
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_below="@id/lySpiColegios"
+        android:layout_above="@id/btnSincronizarDatos"
+        />
+
+    <Button android:id="@+id/btnSincronizarDatos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descargar contenedores"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginBottom="@dimen/margin_6dp"
+        android:background="@drawable/boton_bicicar"
+        android:textColor="@color/textLight"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

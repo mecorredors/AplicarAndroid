@@ -24,7 +24,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static String DATABASE_PATH;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "db_bicicar.db";
 
     private final Context context;
@@ -164,6 +164,20 @@ public class DbHelper extends SQLiteOpenHelper {
                 Log.d("DbHelper.onUpgrade", ex.toString());
             }
         }
+        if(oldVersion < 6)
+        {
+            //Agregamos a la tablas nuevas
+            try {
+                db.execSQL(TABLA_GESTORES);
+                db.execSQL(TABLA_TIPOS_MATERIAAL);
+                db.execSQL(TABLA_CONTENEDORES);
+                db.execSQL(TABLA_MATERIAL_RECOGIDO);
+                db.execSQL(TABLA_ADJUNTOS_PETCAR);
+
+            } catch (SQLiteException ex) {
+                Log.d("DbHelper.onUpgrade", ex.toString());
+            }
+        }
 
     }
 
@@ -262,6 +276,60 @@ public class DbHelper extends SQLiteOpenHelper {
             "RutaTrayecto	TEXT, " +
             "Estado	INTEGER, " +
             "IDRuta	INTEGER );";
+
+
+
+    static String TABLA_GESTORES = "CREATE TABLE Gestores (" +
+            "IDGestor	INTEGER, " +
+             "IDMunicipio	TEXT NOT NULL, " +
+             "TipoPersona	INTEGER NOT NULL, " +
+             "TipoIdentificacion	TEXT NOT NULL, " +
+             "Identificacion	TEXT NOT NULL, " +
+             "NombreCompleto	TEXT NOT NULL, " +
+             "DireccionContacto	TEXT NOT NULL, " +
+             "EMAIL	TEXT NOT NULL, " +
+             "Telefono	TEXT, " +
+             "PRIMARY KEY(IDGestor));";
+
+    static String TABLA_TIPOS_MATERIAAL = "CREATE TABLE TiposMaterial ( " +
+            "IDTipoMaterial	INTEGER NOT NULL, " +
+            "Nombre	TEXT NOT NULL, " +
+            "Descripcion	TEXT, " +
+            "PRIMARY KEY(IDTipoMaterial));";
+
+
+
+    static String TABLA_CONTENEDORES = "CREATE TABLE Contenedores (" +
+            "IDContenedor	INTEGER NOT NULL, " +
+            "IDMunicipio	INTEGER NOT NULL, " +
+            "Latitude	REAL NOT NULL, " +
+            "Longitude	REAL NOT NULL, " +
+            "Altitud	REAL NOT NULL, " +
+            "FotoPrincipal	TEXT, " +
+            "Codigo	TEXT, " +
+            "TopeMaxKG	REAL, " +
+            "Direccion	TEXT NOT NULL, " +
+            "Municipio	TEXT, " +
+            "PRIMARY KEY(IDContenedor));";
+
+    static String TABLA_MATERIAL_RECOGIDO = "CREATE TABLE MaterialRecogido ( " +
+            "Id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "IDMaterialRecogido	INTEGER, " +
+            "IDContenedor	INTEGER NOT NULL, " +
+            "IDTipoMaterial	INTEGER NOT NULL, " +
+            "FechaLecturaQR	TEXT NOT NULL, " +
+            "Kilos	REAL NOT NULL, " +
+            "Estado	INTEGER NOT NULL, " +
+            "Comentarios	TEXT );";
+
+
+
+    static String TABLA_ADJUNTOS_PETCAR = "CREATE TABLE AdjuntosPetCar (" +
+            "Id	INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "IDAdjunto	INTEGER, " +
+            "Path	TEXT, " +
+            "Estado	INTEGER NOT NULL, " +
+            "IDMaterialRecogido	INTEGER NOT NULL);";
 
 }
 

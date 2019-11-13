@@ -14,10 +14,10 @@
     <LinearLayout android:id="@+id/lyFormulario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lyBotonesAsistencia"
+        android:layout_alignParentTop="true"
         android:orientation="vertical"
        >
-    <LinearLayout android:id="@+id/lyRegistrarMiRecorrido"
+        <LinearLayout android:id="@+id/lyRegistrarMiRecorrido"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -44,7 +44,7 @@
 
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inputLyNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,9 +63,9 @@
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/secondaryText"
                     />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inputLyDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,9 +83,9 @@
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/secondaryText"
                     />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spiNivel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                 android:layout_marginRight="@dimen/margin_16dp"
                 >
 
-            </android.support.v7.widget.AppCompatSpinner>
+            </androidx.appcompat.widget.AppCompatSpinner>
 
         </LinearLayout>
 
@@ -208,7 +208,7 @@
     </LinearLayout>
 
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
