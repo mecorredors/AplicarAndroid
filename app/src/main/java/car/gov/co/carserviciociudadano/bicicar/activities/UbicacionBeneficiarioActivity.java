@@ -8,6 +8,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.core.app.ActivityCompat;
@@ -20,14 +27,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,7 +37,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
+import java.util.Arrays;
+import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -151,6 +153,9 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
 
         mElevationPresenter = new ElevationPresenter(this);
 
+        Places.initialize(getApplicationContext(), getString(R.string.api_key_map));
+        PlacesClient placesClient = Places.createClient(this);
+
         if (BuildConfig.DEBUG == false) {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
             Bundle bundleAnalitic = new Bundle();
@@ -247,36 +252,30 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
     }
 
     @OnClick(R.id.btnBuscar) void onBuscar() {
-        try {
-            if (mBeneficiario != null) {
-                mBeneficiario.Latitude = miPosicion.latitude;
-                mBeneficiario.Longitude = miPosicion.longitude;
-            }
-
-            if (mColegio != null) {
-                mColegio.Latitude = miPosicion.latitude;
-                mColegio.Longitude = miPosicion.longitude;
-            }
-
-            AutocompleteFilter filter = new AutocompleteFilter.Builder()
-                    .setCountry("CO")
-                    .build();
-
-            Intent intent = new  PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(filter).build(this);
-            startActivityForResult(intent, PETICION_GOOGLE_PLACES);
-
-            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-            Bundle bundleAnalitic = new Bundle();
-            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Buscar lugar places");
-            bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Buscar lugar places");
-            bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.BICICAR);
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
-
-        } catch (GooglePlayServicesRepairableException e) {
-            mostrarMensaje(e.toString());
-        } catch (GooglePlayServicesNotAvailableException e) {
-            mostrarMensaje(e.toString());
+        if (mBeneficiario != null) {
+            mBeneficiario.Latitude = miPosicion.latitude;
+            mBeneficiario.Longitude = miPosicion.longitude;
         }
+
+        if (mColegio != null) {
+            mColegio.Latitude = miPosicion.latitude;
+            mColegio.Longitude = miPosicion.longitude;
+        }
+
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+        Intent intent = new Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.FULLSCREEN, fields).setCountry("CO")
+                .build(this);
+        startActivityForResult(intent, PETICION_GOOGLE_PLACES);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundleAnalitic = new Bundle();
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_ID, "Buscar lugar places");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.ITEM_NAME, "Buscar lugar places");
+        bundleAnalitic.putString(FirebaseAnalytics.Param.CONTENT_TYPE, Enumerator.ContentTypeAnalitic.BICICAR);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundleAnalitic);
+
+
     }
 
 
@@ -287,15 +286,17 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
 
         if (requestCode ==   PETICION_GOOGLE_PLACES) {
             if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
-                miPosicion =  place.getLatLng(); //  new LatLng(mDenuncia.getLatitude(),mDenuncia.getLongitude());
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                miPosicion = place.getLatLng();
+                Log.i("places", "Place: " + place.getName() + ", " + place.getId());
                 moveCamara();
-               mostrarMensaje(place.getName().toString());
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(this, data);
-                Crashlytics.logException(new Exception("UbicacionBeneficiario.onActivityResult Google Place Status: "+ status));
+                mostrarMensaje(place.getName().toString());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i("places", status.getStatusMessage());
+                Crashlytics.logException(new Exception("UbicacionBeneficiario.onActivityResult Google Place Status: "+ status.getStatusMessage()));
                 Log.i("google places", status.getStatusMessage());
-
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }

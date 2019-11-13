@@ -70,6 +70,8 @@ import car.gov.co.carserviciociudadano.denunciaambiental.presenter.IViewElevatio
 import car.gov.co.carserviciociudadano.bicicar.presenter.IViewLugares;
 import car.gov.co.carserviciociudadano.bicicar.presenter.LugaresPresenter;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import okhttp3.internal.Util;
+
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -712,6 +714,15 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         if (!fechaInicio.before(fechaFin) && !Utils.isEqualsDate(fechaInicio,fechaFin) ){
             mostrarMensajeDialog("La fecha inicio debe ser mayor  a la de fin");
             return false;
+        }
+
+        if (Utils.isEqualsDate(fechaInicio, fechaFin)) {
+            int horaInicio = Utils.convertInt(mEvento.HoraInicio.replace(DOS_PUNTOS,"").trim());
+            int horaFin = Utils.convertInt(mEvento.HoraFin.replace(DOS_PUNTOS,"").trim());
+            if (horaFin <= horaInicio){
+                mostrarMensajeDialog("La hora de inicio debe ser menor a la hora final");
+                return false;
+            }
         }
 
         return res;
