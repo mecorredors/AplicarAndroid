@@ -10,7 +10,9 @@ import java.util.List;
 import car.gov.co.carserviciociudadano.BuildConfig;
 import car.gov.co.carserviciociudadano.Utils.Enumerator;
 import car.gov.co.carserviciociudadano.Utils.Utils;
+import car.gov.co.carserviciociudadano.parques.dataaccess.Municipios;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
+import car.gov.co.carserviciociudadano.parques.model.Municipio;
 import car.gov.co.carserviciociudadano.petcar.dataaccess.Contenedores;
 import car.gov.co.carserviciociudadano.petcar.interfaces.IContenedor;
 import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
@@ -28,6 +30,15 @@ public class ContenedorPresenter implements IContenedor {
     public  ContenedorPresenter(IViewContenedor iview){
         this.iview = iview;
         keycache = CONTENEDORES_CACHE + BuildConfig.VERSION_CODE;
+    }
+
+    public void publicar(Contenedor contenedor){
+        if (contenedor.IDContenedor > 0) {
+            new Contenedores().modificar(contenedor, this);
+        }else{
+            new Contenedores().agregar(contenedor, this);
+        }
+
     }
 
     public void getContenedores(String idMunicipio){
@@ -78,6 +89,30 @@ public class ContenedorPresenter implements IContenedor {
     @Override
     public void onErrorContenedores(ErrorApi error) {
         iview.onErrorContenedores(error);
+    }
+
+    @Override
+    public void onSuccessAgregar(Contenedor contenedor) {
+        contenedor.Estado = Enumerator.Estado.PUBLICADO;
+        new Contenedores().guardar(contenedor);
+        iview.onSuccessAgregar(contenedor);
+    }
+
+    @Override
+    public void onSuccessModificar(Contenedor contenedor) {
+        contenedor.Estado = Enumerator.Estado.PUBLICADO;
+        new Contenedores().guardar(contenedor);
+        iview.onSuccessModificar(contenedor);
+    }
+
+    @Override
+    public void onErrorAgregar(ErrorApi error) {
+        iview.onErrorAgregar(error);
+    }
+
+    @Override
+    public void onErrorModificar(ErrorApi error) {
+        iview.onErrorModificar(error);
     }
 
     @Override

@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
+import car.gov.co.carserviciociudadano.Utils.Utils;
+
 /**
  * Created by apple on 9/09/18.
  */
@@ -47,8 +49,14 @@ public class Contenedor implements ClusterItem {
     public String Municipio;
     @SerializedName("Codigo")
     public String Codigo;
-    @SerializedName("TopeMaximoKG")
-    public Double TopeMaximoKG;
+    @SerializedName("TopeMaxKG")
+    public Double TopeMaxKG;
+    @SerializedName("Estado")
+    public int Estado;
+    @SerializedName("IDMaterialLista")
+    public String IDMaterialLista;
+
+
 
     public static final String TABLE_NAME = "Contenedores";
 
@@ -62,6 +70,11 @@ public class Contenedor implements ClusterItem {
     public static final String TOPE_MAXIMO_KG = "TopeMaxKG";
     public static final String DIRECCION = "Direccion";
     public static final String MUNICIPIO = "Municipio";
+    public static final String FECHA_INSTALACION = "FechaInstalacion";
+    public static final String USUARIO_CREACION = "UsuarioCreacion";
+    public static final String USUARIO_MODIFICACION = "UsuarioModificacion";
+    public static final String ESTADO = "Estado";
+
 
 
     @Override
@@ -92,9 +105,12 @@ public class Contenedor implements ClusterItem {
         if(c.getColumnIndex(DIRECCION)>=0) this.Direccion = c.getString(c.getColumnIndex(DIRECCION));
         if(c.getColumnIndex(CODIGO)>=0) this.Codigo = c.getString(c.getColumnIndex(CODIGO));
         if(c.getColumnIndex(FOTO_PRINCIPAL)>=0) this.FotoPrincipal = c.getString(c.getColumnIndex(FOTO_PRINCIPAL));
-        if(c.getColumnIndex(TOPE_MAXIMO_KG)>=0) this.TopeMaximoKG = c.getDouble(c.getColumnIndex(TOPE_MAXIMO_KG));
+        if(c.getColumnIndex(TOPE_MAXIMO_KG)>=0) this.TopeMaxKG = c.getDouble(c.getColumnIndex(TOPE_MAXIMO_KG));
         if(c.getColumnIndex(MUNICIPIO)>=0) this.Municipio = c.getString(c.getColumnIndex(MUNICIPIO));
-
+        if(c.getColumnIndex(FECHA_INSTALACION)>=0) this.FechaInstalacion = Utils.convertToDateSQLLite(c.getString(c.getColumnIndex(FECHA_INSTALACION)));
+        if(c.getColumnIndex(USUARIO_CREACION)>=0) this.UsuarioCreacion = c.getString(c.getColumnIndex(USUARIO_CREACION));
+        if(c.getColumnIndex(USUARIO_MODIFICACION)>=0) this.UsuarioModificacion = c.getString(c.getColumnIndex(USUARIO_MODIFICACION));
+        if(c.getColumnIndex(ESTADO)>=0) this.Estado = c.getInt(c.getColumnIndex(ESTADO));
     }
 
     @Override public String toString(){

@@ -39,6 +39,26 @@ public class MunicipiosPresenter implements IContenedor {
     }
 
     @Override
+    public void onSuccessAgregar(Contenedor contenedor) {
+
+    }
+
+    @Override
+    public void onSuccessModificar(Contenedor contenedor) {
+
+    }
+
+    @Override
+    public void onErrorAgregar(ErrorApi error) {
+
+    }
+
+    @Override
+    public void onErrorModificar(ErrorApi error) {
+
+    }
+
+    @Override
     public void onSuccessContenedores(List<Contenedor> lstContenedores) {
         if (lstContenedores != null && lstContenedores.size() > 0){
             List<Municipio> lstMunicipios = new ArrayList<>();

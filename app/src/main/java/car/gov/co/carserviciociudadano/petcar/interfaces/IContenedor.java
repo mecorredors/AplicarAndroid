@@ -14,4 +14,8 @@ import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
 public interface IContenedor {
     void onSuccessContenedores(List<Contenedor> lstContenedores);
     void onErrorContenedores(ErrorApi error);
+    void onSuccessAgregar(Contenedor contenedor);
+    void onSuccessModificar(Contenedor contenedor);
+    void onErrorAgregar(ErrorApi error);
+    void onErrorModificar(ErrorApi error);
 }

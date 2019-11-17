@@ -18,13 +18,16 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
+import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
+import car.gov.co.carserviciociudadano.petcar.model.Gestor;
+
 
 public class DbHelper extends SQLiteOpenHelper {
     //Ruta por defecto de las bases de datos en el sistema Android
     private static String DATABASE_PATH;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "db_bicicar.db";
 
     private final Context context;
@@ -178,7 +181,19 @@ public class DbHelper extends SQLiteOpenHelper {
                 Log.d("DbHelper.onUpgrade", ex.toString());
             }
         }
+        if(oldVersion < 7)
+        {
+            try {
+                db.execSQL(CONTENEDORES_ADD_FECHA_INST);
+                db.execSQL(CONTENEDORES_ADD_USUARIO_CREACION);
+                db.execSQL(CONTENEDORES_ADD_USUARIO_MODIFICACION);
+                db.execSQL(CONTENEDORES_ADD_ESTADO);
+                db.execSQL(GESTORES_ADD_TIPO_GESTOR);
 
+            } catch (SQLiteException ex) {
+                Log.d("DbHelper.onUpgrade", ex.toString());
+            }
+        }
     }
 
     /**
@@ -330,6 +345,13 @@ public class DbHelper extends SQLiteOpenHelper {
             "Path	TEXT, " +
             "Estado	INTEGER NOT NULL, " +
             "IDMaterialRecogido	INTEGER NOT NULL);";
+
+
+    private static final String CONTENEDORES_ADD_FECHA_INST = "ALTER TABLE " + Contenedor.TABLE_NAME + " ADD COLUMN " + Contenedor.FECHA_INSTALACION + " TEXT ";
+    private static final String CONTENEDORES_ADD_USUARIO_CREACION= "ALTER TABLE " + Contenedor.TABLE_NAME + " ADD COLUMN " + Contenedor.USUARIO_CREACION + " TEXT ";
+    private static final String CONTENEDORES_ADD_USUARIO_MODIFICACION = "ALTER TABLE " + Contenedor.TABLE_NAME + " ADD COLUMN " + Contenedor.USUARIO_MODIFICACION + " TEXT ";
+    private static final String CONTENEDORES_ADD_ESTADO = "ALTER TABLE " + Contenedor.TABLE_NAME + " ADD COLUMN " + Contenedor.ESTADO + " TEXT ";
+    private static final String GESTORES_ADD_TIPO_GESTOR = "ALTER TABLE " + Gestor.TABLE_NAME + " ADD COLUMN " + Gestor.TIPO_GESTOR + " INTEGER ";
 
 }
 

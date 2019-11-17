@@ -37,7 +37,6 @@ public class ContenedoresAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             extends RecyclerView.ViewHolder implements CompoundButton.OnClickListener  {
 
         private TextView lblDireccion;
-        private TextView lblMunicipio;
         private TextView lblCodigo;
 
 
@@ -45,13 +44,11 @@ public class ContenedoresAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
 
             lblDireccion = itemView.findViewById(R.id.lblDireccion);
-            lblMunicipio = itemView.findViewById(R.id.lblMunicipio);
             lblCodigo = itemView.findViewById(R.id.lblCodigo);
         }
 
         public void bind(Contenedor b) {
             lblDireccion.setText(b.Direccion);
-            lblMunicipio.setText(b.Municipio);
             lblCodigo.setText(b.Codigo);
         }
 

@@ -231,6 +231,26 @@ public class LoginPetCarActivity extends BaseActivity implements IGestor, IViewC
     }
 
     @Override
+    public void onSuccessAgregar(Contenedor contenedor) {
+
+    }
+
+    @Override
+    public void onSuccessModificar(Contenedor contenedor) {
+
+    }
+
+    @Override
+    public void onErrorAgregar(ErrorApi error) {
+
+    }
+
+    @Override
+    public void onErrorModificar(ErrorApi error) {
+
+    }
+
+    @Override
     public void onSuccessTiposMaterial(List<TipoMaterial> lstTiposMaterial) {
         ocultarProgressDialog();
         obtenerContenedores();
