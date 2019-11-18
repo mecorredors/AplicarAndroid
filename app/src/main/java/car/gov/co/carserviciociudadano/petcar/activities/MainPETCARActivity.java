@@ -108,7 +108,7 @@ public class MainPETCARActivity extends BaseActivity
         mLyGuia.setVisibility(View.GONE);
 
         mGestor = new Gestores().getLogin();
-        if (mGestor.TipoGestor == 0){
+        if (mGestor != null && mGestor.TipoGestor == 0){
             mostrarMensajeDialog("Es necesario cerrar sesión y volver a ingresar para verificar su perfil");
         }
 
