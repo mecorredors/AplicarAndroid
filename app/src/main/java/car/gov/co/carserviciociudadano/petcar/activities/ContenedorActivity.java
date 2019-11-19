@@ -185,7 +185,7 @@ public class ContenedorActivity extends BaseActivity implements IViewElevation, 
         if (Validation.IsEmpty(txtLatitud)) res = false;
         if (Validation.IsEmpty(txtLongitud)) res = false;
 
-        if (txtCodigo.getText().toString().trim().length() < 9){
+        if (txtCodigo.getText().toString().trim().length() != 9){
             mostrarMensajeDialog("El código debe tener 9 caracteres");
             return false;
         }
@@ -208,7 +208,7 @@ public class ContenedorActivity extends BaseActivity implements IViewElevation, 
                 CheckBox checkBox = (CheckBox) lyTiposMaterial.getChildAt(i);
                 if (checkBox.isChecked()) {
                     numMateriales++;
-                    materiales = "," + checkBox.getId();
+                    materiales += "," + checkBox.getId();
 
                 }
             }

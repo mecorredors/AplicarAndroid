@@ -47,6 +47,7 @@
                 android:hint="@string/codigo"
                 android:inputType="textNoSuggestions"
                 style="@style/editTextUsuario"
+                android:maxLength="9"
                 />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
