@@ -45,7 +45,8 @@ public class Gestores {
                 "[" + Gestor.NOMBRE_COMPLETO + "]",
                 "[" + Gestor.DIRECCION_CONTACTO + "]",
                 "[" + Gestor.EMAIL + "]",
-                "[" + Gestor.TELEFONO + "]"                
+                "[" + Gestor.TELEFONO + "]",
+                "[" + Gestor.TIPO_GESTOR + "]"
         };
     }
 
@@ -70,6 +71,7 @@ public class Gestores {
         cv.put(Gestor.DIRECCION_CONTACTO, element.DireccionContacto);
         cv.put(Gestor.EMAIL, element.Email);
         cv.put(Gestor.TELEFONO, element.Telefono);
+        cv.put(Gestor.TIPO_GESTOR, element.TipoGestor);
 
         long rowid = 0;
 
@@ -107,6 +109,7 @@ public class Gestores {
         cv.put(Gestor.DIRECCION_CONTACTO, element.DireccionContacto);
         cv.put(Gestor.EMAIL, element.Email);
         cv.put(Gestor.TELEFONO, element.Telefono);
+        cv.put(Gestor.TIPO_GESTOR, element.TipoGestor);
 
         long rowid;
 

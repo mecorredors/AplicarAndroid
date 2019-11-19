@@ -30,9 +30,12 @@ import car.gov.co.carserviciociudadano.common.DbHelper;
 import car.gov.co.carserviciociudadano.parques.dataaccess.Parques;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.interfaces.ApiContenedor;
+import car.gov.co.carserviciociudadano.petcar.interfaces.ApiMaterialRecogido;
 import car.gov.co.carserviciociudadano.petcar.interfaces.IContenedor;
+import car.gov.co.carserviciociudadano.petcar.interfaces.IMaterialRecogido;
 import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
 import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
+import car.gov.co.carserviciociudadano.petcar.model.MaterialRecogido;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,7 +67,10 @@ public class Contenedores {
                 "[" + Contenedor.TOPE_MAXIMO_KG + "]",
                 "[" + Contenedor.CODIGO + "]",
                 "[" + Contenedor.MUNICIPIO + "]",
-
+                "[" + Contenedor.FECHA_INSTALACION + "]",
+                "[" + Contenedor.USUARIO_CREACION + "]",
+                "[" + Contenedor.USUARIO_MODIFICACION + "]",
+                "[" + Contenedor.ESTADO + "]"
         };
     }
 
@@ -88,8 +94,12 @@ public class Contenedores {
         cv.put(Contenedor.DIRECCION, element.Direccion);
         cv.put(Contenedor.FOTO_PRINCIPAL, element.FotoPrincipal);
         cv.put(Contenedor.CODIGO, element.Codigo);
-        cv.put(Contenedor.TOPE_MAXIMO_KG, element.TopeMaximoKG);
+        cv.put(Contenedor.TOPE_MAXIMO_KG, element.TopeMaxKG);
         cv.put(Contenedor.MUNICIPIO, element.Municipio);
+        cv.put(Contenedor.FECHA_INSTALACION, Utils.toStringSQLLite(element.FechaInstalacion));
+        cv.put(Contenedor.USUARIO_CREACION, element.UsuarioCreacion);
+        cv.put(Contenedor.USUARIO_MODIFICACION, element.UsuarioModificacion);
+        cv.put(Contenedor.ESTADO, element.Estado);
 
         long rowid = 0;
 
@@ -126,8 +136,12 @@ public class Contenedores {
         cv.put(Contenedor.DIRECCION, element.Direccion);
         cv.put(Contenedor.FOTO_PRINCIPAL, element.FotoPrincipal);
         cv.put(Contenedor.CODIGO, element.Codigo);
-        cv.put(Contenedor.TOPE_MAXIMO_KG, element.TopeMaximoKG);
+        cv.put(Contenedor.TOPE_MAXIMO_KG, element.TopeMaxKG);
         cv.put(Contenedor.MUNICIPIO, element.Municipio);
+        cv.put(Contenedor.FECHA_INSTALACION, Utils.toStringSQLLite(element.FechaInstalacion));
+        cv.put(Contenedor.USUARIO_CREACION, element.UsuarioCreacion);
+        cv.put(Contenedor.USUARIO_MODIFICACION, element.UsuarioModificacion);
+        cv.put(Contenedor.ESTADO, element.Estado);
 
         long rowid;
 
@@ -319,4 +333,55 @@ public class Contenedores {
 
     }
 
+    public void agregar(final Contenedor contenedor , final IContenedor iContenedor)
+    {
+        ApiContenedor apiContenedor = APIClient.getClient().create(ApiContenedor.class);
+        Call<Contenedor> call = apiContenedor.agregar(contenedor);
+
+        call.enqueue(new Callback<Contenedor>() {
+            @Override
+            public void onResponse(Call<Contenedor> call, Response<Contenedor> response) {
+                if (response.code() == 200) {
+                    Contenedor element = response.body();
+                    contenedor.IDContenedor = element.IDContenedor;
+                    iContenedor.onSuccessAgregar(contenedor);
+                } else {
+                    iContenedor.onErrorAgregar(new ErrorApi(response));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Contenedor> call, Throwable t) {
+                call.cancel();
+                iContenedor.onErrorAgregar(new ErrorApi(t));
+                Log.d("item error", t.toString());
+            }
+        });
+    }
+
+    public void modificar(final Contenedor contenedor , final IContenedor iContenedor)
+    {
+        ApiContenedor apiContenedor = APIClient.getClient().create(ApiContenedor.class);
+        Call<Contenedor> call = apiContenedor.modificar(contenedor);
+
+        call.enqueue(new Callback<Contenedor>() {
+            @Override
+            public void onResponse(Call<Contenedor> call, Response<Contenedor> response) {
+                if (response.code() == 200) {
+                    Contenedor element = response.body();
+                    contenedor.IDContenedor = element.IDContenedor;
+                    iContenedor.onSuccessModificar(contenedor);
+                } else {
+                    iContenedor.onErrorModificar(new ErrorApi(response));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Contenedor> call, Throwable t) {
+                call.cancel();
+                iContenedor.onErrorModificar(new ErrorApi(t));
+                Log.d("item error", t.toString());
+            }
+        });
+    }
 }

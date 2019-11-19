@@ -316,6 +316,26 @@ public class MapPETCARFragment extends BaseFragment implements OnMapReadyCallbac
     }
 
     @Override
+    public void onSuccessAgregar(Contenedor contenedor) {
+
+    }
+
+    @Override
+    public void onSuccessModificar(Contenedor contenedor) {
+
+    }
+
+    @Override
+    public void onErrorAgregar(ErrorApi error) {
+
+    }
+
+    @Override
+    public void onErrorModificar(ErrorApi error) {
+
+    }
+
+    @Override
     public void onSuccessContenedores(List<Contenedor> lstContenedores) {
         ocultarProgressDialog();
         if (isAdded()) {

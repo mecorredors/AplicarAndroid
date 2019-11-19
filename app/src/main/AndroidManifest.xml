@@ -22,16 +22,21 @@
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".petcar.activities.RegistrarKilosYFotosMaterialActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="@string/title_registrar_kilos"></activity>
-        <activity android:name=".petcar.activities.PublicarMaterialActivity"
-            android:label="@string/title_publicar_material"/>
-        <activity android:name=".petcar.activities.RegistrarMaterialActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="@string/title_registrar_material"/>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".petcar.activities.ContenedorActivity"
+            android:label="@string/title_activity_main_petcar"></activity>
+        <activity
+            android:name=".petcar.activities.RegistrarKilosYFotosMaterialActivity"
+            android:label="@string/title_registrar_kilos"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".petcar.activities.PublicarMaterialActivity"
+            android:label="@string/title_publicar_material" />
+        <activity
+            android:name=".petcar.activities.RegistrarMaterialActivity"
+            android:label="@string/title_registrar_material"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".bicicar.activities.CambiarPasswordActivity" />
         <activity
             android:name=".bicicar.activities.PublicarEventoActivity"
@@ -251,8 +256,8 @@
         <activity
             android:name=".petcar.activities.ContenedoresActivity"
             android:label="@string/title_contenedores"
-            android:windowSoftInputMode="stateHidden"
-            android:theme="@style/AppThemeBicicar" />
+            android:theme="@style/AppThemeBicicar"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".petcar.activities.CambiarPasswordActivity" />
     </application>
 

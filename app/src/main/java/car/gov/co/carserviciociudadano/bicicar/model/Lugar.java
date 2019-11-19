@@ -17,6 +17,8 @@ public class Lugar {
     private String NombreLugarPadre;
     private int TipoLugar;
 
+    public static final String ID_LUGAR = "IDLugar";
+    public static final String NOMBRE = "Nombre";
 
     public String getIDLugar() {
         return IDLugar;

@@ -12,19 +12,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Seleccione un municipio"
-        android:textColor="@color/primaryText"
-        style="@style/lyUsuario"/>
-    <FrameLayout android:id="@+id/lySpiColegios"
+        android:textColor="@color/secondaryText"
+        android:textSize="@dimen/text_size_16"
+        style="@style/lyUsuario"
+        android:background="@color/gray2"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="@dimen/margin_10dp"
+        android:paddingRight="@dimen/margin_10dp"
+        android:layout_marginBottom="@dimen/margin_16dp"/>
+
+    <TextView android:id="@+id/lblMunicipio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/lyUsuario"
+        android:textColor="@color/primaryText"
+        android:text="Municipio"
         android:layout_below="@+id/lblTitle"
+        android:textSize="@dimen/text_size_16"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"></TextView>
+    <FrameLayout android:id="@+id/lySpiMunicipios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_6dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:layout_below="@+id/lblMunicipio"
         >
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spiMunicipio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             >
         </androidx.appcompat.widget.AppCompatSpinner>
     </FrameLayout>
@@ -36,20 +56,34 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_below="@id/lySpiColegios"
-        android:layout_above="@id/btnSincronizarDatos"
+        android:layout_below="@id/lySpiMunicipios"
+        android:layout_above="@id/lyBotones"
+
         />
 
-    <Button android:id="@+id/btnSincronizarDatos"
+    <LinearLayout android:id="@+id/lyBotones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Descargar contenedores"
+        android:layout_marginTop="@dimen/margin_10dp"
         android:layout_marginLeft="@dimen/margin_16dp"
         android:layout_marginRight="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_10dp"
         android:layout_marginBottom="@dimen/margin_6dp"
-        android:background="@drawable/boton_bicicar"
-        android:textColor="@color/textLight"
-        android:layout_alignParentBottom="true"
-        />
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+        <Button android:id="@+id/btnSincronizarDatos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descargar contenedores"
+            android:background="@drawable/boton_bicicar"
+            android:textColor="@color/textLight"
+            />
+
+        <Button android:id="@+id/btnCrearContedor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crear contenedor"
+            android:background="@drawable/boton_bicicar"
+            android:textColor="@color/textLight"
+            />
+    </LinearLayout>
 </RelativeLayout>

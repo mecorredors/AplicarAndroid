@@ -107,6 +107,11 @@ public class MainPETCARActivity extends BaseActivity
         mLyMunicipios.setVisibility(View.GONE);
         mLyGuia.setVisibility(View.GONE);
 
+        mGestor = new Gestores().getLogin();
+        if (mGestor != null && mGestor.TipoGestor == 0){
+            mostrarMensajeDialog("Es necesario cerrar sesión y volver a ingresar para verificar su perfil");
+        }
+
     }
     private void cambiarClave(){
         mGestor = new Gestores().getLogin();
@@ -123,12 +128,20 @@ public class MainPETCARActivity extends BaseActivity
 
             navMenu.findItem(R.id.nav_login).setVisible(false);
             navMenu.findItem(R.id.nav_cerrar_sesion).setVisible(true);
-            navMenu.findItem(R.id.nav_publicar_material).setVisible(true);
-            navMenu.findItem(R.id.nav_contenedores).setVisible(true);
-            navMenu.findItem(R.id.nav_registrar_material).setVisible(true);
             navMenu.findItem(R.id.nav_cambiar_clave).setVisible(true);
-            navMenu.findItem(R.id.nav_reporte).setVisible(true);
             lblUsuario.setText(mGestor.NombreCompleto);
+            navMenu.findItem(R.id.nav_contenedores).setVisible(true);
+          if (mGestor.getTipoGestor() == Gestor.Tipo.INSTALADOR ||  mGestor.getTipoGestor() == Gestor.Tipo.INSTALDOR_VISITA){
+              navMenu.findItem(R.id.nav_publicar_material).setVisible(false);
+              navMenu.findItem(R.id.nav_registrar_material).setVisible(false);
+              navMenu.findItem(R.id.nav_reporte).setVisible(false);
+          }else {
+
+              navMenu.findItem(R.id.nav_publicar_material).setVisible(true);
+              navMenu.findItem(R.id.nav_registrar_material).setVisible(true);
+              navMenu.findItem(R.id.nav_reporte).setVisible(true);
+
+          }
 
         }else{
             navMenu.findItem(R.id.nav_login).setVisible(true);
@@ -140,6 +153,8 @@ public class MainPETCARActivity extends BaseActivity
             navMenu.findItem(R.id.nav_reporte).setVisible(false);
             lblUsuario.setText("");
         }
+
+
     }
 
     private void obtenerMunicipios(){

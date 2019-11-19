@@ -113,6 +113,12 @@ public class UbicacionBeneficiarioActivity extends LocationBaseGoogleApiActivity
             mIdBeneficiario = b.getInt(Beneficiario.ID_BENEFICIARIO , 0);
             mIdColegio = b.getInt(Colegio.ID_COLEGIO , 0);
             mRetornarUbicacion = b.getBoolean(RETORNAR_UBICACION, false);
+
+            double latitude = b.getDouble(LATITUDE, 0);
+            double longitude = b.getDouble(LONGITUDE, 0);
+            if (latitude != 0 && longitude != 0){
+                miPosicion = new LatLng(latitude, longitude);
+            }
         }
 
         if (mRetornarUbicacion){

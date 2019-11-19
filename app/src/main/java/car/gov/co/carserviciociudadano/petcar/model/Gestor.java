@@ -20,6 +20,7 @@ public class Gestor extends ModelBase {
     public String DireccionContacto;
     public String Email;
     public String Telefono;
+    public int TipoGestor;
 
 
     public static final String TABLE_NAME = "Gestores";
@@ -33,6 +34,7 @@ public class Gestor extends ModelBase {
     public static final String DIRECCION_CONTACTO = "DireccionContacto";
     public static final String EMAIL = "Email";
     public static final String TELEFONO = "Telefono";
+    public static final String TIPO_GESTOR = "TipoGestor";
 
 
     public Gestor(){
@@ -49,6 +51,7 @@ public class Gestor extends ModelBase {
         if(c.getColumnIndex(DIRECCION_CONTACTO)>=0) this.DireccionContacto = c.getString(c.getColumnIndex(DIRECCION_CONTACTO));
         if(c.getColumnIndex(EMAIL)>=0) this.Email = c.getString(c.getColumnIndex(EMAIL));
         if(c.getColumnIndex(TELEFONO)>=0) this.Telefono = c.getString(c.getColumnIndex(TELEFONO));
+        if(c.getColumnIndex(TIPO_GESTOR)>=0) this.TipoGestor = c.getInt(c.getColumnIndex(TIPO_GESTOR));
 
     }
 
@@ -62,6 +65,19 @@ public class Gestor extends ModelBase {
             return null;
         }
         return jsonObject.toString();
+    }
+
+
+    public static class Tipo{
+        public static final int RECICLADOR = 2;
+        public static final int INSTALADOR = 4;
+        public static final int VISITA = 8;
+        public static final int INSTALDOR_VISITA = 12;
+    }
+
+    public int getTipoGestor(){
+        if (TipoGestor == 0 ) return Tipo.RECICLADOR;
+         return TipoGestor;
     }
 
 }

@@ -12,6 +12,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import car.gov.co.carserviciociudadano.AppCar;
 import car.gov.co.carserviciociudadano.MainActivity;
 import car.gov.co.carserviciociudadano.R;
 
@@ -72,13 +73,13 @@ public class FirebaseMessagin extends FirebaseMessagingService {
         if (title != null && !title.isEmpty())
             miTitulo = title;
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(AppCar.getContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(AppCar.getContext(), 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(AppCar.getContext())
                 .setSmallIcon(R.drawable.ic_parque_24)
                 .setContentTitle(miTitulo)
                 .setContentText(messageBody)
@@ -86,7 +87,7 @@ public class FirebaseMessagin extends FirebaseMessagingService {
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =   (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager =   (NotificationManager) AppCar.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
