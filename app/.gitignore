@@ -3,6 +3,7 @@
 .gradle
 .navigation/
 
+/.idea/
 /.idea/.name
 /.idea/caches
 /.idea/codeStyles
