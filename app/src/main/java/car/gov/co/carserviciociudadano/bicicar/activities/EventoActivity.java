@@ -146,6 +146,9 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
     private static final String ID_CUNDINAMARCA = "25";
     private static final String CERO = "0";
     private static final String DOS_PUNTOS = ":";
+    private static final String AM = " a.m.";
+    private static final String PM = " p.m.";
+
 
     private LocationManager mLocationManager;
     boolean isRunning = false;
@@ -318,12 +321,12 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
                 String minutoFormateado = (minute < 10)? String.valueOf(CERO + minute):String.valueOf(minute);
                 String AM_PM;
                 if(hourOfDay < 12) {
-                    AM_PM = "a.m.";
+                    AM_PM = AM;
                 } else {
-                    AM_PM = "p.m.";
+                    AM_PM = PM;
                 }
                 //Muestro la hora con el formato deseado
-                txtHoraInicio.setText(horaFormateada + DOS_PUNTOS + minutoFormateado + " " + AM_PM);
+                txtHoraInicio.setText(horaFormateada + DOS_PUNTOS + minutoFormateado + AM_PM);
                 mEvento.HoraInicio = hourOfDay + DOS_PUNTOS + minute ;
 
             }
@@ -717,8 +720,8 @@ public class EventoActivity extends BaseActivity implements IViewEvento, IViewTi
         }
 
         if (Utils.isEqualsDate(fechaInicio, fechaFin)) {
-            int horaInicio = Utils.convertInt(mEvento.HoraInicio.replace(DOS_PUNTOS,"").trim());
-            int horaFin = Utils.convertInt(mEvento.HoraFin.replace(DOS_PUNTOS,"").trim());
+            int horaInicio = Utils.convertInt(txtHoraInicio.getText().toString().replace(DOS_PUNTOS,"").replace(AM,"").replace(PM,"").trim());
+            int horaFin = Utils.convertInt(txtHoraFin.getText().toString().replace(DOS_PUNTOS,"").replace(AM,"").replace(PM,"").trim());
             if (horaFin <= horaInicio){
                 mostrarMensajeDialog("La hora de inicio debe ser menor a la hora final");
                 return false;
