@@ -50,8 +50,11 @@ public class FotosPetCarAdapter extends  ArrayAdapter<AdjuntoPetCar> {
 
     OnItemClickListener mItemClickListener;
 
-    public void AddPhotos(String[] all_path, int idLocalMaterialRecogido){
-        AddPhotos(toListPhotos(all_path, idLocalMaterialRecogido));
+    public void AddPhotos(String[] all_path, int idLocalMaterialRecogido) {
+        AddPhotos(all_path, idLocalMaterialRecogido, 0);
+    }
+    public void AddPhotos(String[] all_path, int idLocalMaterialRecogido, int idLocalVisita){
+        AddPhotos(toListPhotos(all_path, idLocalMaterialRecogido, idLocalVisita));
 
     }
 
@@ -71,7 +74,7 @@ public class FotosPetCarAdapter extends  ArrayAdapter<AdjuntoPetCar> {
         Photos.add(0,itemButton);
     }
 
-    public ArrayList<AdjuntoPetCar> toListPhotos(String[] all_path, int idLocalMaterialRecogido){
+    public ArrayList<AdjuntoPetCar> toListPhotos(String[] all_path, int idLocalMaterialRecogido, int idLocalVisita){
 
         ArrayList<AdjuntoPetCar> dataList = new ArrayList<>();
         for (String string : all_path) {
@@ -81,6 +84,7 @@ public class FotosPetCarAdapter extends  ArrayAdapter<AdjuntoPetCar> {
                 item.Type = Enumerator.TipoFoto.FOTO;
                 item.Estado = Enumerator.Estado.PENDIENTE_PUBLICAR;
                 item.IDMaterialRecogido = idLocalMaterialRecogido;
+                item.IDVisitaLocal = idLocalVisita;
                 dataList.add(item);
             }
         }

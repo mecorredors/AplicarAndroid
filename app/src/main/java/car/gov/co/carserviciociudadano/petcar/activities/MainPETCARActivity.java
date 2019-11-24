@@ -131,17 +131,19 @@ public class MainPETCARActivity extends BaseActivity
             navMenu.findItem(R.id.nav_cambiar_clave).setVisible(true);
             lblUsuario.setText(mGestor.NombreCompleto);
             navMenu.findItem(R.id.nav_contenedores).setVisible(true);
-          if (mGestor.getTipoGestor() == Gestor.Tipo.INSTALADOR ||  mGestor.getTipoGestor() == Gestor.Tipo.INSTALDOR_VISITA){
-              navMenu.findItem(R.id.nav_publicar_material).setVisible(false);
-              navMenu.findItem(R.id.nav_registrar_material).setVisible(false);
-              navMenu.findItem(R.id.nav_reporte).setVisible(false);
-          }else {
 
-              navMenu.findItem(R.id.nav_publicar_material).setVisible(true);
-              navMenu.findItem(R.id.nav_registrar_material).setVisible(true);
-              navMenu.findItem(R.id.nav_reporte).setVisible(true);
+            navMenu.findItem(R.id.nav_publicar_material).setVisible(false);
+            navMenu.findItem(R.id.nav_registrar_material).setVisible(false);
+            navMenu.findItem(R.id.nav_reporte).setVisible(false);
+            navMenu.findItem(R.id.nav_visitas).setVisible(false);
 
-          }
+            if (mGestor.getTipoGestor() == Gestor.Tipo.RECICLADOR) {
+                navMenu.findItem(R.id.nav_publicar_material).setVisible(true);
+                navMenu.findItem(R.id.nav_registrar_material).setVisible(true);
+                navMenu.findItem(R.id.nav_reporte).setVisible(false);
+            }else if (mGestor.getTipoGestor() == Gestor.Tipo.VISITA ||  mGestor.getTipoGestor() == Gestor.Tipo.INSTALDOR_VISITA){
+                navMenu.findItem(R.id.nav_visitas).setVisible(true);
+            }
 
         }else{
             navMenu.findItem(R.id.nav_login).setVisible(true);
@@ -151,6 +153,7 @@ public class MainPETCARActivity extends BaseActivity
             navMenu.findItem(R.id.nav_registrar_material).setVisible(false);
             navMenu.findItem(R.id.nav_cambiar_clave).setVisible(false);
             navMenu.findItem(R.id.nav_reporte).setVisible(false);
+            navMenu.findItem(R.id.nav_visitas).setVisible(false);
             lblUsuario.setText("");
         }
 
@@ -296,6 +299,13 @@ public class MainPETCARActivity extends BaseActivity
                 Intent i = new Intent(this, WebViewBicicarActivity.class);
                 i.putExtra(WebViewBicicarActivity.URL, Server.ServerBICICAR() + "Modulos/PETCAR/ReportePublico?IDGestor="+mGestor.IDGestor);
                 i.putExtra(WebViewBicicarActivity.TITULO, "Reporte de material recogido");
+                startActivity(i);
+            }else{
+                loginPetCar();
+            }
+        }else if (id == R.id.nav_visitas) {
+            if (mGestor != null) {
+                Intent i = new Intent(this, VisitasActivity.class);
                 startActivity(i);
             }else{
                 loginPetCar();

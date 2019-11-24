@@ -16,6 +16,7 @@ public class AdjuntoPetCar extends ModelBase {
     public int IDAdjunto;
     public String Path;
     public int IDMaterialRecogido;
+    public int IDVisitaLocal;
     public int Estado;
     //otros no bd
     public String PathTemporal;
@@ -27,6 +28,7 @@ public class AdjuntoPetCar extends ModelBase {
     public static final String IDADJUNTO ="IDAdjunto";
     public static final String PATH = "Path";
     public static final String IDMATERIAL_RECOGIDO = "IDMaterialRecogido";
+    public static final String ID_VISITA_LOCAL = "IDVisitaLocal";
     public static final String ESTADO = "Estado";
 
 
@@ -40,6 +42,7 @@ public class AdjuntoPetCar extends ModelBase {
         if(c.getColumnIndex(IDADJUNTO)>=0) this.IDAdjunto = c.getInt(c.getColumnIndex(IDADJUNTO));
         if(c.getColumnIndex(PATH)>=0) this.Path = c.getString(c.getColumnIndex(PATH));
         if(c.getColumnIndex(IDMATERIAL_RECOGIDO)>=0) this.IDMaterialRecogido = c.getInt(c.getColumnIndex(IDMATERIAL_RECOGIDO));
+        if(c.getColumnIndex(ID_VISITA_LOCAL)>=0) this.IDVisitaLocal = c.getInt(c.getColumnIndex(ID_VISITA_LOCAL));
         if(c.getColumnIndex(ESTADO)>=0) this.Estado = c.getInt(c.getColumnIndex(ESTADO));
         Type = Enumerator.TipoFoto.FOTO;
     }

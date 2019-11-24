@@ -43,6 +43,7 @@ public class AdjuntosPetCar {
                 "[" + AdjuntoPetCar.IDADJUNTO + "]",
                 "[" + AdjuntoPetCar.PATH + "]",
                 "[" + AdjuntoPetCar.IDMATERIAL_RECOGIDO + "]",
+                "[" + AdjuntoPetCar.ID_VISITA_LOCAL + "]",
                 "[" + AdjuntoPetCar.ESTADO + "]"
 
         };
@@ -63,6 +64,7 @@ public class AdjuntosPetCar {
         cv.put(AdjuntoPetCar.IDADJUNTO, element.IDAdjunto);
         cv.put(AdjuntoPetCar.PATH, element.Path);
         cv.put(AdjuntoPetCar.IDMATERIAL_RECOGIDO, element.IDMaterialRecogido);
+        cv.put(AdjuntoPetCar.ID_VISITA_LOCAL, element.IDVisitaLocal);
         cv.put(AdjuntoPetCar.ESTADO, element.Estado);
 
 
@@ -97,6 +99,7 @@ public class AdjuntosPetCar {
         cv.put(AdjuntoPetCar.IDADJUNTO, element.IDAdjunto);
         cv.put(AdjuntoPetCar.PATH, element.Path);
         cv.put(AdjuntoPetCar.IDMATERIAL_RECOGIDO, element.IDMaterialRecogido);
+        cv.put(AdjuntoPetCar.ID_VISITA_LOCAL, element.IDVisitaLocal);
         cv.put(AdjuntoPetCar.ESTADO, element.Estado);
 
         long rowid;
@@ -144,6 +147,14 @@ public class AdjuntosPetCar {
 
     public List<AdjuntoPetCar> list(int idLocalMaterialRecogido, int estado){
         String where = AdjuntoPetCar.IDMATERIAL_RECOGIDO  + " = " + idLocalMaterialRecogido;
+        if (estado != Enumerator.Estado.TODOS) {
+            where = where + " and " + AdjuntoPetCar.ESTADO + " = " + estado;
+        }
+        return list(where);
+    }
+
+    public List<AdjuntoPetCar> listVisita(int idLocalVisita, int estado){
+        String where = AdjuntoPetCar.ID_VISITA_LOCAL  + " = " + idLocalVisita;
         if (estado != Enumerator.Estado.TODOS) {
             where = where + " and " + AdjuntoPetCar.ESTADO + " = " + estado;
         }
@@ -204,7 +215,7 @@ public class AdjuntosPetCar {
     }
 
 
-    public int publicar(AdjuntoPetCar archivoAdjunto, int idMaterialRecogido, String usuarioCreacion) {
+    public int publicar(AdjuntoPetCar archivoAdjunto, int idMaterialRecogido, int idVisita, String usuarioCreacion) {
 
         int serverResponseCode = 0;
         String sourceFileUri = archivoAdjunto.Path;
@@ -230,7 +241,7 @@ public class AdjuntosPetCar {
             try {
                 // open a URL connection to the Servlet
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                URL url = new URL(Config.API_PETCAR_AGREGAR_ADJUNTOS+ "?idMaterialRecogido="+ idMaterialRecogido + "&usuarioCreacion=" + usuarioCreacion);
+                URL url = new URL(Config.API_PETCAR_AGREGAR_ADJUNTOS+ "?idMaterialRecogido="+ idMaterialRecogido + "&idVisita=" + idVisita  + "&usuarioCreacion=" + usuarioCreacion );
 
                 // Open a HTTP  connection to  the URL
                 conn = (HttpURLConnection) url.openConnection();

@@ -24,8 +24,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".petcar.activities.ContenedorActivity"
-            android:label="@string/title_activity_main_petcar"></activity>
+        <activity android:name=".petcar.activities.VisitaActivity"
+            android:label="@string/title_visitas"
+           ></activity>
+        <activity android:name=".petcar.activities.VisitasActivity"
+            android:label="@string/title_visitas"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".petcar.activities.ContenedorActivity"
+            android:label="@string/title_activity_main_petcar" />
         <activity
             android:name=".petcar.activities.RegistrarKilosYFotosMaterialActivity"
             android:label="@string/title_registrar_kilos"

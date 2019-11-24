@@ -12,11 +12,14 @@ import car.gov.co.carserviciociudadano.petcar.interfaces.IViewAdjuntoPetCar;
 import car.gov.co.carserviciociudadano.petcar.model.AdjuntoPetCar;
 import car.gov.co.carserviciociudadano.petcar.model.Gestor;
 import car.gov.co.carserviciociudadano.petcar.model.MaterialRecogido;
+import car.gov.co.carserviciociudadano.petcar.model.Visita;
 
 public class AdjuntoPetCarPresenter {
     private IViewAdjuntoPetCar iViewArchivoAdjunto;
     private boolean mPublicando = false;
     private  MaterialRecogido mMaterialRecogido;
+    private Visita mVisita;
+
     private Gestor mGestor;
     public AdjuntoPetCarPresenter(IViewAdjuntoPetCar iViewArchivoAdjunto){
         this.iViewArchivoAdjunto = iViewArchivoAdjunto;
@@ -26,6 +29,17 @@ public class AdjuntoPetCarPresenter {
         this.mPublicando = mPublicando;
     }
 
+    public void publicarArchivosAdjuntos(Visita visita){
+        mVisita = visita;
+        mGestor = new Gestores().getLogin();
+        if (mGestor == null){
+            iViewArchivoAdjunto.onErrorArchivoAdjunto("No se encontró gestor, inicie sesión");
+            return;
+        }
+
+        List<AdjuntoPetCar> lstArchivosAdjuntos = new AdjuntosPetCar().listVisita(visita.Id, Enumerator.Estado.PENDIENTE_PUBLICAR);
+        publicarArchivosAdjuntos(lstArchivosAdjuntos);
+    }
 
     public void publicarArchivosAdjuntos(MaterialRecogido materialRecogido){
         mMaterialRecogido = materialRecogido;
@@ -71,8 +85,9 @@ public class AdjuntoPetCarPresenter {
                         imagen.Path = imageScale.getPath();
                         //imagen. = imageScale.getNewName();
                     }
-
-                    int statusCode = mArchivosAdjuntos.publicar(imagen, mMaterialRecogido.IDMaterialRecogido, mGestor.Identificacion);
+                    int idMaterialRecogido = mMaterialRecogido == null ? 0 : mMaterialRecogido.IDMaterialRecogido;
+                    int idVisita = mVisita == null ? 0 : mVisita.IDVisita;
+                    int statusCode = mArchivosAdjuntos.publicar(imagen, idMaterialRecogido, idVisita, mGestor.Identificacion);
 
                     if (statusCode != 200){
                         numErrores++;
@@ -113,7 +128,13 @@ public class AdjuntoPetCarPresenter {
                         }
                     }
                     if (count == mLstArchivosAdjuntos.size()) {
-                        iViewArchivoAdjunto.onSuccessArchivosAdjunto(mMaterialRecogido);
+                        if (mMaterialRecogido != null) {
+                            iViewArchivoAdjunto.onSuccessArchivosAdjunto(mMaterialRecogido);
+                        }else if (mVisita != null){
+                            iViewArchivoAdjunto.onSuccessArchivosAdjunto(mVisita);
+                        }else{
+                            iViewArchivoAdjunto.onErrorArchivoAdjunto(" material recogido null y visita null");
+                        }
 
                     }else{
                         iViewArchivoAdjunto.onErrorArchivoAdjunto("Hubo un inconveniente al publicar todas las fotos, vuelva intentar en unos minutos");

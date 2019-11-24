@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
+import car.gov.co.carserviciociudadano.petcar.model.AdjuntoPetCar;
 import car.gov.co.carserviciociudadano.petcar.model.Contenedor;
 import car.gov.co.carserviciociudadano.petcar.model.Gestor;
 
@@ -27,7 +28,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static String DATABASE_PATH;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "db_bicicar.db";
 
     private final Context context;
@@ -194,6 +195,17 @@ public class DbHelper extends SQLiteOpenHelper {
                 Log.d("DbHelper.onUpgrade", ex.toString());
             }
         }
+
+        if(oldVersion < 8)
+        {
+            try {
+                db.execSQL(TABLA_VISITAS_PETCAR);
+                db.execSQL(ADJUNTOS_PETCAR_ADD_ID_VISITA);
+
+            } catch (SQLiteException ex) {
+                Log.d("DbHelper.onUpgrade", ex.toString());
+            }
+        }
     }
 
     /**
@@ -352,6 +364,20 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String CONTENEDORES_ADD_USUARIO_MODIFICACION = "ALTER TABLE " + Contenedor.TABLE_NAME + " ADD COLUMN " + Contenedor.USUARIO_MODIFICACION + " TEXT ";
     private static final String CONTENEDORES_ADD_ESTADO = "ALTER TABLE " + Contenedor.TABLE_NAME + " ADD COLUMN " + Contenedor.ESTADO + " TEXT ";
     private static final String GESTORES_ADD_TIPO_GESTOR = "ALTER TABLE " + Gestor.TABLE_NAME + " ADD COLUMN " + Gestor.TIPO_GESTOR + " INTEGER ";
+
+
+
+    static String TABLA_VISITAS_PETCAR =  "CREATE TABLE Visitas (" +
+            "Id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+	        "IDVisita	INTEGER," +
+            "IDContenedor	INTEGER NOT NULL," +
+            "FechaLecturaQR	TEXT NOT NULL," +
+            "Comentarios	TEXT NOT NULL," +
+            "Estado	INTEGER NOT NULL," +
+            "IDGestor	INTEGER NOT NULL );";
+
+    private static final String ADJUNTOS_PETCAR_ADD_ID_VISITA = "ALTER TABLE " + AdjuntoPetCar.TABLE_NAME + " ADD COLUMN " + AdjuntoPetCar.ID_VISITA_LOCAL + " INTEGER ";
+
 
 }
 

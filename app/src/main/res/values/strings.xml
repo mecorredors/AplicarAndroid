@@ -187,7 +187,7 @@
     <string name="title_registrar_material">Registrar material</string>
     <string name="mensaje_seleccionar_material">Seleccione un material para registrar la cantidad  recogida </string>
     <string name="titulo_crear_contenedor">Para crear contenedor seleccione el municipio y verifique en la siguiente lista si el contenedor ya existe en el sistema  </string>
-
+    <string name="title_visitas">Visitas </string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

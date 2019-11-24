@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".petcar.activities.VisitaActivity"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/lblTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:background="@color/gray2"
+        android:paddingLeft="@dimen/margin_10dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:text="INGRESA LOS SIGUIENTES  DATOS"
+        android:textSize="@dimen/text_size_13"
+        android:layout_alignParentTop="true"
+         />
+
+
+    <LinearLayout android:id="@+id/lyEscanear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario"
+        android:orientation="horizontal"
+        android:layout_below="@+id/lblTitulo"
+       >
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lyCodigo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/txtCodigo"
+                style="@style/editTextUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/codigo"
+                android:maxLength="9"
+                android:inputType="textNoSuggestions" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnEscanearCodigo"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_linked_camera_white_24dp"
+            android:drawablePadding="@dimen/margin_4dp"
+            android:text="@string/escanearCodigo"
+            android:theme="@style/ButtonAccentBicicar" />
+    </LinearLayout>
+
+
+
+    <TextView android:id="@+id/lblContenedor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/lyUsuario"
+        android:layout_below="@+id/lyEscanear"/>
+
+    <TextView android:id="@+id/lblComentarios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Comentarios"
+        android:textColor="@color/primaryText"
+        style="@style/lyUsuario"
+        android:layout_below="@+id/lblContenedor"/>
+
+    <LinearLayout android:id="@+id/lyComentarios"
+        style="@style/lyUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_gray_border"
+        android:layout_below="@+id/lblComentarios"
+        >
+        <EditText
+            android:id="@+id/txtComentarios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/denuncia_height_description"
+            android:hint="ingresa comentarios"
+            android:maxEms="500"
+            android:textSize="@dimen/text_size_14"
+            android:textColor="@color/secondaryText"
+            android:gravity="top"
+            android:maxLength="500"
+            android:paddingLeft="6dp"
+            android:paddingTop="3dp"
+            android:paddingRight="3dp"
+            android:paddingBottom="3dp"
+            android:background="#00ffffff"
+            android:scrollHorizontally="false"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:minLines="6"
+            />
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lyComentarios"
+        android:layout_above="@+id/btnGuardar"
+       >
+
+
+        <LinearLayout android:id="@+id/lyInicial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Seleccione o tome fotos del contenedor"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/text_size_16"
+                android:gravity="center_horizontal"
+                android:lines="2"
+                android:minLines="2"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="@dimen/margin_16dp"/>
+
+
+            <LinearLayout android:id="@+id/lyAgregarFotos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="#E6E6E6"
+                android:orientation="vertical">
+
+                <ImageView android:id="@+id/imgAgregarFotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_photo_camera_gray_80dp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+        <GridView
+            android:id="@+id/gridGallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/lyHeader"
+            android:layout_above="@+id/LinearBtnNext"
+            android:layout_gravity="top"
+            android:verticalSpacing="3dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="3"
+            android:padding="0dp"
+            android:stretchMode="columnWidth"
+            tools:listitem="@layout/item_gallery"
+            android:visibility="visible"
+
+            android:layout_marginTop="@dimen/margin_6dp"
+            android:layout_marginLeft="@dimen/margin_6dp"
+            android:layout_marginRight="@dimen/margin_6dp"
+            android:layout_marginBottom="50dp"
+            >
+        </GridView>
+
+
+    </FrameLayout>
+
+
+    <Button android:id="@+id/btnGuardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/guardar"
+        android:background="@drawable/boton_bicicar2"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>
+
+
+
+

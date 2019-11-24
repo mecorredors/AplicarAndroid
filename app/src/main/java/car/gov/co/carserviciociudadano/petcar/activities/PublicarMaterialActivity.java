@@ -25,6 +25,7 @@ import car.gov.co.carserviciociudadano.petcar.adapter.MaterialRecogidoAdapter;
 import car.gov.co.carserviciociudadano.petcar.dataaccess.MaterialesRecogidos;
 import car.gov.co.carserviciociudadano.petcar.interfaces.IViewAdjuntoPetCar;
 import car.gov.co.carserviciociudadano.petcar.model.MaterialRecogido;
+import car.gov.co.carserviciociudadano.petcar.model.Visita;
 import car.gov.co.carserviciociudadano.petcar.presenter.AdjuntoPetCarPresenter;
 import car.gov.co.carserviciociudadano.petcar.presenter.IViewMaterialRecogido;
 import car.gov.co.carserviciociudadano.petcar.presenter.MaterialRecogidoPresenter;
@@ -149,6 +150,11 @@ public class PublicarMaterialActivity extends BaseActivity  implements IViewMate
         }else {
             onErrorValidacion("Error al guardar localmente despues de publicar adjunto");
         }
+
+    }
+
+    @Override
+    public void onSuccessArchivosAdjunto(Visita visita) {
 
     }
 

@@ -28,6 +28,10 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Publicar material" />
             <item
+                android:id="@+id/nav_visitas"
+                android:icon="@drawable/ic_edit_blue_24dp"
+                android:title="Visitas" />
+            <item
                 android:id="@+id/nav_login"
                 android:icon="@drawable/ic_person_24dp"
                 android:title="Iniciar sesión" />
