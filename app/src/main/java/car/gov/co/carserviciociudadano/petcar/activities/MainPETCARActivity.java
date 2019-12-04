@@ -40,7 +40,10 @@ import car.gov.co.carserviciociudadano.bicicar.activities.WebViewBicicarActivity
 import car.gov.co.carserviciociudadano.common.BaseActivity;
 import car.gov.co.carserviciociudadano.parques.model.ErrorApi;
 import car.gov.co.carserviciociudadano.petcar.adapter.MunicipiosAdapter;
+import car.gov.co.carserviciociudadano.petcar.dataaccess.Contenedores;
 import car.gov.co.carserviciociudadano.petcar.dataaccess.Gestores;
+import car.gov.co.carserviciociudadano.petcar.dataaccess.MaterialesRecogidos;
+import car.gov.co.carserviciociudadano.petcar.dataaccess.Visitas;
 import car.gov.co.carserviciociudadano.petcar.fragments.MapPETCARFragment;
 import car.gov.co.carserviciociudadano.petcar.model.Gestor;
 import car.gov.co.carserviciociudadano.petcar.model.Municipio;
@@ -324,7 +327,7 @@ public class MainPETCARActivity extends BaseActivity
     private void cerrarSesion(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainPETCARActivity.this);
 
-        builder.setMessage("¿Seguro desea cerrar sesión?");
+        builder.setMessage("Al cerrar sesión se eliminan todos los datos pendientes de publicar ¿Seguro desea cerrar sesión?");
 
         builder.setPositiveButton(R.string.cerrar_sesion, new DialogInterface.OnClickListener() {
             @Override
@@ -332,6 +335,9 @@ public class MainPETCARActivity extends BaseActivity
                 dialog.dismiss();
                 if (mGestor != null){
                     new Gestores().delete(mGestor.IDGestor);
+                    new MaterialesRecogidos().deleteAll();
+                    new Contenedores().deleteAll();
+                    new Visitas().deleteAll();
                     configMenuLateral();
                 }
             }

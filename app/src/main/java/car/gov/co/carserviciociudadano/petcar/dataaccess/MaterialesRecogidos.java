@@ -66,7 +66,9 @@ public class MaterialesRecogidos {
         cv.put(MaterialRecogido.ID_MATERIAL_RECOGIDO, element.IDMaterialRecogido);
         cv.put(MaterialRecogido.IDCONTENEDOR, element.IDContenedor);
         cv.put(MaterialRecogido.IDTIPO_MATERIAL, element.IDTipoMaterial);
-        cv.put(MaterialRecogido.FECHALECTURA_QR, Utils.toStringFromDate(element.FechaLecturaQR));
+        cv.put(MaterialRecogido.FECHALECTURA_QR, Utils.toStringSQLLite(element.FechaLecturaQR));
+        String fecha = Utils.toStringSQLLite(element.FechaLecturaQR);
+        Log.d("fecha guardar",  Utils.toStringSQLLite(element.FechaLecturaQR));
         cv.put(MaterialRecogido.COMENTARIOS, element.Comentarios);
         cv.put(MaterialRecogido.KILOS, element.Kilos);
         cv.put(MaterialRecogido.ESTADO, element.Estado);
@@ -102,7 +104,7 @@ public class MaterialesRecogidos {
         cv.put(MaterialRecogido.ID_MATERIAL_RECOGIDO, element.IDMaterialRecogido);
         cv.put(MaterialRecogido.IDCONTENEDOR, element.IDContenedor);
         cv.put(MaterialRecogido.IDTIPO_MATERIAL, element.IDTipoMaterial);
-        cv.put(MaterialRecogido.FECHALECTURA_QR, Utils.toStringFromDate(element.FechaLecturaQR));
+        cv.put(MaterialRecogido.FECHALECTURA_QR, Utils.toStringSQLLite(element.FechaLecturaQR));
         cv.put(MaterialRecogido.COMENTARIOS, element.Comentarios);
         cv.put(MaterialRecogido.KILOS, element.Kilos);
         cv.put(MaterialRecogido.ESTADO, element.Estado);

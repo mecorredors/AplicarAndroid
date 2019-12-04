@@ -124,6 +124,10 @@ public class ContenedoresActivity extends BaseActivity implements IViewContenedo
         spiMunicipio.setAdapter(adapterMunicipios);
 
         onItemSelecteMunicipio();
+        if (mGestor.getTipoGestor() == Gestor.Tipo.RECICLADOR){
+            spiMunicipio.setEnabled(false);
+        }
+
     }
 
 
@@ -272,10 +276,6 @@ public class ContenedoresActivity extends BaseActivity implements IViewContenedo
                     i.putExtra(Contenedor.MUNICIPIO, municipio.toString());
                 }
                 startActivityForResult(i, REQUEST_AGREGAR_CONTENEDOR);
-            }else if  (mGestor.getTipoGestor() == Gestor.Tipo.RECICLADOR ){
-                Intent i = new Intent(ContenedoresActivity.this, RegistrarMaterialActivity.class);
-                i.putExtra(Contenedor.CODIGO, contenedor.Codigo);
-                startActivityForResult(i, REQUEST_REGISTRAR_MATERIAL);
             }
 
         }

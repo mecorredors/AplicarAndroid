@@ -173,14 +173,14 @@
     <string name="title_crear_evento">Crear evento</string>
     <string name="title_vento">Evento</string>
     <string name="publicado">Publicado</string>
-    <string name="seleccione_ubicacion_evento"> Ubicacar en mapa</string>
+    <string name="seleccione_ubicacion_evento"> Ubicar en mapa</string>
     <string name="presicion"> Presición</string>
 
     <string name="error_publicar_ubicacion">Su ubicación fue guardada correctamente pero debe publicarla cuando haya conexión a internet</string>
     <string name="error_load_cuencas">No fue posible obtener las cuencas</string>
     <!-- petcar -->
-    <string name="title_activity_main_petcar">PETCAR</string>
-    <string name="title_login_petcar">Login PETCAR </string>
+    <string name="title_activity_main_petcar">Ciclo-Re-Ciclo</string>
+    <string name="title_login_petcar">Login Ciclo-Re-Ciclo </string>
     <string name="title_contenedores">Contenedores </string>
     <string name="title_publicar_material">Publicar material </string>
     <string name="title_registrar_kilos">Registrar kilos recogidos </string>
@@ -194,7 +194,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main_petcar2">MainPETCAR2Activity</string>
+    <string name="title_activity_main_petcar2">Ciclo-Re-Ciclo</string>
     <string name="title_mapa">Mapa</string>
     <string name="title_municipios">Municipios</string>
     <string name="title_guia">Guia</string>

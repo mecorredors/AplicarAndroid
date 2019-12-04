@@ -1,6 +1,8 @@
 package car.gov.co.carserviciociudadano.petcar.model;
 
 import android.database.Cursor;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +56,7 @@ public class MaterialRecogido extends ModelBase {
         if(c.getColumnIndex(ID_MATERIAL_RECOGIDO)>=0) this.IDMaterialRecogido = c.getInt(c.getColumnIndex(ID_MATERIAL_RECOGIDO));
         if(c.getColumnIndex(IDCONTENEDOR)>=0) this.IDContenedor = c.getInt(c.getColumnIndex(IDCONTENEDOR));
         if(c.getColumnIndex(IDTIPO_MATERIAL)>=0) this.IDTipoMaterial = c.getInt(c.getColumnIndex(IDTIPO_MATERIAL));
-        if(c.getColumnIndex(FECHALECTURA_QR)>=0) this.FechaLecturaQR = Utils.convertToDate(c.getString(c.getColumnIndex(FECHALECTURA_QR)));
+        if(c.getColumnIndex(FECHALECTURA_QR)>=0) this.FechaLecturaQR = Utils.convertToDateSQLLite(c.getString(c.getColumnIndex(FECHALECTURA_QR)));
         if(c.getColumnIndex(COMENTARIOS)>=0) this.Comentarios = c.getString(c.getColumnIndex(COMENTARIOS));
         if(c.getColumnIndex(KILOS)>=0) this.Kilos = c.getDouble(c.getColumnIndex(KILOS));
         if(c.getColumnIndex(ESTADO)>=0) this.Estado = c.getInt(c.getColumnIndex(ESTADO));
