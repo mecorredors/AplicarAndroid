@@ -78,6 +78,8 @@ public class GalleryActivity extends BaseActivity {
     public  final static int MY_PERMISSIONS_CAMERA = 12;
     public int mMaxPhotos;
     public final static String MAX_PHOTOS_EXTRA = "max_photos";
+    public final static String ONLY_PHOTOS = "only_photos";
+    private boolean mOnlyPhotos = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,7 @@ public class GalleryActivity extends BaseActivity {
             _MaxItemCount = mMaxPhotos - itemCount;
 
             _PathPhotosSelect = extras.getStringArray(PATH_PHOTOS_SELECT);
+            mOnlyPhotos = extras.getBoolean(ONLY_PHOTOS, false);
             extras.remove(PATH_PHOTOS_SELECT);
         }
 
@@ -116,6 +119,10 @@ public class GalleryActivity extends BaseActivity {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE  },  MY_PERMISSION_EXTERNAL_STORAGE );
         }else {
             init();
+        }
+
+        if (mOnlyPhotos){
+            TakePhoto();
         }
 
         if (BuildConfig.DEBUG == false) {
@@ -356,7 +363,9 @@ public class GalleryActivity extends BaseActivity {
 
                 File file = new File(_TempPath);
                 file.delete();
-
+                if (mOnlyPhotos){
+                    finish();
+                }
             } else {
                 // Image capture failed, advise user
             }

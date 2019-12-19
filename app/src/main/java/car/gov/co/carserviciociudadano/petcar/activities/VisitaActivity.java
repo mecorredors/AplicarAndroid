@@ -224,6 +224,7 @@ public class VisitaActivity extends BaseActivity {
             Intent i = new Intent(this, GalleryActivity.class);
             i.putExtra(GalleryActivity.ITEM_COUNT, size);
             i.putExtra(GalleryActivity.MAX_PHOTOS_EXTRA, MAX_PHOTOS);
+            i.putExtra(GalleryActivity.ONLY_PHOTOS, true);
 
             String[] datos = new String[size];
             for (int t = 0; t < size; t++)

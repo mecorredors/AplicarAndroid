@@ -22,7 +22,7 @@
     <TextView android:id="@+id/lblTitulo"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="Ingresar a PETCAR"
+        android:text="Ingresar a Ciclo-Re-Ciclo"
         android:layout_marginTop="@dimen/margin_4dp"
         android:textSize="@dimen/text_size_16"
         android:textColor="@color/accentBicicar"
